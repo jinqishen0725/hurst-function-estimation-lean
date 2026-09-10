@@ -1,5 +1,5 @@
 {
-  "declarations_checked": 1155,
+  "declarations_checked": 1849,
   "allowed_foundation_axioms": [
     "Classical.choice",
     "Quot.sound",

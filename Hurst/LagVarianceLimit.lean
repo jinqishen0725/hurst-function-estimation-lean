@@ -171,8 +171,8 @@ theorem tendsto_sum_range_of_dominated_lag
   rw [tsum_eq_sum (s := Finset.range (m n)) (fun k hk =>
     hsupport n k (le_of_not_gt (fun h => hk (Finset.mem_range.mpr h))))]
 
-/-- Reindex each finite symmetric double sum by lag and apply Tannery's
-theorem to the resulting zero-extended lag rows. -/
+/-- Reindex each finite symmetric double sum by lag and apply
+Tannery's theorem to the resulting zero-extended lag rows. -/
 theorem tendsto_symmetric_double_sum_of_dominated_lags
     {α : Type*} {𝓕 : Filter α} (m : α → ℕ)
     (F : α → ℕ → ℕ → ℝ) (g bound : ℕ → ℝ)

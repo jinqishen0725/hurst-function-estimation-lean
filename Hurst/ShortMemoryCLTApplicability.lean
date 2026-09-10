@@ -1,5 +1,6 @@
 import Hurst.ActualConditionalCLT
 import Hurst.OptimalMeanLeading
+import Hurst.ActualActiveBSCLT
 
 noncomputable section
 open Set MeasureTheory ProbabilityTheory Filter
@@ -376,5 +377,223 @@ theorem hurstHolder_grid_second_optimal_log_CLT_of_weighted_array_CLT
   exact hurstHolder_grid_second_log_CLT_of_weighted_array_CLT hWeightedCLT
     ((r : ℝ) + 1) a b M r hp ha hb hab hM f hf hF t ht
     (optimalLocalBandwidth ((r : ℝ) + 1)) hδ hδ0 hN V Vk hV hvar
+
+/-- The q = 1 finite-Hermite CLT of `hurstHolder_stride_first_finiteHermite_CLT_actual`
+transferred through the truncation chain to the centered log statistic.  The
+internal premise `WeightedFiniteHermiteTriangularCLT` is gone: the only
+probabilistic premise is the exact external Bardet--Surgailis theorem, and the
+per-truncation variance limits are supplied by the internally proved
+`hurstHolder_stride_first_full_truncatedVariance_tendsto`.  The remaining
+premises are the external theorem, the ordinary model assumptions, the
+bandwidth regularity `(n+1)δ(n+1) / (nδn) → 1`, and the deterministic limit of
+the Gaussian truncated-covariance series. -/
+theorem hurstHolder_stride_first_log_CLT_actual
+    (hBS : BardetSurgailisTheoremOnePartTwoScalarPolynomialHilbert.{0})
+    (p a b M : ℝ) (r : ℕ)
+    (hp : 1 ≤ p) (ha : 0 < a) (hb : b < 3 / 4) (hab : a ≤ b) (hM : 0 ≤ M)
+    (f : ℝ → ℝ) (hf : f ∈ hurstHolderClass p M)
+    (hF : MapsTo f (Ioo (0 : ℝ) 1) (Icc a b))
+    (t : ℝ) (ht : t ∈ Ioo (0 : ℝ) 1) (δ : ℕ → ℝ)
+    (hδ : ∀ᶠ n in atTop, 0 < δ n) (hδ0 : Tendsto δ atTop (𝓝 0))
+    (hN : Tendsto (fun n : ℕ => (n : ℝ) * δ n) atTop atTop)
+    (hSsucc : Tendsto (fun n : ℕ =>
+      (((n + 1 : ℕ) : ℝ) * δ (n + 1)) / ((n : ℝ) * δ n)) atTop (𝓝 1))
+    (V : ℝ)
+    (hV : Tendsto (fun K : ℕ => (∫ x in (-1 : ℝ)..1, equivalentKernel r x ^ 2) *
+      ∑' k : ℕ, (if k = 0 then 1 else 2) *
+        gaussianLogTruncationCovariance K
+          (firstIncrementLagCorrelation (f t) k)) atTop (𝓝 V)) :
+    TendstoInDistribution (fun (n : ℕ) x => Real.sqrt ((n : ℝ) * δ n) *
+      (gaussianLogStatistic (localPolynomialWeights r n 1 (δ n) t)
+          (gridStrideFirstCoefficients n 1) x -
+        (∫ y, gaussianLogStatistic (localPolynomialWeights r n 1 (δ n) t)
+          (gridStrideFirstCoefficients n 1) y
+            ∂featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n))))) atTop
+      (fun z : ℝ => Real.sqrt V * z)
+      (fun (n : ℕ) => featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n)))
+      (gaussianReal 0 1) := by
+  apply hurstHolder_stride_first_CLT_of_polynomial_limits p a b M r hp ha hb hab hM
+    f hf hF t (show t ∈ Icc (0 : ℝ) 1 from ⟨le_of_lt ht.1, le_of_lt ht.2⟩) δ hδ hδ0 hN V
+    (fun K => (∫ x in (-1 : ℝ)..1, equivalentKernel r x ^ 2) *
+      ∑' k : ℕ, (if k = 0 then 1 else 2) *
+        gaussianLogTruncationCovariance K
+          (firstIncrementLagCorrelation (f t) k))
+    hV
+  intro K
+  rcases Nat.lt_or_ge K 3 with hK | hK
+  · -- the truncation polynomial vanishes below Hermite rank two
+    have hstat : ∀ n : ℕ, gaussianLogTruncationStatistic
+        (gridObservationFeatures n (midpointSampleHurst f hf.1 n))
+        (localPolynomialWeights r n 1 (δ n) t)
+        (gridStrideFirstCoefficients n 1) K = fun _ => 0 :=
+      fun n => gaussianLogTruncationStatistic_eq_zero_of_le_two _ _ _ K (by omega)
+    have hterm : ∀ k : ℕ, (if k = 0 then 1 else 2) *
+        gaussianLogTruncationCovariance K
+          (firstIncrementLagCorrelation (f t) k) = 0 := by
+      intro k
+      rw [gaussianLogTruncationCovariance_eq_zero_of_le_two K (by omega)]
+      simp
+    rw [show (fun (n : ℕ) x => Real.sqrt ((n : ℝ) * δ n) *
+        gaussianLogTruncationStatistic
+          (gridObservationFeatures n (midpointSampleHurst f hf.1 n))
+          (localPolynomialWeights r n 1 (δ n) t)
+          (gridStrideFirstCoefficients n 1) K x)
+        = (fun (n : ℕ) (_ : EuclideanSpace ℝ (Fin n)) => (0 : ℝ)) from by
+          funext n x
+          rw [hstat n]
+          simp,
+      show (∫ x in (-1 : ℝ)..1, equivalentKernel r x ^ 2) *
+        ∑' k : ℕ, (if k = 0 then 1 else 2) *
+          gaussianLogTruncationCovariance K
+            (firstIncrementLagCorrelation (f t) k) = 0 from by
+          rw [tsum_congr hterm, tsum_zero, mul_zero]]
+    exact tendstoInDistribution_const_zero _
+  · exact hurstHolder_stride_first_finiteHermite_CLT_actual hBS p a b M r hp ha hb hab hM
+      f hf hF t ht δ hδ hδ0 hN hSsucc K
+      ((∫ x in (-1 : ℝ)..1, equivalentKernel r x ^ 2) *
+        ∑' k : ℕ, (if k = 0 then 1 else 2) *
+          gaussianLogTruncationCovariance K
+            (firstIncrementLagCorrelation (f t) k))
+      (firstIncrement_full_truncatedVariance_limit_pos r K (f t) hK
+        (lt_of_lt_of_le ha (hF ht).1) (lt_of_le_of_lt (hF ht).2 hb))
+      (hurstHolder_stride_first_full_truncatedVariance_tendsto p a b M r K hp ha hb hab hM
+        f hf hF t ht δ hδ hδ0 hN)
+
+/-- The q = 2 counterpart, throughout the paper's full compact range `b < 1`. -/
+theorem hurstHolder_grid_second_log_CLT_actual
+    (hBS : BardetSurgailisTheoremOnePartTwoScalarPolynomialHilbert.{0})
+    (p a b M : ℝ) (r : ℕ)
+    (hp : 2 ≤ p) (ha : 0 < a) (hb : b < 1) (hab : a ≤ b) (hM : 0 ≤ M)
+    (f : ℝ → ℝ) (hf : f ∈ hurstHolderClass p M)
+    (hF : MapsTo f (Ioo (0 : ℝ) 1) (Icc a b))
+    (t : ℝ) (ht : t ∈ Ioo (0 : ℝ) 1) (δ : ℕ → ℝ)
+    (hδ : ∀ᶠ n in atTop, 0 < δ n) (hδ0 : Tendsto δ atTop (𝓝 0))
+    (hN : Tendsto (fun n : ℕ => (n : ℝ) * δ n) atTop atTop)
+    (hSsucc : Tendsto (fun n : ℕ =>
+      (((n + 1 : ℕ) : ℝ) * δ (n + 1)) / ((n : ℝ) * δ n)) atTop (𝓝 1))
+    (V : ℝ)
+    (hV : Tendsto (fun K : ℕ => (∫ x in (-1 : ℝ)..1, equivalentKernel r x ^ 2) *
+      ∑' k : ℕ, (if k = 0 then 1 else 2) *
+        gaussianLogTruncationCovariance K
+          (secondIncrementLagCorrelation (f t) k)) atTop (𝓝 V)) :
+    TendstoInDistribution (fun (n : ℕ) x => Real.sqrt ((n : ℝ) * δ n) *
+      (gaussianLogStatistic (localPolynomialWeights r n 2 (δ n) t)
+          (gridSecondCoefficients n) x -
+        (∫ y, gaussianLogStatistic (localPolynomialWeights r n 2 (δ n) t)
+          (gridSecondCoefficients n) y
+            ∂featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n))))) atTop
+      (fun z : ℝ => Real.sqrt V * z)
+      (fun n => featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n)))
+      (gaussianReal 0 1) := by
+  apply hurstHolder_grid_second_CLT_of_polynomial_limits p a b M r hp ha hb hab hM
+    f hf hF t (show t ∈ Icc (0 : ℝ) 1 from ⟨le_of_lt ht.1, le_of_lt ht.2⟩) δ hδ hδ0 hN V
+    (fun K => (∫ x in (-1 : ℝ)..1, equivalentKernel r x ^ 2) *
+      ∑' k : ℕ, (if k = 0 then 1 else 2) *
+        gaussianLogTruncationCovariance K
+          (secondIncrementLagCorrelation (f t) k))
+    hV
+  intro K
+  rcases Nat.lt_or_ge K 3 with hK | hK
+  · have hstat : ∀ n : ℕ, gaussianLogTruncationStatistic
+        (gridObservationFeatures n (midpointSampleHurst f hf.1 n))
+        (localPolynomialWeights r n 2 (δ n) t)
+        (gridSecondCoefficients n) K = fun _ => 0 :=
+      fun n => gaussianLogTruncationStatistic_eq_zero_of_le_two _ _ _ K (by omega)
+    have hterm : ∀ k : ℕ, (if k = 0 then 1 else 2) *
+        gaussianLogTruncationCovariance K
+          (secondIncrementLagCorrelation (f t) k) = 0 := by
+      intro k
+      rw [gaussianLogTruncationCovariance_eq_zero_of_le_two K (by omega)]
+      simp
+    rw [show (fun (n : ℕ) x => Real.sqrt ((n : ℝ) * δ n) *
+        gaussianLogTruncationStatistic
+          (gridObservationFeatures n (midpointSampleHurst f hf.1 n))
+          (localPolynomialWeights r n 2 (δ n) t) (gridSecondCoefficients n) K x)
+        = (fun (n : ℕ) (_ : EuclideanSpace ℝ (Fin n)) => (0 : ℝ)) from by
+          funext n x
+          rw [hstat n]
+          simp,
+      show (∫ x in (-1 : ℝ)..1, equivalentKernel r x ^ 2) *
+        ∑' k : ℕ, (if k = 0 then 1 else 2) *
+          gaussianLogTruncationCovariance K
+            (secondIncrementLagCorrelation (f t) k) = 0 from by
+          rw [tsum_congr hterm, tsum_zero, mul_zero]]
+    exact tendstoInDistribution_const_zero _
+  · exact hurstHolder_grid_second_finiteHermite_CLT_actual hBS p a b M r hp ha hb hab hM
+      f hf hF t ht δ hδ hδ0 hN hSsucc K
+      ((∫ x in (-1 : ℝ)..1, equivalentKernel r x ^ 2) *
+        ∑' k : ℕ, (if k = 0 then 1 else 2) *
+          gaussianLogTruncationCovariance K
+            (secondIncrementLagCorrelation (f t) k))
+      (secondIncrement_full_truncatedVariance_limit_pos r K (f t) hK
+        (lt_of_lt_of_le ha (hF ht).1) (lt_of_le_of_lt (hF ht).2 (by linarith)))
+      (hurstHolder_grid_second_full_truncatedVariance_tendsto p a b M r K hp ha hb hab hM
+        f hf hF t ht δ hδ hδ0 hN)
+
+/-- The q = 1 log CLT at the paper's optimal bandwidth.  The bandwidth
+regularity premise is discharged internally by
+`optimalLocalEffectiveSize_succ_ratio_tendsto_one`, so the remaining premises
+are the external Bardet--Surgailis theorem, the ordinary model assumptions, and
+the deterministic limit of the Gaussian truncated-covariance series. -/
+theorem hurstHolder_stride_first_optimal_log_CLT_actual
+    (hBS : BardetSurgailisTheoremOnePartTwoScalarPolynomialHilbert.{0})
+    (a b M : ℝ) (r : ℕ)
+    (ha : 0 < a) (hb : b < 3 / 4) (hab : a ≤ b) (hM : 0 ≤ M)
+    (f : ℝ → ℝ) (hf : f ∈ hurstHolderClass ((r : ℝ) + 1) M)
+    (hF : MapsTo f (Ioo (0 : ℝ) 1) (Icc a b))
+    (t : ℝ) (ht : t ∈ Ioo (0 : ℝ) 1)
+    (V : ℝ)
+    (hV : Tendsto (fun K : ℕ => (∫ x in (-1 : ℝ)..1, equivalentKernel r x ^ 2) *
+      ∑' k : ℕ, (if k = 0 then 1 else 2) *
+        gaussianLogTruncationCovariance K
+          (firstIncrementLagCorrelation (f t) k)) atTop (𝓝 V)) :
+    TendstoInDistribution (fun (n : ℕ) x =>
+      Real.sqrt ((n : ℝ) * optimalLocalBandwidth ((r : ℝ) + 1) n) *
+        (gaussianLogStatistic
+            (localPolynomialWeights r n 1 (optimalLocalBandwidth ((r : ℝ) + 1) n) t)
+            (gridStrideFirstCoefficients n 1) x -
+          (∫ y, gaussianLogStatistic
+              (localPolynomialWeights r n 1 (optimalLocalBandwidth ((r : ℝ) + 1) n) t)
+              (gridStrideFirstCoefficients n 1) y
+            ∂featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n))))) atTop
+      (fun z : ℝ => Real.sqrt V * z)
+      (fun n => featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n)))
+      (gaussianReal 0 1) := by
+  obtain ⟨hδ, hδ0, hN, _, _⟩ := optimalLocalBandwidth_bias_conditions r b hb
+  have hSsucc := optimalLocalEffectiveSize_succ_ratio_tendsto_one ((r : ℝ) + 1)
+  have hp : (1 : ℝ) ≤ (r : ℝ) + 1 := by linarith [Nat.cast_nonneg (α := ℝ) r]
+  exact hurstHolder_stride_first_log_CLT_actual hBS ((r : ℝ) + 1) a b M r hp ha hb hab hM
+    f hf hF t ht (optimalLocalBandwidth ((r : ℝ) + 1)) hδ hδ0 hN hSsucc V hV
+
+/-- The q = 2 log CLT at the paper's optimal bandwidth. -/
+theorem hurstHolder_grid_second_optimal_log_CLT_actual
+    (hBS : BardetSurgailisTheoremOnePartTwoScalarPolynomialHilbert.{0})
+    (a b M : ℝ) (r : ℕ) (hr : 1 ≤ r)
+    (ha : 0 < a) (hb : b < 1) (hab : a ≤ b) (hM : 0 ≤ M)
+    (f : ℝ → ℝ) (hf : f ∈ hurstHolderClass ((r : ℝ) + 1) M)
+    (hF : MapsTo f (Ioo (0 : ℝ) 1) (Icc a b))
+    (t : ℝ) (ht : t ∈ Ioo (0 : ℝ) 1)
+    (V : ℝ)
+    (hV : Tendsto (fun K : ℕ => (∫ x in (-1 : ℝ)..1, equivalentKernel r x ^ 2) *
+      ∑' k : ℕ, (if k = 0 then 1 else 2) *
+        gaussianLogTruncationCovariance K
+          (secondIncrementLagCorrelation (f t) k)) atTop (𝓝 V)) :
+    TendstoInDistribution (fun (n : ℕ) x =>
+      Real.sqrt ((n : ℝ) * optimalLocalBandwidth ((r : ℝ) + 1) n) *
+        (gaussianLogStatistic
+            (localPolynomialWeights r n 2 (optimalLocalBandwidth ((r : ℝ) + 1) n) t)
+            (gridSecondCoefficients n) x -
+          (∫ y, gaussianLogStatistic
+              (localPolynomialWeights r n 2 (optimalLocalBandwidth ((r : ℝ) + 1) n) t)
+              (gridSecondCoefficients n) y
+            ∂featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n))))) atTop
+      (fun z : ℝ => Real.sqrt V * z)
+      (fun n => featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n)))
+      (gaussianReal 0 1) := by
+  obtain ⟨hδ, hδ0, hN, _, _⟩ := optimalLocalBandwidth_bias_conditions r 0 (by norm_num)
+  have hSsucc := optimalLocalEffectiveSize_succ_ratio_tendsto_one ((r : ℝ) + 1)
+  have hp : (2 : ℝ) ≤ (r : ℝ) + 1 := by exact_mod_cast (show 2 ≤ r + 1 by omega)
+  exact hurstHolder_grid_second_log_CLT_actual hBS ((r : ℝ) + 1) a b M r hp ha hb hab hM
+    f hf hF t ht (optimalLocalBandwidth ((r : ℝ) + 1)) hδ hδ0 hN hSsucc V hV
 
 end Hurst
