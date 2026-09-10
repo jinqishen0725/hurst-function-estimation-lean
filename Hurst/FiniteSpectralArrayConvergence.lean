@@ -93,7 +93,13 @@ theorem centeredSpectralSquares_sub_prefix_L2 {d : ℕ}
   have htail2 := centeredSpectralSquares_memLp_two tail
   constructor
   · rwa [hpoint]
-  · rw [hpoint, centeredSpectralSquares_secondMoment]
+  · have hsquare :
+        (fun x ↦ (centeredSpectralSquares lambda x -
+          centeredSpectralPrefix lambda K x) ^ 2) =
+        (fun x ↦ centeredSpectralSquares tail x ^ 2) := by
+      funext x
+      rw [congrFun hpoint x]
+    rw [hsquare, centeredSpectralSquares_secondMoment]
     congr 1
     apply Finset.sum_congr rfl
     intro i hi

@@ -447,4 +447,7 @@ import Hurst.FiniteIidGaussianVector
 import Hurst.FiniteGaussianSpectralConvergence
 import Hurst.FeatureQuadraticSpectralConvergence
 import Hurst.SpectralPermutation
+import Hurst.DistributionVaryingLawTransfer
+import Hurst.FiniteSpectralArrayConvergence
+import Hurst.ActualActiveFiniteCLT
 import Hurst.ActualFirstLongSecondChaosWeighted
