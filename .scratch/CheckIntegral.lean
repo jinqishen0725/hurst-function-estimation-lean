@@ -1,0 +1,6 @@
+import Hurst.TruncatedVarianceFormula
+open MeasureTheory
+#check integral_finsetSum
+#check integral_finset_sum
+#check MeasureTheory.integral_finset_sum
+#check MeasureTheory.integral_finsetSum

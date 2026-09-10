@@ -1,0 +1,14 @@
+import Mathlib.Analysis.Matrix.Normed
+import Mathlib.LinearAlgebra.Matrix.Trace
+open Matrix
+#check Matrix.frobeniusNorm
+#check Matrix.frobenius_norm_def
+#check Matrix.frobenius_norm_mul
+#check Matrix.norm_trace_le
+#check Matrix.trace_mul_cycle
+#check Matrix.trace_mul_comm
+#check Matrix.trace_mul_cycle'
+#check Matrix.norm_sq_eq
+#check Real.sum_mul_le_sqrt_mul_sqrt
+#check Finset.abs_sum_le_sum_abs
+#check Matrix.mul_apply

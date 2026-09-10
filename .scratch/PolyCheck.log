@@ -1,0 +1,15 @@
+Polynomial.induction_on'.{u} {R : Type u} [Semiring R] {motive : Polynomial R → Prop} (p : Polynomial R)
+  (add : ∀ (p q : Polynomial R), motive p → motive q → motive (p + q))
+  (monomial : ∀ (n : ℕ) (a : R), motive ((Polynomial.monomial n) a)) : motive p
+Polynomial.eval_mul.{u} {R : Type u} [CommSemiring R] {p q : Polynomial R} {x : R} :
+  Polynomial.eval x (p * q) = Polynomial.eval x p * Polynomial.eval x q
+Polynomial.hasDerivAt.{u} {𝕜 : Type u} [NontriviallyNormedField 𝕜] (p : Polynomial 𝕜) (x : 𝕜) :
+  HasDerivAt (fun x => Polynomial.eval x p) (Polynomial.eval x (Polynomial.derivative p)) x
+Polynomial.derivative_map.{u, v} {R : Type u} {S : Type v} [Semiring R] [Semiring S] (p : Polynomial R) (f : R →+* S) :
+  Polynomial.derivative (Polynomial.map f p) = Polynomial.map f (Polynomial.derivative p)
+.scratch/PolyCheck.lean:8:7: error(lean.unknownIdentifier): Unknown identifier `tendsto_neg_atBot_atTop`
+rpow_mul_exp_neg_mul_sq_isLittleO_exp_neg {b : ℝ} (hb : 0 < b) (s : ℝ) :
+  (fun x => x ^ s * Real.exp (-b * x ^ 2)) =o[Filter.atTop] fun x => Real.exp (-(1 / 2) * x)
+Polynomial.eval_X.{u} {R : Type u} [Semiring R] {x : R} : Polynomial.eval x Polynomial.X = x
+.scratch/PolyCheck.lean:11:7: error(lean.unknownIdentifier): Unknown constant `Real.integral_gaussian`
+integral_gaussian (b : ℝ) : ∫ (x : ℝ), Real.exp (-b * x ^ 2) = √(Real.pi / b)

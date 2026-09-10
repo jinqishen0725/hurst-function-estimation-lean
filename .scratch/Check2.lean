@@ -1,0 +1,3 @@
+import Hurst.FeatureStandardGaussian
+#check EuclideanSpace.basisFun_inner
+#print EuclideanSpace.basisFun_inner

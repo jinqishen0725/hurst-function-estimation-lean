@@ -1,0 +1,9 @@
+import Hurst.Corrections
+import Mathlib.Topology.Algebra.InfiniteSum.Basic
+#check Equiv.tsum_eq
+#check Equiv.addRight
+#check Equiv.subRight
+#check tsum_congr
+#check ContDiff.comp
+#check Filter.Tendsto.eventually_const_lt
+#check Filter.tendsto_atTop_add_const_right

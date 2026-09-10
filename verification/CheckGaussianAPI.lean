@@ -1,0 +1,8 @@
+import Mathlib.Probability.Distributions.Gaussian.Multivariate
+import Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Basic
+#check ContinuousLinearMap.integral_comp_id_comm
+#check ContinuousLinearMap.integral_comp_comm
+#check ProbabilityTheory.IsGaussian.map_eq_gaussianReal
+#check MeasureTheory.ae_iff
+#check MeasureTheory.Measure.map_apply
+#check ProbabilityTheory.noAtoms_gaussianReal

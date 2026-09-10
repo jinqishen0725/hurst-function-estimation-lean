@@ -1,0 +1,12 @@
+import Hurst.FiniteGaussianSpectral
+import Hurst.FeatureObservationMap
+#check Matrix.gram_apply
+#check Matrix.isHermitian_gram
+#check Matrix.posSemidef_gram
+#check IsSelfAdjoint.isHermitian
+#check CFC.sqrt_nonneg
+#check Matrix.isHermitian_mul_mul_conjTranspose
+#check Matrix.isHermitian_diagonal
+#check IdentDistrib.trans
+#check IdentDistrib.congr
+#check IdentDistrib.symm

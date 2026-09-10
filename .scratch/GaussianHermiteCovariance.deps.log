@@ -1,0 +1,30 @@
+⚠ [3610/3632] Replayed Hurst.GaussianPolynomial
+warning: Hurst/GaussianPolynomial.lean:16:78: This simp argument is unused:
+  mul_add
+
+Hint: Omit it from the simp argument list.
+  simp [̵P̵i̵.̵a̵d̵d̵_̵a̵p̵p̵l̵y̵,̵m̵u̵l̵_̵a̵d̵d̵,̵a̵d̵d̵_̵m̵u̵l̵]̵[̲P̲i̲.̲a̲d̲d̲_̲a̲p̲p̲l̲y̲,̲ ̲a̲d̲d̲_̲m̲u̲l̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [3613/3632] Replayed Hurst.GaussianHermite
+warning: Hurst/GaussianHermite.lean:36:63: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3615/3632] Replayed Hurst.GaussianCompleteness
+warning: Hurst/GaussianCompleteness.lean:13:74: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3621/3632] Replayed Hurst.HermiteConditional
+warning: Hurst/HermiteConditional.lean:13:78: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/HermiteConditional.lean:45:67: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3622/3632] Replayed Hurst.GaussianPolynomialLaw
+warning: Hurst/GaussianPolynomialLaw.lean:27:61: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+✔ [3631/3632] Built Hurst.JointHermite (14s)
+✔ [3632/3632] Built Hurst.GaussianPullback (14s)
+Build completed successfully (3632 jobs).

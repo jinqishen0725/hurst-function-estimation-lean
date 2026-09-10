@@ -1,0 +1,8 @@
+{
+  "mainline_complete": false,
+  "open_internal_inputs": [
+    "INT-CLT",
+    "INT-LONG"
+  ],
+  "acceptance_rule": "Every internal supporting result must be proved in Lean. A final theorem may retain only a premise that is an exact, cited theorem from the external literature, together with ordinary model and parameter assumptions."
+}

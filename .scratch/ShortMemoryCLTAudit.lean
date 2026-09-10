@@ -1,0 +1,10 @@
+import Hurst.ShortMemoryCLTApplicability
+
+#print axioms Hurst.localPolynomialWeights_sqrt_envelope
+#print axioms Hurst.BardetSurgailisTheoremOnePartTwoScalarPolynomial
+#print axioms Hurst.hurstHolder_stride_first_finiteHermite_CLT
+#print axioms Hurst.hurstHolder_stride_first_log_CLT_of_weighted_array_CLT
+#print axioms Hurst.hurstHolder_grid_second_finiteHermite_CLT
+#print axioms Hurst.hurstHolder_grid_second_log_CLT_of_weighted_array_CLT
+#print axioms Hurst.hurstHolder_stride_first_optimal_log_CLT_of_weighted_array_CLT
+#print axioms Hurst.hurstHolder_grid_second_optimal_log_CLT_of_weighted_array_CLT

@@ -1,0 +1,1751 @@
+⚠ [3076/3343] Replayed Hurst.Rates
+warning: Hurst/Rates.lean:52:39: Variable name `hL` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3604/4089] Replayed Hurst.DistributionRepair
+warning: Hurst/DistributionRepair.lean:29:0: automatically included section variable(s) unused in theorem `Hurst.reflected_gaussian_law`:
+  [IsProbabilityMeasure ν]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [IsProbabilityMeasure ν] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+⚠ [3654/4089] Replayed Hurst.GaussianKLMulti
+warning: Hurst/GaussianKLMulti.lean:275:10: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
+warning: Hurst/GaussianKLMulti.lean:275:67: `ContinuousLinearMap.one_apply` has been deprecated: Use `one_apply_eq_self` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.one_apply` to `one_apply_eq_self x`).
+warning: Hurst/GaussianKLMulti.lean:289:10: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
+warning: Hurst/GaussianKLMulti.lean:289:67: `ContinuousLinearMap.one_apply` has been deprecated: Use `one_apply_eq_self` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.one_apply` to `one_apply_eq_self x`).
+⚠ [3655/4089] Replayed Hurst.GaussianKLBound
+warning: Hurst/GaussianKLBound.lean:82:96: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/GaussianKLBound.lean:83:12: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3668/4089] Replayed Hurst.EstimationToTesting
+warning: Hurst/EstimationToTesting.lean:86:8: automatically included section variable(s) unused in theorem `_private.Hurst.EstimationToTesting.0.Hurst.exists_measurable_nearestPoint`:
+  mΘ
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit mΘ in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+⚠ [3669/4089] Replayed Hurst.KLMixture
+warning: Hurst/KLMixture.lean:125:8: `MeasureTheory.lintegral_finset_sum` has been deprecated: Use `MeasureTheory.lintegral_finsetSum` instead
+warning: Hurst/KLMixture.lean:126:8: `MeasureTheory.lintegral_finset_sum` has been deprecated: Use `MeasureTheory.lintegral_finsetSum` instead
+⚠ [3670/4089] Replayed Hurst.MutualInformation
+warning: Hurst/MutualInformation.lean:230:8: `MeasureTheory.lintegral_finset_sum` has been deprecated: Use `MeasureTheory.lintegral_finsetSum` instead
+⚠ [3672/4089] Replayed Hurst.FanoLowerBound
+warning: Hurst/FanoLowerBound.lean:215:7: `MeasureTheory.integrable_finset_sum` has been deprecated: Use `MeasureTheory.integrable_finsetSum` instead
+warning: Hurst/FanoLowerBound.lean:219:26: `MeasureTheory.integral_finset_sum` has been deprecated: Use `MeasureTheory.integral_finsetSum` instead
+warning: Hurst/FanoLowerBound.lean:502:11: `MeasureTheory.lintegral_finset_sum` has been deprecated: Use `MeasureTheory.lintegral_finsetSum` instead
+warning: Hurst/FanoLowerBound.lean:554:18: Variable name `hq` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/FanoLowerBound.lean:772:8: `mul_le_mul_left'` has been deprecated: Use `mul_le_mul_right` instead
+⚠ [3679/4089] Replayed Hurst.GaussianLinearMap
+warning: Hurst/GaussianLinearMap.lean:16:2: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+⚠ [3680/4089] Replayed Hurst.GridWhitening
+warning: Hurst/GridWhitening.lean:60:2: 'change (WithLp.ofLp (Matrix.toEuclideanCLM (𝕜 := ℝ) (differenceWhiteningMatrix ℓ) x)) i = _' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+ℹ [3706/4089] Replayed Hurst.UniformQuadrature
+info: Hurst/UniformQuadrature.lean:60:38: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+info: Hurst/UniformQuadrature.lean:60:38: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+⚠ [3738/4089] Replayed Hurst.CorrelationSums
+warning: Hurst/CorrelationSums.lean:68:67: Variable name `hA` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/CorrelationSums.lean:68:80: Variable name `he` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3739/4089] Replayed Hurst.GridCorrelationDecay
+warning: Hurst/GridCorrelationDecay.lean:11:40: Variable name `hn` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3744/4089] Replayed Hurst.GridMSE
+warning: Hurst/GridMSE.lean:33:46: Variable name `hβ` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/GridMSE.lean:33:59: Variable name `hD0` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/GridMSE.lean:57:106: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/GridMSE.lean:57:118: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3755/4089] Replayed Hurst.FeatureSecondOrder
+warning: Hurst/FeatureSecondOrder.lean:11:31: Variable name `hU` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/FeatureSecondOrder.lean:11:57: Variable name `hD` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3758/4089] Replayed Hurst.SecondCancellation
+warning: Hurst/SecondCancellation.lean:10:47: Variable name `hR` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/SecondCancellation.lean:10:60: Variable name `hS` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/SecondCancellation.lean:35:44: Variable name `hB` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/SecondCancellation.lean:35:57: Variable name `hD` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/SecondCancellation.lean:35:70: Variable name `hl` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3760/4089] Replayed Hurst.SecondIncrement
+warning: Hurst/SecondIncrement.lean:36:25: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/SecondIncrement.lean:36:37: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3761/4089] Replayed Hurst.HolderSecondIncrement
+warning: Hurst/HolderSecondIncrement.lean:12:28: Variable name `hf` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3762/4089] Replayed Hurst.PowerDifferences
+warning: Hurst/PowerDifferences.lean:38:39: This simp argument is unused:
+  id_eq
+
+Hint: Omit it from the simp argument list.
+  simp only [powerForwardDifference, i̵d̵_̵e̵q̵,̵ ̵mul_one]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [3764/4089] Replayed Hurst.SecondCorrelationSums
+warning: Hurst/SecondCorrelationSums.lean:26:70: Variable name `hA` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/SecondCorrelationSums.lean:26:83: Variable name `he` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3765/4089] Replayed Hurst.SecondGridDecay
+warning: Hurst/SecondGridDecay.lean:10:47: Variable name `hn` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3773/4089] Replayed Hurst.SmoothCompositeQuadratic
+warning: Hurst/SmoothCompositeQuadratic.lean:13:28: Variable name `hf` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/SmoothCompositeQuadratic.lean:35:45: This simp argument is unused:
+  iteratedDeriv_zero
+
+Hint: Omit it from the simp argument list.
+  simp only [taylorJet, Fin.sum_univ_succ, i̵t̵e̵r̵a̵t̵e̵d̵D̵e̵r̵i̵v̵_̵z̵e̵r̵o̵,̵ ̵iteratedDeriv_one]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Hurst/SmoothCompositeQuadratic.lean:35:65: This simp argument is unused:
+  iteratedDeriv_one
+
+Hint: Omit it from the simp argument list.
+  simp only [taylorJet, Fin.sum_univ_succ, iteratedDeriv_zero,̵ ̵i̵t̵e̵r̵a̵t̵e̵d̵D̵e̵r̵i̵v̵_̵o̵n̵e̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Hurst/SmoothCompositeQuadratic.lean:57:38: Variable name `hf` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3774/4089] Replayed Hurst.SecondMSE
+warning: Hurst/SecondMSE.lean:34:50: Variable name `hn` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/SecondMSE.lean:37:5: Variable name `hβ` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/SecondMSE.lean:37:31: Variable name `hD0` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/SecondMSE.lean:62:42: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/SecondMSE.lean:62:54: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3780/4089] Replayed Hurst.FiniteProductBounds
+warning: Hurst/FiniteProductBounds.lean:8:5: Variable name `hB` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3786/4089] Replayed Hurst.HolderComposition
+warning: Hurst/HolderComposition.lean:14:28: Variable name `hf` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/HolderComposition.lean:78:28: Variable name `hf` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3787/4089] Replayed Hurst.CompositeLocalBias
+warning: Hurst/CompositeLocalBias.lean:12:38: Variable name `hf` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3794/4089] Replayed Hurst.MinimaxUpperTransfer
+warning: Hurst/MinimaxUpperTransfer.lean:40:69: Variable name `hs2` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3795/4089] Replayed Hurst.MinimaxSquaredLower
+warning: Hurst/MinimaxSquaredLower.lean:55:13: `mul_le_mul_left'` has been deprecated: Use `mul_le_mul_right` instead
+⚠ [3799/4089] Replayed Hurst.StrideDecay
+warning: Hurst/StrideDecay.lean:38:2: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/StrideDecay.lean:77:98: Variable name `hA` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/StrideDecay.lean:77:111: Variable name `he` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3806/4089] Replayed Hurst.PilotTransfer
+warning: Hurst/PilotTransfer.lean:60:4: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3821/4089] Replayed Hurst.ScaleAverage
+warning: Hurst/ScaleAverage.lean:47:2: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3826/4089] Replayed Hurst.ScaleRiskTransfer
+warning: Hurst/ScaleRiskTransfer.lean:35:5: Variable name `hVl` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/ScaleRiskTransfer.lean:35:20: Variable name `hVp` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3829/4089] Replayed Hurst.BackfitTransfer
+warning: Hurst/BackfitTransfer.lean:25:29: This simp argument is unused:
+  NNReal.coe_mk
+
+Hint: Omit it from the simp argument list.
+  simp only [Real.dist_eq, N̵N̵R̵e̵a̵l̵.̵c̵o̵e̵_̵m̵k̵,̵ ̵sub_sub_cancel_left, abs_neg] at he
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [3830/4089] Replayed Hurst.ScaleBandwidth
+info: Hurst/ScaleBandwidth.lean:35:27: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/ScaleBandwidth.lean:42:8: 'ring' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/ScaleBandwidth.lean:42:8: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+warning: Hurst/ScaleBandwidth.lean:35:23: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3836/4089] Replayed Hurst.UnknownDecision
+warning: Hurst/UnknownDecision.lean:49:13: This simp argument is unused:
+  continuousHurstDecision
+
+Hint: Omit it from the simp argument list.
+  simp only [c̵o̵n̵t̵i̵n̵u̵o̵u̵s̵H̵u̵r̵s̵t̵D̵e̵c̵i̵s̵i̵o̵n̵,̵ ̵q2UnknownSpatialEstimator, q2UnknownLocalEstimator, smooth, Fintype.sum_option, w, z]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [3845/4089] Replayed Hurst.FirstStrideDecay
+warning: Hurst/FirstStrideDecay.lean:37:2: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/FirstStrideDecay.lean:74:99: Variable name `hA` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/FirstStrideDecay.lean:74:112: Variable name `he` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3855/4089] Replayed Hurst.FirstScaleAlgebra
+warning: Hurst/FirstScaleAlgebra.lean:29:4: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3856/4089] Replayed Hurst.FirstScaleBias
+warning: Hurst/FirstScaleBias.lean:57:4: 'norm_num only [Nat.cast_ofNat]' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+⚠ [3861/4089] Replayed Hurst.FirstScaleUnknownRisk
+warning: Hurst/FirstScaleUnknownRisk.lean:23:2: Try this: intro f hf hF σ hσ n hn
+⚠ [3864/4089] Replayed Hurst.FirstUnknownDecision
+warning: Hurst/FirstUnknownDecision.lean:48:13: This simp argument is unused:
+  continuousHurstDecision
+
+Hint: Omit it from the simp argument list.
+  simp only [c̵o̵n̵t̵i̵n̵u̵o̵u̵s̵H̵u̵r̵s̵t̵D̵e̵c̵i̵s̵i̵o̵n̵,̵ ̵q1UnknownSpatialEstimator, q1UnknownLocalEstimator, smooth, Fintype.sum_option, w, z]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [3870/4089] Replayed Hurst.GaussianPolynomial
+warning: Hurst/GaussianPolynomial.lean:16:78: This simp argument is unused:
+  mul_add
+
+Hint: Omit it from the simp argument list.
+  simp [̵P̵i̵.̵a̵d̵d̵_̵a̵p̵p̵l̵y̵,̵m̵u̵l̵_̵a̵d̵d̵,̵a̵d̵d̵_̵m̵u̵l̵]̵[̲P̲i̲.̲a̲d̲d̲_̲a̲p̲p̲l̲y̲,̲ ̲a̲d̲d̲_̲m̲u̲l̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [3873/4089] Replayed Hurst.GaussianHermite
+warning: Hurst/GaussianHermite.lean:36:63: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3875/4089] Replayed Hurst.GaussianCompleteness
+warning: Hurst/GaussianCompleteness.lean:13:74: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3882/4089] Replayed Hurst.HermiteConditional
+warning: Hurst/HermiteConditional.lean:13:78: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/HermiteConditional.lean:45:67: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3883/4089] Replayed Hurst.GaussianPolynomialLaw
+warning: Hurst/GaussianPolynomialLaw.lean:27:61: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3887/4089] Replayed Hurst.HilbertDiagonal
+warning: Hurst/HilbertDiagonal.lean:17:75: This simp argument is unused:
+  inner_smul_right
+
+Hint: Omit it from the simp argument list.
+  simp only [̵C̵o̵n̵t̵i̵n̵u̵o̵u̵s̵L̵i̵n̵e̵a̵r̵M̵a̵p̵.̵c̵o̵m̵p̵_̵a̵p̵p̵l̵y̵,̵m̵a̵p̵_̵s̵m̵u̵l̵,̵i̵n̵n̵e̵r̵S̵L̵_̵a̵p̵p̵l̵y̵_̵a̵p̵p̵l̵y̵,̵i̵n̵n̵e̵r̵_̵s̵m̵u̵l̵_̵r̵i̵g̵h̵t̵,̵
+  ̵ ̵ ̵ ̵ ̵ ̵ ̵b̵.̵r̵e̵p̵r̵_̵a̵p̵p̵l̵y̵_̵a̵p̵p̵l̵y̵,̵s̵m̵u̵l̵_̵e̵q̵_̵m̵u̵l̵]̵[̲C̲o̲n̲t̲i̲n̲u̲o̲u̲s̲L̲i̲n̲e̲a̲r̲M̲a̲p̲.̲c̲o̲m̲p̲_̲a̲p̲p̲l̲y̲,̲ ̲m̲a̲p̲_̲s̲m̲u̲l̲,̲ ̲i̲n̲n̲e̲r̲S̲L̲_̲a̲p̲p̲l̲y̲_̲a̲p̲p̲l̲y̲,̲ ̲b̲.̲r̲e̲p̲r̲_̲a̲p̲p̲l̲y̲_̲a̲p̲p̲l̲y̲,̲
+  ̲ ̲ ̲ ̲ ̲ ̲ ̲s̲m̲u̲l̲_̲e̲q̲_̲m̲u̲l̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Hurst/HilbertDiagonal.lean:38:76: This simp argument is unused:
+  inner_smul_right
+
+Hint: Omit it from the simp argument list.
+  simp only [̵C̵o̵n̵t̵i̵n̵u̵o̵u̵s̵L̵i̵n̵e̵a̵r̵M̵a̵p̵.̵c̵o̵m̵p̵_̵a̵p̵p̵l̵y̵,̵m̵a̵p̵_̵s̵m̵u̵l̵,̵i̵n̵n̵e̵r̵S̵L̵_̵a̵p̵p̵l̵y̵_̵a̵p̵p̵l̵y̵,̵i̵n̵n̵e̵r̵_̵s̵m̵u̵l̵_̵r̵i̵g̵h̵t̵,̵
+  ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵s̵m̵u̵l̵_̵e̵q̵_̵m̵u̵l̵,̵b̵.̵r̵e̵p̵r̵_̵a̵p̵p̵l̵y̵_̵a̵p̵p̵l̵y̵,̵h̵i̵l̵b̵e̵r̵t̵_̵d̵i̵a̵g̵o̵n̵a̵l̵_̵i̵n̵n̵e̵r̵_̵b̵a̵s̵i̵s̵[̲C̲o̲n̲t̲i̲n̲u̲o̲u̲s̲L̲i̲n̲e̲a̲r̲M̲a̲p̲.̲c̲o̲m̲p̲_̲a̲p̲p̲l̲y̲,̲ ̲m̲a̲p̲_̲s̲m̲u̲l̲,̲ ̲i̲n̲n̲e̲r̲S̲L̲_̲a̲p̲p̲l̲y̲_̲a̲p̲p̲l̲y̲,̲ ̲s̲m̲u̲l̲_̲e̲q̲_̲m̲u̲l̲,̲
+  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲b̲.̲r̲e̲p̲r̲_̲a̲p̲p̲l̲y̲_̲a̲p̲p̲l̲y̲,̲ ̲h̲i̲l̲b̲e̲r̲t̲_̲d̲i̲a̲g̲o̲n̲a̲l̲_̲i̲n̲n̲e̲r̲_̲b̲a̲s̲i̲s̲ b L R d h]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [3891/4089] Replayed Hurst.GaussianLogStein
+warning: Hurst/GaussianLogStein.lean:37:40: 'funext y' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/GaussianLogStein.lean:37:50: 'rfl' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/GaussianLogStein.lean:37:50: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+info: Hurst/GaussianLogStein.lean:57:4: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/GaussianLogStein.lean:65:39: '(funext x; rfl)' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/GaussianLogStein.lean:65:39: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+warning: Hurst/GaussianLogStein.lean:63:23: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/GaussianLogStein.lean:65:21: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3892/4089] Replayed Hurst.GaussianLogRank
+warning: Hurst/GaussianLogRank.lean:27:13: `MeasureTheory.measureReal_univ_eq_one` has been deprecated: Use `MeasureTheory.probReal_univ` instead
+⚠ [3900/4089] Replayed Hurst.HermitePolynomialTruncation
+warning: Hurst/HermitePolynomialTruncation.lean:21:41: `Polynomial.eval_finset_sum` has been deprecated: Use `Polynomial.eval_finsetSum` instead
+⚠ [3903/4089] Replayed Hurst.GaussianArrayApproximation
+warning: Hurst/GaussianArrayApproximation.lean:32:26: Variable name `hW` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/GaussianArrayApproximation.lean:35:8: Variable name `hX` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3911/4089] Replayed Hurst.InteriorDesignLimit
+warning: Hurst/InteriorDesignLimit.lean:53:8: `tendsto_finset_sum` has been deprecated: Use `tendsto_finsetSum` instead
+⚠ [3913/4089] Replayed Hurst.LocalTaylorLeading
+warning: Hurst/LocalTaylorLeading.lean:33:4: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/LocalTaylorLeading.lean:44:2: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3916/4089] Replayed Hurst.CalibratedBiasLimit
+warning: Hurst/CalibratedBiasLimit.lean:45:6: 'ring' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/CalibratedBiasLimit.lean:45:6: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+⚠ [3918/4089] Replayed Hurst.ActualMeanResidual
+warning: Hurst/ActualMeanResidual.lean:43:23: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/ActualMeanResidual.lean:43:35: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/ActualMeanResidual.lean:75:37: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/ActualMeanResidual.lean:75:49: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3920/4089] Replayed Hurst.GridBiasRemainderLimit
+warning: Hurst/GridBiasRemainderLimit.lean:20:2: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3921/4089] Replayed Hurst.ActualMeanLeading
+warning: Hurst/ActualMeanLeading.lean:26:24: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3922/4089] Replayed Hurst.OptimalBiasBandwidth
+warning: Hurst/OptimalBiasBandwidth.lean:41:51: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3923/4089] Replayed Hurst.OptimalMeanLeading
+warning: Hurst/OptimalMeanLeading.lean:27:89: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3924/4089] Replayed Hurst.ClippedLinearization
+warning: Hurst/ClippedLinearization.lean:54:4: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3927/4089] Replayed Hurst.ExpectedInverseLimit
+info: Hurst/ExpectedInverseLimit.lean:25:78: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+info: Hurst/ExpectedInverseLimit.lean:52:4: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/ExpectedInverseLimit.lean:29:87: 'rfl' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/ExpectedInverseLimit.lean:29:87: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+warning: Hurst/ExpectedInverseLimit.lean:29:23: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/ExpectedInverseLimit.lean:45:4: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3929/4089] Replayed Hurst.OptimalLogVariance
+warning: Hurst/OptimalLogVariance.lean:56:49: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3930/4089] Replayed Hurst.SecondEstimatorBias
+warning: Hurst/SecondEstimatorBias.lean:31:105: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/SecondEstimatorBias.lean:49:57: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3931/4089] Replayed Hurst.FirstEstimatorBias
+warning: Hurst/FirstEstimatorBias.lean:32:23: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3935/4089] Replayed Hurst.InverseL1Limit
+warning: Hurst/InverseL1Limit.lean:25:87: 'rfl' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/InverseL1Limit.lean:25:87: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+warning: Hurst/InverseL1Limit.lean:25:23: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/InverseL1Limit.lean:43:4: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3937/4089] Replayed Hurst.FirstEstimatorLinearization
+warning: Hurst/FirstEstimatorLinearization.lean:34:23: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3938/4089] Replayed Hurst.SecondEstimatorLinearization
+warning: Hurst/SecondEstimatorLinearization.lean:33:105: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/SecondEstimatorLinearization.lean:51:57: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3940/4089] Replayed Hurst.ActualEstimatorProbability
+warning: Hurst/ActualEstimatorProbability.lean:31:105: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/ActualEstimatorProbability.lean:49:57: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/ActualEstimatorProbability.lean:88:23: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3943/4089] Replayed Hurst.OracleScaleL1
+warning: Hurst/OracleScaleL1.lean:45:39: 'ring' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/OracleScaleL1.lean:45:39: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+⚠ [3949/4089] Replayed Hurst.FirstUnknownConditionalBias
+warning: Hurst/FirstUnknownConditionalBias.lean:42:53: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3950/4089] Replayed Hurst.SecondUnknownConditionalBias
+warning: Hurst/SecondUnknownConditionalBias.lean:44:53: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3952/4089] Replayed Hurst.ActualUnknownConditionalLimits
+warning: Hurst/ActualUnknownConditionalLimits.lean:52:53: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/ActualUnknownConditionalLimits.lean:58:34: Variable name `htu` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/ActualUnknownConditionalLimits.lean:99:53: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3956/4089] Replayed Hurst.FeatureConditionalCLT
+warning: Hurst/FeatureConditionalCLT.lean:16:82: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3958/4089] Replayed Hurst.LinearizedDistribution
+info: Hurst/LinearizedDistribution.lean:39:65: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/LinearizedDistribution.lean:25:54: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/LinearizedDistribution.lean:39:61: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3959/4089] Replayed Hurst.OptimalEstimatorDistribution
+warning: Hurst/OptimalEstimatorDistribution.lean:44:6: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3960/4089] Replayed Hurst.ActualOptimalCLT
+warning: Hurst/ActualOptimalCLT.lean:56:23: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/ActualOptimalCLT.lean:66:21: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/ActualOptimalCLT.lean:108:105: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/ActualOptimalCLT.lean:120:21: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3962/4089] Replayed Hurst.AllFiniteRisk
+warning: Hurst/AllFiniteRisk.lean:25:47: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3964/4089] Replayed Hurst.SecondWeightedPilotVariance
+warning: Hurst/SecondWeightedPilotVariance.lean:48:17: This simp argument is unused:
+  ← Finset.mul_sum
+
+Hint: Omit it from the simp argument list.
+  simp only [← F̵i̵n̵s̵e̵t̵.̵m̵u̵l̵_̵s̵u̵m̵,̵←̵ ̵Finset.sum_mul]
+
+Note: Simp arguments with `←` have the additional effect of removing the other direction from the simp set, even if the simp argument itself is unused. If the hint above does not work, try replacing `←` with `-` to only get that effect and silence this warning.
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [3968/4089] Replayed Hurst.SecondScaleFineRates
+warning: Hurst/SecondScaleFineRates.lean:66:22: This simp argument is unused:
+  zero_mul
+
+Hint: Omit it from the simp argument list.
+  simp only [mul_zero,̵z̵e̵r̵o̵_̵m̵u̵l̵] at hprod
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Hurst/SecondScaleFineRates.lean:92:5: Variable name `hC₁` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/SecondScaleFineRates.lean:92:18: Variable name `hC₄` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3971/4089] Replayed Hurst.LinearCalibrationLimit
+warning: Hurst/LinearCalibrationLimit.lean:74:58: 'ring' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/LinearCalibrationLimit.lean:74:58: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+warning: Hurst/LinearCalibrationLimit.lean:67:6: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3972/4089] Replayed Hurst.InverseMoment
+warning: Hurst/InverseMoment.lean:19:67: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/InverseMoment.lean:21:71: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3973/4089] Replayed Hurst.ActualMemoryMainline
+warning: Hurst/ActualMemoryMainline.lean:80:101: 'rfl' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/ActualMemoryMainline.lean:80:101: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+⚠ [3974/4089] Replayed Hurst.ActualMemoryBranches
+warning: Hurst/ActualMemoryBranches.lean:17:5: Variable name `hcrit` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/ActualMemoryBranches.lean:49:5: Variable name `hlong` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3986/4089] Replayed Hurst.ActualWeightedMemoryMainline
+warning: Hurst/ActualWeightedMemoryMainline.lean:71:101: 'rfl' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/ActualWeightedMemoryMainline.lean:71:101: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+⚠ [3987/4089] Replayed Hurst.DistributionShift
+warning: Hurst/DistributionShift.lean:25:41: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3991/4089] Replayed Hurst.ActualRawOptimalCLT
+warning: Hurst/ActualRawOptimalCLT.lean:39:23: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/ActualRawOptimalCLT.lean:60:91: Variable name `hu` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/ActualRawOptimalCLT.lean:60:102: Variable name `hbu` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/ActualRawOptimalCLT.lean:64:77: Variable name `htu` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/ActualRawOptimalCLT.lean:88:105: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [3995/4089] Replayed Hurst.AllScaleMemoryBranches
+warning: Hurst/AllScaleMemoryBranches.lean:13:5: Variable name `hcrit` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/AllScaleMemoryBranches.lean:50:5: Variable name `hlong` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3997/4089] Replayed Hurst.WeightedRowEnergy
+warning: Hurst/WeightedRowEnergy.lean:12:19: Variable name `hL0` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/WeightedRowEnergy.lean:103:31: 'first
+| rfl
+| ring' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/WeightedRowEnergy.lean:103:31: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+⚠ [3998/4089] Replayed Hurst.FourthCorrelationRows
+warning: Hurst/FourthCorrelationRows.lean:106:5: Variable name `hA` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/FourthCorrelationRows.lean:106:18: Variable name `he` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [4001/4089] Replayed Hurst.CorrelationLimit
+info: Hurst/CorrelationLimit.lean:19:4: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+info: Hurst/CorrelationLimit.lean:38:4: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/CorrelationLimit.lean:24:5: Variable name `he0` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [4002/4089] Replayed Hurst.WeightEnergyLimit
+warning: Hurst/WeightEnergyLimit.lean:172:9: `tendsto_finset_sum` has been deprecated: Use `tendsto_finsetSum` instead
+warning: Hurst/WeightEnergyLimit.lean:173:4: `tendsto_finset_sum` has been deprecated: Use `tendsto_finsetSum` instead
+⚠ [4004/4089] Replayed Hurst.TruncatedVarianceFormula
+warning: Hurst/TruncatedVarianceFormula.lean:57:29: This simp argument is unused:
+  Finset.sum_mul
+
+Hint: Omit it from the simp argument list.
+  simp only [Finset.mul_sum,̵ ̵F̵i̵n̵s̵e̵t̵.̵s̵u̵m̵_̵m̵u̵l̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Hurst/TruncatedVarianceFormula.lean:118:45: This simp argument is unused:
+  P
+
+Hint: Omit it from the simp argument list.
+  simp only [gaussianLogTruncationStatistic, P̵,̵ ̵pow_two, Finset.sum_mul,
+  ̵  ̵ ̵ ̵Finset.mul_sum]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+ℹ [4005/4089] Replayed Hurst.ShiftedWeightEnergy
+info: Hurst/ShiftedWeightEnergy.lean:54:2: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+⚠ [4008/4089] Replayed Hurst.SecondFrozenCrossLagCorrelation
+info: Hurst/SecondFrozenCrossLagCorrelation.lean:51:28: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+info: Hurst/SecondFrozenCrossLagCorrelation.lean:56:28: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+info: Hurst/SecondFrozenCrossLagCorrelation.lean:61:28: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/SecondFrozenCrossLagCorrelation.lean:51:24: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/SecondFrozenCrossLagCorrelation.lean:56:24: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/SecondFrozenCrossLagCorrelation.lean:61:24: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [4018/4089] Replayed Hurst.LinearPatternMoment
+warning: Hurst/LinearPatternMoment.lean:35:10: `ofReal_norm_eq_enorm` has been deprecated: Use `ofReal_norm` instead
+⚠ [4021/4089] Replayed Hurst.DecayColoring
+warning: Hurst/DecayColoring.lean:73:14: 'ring' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/DecayColoring.lean:73:14: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+⚠ [4022/4089] Replayed Hurst.FeatureStandardGaussianArray
+warning: Hurst/FeatureStandardGaussianArray.lean:22:51: `ContinuousLinearMap.smul_apply` has been deprecated: Use `smul_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.smul_apply` to `smul_apply x`).
+⚠ [4026/4089] Replayed Hurst.FirstStrideLongRows
+warning: Hurst/FirstStrideLongRows.lean:48:23: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/FirstStrideLongRows.lean:98:5: Variable name `hA` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/FirstStrideLongRows.lean:98:18: Variable name `he` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/FirstStrideLongRows.lean:147:23: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [4028/4089] Replayed Hurst.FirstScaleLongBias
+warning: Hurst/FirstScaleLongBias.lean:74:4: 'norm_num only [Nat.cast_ofNat]' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+⚠ [4030/4089] Replayed Hurst.LagVarianceLimit
+warning: Hurst/LagVarianceLimit.lean:141:29: This simp argument is unused:
+  hm
+
+Hint: Omit it from the simp argument list.
+  simp [Finset.sum_filter, h̵m̵,̵ ̵Nat.pos_of_ne_zero hm, mul_comm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Hurst/LagVarianceLimit.lean:141:56: This simp argument is unused:
+  mul_comm
+
+Hint: Omit it from the simp argument list.
+  simp [Finset.sum_filter, hm, Nat.pos_of_ne_zero hm,̵ ̵m̵u̵l̵_̵c̵o̵m̵m̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Hurst/LagVarianceLimit.lean:151:42: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [4031/4089] Replayed Hurst.TruncatedCovarianceLimit
+info: Hurst/TruncatedCovarianceLimit.lean:105:4: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/TruncatedCovarianceLimit.lean:87:23: This simp argument is unused:
+  hepsn
+
+Hint: Omit it from the simp argument list.
+  simp [hwu,̵ ̵h̵e̵p̵s̵n̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Hurst/TruncatedCovarianceLimit.lean:100:31: This simp argument is unused:
+  Finset.sum_mul
+
+Hint: Omit it from the simp argument list.
+  simp only [Finset.mul_sum, F̵i̵n̵s̵e̵t̵.̵s̵u̵m̵_̵m̵u̵l̵,̵ ̵← Finset.sum_add_distrib]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+info: Hurst/TruncatedCovarianceLimit.lean:285:4: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+⚠ [4032/4089] Replayed Hurst.WeightProfileLimit
+warning: Hurst/WeightProfileLimit.lean:35:6: `tendsto_finset_sum` has been deprecated: Use `tendsto_finsetSum` instead
+warning: Hurst/WeightProfileLimit.lean:32:95: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [4034/4089] Replayed Hurst.CorrelationTailTransfer
+warning: Hurst/CorrelationTailTransfer.lean:21:5: Variable name `hd0` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/CorrelationTailTransfer.lean:21:36: Variable name `hA` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/CorrelationTailTransfer.lean:21:49: Variable name `he` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [4036/4089] Replayed Hurst.EvenMomentAlgebra
+info: Hurst/EvenMomentAlgebra.lean:39:70: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/EvenMomentAlgebra.lean:9:37: Variable name `hk` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/EvenMomentAlgebra.lean:39:66: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+info: Hurst/EvenMomentAlgebra.lean:73:70: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/EvenMomentAlgebra.lean:57:33: Variable name `hk` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/EvenMomentAlgebra.lean:73:66: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+info: Hurst/EvenMomentAlgebra.lean:114:20: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/EvenMomentAlgebra.lean:95:33: Variable name `hk` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/EvenMomentAlgebra.lean:114:16: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/EvenMomentAlgebra.lean:122:27: Variable name `hk` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [4038/4089] Replayed Hurst.FirstLongKernelAsymptotic
+warning: Hurst/FirstLongKernelAsymptotic.lean:29:25: '(simp only [one_mul, mul_one, id_eq]; ring)' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/FirstLongKernelAsymptotic.lean:29:25: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+info: Hurst/FirstLongKernelAsymptotic.lean:44:18: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/FirstLongKernelAsymptotic.lean:44:25: '(simp only [one_mul, mul_one, id_eq]; ring)' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/FirstLongKernelAsymptotic.lean:44:25: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+warning: Hurst/FirstLongKernelAsymptotic.lean:125:82: 'ring' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/FirstLongKernelAsymptotic.lean:125:82: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+warning: Hurst/FirstLongKernelAsymptotic.lean:85:53: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/FirstLongKernelAsymptotic.lean:98:53: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/FirstLongKernelAsymptotic.lean:125:23: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+info: Hurst/FirstLongKernelAsymptotic.lean:188:26: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/FirstLongKernelAsymptotic.lean:188:22: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+info: Hurst/FirstLongKernelAsymptotic.lean:220:26: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/FirstLongKernelAsymptotic.lean:220:22: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [4039/4089] Replayed Hurst.FirstLongCrossKernel
+info: Hurst/FirstLongCrossKernel.lean:49:4: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/FirstLongCrossKernel.lean:38:18: This simp argument is unused:
+  min_eq_left (by linarith : (1 : ℝ) ≤ 1 + u)
+
+Hint: Omit it from the simp argument list.
+  simp [̵m̵i̵n̵_̵e̵q̵_̵l̵e̵f̵t̵[̲m̲a̲x̲_̲e̲q̲_̲r̲i̲g̲h̲t̲ (by linarith : (1 : ℝ) ≤ 1 + u), m̵a̵x̵_̵e̵q̵_̵r̵i̵g̵h̵t̵ ̵(̵b̵y̵ ̵l̵i̵n̵a̵r̵i̵t̵h̵ ̵:̵ ̵(̵1̵ ̵:̵ ̵ℝ̵)̵ ̵≤̵ ̵1̵ ̵+̵ ̵u̵)̵,̵ ̵hu.le]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Hurst/FirstLongCrossKernel.lean:39:14: This simp argument is unused:
+  max_eq_right (by linarith : (1 : ℝ) ≤ 1 + u)
+
+Hint: Omit it from the simp argument list.
+  simp [min_eq_left (by linarith : (1 : ℝ) ≤ 1 + u), m̵a̵x̵_̵e̵q̵_̵r̵i̵g̵h̵t̵ ̵(̵b̵y̵ ̵l̵i̵n̵a̵r̵i̵t̵h̵ ̵:̵ ̵(̵1̵ ̵:̵ ̵ℝ̵)̵ ̵≤̵ ̵1̵ ̵+̵ ̵u̵)̵,̵ ̵hu.le]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+info: Hurst/FirstLongCrossKernel.lean:92:4: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/FirstLongCrossKernel.lean:81:18: This simp argument is unused:
+  min_eq_right (by linarith : 1 - u ≤ (1 : ℝ))
+
+Hint: Omit it from the simp argument list.
+  simp [̵m̵i̵n̵_̵e̵q̵_̵r̵i̵g̵h̵t̵[̲m̲a̲x̲_̲e̲q̲_̲l̲e̲f̲t̲ (by linarith : 1 - u ≤ (1 : ℝ)), m̵a̵x̵_̵e̵q̵_̵l̵e̵f̵t̵ ̵(̵b̵y̵ ̵l̵i̵n̵a̵r̵i̵t̵h̵ ̵:̵ ̵1̵ ̵-̵ ̵u̵ ̵≤̵ ̵(̵1̵ ̵:̵ ̵ℝ̵)̵)̵,̵ ̵hu.le]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Hurst/FirstLongCrossKernel.lean:82:14: This simp argument is unused:
+  max_eq_left (by linarith : 1 - u ≤ (1 : ℝ))
+
+Hint: Omit it from the simp argument list.
+  simp [min_eq_right (by linarith : 1 - u ≤ (1 : ℝ)), m̵a̵x̵_̵e̵q̵_̵l̵e̵f̵t̵ ̵(̵b̵y̵ ̵l̵i̵n̵a̵r̵i̵t̵h̵ ̵:̵ ̵1̵ ̵-̵ ̵u̵ ̵≤̵ ̵(̵1̵ ̵:̵ ̵ℝ̵)̵)̵,̵ ̵hu.le]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+info: Hurst/FirstLongCrossKernel.lean:184:28: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/FirstLongCrossKernel.lean:184:24: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+info: Hurst/FirstLongCrossKernel.lean:200:48: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/FirstLongCrossKernel.lean:200:44: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+info: Hurst/FirstLongCrossKernel.lean:263:38: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+info: Hurst/FirstLongCrossKernel.lean:333:29: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/FirstLongCrossKernel.lean:331:8: 'ring' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/FirstLongCrossKernel.lean:331:8: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+warning: Hurst/FirstLongCrossKernel.lean:263:34: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/FirstLongCrossKernel.lean:333:25: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+info: Hurst/FirstLongCrossKernel.lean:350:59: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+info: Hurst/FirstLongCrossKernel.lean:353:54: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+info: Hurst/FirstLongCrossKernel.lean:388:26: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/FirstLongCrossKernel.lean:350:55: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/FirstLongCrossKernel.lean:353:50: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/FirstLongCrossKernel.lean:388:22: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [4060/4530] Replayed Hurst.ConditionalMomentMinimax
+warning: Hurst/ConditionalMomentMinimax.lean:61:47: Variable name `hM` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/ConditionalMomentMinimax.lean:111:21: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/ConditionalMomentMinimax.lean:116:45: Variable name `hM` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/ConditionalMomentMinimax.lean:166:21: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [4063/4530] Replayed Hurst.PatternWeightExtraction
+warning: Hurst/PatternWeightExtraction.lean:33:25: Variable name `hW0` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [4065/4530] Replayed Hurst.OneBlockPatternBound
+warning: Hurst/OneBlockPatternBound.lean:17:15: Variable name `hW0` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [4080/4530] Replayed Hurst.FirstScaleLongRates
+warning: Hurst/FirstScaleLongRates.lean:150:46: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [8957/9041] Replayed Hurst.WeightedCorrelationTail
+warning: Hurst/WeightedCorrelationTail.lean:8:18: Variable name `hB` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [8958/9041] Replayed Hurst.CorrelationRowTail
+warning: Hurst/CorrelationRowTail.lean:14:5: Variable name `hd0` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/CorrelationRowTail.lean:14:34: Variable name `hA` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [8960/9041] Replayed Hurst.ActualLocalRawEvenMoment
+warning: Hurst/ActualLocalRawEvenMoment.lean:95:29: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/ActualLocalRawEvenMoment.lean:95:41: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/ActualLocalRawEvenMoment.lean:231:29: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/ActualLocalRawEvenMoment.lean:231:41: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/ActualLocalRawEvenMoment.lean:232:64: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+ℹ [8961/9041] Replayed Hurst.TruncatedVarianceTail
+info: Hurst/TruncatedVarianceTail.lean:109:58: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+⚠ [8963/9041] Replayed Hurst.FeatureRestriction
+warning: Hurst/FeatureRestriction.lean:21:0: automatically included section variable(s) unused in theorem `Hurst.euclideanCoordinateRestriction_apply`:
+  [Fintype ι]
+  [DecidableEq ι]
+  [Fintype κ]
+  [DecidableEq κ]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+⚠ [8966/9041] Replayed Hurst.FeatureObservationMap
+warning: Hurst/FeatureObservationMap.lean:30:0: automatically included section variable(s) unused in theorem `Hurst.standardizedFeatureObservationMap_apply`:
+  [DecidableEq ι]
+  [Fintype κ]
+  [DecidableEq κ]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq ι] [Fintype κ] [DecidableEq κ] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Hurst/FeatureObservationMap.lean:37:1: automatically included section variable(s) unused in theorem `Hurst.standardizedFeatureVector_inner`:
+  [DecidableEq ι]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq ι] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Hurst/FeatureObservationMap.lean:42:18: This simp argument is unused:
+  smul_eq_mul
+
+Hint: Omit it from the simp argument list.
+  simp only [standardizedFeatureVector, inner_smul_left, inner_smul_right,
+  ̵  ̵ ̵ ̵conj_trivial,
+  ̲ s̵m̵u̵l̵_̵e̵q̵_̵m̵u̵l̵,̵  ̲ ̲featureCorrelation]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Hurst/FeatureObservationMap.lean:76:0: automatically included section variable(s) unused in theorem `Hurst.norm_standardizedFeatureVector`:
+  [DecidableEq ι]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq ι] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+⚠ [8967/9041] Replayed Hurst.FirstLongDiagonalBand
+warning: Hurst/FirstLongDiagonalBand.lean:43:23: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/FirstLongDiagonalBand.lean:43:37: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [8968/9041] Replayed Hurst.FirstLongMeshHilbertSchmidt
+warning: Hurst/FirstLongMeshHilbertSchmidt.lean:127:5: Variable name `he` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+info: Hurst/FirstLongMeshHilbertSchmidt.lean:192:70: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/FirstLongMeshHilbertSchmidt.lean:192:66: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/FirstLongMeshHilbertSchmidt.lean:194:31: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+info: Hurst/FirstLongMeshHilbertSchmidt.lean:257:6: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/FirstLongMeshHilbertSchmidt.lean:223:39: Variable name `he` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+info: Hurst/FirstLongMeshHilbertSchmidt.lean:283:70: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+info: Hurst/FirstLongMeshHilbertSchmidt.lean:285:49: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/FirstLongMeshHilbertSchmidt.lean:265:35: Variable name `hC` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/FirstLongMeshHilbertSchmidt.lean:283:66: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/FirstLongMeshHilbertSchmidt.lean:285:45: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [8969/9041] Replayed Hurst.FiniteVarianceReindex
+warning: Hurst/FiniteVarianceReindex.lean:193:16: 'apply Fin.ext' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/FiniteVarianceReindex.lean:193:34: 'simp' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/FiniteVarianceReindex.lean:193:16: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+warning: Hurst/FiniteVarianceReindex.lean:193:34: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+⚠ [8970/9041] Replayed Hurst.OptimalCombinedRawEvenMoment
+warning: Hurst/OptimalCombinedRawEvenMoment.lean:10:18: Variable name `kpos` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/OptimalCombinedRawEvenMoment.lean:42:15: Variable name `hp` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/OptimalCombinedRawEvenMoment.lean:42:38: Variable name `hk` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+info: Hurst/OptimalCombinedRawEvenMoment.lean:239:6: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+info: Hurst/OptimalCombinedRawEvenMoment.lean:466:6: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+⚠ [8971/9041] Replayed Hurst.ActualFirstLongQuadraticReindex
+warning: Hurst/ActualFirstLongQuadraticReindex.lean:30:5: Variable name `r` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [8972/9041] Replayed Hurst.FirstLongUniformQuotient
+info: Hurst/FirstLongUniformQuotient.lean:49:4: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/FirstLongUniformQuotient.lean:10:18: Variable name `hu1` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/FirstLongUniformQuotient.lean:37:18: This simp argument is unused:
+  min_eq_left (by linarith : (1 : ℝ) ≤ 1 + u)
+
+Hint: Omit it from the simp argument list.
+  simp [̵m̵i̵n̵_̵e̵q̵_̵l̵e̵f̵t̵[̲m̲a̲x̲_̲e̲q̲_̲r̲i̲g̲h̲t̲ (by linarith : (1 : ℝ) ≤ 1 + u), m̵a̵x̵_̵e̵q̵_̵r̵i̵g̵h̵t̵ ̵(̵b̵y̵ ̵l̵i̵n̵a̵r̵i̵t̵h̵ ̵:̵ ̵(̵1̵ ̵:̵ ̵ℝ̵)̵ ̵≤̵ ̵1̵ ̵+̵ ̵u̵)̵,̵ ̵hu.le]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Hurst/FirstLongUniformQuotient.lean:38:14: This simp argument is unused:
+  max_eq_right (by linarith : (1 : ℝ) ≤ 1 + u)
+
+Hint: Omit it from the simp argument list.
+  simp [min_eq_left (by linarith : (1 : ℝ) ≤ 1 + u), m̵a̵x̵_̵e̵q̵_̵r̵i̵g̵h̵t̵ ̵(̵b̵y̵ ̵l̵i̵n̵a̵r̵i̵t̵h̵ ̵:̵ ̵(̵1̵ ̵:̵ ̵ℝ̵)̵ ̵≤̵ ̵1̵ ̵+̵ ̵u̵)̵,̵ ̵hu.le]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+info: Hurst/FirstLongUniformQuotient.lean:94:4: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/FirstLongUniformQuotient.lean:82:18: This simp argument is unused:
+  min_eq_right (by linarith : 1 - u ≤ (1 : ℝ))
+
+Hint: Omit it from the simp argument list.
+  simp [̵m̵i̵n̵_̵e̵q̵_̵r̵i̵g̵h̵t̵[̲m̲a̲x̲_̲e̲q̲_̲l̲e̲f̲t̲ (by linarith : 1 - u ≤ (1 : ℝ)), m̵a̵x̵_̵e̵q̵_̵l̵e̵f̵t̵ ̵(̵b̵y̵ ̵l̵i̵n̵a̵r̵i̵t̵h̵ ̵:̵ ̵1̵ ̵-̵ ̵u̵ ̵≤̵ ̵(̵1̵ ̵:̵ ̵ℝ̵)̵)̵,̵ ̵hu.le]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Hurst/FirstLongUniformQuotient.lean:83:14: This simp argument is unused:
+  max_eq_left (by linarith : 1 - u ≤ (1 : ℝ))
+
+Hint: Omit it from the simp argument list.
+  simp [min_eq_right (by linarith : 1 - u ≤ (1 : ℝ)), m̵a̵x̵_̵e̵q̵_̵l̵e̵f̵t̵ ̵(̵b̵y̵ ̵l̵i̵n̵a̵r̵i̵t̵h̵ ̵:̵ ̵1̵ ̵-̵ ̵u̵ ̵≤̵ ̵(̵1̵ ̵:̵ ̵ℝ̵)̵)̵,̵ ̵hu.le]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+info: Hurst/FirstLongUniformQuotient.lean:119:53: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/FirstLongUniformQuotient.lean:109:5: Variable name `hu0` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/FirstLongUniformQuotient.lean:109:19: Variable name `hu2` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/FirstLongUniformQuotient.lean:119:49: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/FirstLongUniformQuotient.lean:161:8: 'ring' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/FirstLongUniformQuotient.lean:161:8: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+⚠ [8975/9041] Replayed Hurst.FullVarianceGeneric
+warning: Hurst/FullVarianceGeneric.lean:91:28: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [8977/9041] Replayed Hurst.ActualFirstLongOffDiagonal
+warning: Hurst/ActualFirstLongOffDiagonal.lean:60:6: 'ring' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/ActualFirstLongOffDiagonal.lean:60:6: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+warning: Hurst/ActualFirstLongOffDiagonal.lean:144:61: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/ActualFirstLongOffDiagonal.lean:495:48: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/ActualFirstLongOffDiagonal.lean:583:5: Variable name `hF` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/ActualFirstLongOffDiagonal.lean:594:8: 'ring' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/ActualFirstLongOffDiagonal.lean:594:8: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+⚠ [8980/9041] Replayed Hurst.MemorySecondMoment
+warning: Hurst/MemorySecondMoment.lean:13:46: Variable name `hL` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [8984/9041] Replayed Hurst.DenseRowOverride
+warning: Hurst/DenseRowOverride.lean:28:5: Variable name `h` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [8989/9041] Replayed Hurst.PaddedProfile
+warning: Hurst/PaddedProfile.lean:31:4: 'norm_num only [Nat.cast_add]' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+ℹ [8991/9041] Replayed Hurst.PaddedAsymptotics
+info: Hurst/PaddedAsymptotics.lean:114:4: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+⚠ [8997/9041] Replayed Hurst.ActiveWindowCoordinates
+warning: Hurst/ActiveWindowCoordinates.lean:69:6: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+warning: Hurst/ActiveWindowCoordinates.lean:293:56: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/ActiveWindowCoordinates.lean:297:84: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [8999/9041] Replayed Hurst.ActiveWeightProfile
+warning: Hurst/ActiveWeightProfile.lean:122:55: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [9000/9041] Replayed Hurst.ActiveCorrelationTail
+warning: Hurst/ActiveCorrelationTail.lean:17:14: 'apply Fin.ext' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/ActiveCorrelationTail.lean:17:32: 'rfl' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+warning: Hurst/ActiveCorrelationTail.lean:17:14: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+warning: Hurst/ActiveCorrelationTail.lean:17:32: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+warning: Hurst/ActiveCorrelationTail.lean:47:19: Variable name `r` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/ActiveCorrelationTail.lean:121:19: Variable name `r` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [9008/9041] Replayed Hurst.FiniteRowCutoff
+warning: Hurst/FiniteRowCutoff.lean:33:23: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/FiniteRowCutoff.lean:33:37: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/FiniteRowCutoff.lean:40:29: Variable name `he` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [9009/9041] Replayed Hurst.LongTailRowBound
+warning: Hurst/LongTailRowBound.lean:19:60: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [9010/9041] Replayed Hurst.FirstLongRealScaleHilbertSchmidt
+warning: Hurst/FirstLongRealScaleHilbertSchmidt.lean:31:23: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/FirstLongRealScaleHilbertSchmidt.lean:31:37: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+info: Hurst/FirstLongRealScaleHilbertSchmidt.lean:97:8: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/FirstLongRealScaleHilbertSchmidt.lean:179:5: Variable name `he` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+info: Hurst/FirstLongRealScaleHilbertSchmidt.lean:249:6: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/FirstLongRealScaleHilbertSchmidt.lean:215:47: Variable name `he` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+info: Hurst/FirstLongRealScaleHilbertSchmidt.lean:275:70: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+info: Hurst/FirstLongRealScaleHilbertSchmidt.lean:277:55: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/FirstLongRealScaleHilbertSchmidt.lean:258:5: Variable name `hC` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/FirstLongRealScaleHilbertSchmidt.lean:275:66: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/FirstLongRealScaleHilbertSchmidt.lean:277:51: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+info: Hurst/FirstLongRealScaleHilbertSchmidt.lean:330:70: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+info: Hurst/FirstLongRealScaleHilbertSchmidt.lean:332:49: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/FirstLongRealScaleHilbertSchmidt.lean:313:35: Variable name `hC` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/FirstLongRealScaleHilbertSchmidt.lean:330:66: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/FirstLongRealScaleHilbertSchmidt.lean:332:45: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [9011/9041] Replayed Hurst.ActualFirstLongBandEnergy
+warning: Hurst/ActualFirstLongBandEnergy.lean:28:13: Variable name `h` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/ActualFirstLongBandEnergy.lean:28:23: Variable name `hp` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/ActualFirstLongBandEnergy.lean:29:5: Variable name `ha` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/ActualFirstLongBandEnergy.lean:29:18: Variable name `hb` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/ActualFirstLongBandEnergy.lean:29:31: Variable name `hab` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/ActualFirstLongBandEnergy.lean:29:45: Variable name `hM` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/ActualFirstLongBandEnergy.lean:31:5: Variable name `hF` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Hurst/ActualFirstLongBandEnergy.lean:33:5: Variable name `hδpos` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [9013/9041] Replayed Hurst.FirstLongRieszEnergy
+warning: Hurst/FirstLongRieszEnergy.lean:65:20: 'push_cast' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+info: Hurst/FirstLongRieszEnergy.lean:204:2: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+info: Hurst/FirstLongRieszEnergy.lean:212:2: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+info: Hurst/FirstLongRieszEnergy.lean:289:10: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/FirstLongRieszEnergy.lean:330:32: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [9023/9041] Replayed Hurst.FiniteGaussianSpectral
+warning: Hurst/FiniteGaussianSpectral.lean:132:0: automatically included section variable(s) unused in theorem `Hurst.euclidean_coordinate_eq_basisFun_inner`:
+  [DecidableEq ι]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq ι] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Hurst/FiniteGaussianSpectral.lean:241:0: automatically included section variable(s) unused in theorem `Hurst.hermitian_trace_square_eq_sum_entries_sq`:
+  [DecidableEq ι]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq ι] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+⚠ [9029/9041] Replayed Hurst.TriangularUniformization
+warning: Hurst/TriangularUniformization.lean:27:27: This simp argument is unused:
+  Classical.not_imp
+
+Hint: Omit it from the simp argument list.
+  simp only [not_forall, C̵l̵a̵s̵s̵i̵c̵a̵l̵.̵n̵o̵t̵_̵i̵m̵p̵,̵ ̵not_lt] at hφ
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [9030/9041] Replayed Hurst.ActualFirstTruncatedVarianceLimit
+info: Hurst/ActualFirstTruncatedVarianceLimit.lean:190:27: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/ActualFirstTruncatedVarianceLimit.lean:190:23: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [9031/9041] Replayed Hurst.ActualSecondTruncatedVarianceLimit
+info: Hurst/ActualSecondTruncatedVarianceLimit.lean:161:27: Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+warning: Hurst/ActualSecondTruncatedVarianceLimit.lean:161:23: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [9033/9041] Replayed Hurst.FrozenLagSummability
+warning: Hurst/FrozenLagSummability.lean:61:37: Variable name `hA` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [9036/9041] Replayed Hurst.ShortMemoryVariancePositive
+warning: Hurst/ShortMemoryVariancePositive.lean:51:4: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+✔ [9038/9041] Built Hurst.ExactPaddedHitLaw (14s)
+⚠ [9039/9041] Built Hurst.FeatureQuadraticSpectral (14s)
+warning: Hurst/FeatureQuadraticSpectral.lean:23:0: automatically included section variable(s) unused in theorem `Hurst.weightedFeatureQuadraticMatrix_isHermitian`:
+  [DecidableEq iota]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq iota] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+✔ [9040/9041] Built Hurst (60s)
+Build completed successfully (9041 jobs).

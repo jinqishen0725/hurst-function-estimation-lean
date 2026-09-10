@@ -1,0 +1,15 @@
+{
+  "Hurst/Rates.lean": "5b26153b9b055cb0ff01cd2582a08de099e3026a4985e75c11f4499f44dd1c00",
+  "Hurst/Analytic.lean": "40f7f7d2f9336cc66419b1393acff4c7b2a19ab9e683e86b3820b77b927532f1",
+  "Hurst/Corrections.lean": "7b56c406780b30adf987d0b99b3aedad1670176e208c1312deb71706f6ada734",
+  "Hurst/ResultIndex.lean": "51691a69e3e32b88645980d6165c192ae000ef5aea92f9c7b572dd9e64a54ff8",
+  "Hurst/CriticalRepair.lean": "b268f2e84f802675dd6b732fa03993f2dbfa468aec0022f750c55ce8433360fc",
+  "Hurst/DirectBiasRepair.lean": "8081ecb41c360e04d3f138ab90f353c76c16a81607fa3229dc07d2e7b47aa01c",
+  "Hurst/RateRepair.lean": "b1f961f3a93ff32f033225f11b4b6c23a9988f90457013c7f6f7c0d13def21ec",
+  "Hurst/Scaling.lean": "1521dde1c9a56ee6694ef6dbf903f94ce9c409bf120a2f94f709db089aca0aa9",
+  "Hurst/Basic.lean": "59387eb1a6701efbd78ea9bd82ec7325d97c108d6b1f49351a2462db3b68024c",
+  "Hurst/InverseRepair.lean": "273826c6672092745bfb9c684b7412a0afe20756558061acea5f985e97b293e4",
+  "Hurst/LocalPolynomial.lean": "354ff6a88163406701d898c665598a074613773407c5f591af8972abe44965aa",
+  "Hurst/DistributionRepair.lean": "5236351592cf936894c7a8c7993cee7c3e3cd54b639c4abc90c3c50a1fe542e8",
+  "Hurst/Moments.lean": "6679d8fb42024404f6c5582b967b982edce08d509d6e0fa7da9753a2a36c6298"
+}

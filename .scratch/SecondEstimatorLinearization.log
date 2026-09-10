@@ -1,0 +1,6 @@
+.scratch/SecondEstimatorLinearization.lean:33:105: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+.scratch/SecondEstimatorLinearization.lean:51:57: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`

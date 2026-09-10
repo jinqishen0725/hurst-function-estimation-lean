@@ -1,0 +1,16 @@
+import Hurst.RealMomentTransfer
+import Hurst.FirstUnknownInvariance
+import Hurst.UnknownInvariance
+#check MeasureTheory.MemLp.comp_measurePreserving
+#check MeasureTheory.MemLp.comp_quasiMeasurePreserving
+#check MeasureTheory.MeasurePreserving.memLp_comp_emb
+#check MeasureTheory.memLp_map_measure_iff
+#check MeasureTheory.MemLp.map_measure
+#check MeasureTheory.MeasurePreserving
+#check Hurst.featureGaussian_known_scale_integral
+#check Hurst.featureGaussian_map_smul
+#check MeasureTheory.MemLp.of_integrable_norm_rpow
+#check MeasureTheory.memLp_of_integrable_norm_rpow
+#check MeasureTheory.memLp_iff_integrable
+#check MeasureTheory.memLp_iff_integrable_norm_rpow
+#check MeasureTheory.MemLp.of_bound

@@ -1,0 +1,13 @@
+import Hurst.ShortMemoryCLTApplicability
+import Mathlib.MeasureTheory.Function.L2Space
+import Mathlib.MeasureTheory.Function.LpSpace.Indicator
+open Set MeasureTheory
+open scoped RealInnerProductSpace
+#check @L2.real_inner_indicatorConstLp_one_indicatorConstLp_one
+#check RCLike.re_to_real
+#check Complex.real_inner_comm
+#check Complex.inner_re_symm
+#check MeasureTheory.L2.inner_indicatorConstLp_indicatorConstLp
+#check MeasureTheory.L2.real_inner_indicatorConstLp_one_indicatorConstLp_one
+#check inner_prod_self
+#check inner_self_eq_norm_sq_to_K

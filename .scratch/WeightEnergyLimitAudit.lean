@@ -1,0 +1,7 @@
+import Hurst.WeightEnergyLimit
+
+#print axioms Hurst.kernelSquareMomentGrid_tendsto
+#print axioms Hurst.equivalentKernelSquareEnergy_eq_integral
+#print axioms Hurst.localPolynomialWeights_energy_identity
+#print axioms Hurst.localPolynomialWeights_energy_tendsto
+#print axioms Hurst.localPolynomialWeights_energy_tendsto_integral

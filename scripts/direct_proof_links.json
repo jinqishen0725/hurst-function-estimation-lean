@@ -1,0 +1,228 @@
+{
+  "3.1": {
+    "files": [
+      "20_p1_minimax_lower_bound.md",
+      "19_all_finite_loss_moments.md",
+      "18_full_domain_l2_minimax.md",
+      "09_minimax_lower_bound_complete.md",
+      "07_bump_packing_and_lower_bound.md"
+    ],
+    "status": "普通数学证明链已闭合：实际中点网格KL界、合法Hölder打包及Fano给出原p>1、1≤s<∞、任意γ<1的下界速率；尚未转Lean。 后续普通数学：文件18进一步在同一固定值域类上接合全域1≤s≤2上界，完成所列一维分支的minimax匹配；原p>1、任意有限s下界保持。 后续：普通数学：文件20将实际KL条件放宽为a log(2n)足够小、Lip(H)为足够小的常数，完成p=1下界；文件19/20在所列同一参数类上完成全部有限Lˢ的匹配。",
+    "complete_repaired_direct_proof": true
+  },
+  "3.2": {
+    "files": [
+      "19_all_finite_loss_moments.md",
+      "18_full_domain_l2_minimax.md",
+      "12_q1_mbm_covariance_mse.md",
+      "10_q2_mbm_mse.md",
+      "02_local_polynomial_bias.md",
+      "04_covariance_remainders.md",
+      "05_normalization_and_log_moments.md"
+    ],
+    "status": "普通数学：d=1、已知尺度内部范围，q=1的实际偏差、短/临界/长记忆方差与MSE已补齐；q=2也已完成。跨临界一致性使用未拆分过渡因子，其他维度和边界待证。 后续普通数学：文件18进一步证明一维短记忆分支的全网格相关平方和、全域偏差与方差，包含两个端点；其他记忆分支的边界与高维仍待证。 后续：普通数学：文件19由实际全域相关平方和、弱相关分组及重复指标计数推出局部G的任意有限阶矩。"
+  },
+  "3.3": {
+    "files": [
+      "13_q1_short_and_critical_clt.md",
+      "14_q1_long_memory_limit.md",
+      "11_q2_mbm_short_memory_clt.md",
+      "03_critical_variance_and_clt.md",
+      "08_centering_and_long_memory.md"
+    ],
+    "status": "普通数学：d=1、q=1实际非恒定H的短记忆CLT、临界CLT及长记忆二阶混沌极限已闭合；q=2短记忆已完成。临界方差改为(9/16)∫ω²，长记忆使用正确系数与全实轴谱公式；其他维度待证。"
+  },
+  "3.4": {
+    "files": [
+      "19_all_finite_loss_moments.md",
+      "20_p1_minimax_lower_bound.md",
+      "18_full_domain_l2_minimax.md",
+      "12_q1_mbm_covariance_mse.md",
+      "13_q1_short_and_critical_clt.md",
+      "14_q1_long_memory_limit.md",
+      "10_q2_mbm_mse.md",
+      "11_q2_mbm_short_memory_clt.md",
+      "01_inverse_and_limits.md"
+    ],
+    "status": "普通数学：d=1、q=1和q=2的实际MSE、偏差与反演极限已完成于所列内部范围；q=1长记忆的实际极限是−Q，并有合法实例证明Q与−Q不同分布。其他维度/边界待证。 后续普通数学：文件18进一步完成一维q=2、p≥2，或q=1、p>1且1/2<h_*<3/4的全域MSE及1≤s≤2 minimax匹配；p=1下界、s>2匹配上界和高维待证。 后续：普通数学：文件19/20在所列一维短记忆固定参数类、整个(0,1)上完成任意有限Lˢ匹配，包含q=1、p=1；高维和s=∞未包含。"
+  },
+  "3.5": {
+    "files": [
+      "13_q1_short_and_critical_clt.md",
+      "11_q2_mbm_short_memory_clt.md",
+      "01_inverse_and_limits.md"
+    ],
+    "status": "普通数学：d=1、q=1短记忆及q=2，整数p且有点态Taylor展开时，实际最优带宽修正版已证明：b/b0→c时均值−2c^pR、2c^pR，方差c^−1V。其他维度待证。"
+  },
+  "4.1": {
+    "files": [
+      "19_all_finite_loss_moments.md",
+      "15_two_scale_pilot.md",
+      "08_centering_and_long_memory.md"
+    ],
+    "status": "普通数学：一维q∈{1,2}实际两尺度pilot的偏差、三种方差率、短/临界联合CLT已闭合；q=1长记忆亦有联合二阶混沌极限。须用真实期望中心和实际交叉协方差。高维/全边界待证。 后续：普通数学：文件19补齐实际两尺度pilot的全部固定有限阶误差矩；不假设两尺度独立。"
+  },
+  "4.2": {
+    "files": [
+      "19_all_finite_loss_moments.md",
+      "16_scale_spatial_average.md",
+      "08_centering_and_long_memory.md"
+    ],
+    "status": "普通数学：一维q∈{1,2}内部实际尺度MSE与条件偏差已闭合；原S.5.1虽有长记忆反例，修正为log²n·T(n)后仍被原4.2目标界容纳。高维/全边界待证。 后续：普通数学：文件19利用真实合并空间权重，证明尺度误差的全部固定有限阶矩；非线性项用实际pilot矩控制。"
+  },
+  "4.3": {
+    "files": [
+      "19_all_finite_loss_moments.md",
+      "20_p1_minimax_lower_bound.md",
+      "18_full_domain_l2_minimax.md",
+      "17_unknown_scale_backfitting.md",
+      "01_inverse_and_limits.md"
+    ],
+    "status": "普通数学：一维q∈{1,2}内部最终反演MSE与条件偏差已闭合，不假设误差独立；全局短记忆时未知尺度保留已知尺度速率。高维、边界及统一损失的完整minimax仍待证。 后续普通数学：文件18进一步完成上述短记忆分支未知正的常尺度下的全域MSE及1≤s≤2 minimax匹配；尺度在内部估计、H在全域反演。 后续：普通数学：文件19/20完成未知正的常尺度下所列一维短记忆范围的全域有限Lˢ minimax匹配，包含q=1、p=1。"
+  },
+  "8.1": {
+    "files": [
+      "20_p1_minimax_lower_bound.md",
+      "09_minimax_lower_bound_complete.md",
+      "05_normalization_and_log_moments.md",
+      "06_fourier_integrals.md"
+    ],
+    "status": "实际中点网格上已完整证明KL≤C(na_n²+b_n²)log²(2n)，包含算子范数小量及混合项控制；允许H−1/2正负变化。尚未转Lean。 后续：普通数学：文件20利用真实Gram算子证明Σ具有统一正的谱下界，保留KL≤C(na²+b²)log²(2n)，不再要求b log n→0。",
+    "complete_repaired_direct_proof": true
+  },
+  "8.2": {
+    "files": [
+      "18_full_domain_l2_minimax.md",
+      "12_q1_mbm_covariance_mse.md",
+      "10_q2_mbm_mse.md",
+      "04_covariance_remainders.md"
+    ],
+    "status": "普通数学：d=1、q=1及q=2的实际内部协方差已完成。q=1增长滞后系数误差须保留k^−2+k log n/n+(k/n)^ψ；q=2见文件10。其他维度、全边界及一般阶数待证。 后续普通数学：文件18补充一维q=1/2全有效网格的真实背景有限差分界及短记忆相关平方和；不把增长滞后余项或CLT自动推广到边界。"
+  },
+  "8.3": {
+    "files": [
+      "18_full_domain_l2_minimax.md",
+      "12_q1_mbm_covariance_mse.md",
+      "10_q2_mbm_mse.md",
+      "05_normalization_and_log_moments.md"
+    ],
+    "status": "普通数学：d=1、q=1实际方差与对数均值逼近已闭合，误差O(log n/n+n^−ψ)；q=2已完成O(log n/n)。一般Gaussian对数矩与正下界见文件05。其他维度待证。 后续普通数学：文件18补充全有效基点的正方差与对数均值近似，显式保留近0的背景误差。"
+  },
+  "8.4": {
+    "files": [
+      "18_full_domain_l2_minimax.md",
+      "02_local_polynomial_bias.md"
+    ],
+    "status": "规则网格内部的统一稳定性、直接偏差及C^p首项完整证明；全闭域边界不在本修正版范围。 后续普通数学：文件18对选定在(-1,1)正的核证明全域单侧Gram稳定性、精确再现及O(b^p)偏差；不自动认证任意核的边界行为。"
+  },
+  "8.5": {
+    "files": [
+      "13_q1_short_and_critical_clt.md",
+      "14_q1_long_memory_limit.md",
+      "11_q2_mbm_short_memory_clt.md",
+      "03_critical_variance_and_clt.md",
+      "08_centering_and_long_memory.md"
+    ],
+    "status": "普通数学：已完成一维q=1实际标量统计量的三个记忆极限和q=2短记忆；精确中心化与反演亦已处理。原完整向量命题及其他维度尚未整体登记完成。"
+  },
+  "S.1.1": {
+    "files": [
+      "06_fourier_integrals.md"
+    ],
+    "status": "以实部或对称主值解释的修正版已完整证明。"
+  },
+  "S.1.2": {
+    "files": [
+      "06_fourier_integrals.md"
+    ],
+    "status": "直接二阶差分证明完整，常数对k及δ一致。"
+  },
+  "S.2.1": {
+    "files": [
+      "05_normalization_and_log_moments.md"
+    ],
+    "status": "补h≠0及H紧区间后，对任意固定q的正下界已完整证明。"
+  },
+  "S.2.2": {
+    "files": [
+      "12_q1_mbm_covariance_mse.md",
+      "10_q2_mbm_mse.md",
+      "04_covariance_remainders.md"
+    ],
+    "status": "普通数学：一维冻结最高阶系数已证；q=1、q=2实际变指数主项与余项分离已由文件10/12完成。一般阶数的非恒定H及多维待证。"
+  },
+  "S.2.3": {
+    "files": [
+      "18_full_domain_l2_minimax.md",
+      "12_q1_mbm_covariance_mse.md",
+      "10_q2_mbm_mse.md",
+      "04_covariance_remainders.md"
+    ],
+    "status": "普通数学：文件12给合法线性H反例，证明原q=1相对O(r log r)余项确实错误；补回r^ψ后，一维q∈{1,2}真实内部导数界与主项已闭合。其他维度待证。 后续普通数学：文件18保留近0时x^(H(x)+H(y)-q)乘对数幂的真实背景导数界，随后在实际网格上归一化控制。"
+  },
+  "S.3.1": {
+    "files": [
+      "12_q1_mbm_covariance_mse.md",
+      "10_q2_mbm_mse.md",
+      "04_covariance_remainders.md"
+    ],
+    "status": "普通数学：一维冻结Taylor展开已证；q=1和q=2实际非恒定H的增长滞后修正版已完成。多维及一般阶数的实际模型连接待证。"
+  },
+  "S.3.2": {
+    "files": [
+      "13_q1_short_and_critical_clt.md",
+      "14_q1_long_memory_limit.md",
+      "11_q2_mbm_short_memory_clt.md",
+      "03_critical_variance_and_clt.md"
+    ],
+    "status": "普通数学：一维q=1实际短/临界带权极限与长记忆循环积分均已完成，循环积分已识别为自伴二阶混沌的谱幂和；q=2短记忆已完成。原多维全范围尚未完成。"
+  },
+  "S.3.3": {
+    "files": [
+      "19_all_finite_loss_moments.md",
+      "18_full_domain_l2_minimax.md",
+      "12_q1_mbm_covariance_mse.md",
+      "10_q2_mbm_mse.md",
+      "04_covariance_remainders.md"
+    ],
+    "status": "普通数学：d=1、q=1的实际三分支方差界与跨临界过渡形式已完成；q=2实际界已完成。三分支拆开的常数仍不得声称跨临界一致；其他维度待证。 后续普通数学：文件18由全网格相关平方和证明所列一维短记忆分支的全域O((nb)^-1)方差。 后续：普通数学：文件19进一步从真实相关平方行和推出任意有限阶矩，明确标记外部Bardet–Surgailis矩引理依赖。"
+  },
+  "S.3.4": {
+    "files": [
+      "03_critical_variance_and_clt.md"
+    ],
+    "status": "联合Gaussian Hermite恒等式由生成函数完整证明，并说明L²展开的合法性。"
+  },
+  "S.5.1": {
+    "files": [
+      "19_all_finite_loss_moments.md",
+      "16_scale_spatial_average.md",
+      "08_centering_and_long_memory.md"
+    ],
+    "status": "普通数学：已给实际合并权重与一般m近/远距离修正版。原一维远距离项漏m因子；常H=7/8、q=p=1、b=n^−1/2有实际方差幂阶反例。主要方法m≈1/b时正确界为O(log²n·T(n))。高维待证。 后续：普通数学：文件19把修正后的合并空间权重界接到任意有限阶中心矩，保留n尺度的平均收益。"
+  },
+  "S.5.2": {
+    "files": [
+      "19_all_finite_loss_moments.md",
+      "16_scale_spatial_average.md",
+      "08_centering_and_long_memory.md"
+    ],
+    "status": "普通数学：一维q∈{1,2}实际pilot输入矩已由文件15验证，截断log v的MSE与偏差已闭合；q=1该项恒为0。高维输入仍待证。 后续：普通数学：文件19给实际截断pilot非线性误差的所有固定有限阶矩。"
+  },
+  "S.6.1": {
+    "files": [
+      "05_normalization_and_log_moments.md"
+    ],
+    "status": "Brownian反例及正确协方差缩放恒等式已证明；一般非规则网格局部近似待证。"
+  },
+  "S.7.1": {
+    "files": [],
+    "status": "本轮未重建非恒定尺度的高阶差分协方差证明；不能登记为已修复。"
+  },
+  "S.7.2": {
+    "files": [
+      "02_local_polynomial_bias.md"
+    ],
+    "status": "可复用内部平滑偏差证明；非恒定尺度模型的方差输入尚未完成。"
+  }
+}

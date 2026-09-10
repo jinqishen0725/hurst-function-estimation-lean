@@ -1,0 +1,2152 @@
+
+===== PDF PAGE 1 =====
+The Annals of Statistics
+2020, V ol. 48, No. 2, 838–862
+https://doi.org/10.1214/19-AOS1825
+© Institute of Mathematical Statistics, 2020
+HURST FUNCTION ESTIMA TION
+BY JINQI SHEN * AND TAILEN HSING **
+Department of Statistics, University of Michigan, *jqshen@umich.edu; **thsing@umich.edu
+This paper considers a wide range of issues concerning the estimation
+of the Hurst function of a multifractional Brownian motion when the pro-
+cess is observed on a regular grid. A theoretical lower bound for the minimax
+risk of this inference problem is established for a wide class of smooth Hurst
+functions. We also propose a new nonparametric estimator and show that it is
+rate optimal. Implementation issues of the estimator including how to over-
+come the presence of a nuisance parameter and choose the tuning parameter
+from data will be considered. An extensive numerical study is conducted to
+compare our approach with other approaches.
+1. Introduction. Since the introduction by Mandelbrot and Van Ness [13], fractional
+Brownian motion (fBm) has found many applications, in hydrology, ﬁnancial mathematics,
+network analysis, to name a few. Speciﬁcally, a fBm with Hurst parameter H ∈ (0, 1) is a
+Gaussian process BH (t), t ≥ 0, with stationary increments and satisfying E[BH (t)]=0a n d
+E[B2
+H (t)]=t 2H , t ≥ 0. In spatial statistics, the latter expression is referred to as a power var-
+iogram (cf. [16]). One of the appealing features of fBm is that the Hurst index characterizes
+the nature of dependence or, equivalently, sample path smoothness of the process globally.
+The book by Nourdin [14] contains a detailed introduction of the properties of fBm.
+However, in many circumstances, a more ﬂexible model is desirable that allows sample
+path smoothness to vary with time or location while retains some of the other key features
+of fBm. The multifractional Brownian motion (mBm) is such an example. The mBm was
+independently introduced in [11] using a moving average type construction and in [ 2] based
+on a harmonizable integral representation. Cohen [ 6] proved that these two deﬁnitions are
+equivalent up to a multiplicative deterministic function. Stoev and Taqqu [ 17] proposed a
+generalizations of these two deﬁnitions. In this paper, we use the deﬁnition of mBm in a
+general dimension d introduced in [9].
+For convenience, let |·| denote both absolute value and the Euclidean norm inR
+d .L e t
+D(H) =
+(∫
+Rd
+1 − cosx1
+|x|2H+d dx
+)1
+2
+,H ∈ (0, 1),
+where x1 is the ﬁrst component of the vector x.
+DEFINITION 1.1. The multifractional Brownian motion {X(t),t ∈ (0, 1)d} is a zero-
+mean Gaussian process with covariance function
+C(t,s)
+= σ2D
+(
+H(t),H(s )
+)(
+|t|H(t)+H(s) +| s|H(t)+H(s) −| s − t|H(t)+H(s))
+,
+(1.1)
+where σ2 ∈ (0,∞ ), H(t) is a Hölder continuous function with range in (0, 1),a n d
+D
+(
+H(t),H(s )
+)
+=
+{
+2D
+(
+H(t)
+)
+D
+(
+H(s)
+)}−1 D2
+(H(t) + H(s)
+2
+)
+.
+Received June 2018; revised January 2019.
+MSC2010 subject classiﬁcations. Primary 62G05, 62G20; secondary 62M30.
+Key words and phrases. Inﬁll asymptotics, minimax rate, multifractional Brownian motion, nonparametric es-
+timation.
+838
+
+===== PDF PAGE 2 =====
+HURST FUNCTION ESTIMATION 839
+The function H in this deﬁnition will be referred to as the Hurst function of the mBm. Note
+that the covariance function C(t,s) in (1.1) is normalized such that Var(X(t)) = σ2|t|2H(t).
+The sample paths of a mBm are still Hölder continuous but the degree of smoothness varies
+from point to point according to H . Also, properties of self-similarity and stationary incre-
+ments only hold in a local sense.
+In this paper, our primary concern is the estimation ofH . We will address both cases where
+σ is known and unknown. We viewσ as a nuisance parameter if it is unknown, in which case
+we also consider its estimation. While we focus on the case where σ is constant over the
+entire domain of {X(t)}, we will discuss some extensions where σ is allowed to vary with t.
+The problem of estimating H(t) is challenging, at least nonstandard for time series or
+spatial statistics due to the nonstationarity of the process mentioned above. Fortunately, self-
+similarity and stationary increments still hold locally in some sense for the mBm, which
+ensures that H can be identiﬁed with probability one if the entire path of X is observed.
+Of course, one never observes the whole path in applications. Instead, we will follow the
+convention for this problem and assume for the most part that the data are observed on a
+regular grid. However, a brief discussion will be provided to address how this restriction
+might be relaxed.
+A number of papers in the literature address the estimation of H . All of them focus on
+the case d = 1 and the estimators are formulated by considering the relationship between
+H and moments of functions of generalized differences of gridded data. With no intention
+to provide a complete list, we mention [ 1, 5]a n d[3]. To the best of our understanding, [1 ]
+contains the most comprehensive results to date that unify the approaches of [5 ]a n d[ 3];
+furthermore, it discusses the extension to a class of processes that behave like the mBm in
+a local sense. More details on these will be given in Sections 2 and 3. None of these papers
+approach the inference of H in a principled manner so as to thoroughly address issues such
+as how higher-order smoothness of H should be accounted for in the inference problem and
+how to formulate rate optimal estimators.
+In the context of spatial data, a general framework for nonstationarity termed local intrinsic
+stationarity is developed in [10]. The mBm falls in that framework. However, they focus on
+the scenario that H is twice continuously differentiable and the estimator introduced is not
+tailored to the mBm and consequently leads to suboptimal rates. More importantly, their
+estimator does not satisfactorily address the subtle but important computational issues of the
+problem.
+The main contributions and organization of the paper are summarized as follows. Our goal
+is to explore a range of issues concerning the inference of the Hurst function. First, we for-
+mulate the nonparametric estimation of H based on gridded data in a general dimension d,
+taking into account the degree of smoothness of H , for both cases of known σ
+2 (Section 2)
+and unknown σ2 (Section 4). The existing results focus on d = 1 and essentially do not
+consider the smoothness of H beyond Hölder continuity with index 2. Second, we provide
+thorough asymptotic theories (e.g., Theorem 3.4 and Theorem 4.3) for our estimators under
+different scenarios. In that vein, we also establish for d = 1 a lower bound for the minimax
+risk of estimating H by all possible estimators assuming a broad class of H . This is the ﬁrst
+time such a lower bound is developed in the mBm context. With properly tuned parameters,
+the rate of our estimator matches the lower bound, which makes it rate optimal. We also
+address the issue of data-driven bandwidth selection (Section 5), which is important for the
+implementation of the procedures. Some extensions are given in Section 7. Section 7.1 con-
+siders a nongridded data scenario under which some of the key results established for gridded
+data continue to hold. Section 7.2 relaxes the assumption of constant σ by replacing σ
+2 in
+(1.1) with σ(t)σ(s) for some smooth, nonconstant function σ(·). A numerical study is con-
+ducted (Section 6) to illustrate the results and compare with existing approaches. For clarity
+of presentation and to keep the paper under page limit, all proofs and technical details are
+given in Section 8 and the Supplementary Material [15].
+
+===== PDF PAGE 3 =====
+840 J. SHEN AND T. HSING
+2. Basic formulation of the estimator . In this section, we consider the estimation of the
+Hurst function H(t), t ∈ (0, 1)d in the covariance of the mBm in (1.1). We ﬁrst assume that
+σ2 ∈ (0,∞ ) is known. In Section 4, we will address the case where σ2 is unknown and, in
+Section 7.2, some extensions to nonconstant σ2.
+Assume that we observe X(t) for all t belonging to the grid
+/Omega1n =
+{
+(i1,i 2,...,i d)/n, with is = (j − 0.5)/n for s = 1,...,d,j = 1,...,n
+}
+.
+For convenience, the generic notion ti = (ti1,...,t id ) will be used to denote the grid points.
+Deﬁne the differencing operator in the direction h: for a function w,
+/Delta1hw(t) := w(t) − w(t + h) and /Delta1j
+hw(t) := /Delta1h/Delta1j−1
+h w(t), j ≥ 1.
+It follows that, for any q ∈N,
+/Delta1q
+h
+w(t) =
+q∑
+i=0
+(−1)i
+(
+q
+i
+)
+w(t + ih).
+For the rest of this section let q be ﬁxed and deﬁne
+g(H, u,h) := −1
+2
+q∑
+i=0
+q∑
+j=0
+(−1)i+j
+(
+q
+i
+)(
+q
+j
+)
+⏐⏐u + (i − j)h
+⏐
+⏐
+2H .(2.1)
+The choice of q will be discussed later in condition [A3] and in Section 5.
+Let us consider the properties of X around a ﬁxed t.I ti sw e l lk n o w n( c f .[7]) that, as
+n →∞ ,
+Un(h) := nH(t)/Delta1h/nX(t) d−→ σBH(t)(h),(2.2)
+where BH(t) is fBm with index H(t),a n d d−→ stands for convergence in distribution for the
+process Un(h) in the space of continuous functions endowed with the uniform metric on any
+compact set. Consequently,
+nH(t)/Delta1q
+h/nX(t) = nH(t)
+q∑
+i=0
+(−1)i
+(
+q
+i
+)
+(
+X(t + ih/n) − X(t)
+)
+d−→ σ
+q∑
+i=0
+(−1)i
+(
+q
+i
+)
+BH(t)(ih).
+Recall that
+Cov
+(
+BH(t)(s1),BH(t)(s2)
+)
+= 1
+2
+(
+|s1|2H(t) +| s2|2H(t) −| s1 − s2|2H(t))
+.
+Thus, for any direction h,
+E
+(
+/Delta1q
+h/n
+X(t)
+)2 ∼ n−2H(t)σ2g
+(
+H(t), 0,h
+)
+.(2.3)
+Note that the right-hand side is a one-to-one function in H(t). Thus, a plausible approach
+might be that, for large n, if we could estimate E(/Delta1q
+h/nX(t))2 well using a nonparametric
+approach based on differenced data /Delta1q
+h/n
+X(ti) for ti in a small neighborhood of t,t h e ni n
+principle we could also estimateH(t) by invertingg. The choice of the directionh is relevant
+in two ways in multiple dimensions. Most importantly, since we consider gridded data, we
+must make sure that the h picked will lead to the full utilization of the data as differences are
+formed. Given that this is fulﬁlled, the choice ofh may affect the asymptotics in a minor way
+but not the rate of convergence. An alternative approach is to consider a more general notion
+
+===== PDF PAGE 4 =====
+HURST FUNCTION ESTIMATION 841
+of differencing as in [5]a n d[1] but that is unlikely to improve the rate either. In our setting,
+we conjecture that the optimal choice ofh is a unit vector that parallels any of thed axes. We
+shall ﬁx h to be such a vector in the remainder of this paper.
+Approaches similar in spirit to what was proposed above have been considered in the
+literature. For instance, in the case d = 1, [ 5] considers a kernel approach to estimate
+E(/Delta1q
+h/nX(t))2 by averaging those (/Delta1q
+h/n
+X(ti))2 for which ti in a small neighborhood of t.
+Unfortunately, the paper contains some technical issues which were later corrected by [ 1].
+On the other hand, [10] considers a larger class of model for a general d and adopts local
+linear estimation. As explained in Section 1, none of the existing works satisfactorily address
+the wide range of statistical issues explored in this paper.
+A major problem with the approach motivated by ( 2.3) described earlier is that since the
+quantity in (2.3)i ss m a l lf o rl a r g en, a smoothing approach such as local polynomial regres-
+sion that takes into account of higher-order smoothness could yield negative values. When
+that happens, there is no sensible way to deﬁne an estimate for H(t). Note that the issue is
+nonexistent if ones uses the Nadaraya–Watson estimator with a nonnegative kernel, but the
+approach would not account for higher-order smoothness and the usual associated boundary
+issues would be exaggerated in higher dimensions. A natural remedy is to consider instead
+the estimation of E log(/Delta1
+q
+h/nX(t))2 = 2E log|/Delta1q
+h/n
+X(t)|.F o rH ∈ (0, 1),d e ﬁ n e
+G(H;n,h) := −2H logn + logσ2 + logg(H, 0,h) +E logχ2
+1 ,(2.4)
+with χ2
+1 denoting a χ2 random variable with one degree of freedom. Note that g(H, 0,h)>
+0 for any Hurst index H ∈ (0, 1) and direction h by Lemma S.2.1 in the Supplementary
+Material [ 15]. We can also deﬁne G(0;n,h) as limH↓0 G(H;n,h). It is easy to see (cf.
+Lemma 8.3)t h a t
+2E log
+⏐⏐/Delta1q
+h/nX(t)
+⏐⏐ ≈ G
+(
+H(t);n,h
+)
+.(2.5)
+Thus, our basic strategy is to estimateE log|/Delta1q
+h/nX(t)|, and hence the quantityG(H(t);n,h)
+nonparametrically based on log|/Delta1q
+h/n
+X(ti)| for ti in a small neighborhood of t.
+The nonparametric approach of our choice will be local polynomial regression (cf. [ 8]).
+The advantages of the approach have been extensively documented in the literature. For vec-
+tors x = (x1,...,x d)T ∈Rd and i = (i1,...,i d)T ∈{ 0, 1, 2,... }d ,l e t
+xi =
+d∏
+l=1
+xil
+l and i!=
+d∏
+l=1
+il!.(2.6)
+Fix p ∈[ 1,∞ ) and let ⌈p⌉ be the smallest integer no smaller than p. Sort the ﬁnite set
+{(j1,...,j d)T : jl ∈{ 0, 1, 2,... }, ∑d
+l=1 jl ≤⌈ p⌉− 1} in any manner and denote the sorted set
+as {jm,m = 1,...,S }. However, we setj1 = 0 for convenience. Then solve
+(ˆβj1,..., ˆβjS )
+= argmin
+βj1,...,βjS
+∑
+i
+K
+(ti − t
+b
+){
+2l o g
+⏐⏐/Delta1q
+h/nX(ti)
+⏐⏐ −
+S∑
+m=1
+βjm
+(ti − t
+b
+)jm
+}2
+,
+where K is a kernel function and b> 0 is bandwidth. The local polynomial regression esti-
+mator of G(H(t);n,h) is ˆG(H(t);n,h) := ˆβj1 .D e ﬁ n e
+A(x) =
+(
+xj1,..., xjS
+)T ∈RS,
+and let st,p,b(s) be the ﬁrst element of the vector
+K
+(s − t
+b
+)(∑
+i
+K
+(ti − t
+b
+)
+A
+(ti − t
+b
+)
+A
+(ti − t
+b
+)T )−1
+A
+(s − t
+b
+)
+.
+
+===== PDF PAGE 5 =====
+842 J. SHEN AND T. HSING
+It follows that
+ˆG
+(
+H(t);n,h
+)
+=
+∑
+i
+2st,p,b(ti) log
+⏐⏐/Delta1q
+h/nX(ti)
+⏐⏐.(2.7)
+Finally, the estimator of H(t) that we will focus on is
+ˆH(t) = G−1 ( ˆG
+(
+H(t);n,h
+))
+;n,h).(2.8)
+When n is sufﬁciently large, the upper bound forG(H;n,h) is G(0;n,h)< ∞ and the lower
+bound is −∞ . As it is possible to have
+ˆG
+(
+H(t);n,h
+)
+>G (0;n,h) = logσ2 + logg(0, 0,h) +E logχ2
+1 ,
+we deﬁne G−1 (x;n,h) = 0 for all the x ≥ G(0;n,h). The asymptotic properties of ˆH(t)
+will be considered in Section 3.
+3. Asymptotic properties. This section contains two major asymptotic results as n →
+∞ . Since we consider gridded data on a ﬁxed bounded set, these results belong to the realm
+of the so-called ﬁxed-domain or inﬁll asymptotics (cf. [ 16]). Our ﬁrst result is a uniform
+lower bound for the risk of estimating the Hurst functionH that belongs to a class of smooth
+functions. The second result addresses the properties of the estimator ˆH deﬁned in (2.8).
+We begin by presenting a minimax bound for the risk of estimating H for the case d = 1.
+For functions f on (0, 1),d e ﬁ n e
+∥f ∥s =
+[ ∫ 1
+0
+⏐⏐f( t)
+⏐
+⏐
+s dt
+] 1/s
+,s ∈[ 1,∞ ), and ∥f ∥∞ = sup
+t∈(0,1)
+⏐
+⏐
+f( t)
+⏐
+⏐
+.
+Let ⌊x⌋ be the largest integer no larger than x. For open set B ∈Rd and constants p ≥ 0a n d
+M ∈ (0,∞ ),d e ﬁ n eHp(B,M) as the space of ⌊p⌋-times differentiable functions f : B ↦→ R
+such that f (⌊p⌋) is Hölder continuous on B with |f (⌊p⌋)(x) − f (⌊p⌋)(y)|≤M |x − y|p−⌊p⌋
+for all x,y ∈ B.
+THEOREM 3.1. Consider all estimator ˜Hn of H based on data {X((i − 1/2)/n),i =
+1,...,n }. Then for any γ ∈ (0, 1), s ∈[ 1,∞ ), p> 1 and M ∈ (0,∞ ), there exists a δ∈
+(0,∞ ) that only depends on s, p, M, γ such that
+lim infn→∞ inf
+˜Hn
+sup
+H∈Hp((0,1),M)
+PH
+(
+∥ ˜Hn − H∥s >δ
+(
+n log2 n
+)− p
+2p+1
+)
+>γ,(3.1)
+wherePH denotes the probability measure under H .
+To the best of our knowledge, ( 3.1) is the ﬁrst bound of the kind for the inference H .
+The proof borrows a familiar strategy from the development of minimax bounds in density
+and regression function estimation (cf. Chapter 2 of [19]). The core of the proof is to com-
+pute a tight bound for the Kullback–Leibler (KL) divergence between two mBms with Hurst
+functions that are close. It is interesting to note that the minimax bound established in Theo-
+rem 3.1 is slightly faster, due to presence of the logn term, than the corresponding bounds in
+classical problems such as density and regression function estimation. While the lower bound
+is only established for d = 1, we conjecture the corresponding lower bound ford = 2h a st h e
+rate (n
+2 log2 n)− p
+2p+2 . Unfortunately, we have not been able to establish it so far. Below we
+will see that the lower bound for d = 1 can be attained by the estimator ˆH deﬁned in (2.8)i n
+Section 2.
+We next proceed to consider the asymptotic properties of the estimator ˆH(t). For clarity,
+we list below the assumptions that will be frequently referred to in this and future sections.
+Let
+Hp(B) := ⋃∞
+M=1 Hp(B,M) .
+
+===== PDF PAGE 6 =====
+HURST FUNCTION ESTIMATION 843
+[K] K is a nonnegative kernel function with support B1(0) and has continuous second-
+order partial derivatives, where Br(t0) ={ t :| t − t0| <r }.
+[A1] H ∈ Hp((0, 1)d) and is bounded away from 0 and 1.
+[A2] b = bn is a bandwidth parameter varying withn, such thatnb →∞ and b logk n → 0
+for all k> 0a s n →∞ .
+[A3] p ≥ q ≥ 1, where q is the order of differencing in deﬁning ˆG(H(t);n,h).
+We also collect some common notations here for easy reference. Deﬁne
+ψ(t) := 2q − 2H(t), ¯ψ = inf
+t
+ψ(t) and ρn(t) = log(n)/n + n−ψ(t).
+Also, let
+/Omega1δ= (0, 1)d − Bδ(0),
+where Bδ(0) is the d-dimensional ball centered at 0 with radius δ> 0. We will focus on δ
+that are close to 0 (see next paragraph).
+To investigate the asymptotic properties of ˆH(t) , we consider the decomposition
+ˆG
+(
+H(t);n,h
+)
+− G
+(
+H(t);n,h
+)
+=
+{ ˆG
+(
+H(t);n,h
+)
+− E
+( ˆG
+(
+H(t);n,h
+))}
++
+{
+E
+( ˆG
+(
+H(t);n,h
+))
+− G
+(
+H(t);n,h
+)}
+.
+The ﬁrst term on the right-hand side is a centered random variable, which determines the
+variance of the estimator. The second term corresponds to the bias. We will address the
+asymptotic behavior of these terms in the following two results. In doing so, our approach
+is to establish uniform bounds with respect to t, which requires us to focus on t ∈ /Omega1δ for
+an arbitrarily small but ﬁxed δ. This is due to the fact that, since Var(X(t)) = σ2|t|H(t),t h e
+information contained in X(t) becomes increasingly scarce as t approaches zero, and conse-
+quently, the asymptotic theory for ˆG(H(t);n,h) and ˆH(t) with t close to 0 has to be dealt
+with differently. This is completely unrelated to the usual boundary-effect issues in nonpara-
+metric estimation.
+Our ﬁrst result considers the rates of bias and variance of ˆG(H(t);n,h). For convenience
+of presentation, deﬁne
+T1(n,b, t) = log(n)
+(
+bp + (nb)−2∧p)
++ ρn(t)(3.2)
+and
+T2(n,b, t) =
+⎧
+⎪⎪
+⎨
+⎪⎪
+⎩
+(nb)−d if 2ψ(t)>d,
+(nb)−d log(nb) if 2ψ(t) = d,
+(nb)−2ψ(t) if 2ψ(t)<d.
+(3.3)
+In the remaining part of the paper, the statement f( n ,b,t) = O(g(n,b, t)) uniformly for
+t ∈ /Omega1δ means supt∈/Omega1δ
+⏐⏐f (n,b,t)
+g(n,b,t)
+⏐⏐ ≤ Cδ for some ﬁnite constant Cδ.
+THEOREM 3.2. Suppose that the conditions [K], [A1] –[A3] hold. Then for any δ∈
+(0, 1), we have uniformly for any t ∈ /Omega1δ,
+E
+( ˆG
+(
+H(t);n,h
+))
+− G
+(
+H(t);n,h
+)
+= O
+(
+T1(n,b, t)
+)
+,(3.4)
+and
+Var
+( ˆG
+(
+H(t);n,h
+))
+= O
+(
+T2(n,b, t)
+)
+.
+
+===== PDF PAGE 7 =====
+844 J. SHEN AND T. HSING
+REMARKS .
+(i) In the result for bias, ( 3.4), the term ρn(t) stands out as one that is absent in a clas-
+sical nonparametric regression context. In some situations, for example, when the dimension
+d exceeds 3, ρn(t) could play a major role in deciding the estimation rate (cf. Remark (i)
+following Theorem 3.4 below).
+(ii) Consider the case where p ∈N and the term log(n)bp dominates in T1(n,b, t),t h a t
+is,
+1
+n2∧pbp+2∧p → 0a n d ρn(t)
+log(n)bp → 0.(3.5)
+The proof of Theorem 3.2 shows that if
+R(t) := eT
+1
+(∫
+B1(0)
+K(z)A(z)AT (z)d z
+)−1
+×
+∫
+B1(0)
+K(z)A(z)
+( ∑
+|α|=p
+DαH(t)
+α! zα
+)
+dz
+(3.6)
+is well-deﬁned in (0,∞ ),w h e r ee1 stands for (1, 0,..., 0)T ,t h e n
+Bias
+( ˆG
+(
+H(t);n,h
+))
+∼− 2l o g(n)bpR(t).(3.7)
+This bias expression is useful for deriving the asymptotic distribution of ˆG(H(t);n,h) and
+ˆH(t) (cf. Corollary 3.5).
+(iii) The variance in Theorem 3.2 was derived by analyzing the dependence of the process
+nH(t)/Delta1q
+h/nX(t) in t. The cases 2ψ(t)>d and 2ψ(t)<d can be referred to as the short and
+long memory cases while 2 ψ(t) = d is the borderline of the two. Limit theorems in those
+cases are related to classical limit theorems in, for instance, [ 4]a n d[ 18]. This remark also
+applies to Theorem 3.3 below.
+Next, we turn attention to the asymptotic distribution of ˆG(H(t);n,h). Let the function
+F(x) := log(x2) − E logχ2
+1 have the Hermite polynomial decomposition (cf. [18])
+F(x) =
+∞∑
+l=2
+clHl(x),(3.8)
+where Hl denotes the Hermite polynomial of order l.D e ﬁ n e
+σ2
+H =
+∞∑
+l=2
+c2
+l l!
+∑
+j∈Zd
+(g(H, j,h)
+g(H, 0,h)
+)l
+.(3.9)
+THEOREM 3.3. Assume that the conditions [K], [A1] –[A3] hold. Then, for all t ∈
+(0, 1)d ,
+an,b,t
+( ˆG
+(
+H(t);n,h
+)
+− E ˆG
+(
+H(t);n,h
+)) d−→ Z(t),
+where the normalizing constant an,b,t and the limit Z(t) depend on ψ(t), as follows:
+(i) If 2ψ(t)>d , then an,b,t = (nb)d/2 and Z(t) ∼ N(0,ξ2(t)) where
+ξ2(t) = σ2
+H(t)
+∫
+B1(0)
+ω2(z)d z,(3.10)
+with
+ω(z) = eT
+1
+(∫
+B1(0)
+A(ν)A(ν)T K(ν)d ν
+)−1
+A(z)K(z);
+
+===== PDF PAGE 8 =====
+HURST FUNCTION ESTIMATION 845
+(ii) if 2ψ(t) = d, then an,b,t = (nb)d/2 log−1/2(nb) and Z(t) ∼ N(0,ξ2(t)), where
+ξ2(t) = Vdω2(0)
+g2(H(t ), 0,h))
+∫
+B1(0)
+c2
+h(t,x)
+|x|d−1 dx,
+Vd is the volume of a d-dimensional unit ball and ch(t,u) is the coefﬁcient of |u|−ψ( t) in
+− ∂2q
+∂φq∂ηq
+1
+2
+⏐⏐u + (φ− η)h
+⏐
+⏐
+H(t+φh)+H(t+ηh)
+⏐⏐⏐⏐φ=0,η=0
+;
+(iii) if 2ψ(t)<d , then an,b,t = (nb)ψ(t) and the characteristic function of Z(t) is
+φ(u) = exp
+{
+1
+2
+∞∑
+k=2
+(2iu)k
+k Sk
+}
+,
+where
+Sk =
+∫
+(B1(0))⊗k
+∏k
+i=1 ch(t, zi − zi+1)|zi − zi+1|−ψ( t)ω(zi)
+gk(H(t ), 0,h) dz1 ···d zk,
+in which zk+1 denotes z1 for notational convenience.
+REMARKS . Recall that we let h be any unit vector parallel to one of the axes. It is worth
+pointing out that, by Lemma S.2.2 in the Supplementary Material [15], ch(t,u) is actually a
+polynomial of H(t) and ⟨u,h⟩/|u|. Thus, ch(t,u) depends on u only through its direction
+u/|u|. For instance, for d = 1,
+ch(t,u) = (−1)q−1
+2q−1∏
+l=0
+(
+2H(t) − l
+)
+.
+As a consequence of this and symmetry in integration, taking into account that g(H, 0,h)
+does not depend on the direction of h, the limits in (i)–(iii) do not depend on the direction of
+h either.
+The combination of Theorems 3.2 and 3.3 leads to the following result for ˆH(t).
+THEOREM 3.4. Suppose that the conditions [K], [A1]–[A3] hold. Then, uniformly for
+t ∈ /Omega1δ, where δis an arbitrary constant in (0, 1), we have
+E
+(ˆH(t) − H(t)
+)
+=− (2l o gn)−1E
+( ˆG
+(
+H(t);n,h
+)
+− G
+(
+H(t);n,h
+))
++ O
+((
+T1(n,b, t) + T2(n,b, t)
+)
+/ log2 n
+)
+and
+E
+(ˆH(t) − H(t)
+)2 = O
+((
+T 2
+1 (n,b, t) + T2(n,b, t)
+)
+/ log2 n
+)
+,
+where T1, T2 are as deﬁned in (3.2) and (3.3). Moreover, for any t ∈ (0, 1)d ,2 an,b,t ×
+log(n)( ˆH(t) − G−1 (E ˆG(H(t);n,h))) has the same asymptotic distribution as an,b,t ×
+( ˆG(H(t);n,h) − E ˆG(H(t);n,h)), where an,b,t and the corresponding limits are the same
+as given in Theorem 3.3.
+REMARKS .
+(i) To compute the rate of ˆH(t) in various situations using Theorems 3.2 and 3.4,w e
+focus on the case where 2 ψ(t)>d and ( 3.5) holds. Letting b ∼ (nd log2 n)− 1
+2p+d then
+
+===== PDF PAGE 9 =====
+846 J. SHEN AND T. HSING
+leads to the rate (nd log2 n)− p
+2p+d . The following are some key scenarios for which this rate
+holds:
+• d = 1, p ≥ q = 1a n ds u pt H(t)< 0.75,
+• d = 2, p ≥ q = 1a n ds u pt H(t)<0 .5,
+• d ≤ 2, p ≥ q ≥ 2a n da n yH ,
+• d = 3, p ∈[ 1.5, 3), q = 1a n ds u pt H(t)<0 .25,
+• d = 3, 3 >p ≥ q = 2a n da n yH.
+If d> 3, the term ρn(t) dominates the bias when picking the bandwidth b above and the rate
+calculations above does not apply (i.e., (3.5) fails). In future results, we will return to these 5
+scenarios for comparisons.
+(ii) For d = 1, p ≥ q ≥ 2a n da n yH or d = 1, p ≥ q = 1a n d∥H ∥∞ < 0.75, the rate
+(n log2 n)− p
+2p+1 matches the rate in the lower bound of Theorem 3.1 and, therefore, ˆH(t) is
+minimax optimal.
+The following corollary describes the asymptotic distributions under the scenarios in Re-
+mark (i) above.
+COROLLARY 3.5. Suppose that the conditions [K], [A1] and [A3] hold. Fo rt ∈ (0, 1)d ,
+assume additionally that 2ψ(t)>d , p ∈N,( 3.5) holds for b ∼ (nd log2 n)− 1
+2p+d and that the
+quantity R(t) in (3.6) is well-deﬁned in [0,∞ ). Then
+(
+np log−1 n
+) d
+2p+d
+( ˆG
+(
+H(t);n,h
+)
+− G
+(
+H(t);n,h
+)) d−→ N
+(
+R(t),ξ2(t)
+)
+and
+2
+(
+nd log2 n
+) p
+2p+d
+(ˆH(t) − H(t)
+) d−→ N
+(
+R(t),ξ2(t)
+)
+,
+where ξ2(t) is as given in (3.10).
+4. Backﬁtting estimation when σ2 is unknown. We have so far assumed that σ2 in
+(1.1) is known. In this section, we will address the case where σ2 is unknown and construct
+a slightly different estimator than ˆH(t).
+The construction consists of three steps:
+(i) First, consider a less efﬁcient estimator, ˆH1(t), that does not require the knowledge
+of σ2 to crudely estimate H(t).
+(ii) Based on ˆH1(t), estimate logσ2 by an estimator denoted by ˆlogσ2.
+(iii) Finally, estimate H(t) again by ˆH(t) by plugging in ˆlogσ2 for log σ2.T h eﬁ n a l
+estimator is denoted as ˆH2(t).
+The details are given below.
+The estimator of H(t) in step (i) is deﬁned as
+ˆH1(t) =
+ˆG(H(t);n, 2h) − ˆG(H(t);n,h)
+2l o g2 ,(4.1)
+where ˆG(H(t);n, 2h) and ˆG(H(t);n,h) use the same bandwidth denoted as b1. The proof
+of the following result is similar to that for Theorems 3.2 and 3.3.
+
+===== PDF PAGE 10 =====
+HURST FUNCTION ESTIMATION 847
+THEOREM 4.1. Assume that [K], [A1]–[A3] hold with b in [A2] replaced by b1. Then,
+for any δ∈ (0, 1), we have uniformly for t ∈ /Omega1δ,
+E
+(ˆH1(t) − H(t)
+)
+= O
+(
+bp
+1 + ρn(t)
+)
+and
+Var
+(ˆH1(t)
+)
+= O
+(
+T2(n,b 1,t)
+)
+,
+where T2 is deﬁned in (3.3). Additionally, if 2ψ(t) ≥ d, ˆH1(t) − E[H(t)] is asymptotically
+normal.
+REMARKS . Under the 5 scenarios listed in remark (i) following Theorem 3.4, Theo-
+rem 4.1 entails that ˆH1(t) has asymptotic bias O(bp
+1 ) and variance O((nb1)−d ).T h u s ,t a k i n g
+b1 ∼ n− d
+2p+d leads to the optimal rate n− dp
+2p+d . Note that this rate is slower than that of ˆH(t)
+for the case where σ2 is known.
+Next, we proceed to estimateσ2.F o rs o m em = 1, 2,... , obtain all of ˆH1(t) for t ∈ /Omega1m =
+{(i1,i 2,...,i d)/m, with is = (j − 1/2)/m for s = 1,...,d,j = 1,...,m }. Note that, in this
+step, we are still using the estimate ˆH1 obtained in the previous step based on data observed
+on /Omega1n. Thus, m could be viewed as another tuning parameter. While it is possible to present
+our asymptotic results below for any choice of m, to streamline presentation we will ﬁx
+m ∼ 1/b1 (which is the optimal choice in some sense) from this point on.
+Deﬁne
+˜G(H;n,h) := G(H;n,h) − logσ2
+=− 2H logn + logg(H, 0,h) +E logχ2
+1 .
+(4.2)
+Intuitively, we could estimate log σ2 by ˆG(H(t);n,h) − ˜G( ˆH1(t);n,h).H o w e v e r ,w h i l e
+rare, numerically it is possible that ˆH1(t)/∈ (0, 1), in which case the computation of
+logg( ˆH1(t), 0,h) would be problematic (e.g., g(1, 0,h) = 0). By [A1], there exists a con-
+stant γ> 0 such that
+inf
+t∈[0,1]d
+{
+H(t) ∧
+(
+1 − H(t)
+)}
+>γ.(4.3)
+Deﬁne the thresholded estimator
+ˆHγ
+1 (t) = ˆH1(t) · I
+(ˆH1(t) ∈[ 0, 1 − γ/2]
+)
++ (1 − γ/2) · I
+(ˆH1(t)> 1 − γ/2
+)
+,
+and estimate logσ2 by
+ˆlogσ2 := 1
+#(/Omega1m ∩ /Omega1δ)
+∑
+t∈/Omega1m∩/Omega1δ
+( ˆG
+(
+H(t);n,h
+)
++ 2 ˆH1(t) logn
+− logg
+(ˆHγ
+1 (t), 0,h
+)
+− E logχ2
+1
+)
+.
+In the following results, let
+T ′
+1(n,b 1) = logn
+(
+bp
+1 + (nb1)−2∧p )
++ n−1 log2 n + n− ¯ψ logn,(4.4)
+T ′
+2(n,b 1) =
+⎧
+⎪⎪⎨
+⎪⎪⎩
+(nb1)−d if 2 ¯ψ>d ,
+(nb1)−d log(nb1) if 2 ¯ψ = d,
+(nb1)−2 ¯ψ if 2 ¯ψ<d .
+(4.5)
+
+===== PDF PAGE 11 =====
+848 J. SHEN AND T. HSING
+THEOREM 4.2. Assume that the conditions [K], [A1]–[A3] hold with b in [A2] replaced
+by b1. We have
+E
+[(ˆlogσ2 − logσ2)2]
+= O
+((
+T ′
+1(n,b 1)
+)2 + T ′
+2(n,b 1)
+)
+.
+Furthermore, if T ′
+2(n,b 1) = O(T ′
+1(n,b 1)), then we have
+E
+(ˆlogσ2 − logσ2)
+= O
+(
+T ′
+1(n,b 1)
+)
+.
+REMARKS . For the cases 2 ¯ψ>d , d ≤ 2a n dp ≥ q ≥ 2o r d = 3a n d3 >p ≥ q = 2, it
+can be seen that the convergence rate of ˆlogσ2 based on Theorem 4.2 is n− dp
+2p+d (logn)
+d
+2p+d
+if b1 ∼ (nd log2 n)− 1
+2p+d .
+Finally, we proceed to the ﬁnal step and estimate H(t) by
+ˆH2(t) = ˜G−1 ( ˆG
+(
+H(t);n,h
+)
+− ˆlogσ2;n,h
+)
+,
+where the bandwidth used in ˆG(H(t);n,h) in this step is denoted as b2.
+THEOREM 4.3. Assume that the conditions [K], [A1]–[A3] hold with b in [A2] replaced
+by b1 and b2. Then uniformly for t ∈ /Omega1δ, δ∈ (0, 1),
+E
+(ˆH2(t) − H(t)
+)2
+= O
+(((
+T ′
+1(n,b 1)
+)2 + T ′
+2(n,b 1) + T 2
+1 (n,b 2,t) + T2(n,b 2,t)
+)
+/ log2 n
+)
+.
+Furthermore, if b1 and b2 are picked so that T ′
+2(n,b 1) = O(T ′
+1(n,b 1)) and T2(n,b 2,t) =
+O(T1(n,b 2,t)), then we have
+E
+(ˆH2(t) − H(t)
+)
+= O
+((
+T ′
+1(n,b 1) + T1(n,b 2,t)
+)
+/ logn
+)
+.
+REMARKS .
+(i) Under the 5 scenarios listed in the ﬁrst remark after Theorem 3.4,i f2 ¯ψ>d and
+b1 = b2 ∼
+(
+nd log2 n
+)− 1
+2p+d ,
+the convergence rate of ˆH2(t) will be (nd log2 n)− p
+2p+d , which is the same as the convergence
+rate of ˆH(t) when σ2 is known.
+(ii) To the best of our knowledge, up to this point, the most complete asymptotic theory
+in the existing literature for the estimation of H when σ2 is unknown were established for
+the estimators QV and IR in [1]f o rd = 1. If p = 2, the rate obtained in their equation (4.14)
+is Op(n−2/5+ε) for any ε> 0. This is slower than the optimal rate described in (i) for ˆH2,
+which is Op(n−2/5(logn)−4/5). As explained before, [ 1] essentially does not take higher-
+order smoothness into account in deﬁning the estimators.
+5. Selection of q and b. In this section, we consider the selection of q and b in ˆH .
+
+===== PDF PAGE 12 =====
+HURST FUNCTION ESTIMATION 849
+FIG.1 . Plots of σ2
+H for q = 1, 2, 3, 4.
+5.1. Selection of q. To consider the choice of q, we examine the asymptotic mean
+squared error of ˆH(t), or equivalently, the asymptotic bias and variance of ˆG(H(t);n,h)
+given by Theorem 3.4 under the assumption that the bandwidth b is chosen optimally. We
+will focus on the 5 scenarios in the ﬁrst remark after Theorem 3.4 and p ∈N.
+Let b ∼ (nd log2 n)− 1
+2p+1 , which is the bandwidth that leads to the optimal rate for ˆH .
+When p ∈N, it can be seen from ( 8.11) that the dominant term of the bias is R(b, t) which
+does not depend on q. Thus, we only need to check the effect of q on variance In all of the 5
+scenarios, the variance is proportional to σ2
+H(t) by Theorem 3.3.A s σ2
+H(t) depends on both q
+and H(t), the effect of q may be different for different values of H(t).
+In Figure 1, we present plots ofσ2
+H versus H for d = 1a n dq = 1, 2, 3, 4, where the values
+of σ2
+H are numerically computed using 80 terms in the expansion. One observes from this
+plot that the values of σ2
+H for q = 3, 4 are uniformly larger than those for q = 2. For q> 4,
+σ2
+H increases progressively but the plots for those are omitted for clarity of presentation.
+Consequently, there is no need to let q> 2. We also observe that for H ≤ 0.66, σ2
+H is the
+smallest when q = 1. However, for H> 0.66, σ2
+H increases rapidly if q = 1. To conclude,
+q = 2 is generally a safe choice, but if H(t)< 0.66 for most of t, q = 1 may lead to better
+estimation results. The discussions for d ≥ 2 are similar.
+5.2. Selection of b. In this subsection, we aim to construct a bandwidth selection method
+for ˆH when d = 1a n dq = 2. For a ﬁxed δ> 0, deﬁne
+MISE(b) =E
+(∫
+/Omega1δ
+[ ˆHn,b(t) − H(t)
+]2 dt
+)
+,
+which is a common criterion for measuring goodness of the ﬁt. Denote by b∗ the optimal
+bandwidth based on MISE(b). By Theorem 3.4 and the remarks that follow, we conclude that
+b∗ := O(n log2 n)− 1
+2p+1 . Instead of minimizing MISE (b) directly, minimizing a discretized
+version of MISE (b) is usually preferable for computations. Clearly, we can drop the term
+H 2(t) which does not depend on b. These lead to the objective function
+R(b) = 1
+#(/Omega1m ∩ /Omega1δ)
+∑
+t∈/Omega1m∩/Omega1δ
+(ˆH 2
+n,b(t) − 2 ˆHn,b(t)H(t)
+)
+for some large m where, as usual, /Omega1m ={ (i − 1/2)/m,j = 1,...,m }. Note that we highlight
+the dependence on data and bandwidth in the notion ˆH 2
+n,b(t).
+
+===== PDF PAGE 13 =====
+850 J. SHEN AND T. HSING
+However,R(b) is still not calculable as H(t) is unknown. We follow an idea from [5]a n d
+replace H(t) by an undersmoothed estimate. Speciﬁcally, let
+ˆR(b) = 1
+#(/Omega1m ∩ /Omega1δ)
+∑
+t∈/Omega1m∩/Omega1δ
+(ˆH 2
+n,b(t) − 2 ˆHn,b(t) ˜Hn,b2(t)
+)
+,
+where
+˜Hn,b2(t) = 1
+#(Bb2p (t) ∩ /Omega1m ∩ /Omega1δ)
+∑
+t′∈Bb2p (t)∩/Omega1m∩/Omega1δ
+ˆHn,b2
+(
+t′)
+,
+and Bb2p (t) is the interval centered at t with radius b2p. Now, we can select our bandwidth
+to be
+ˆb∗ = argmin
+b∈E
+ˆR(b),
+where E is the interval deﬁned by
+E =
+[
+κ1n− p+1
+4p+2 (logn)
+p
+2p+1 ,κ2
+(
+n log2 n
+)− 1
+2p+1
+]
+,(5.1)
+with κ1, κ2 being any two positive constants. We will refer to this as the LSCV approach,
+a terminology borrowed from the density estimation literature. We expect ˆR(ˆb∗) to closely
+approximate R(b∗) if m is chosen large enough. For ˆH2, with b1 = b2, we can adopt the same
+strategy to select the bandwidth.
+6. A simulation study. We primarily focus on the cased = 1 but will also brieﬂy discuss
+the d = 2 case.
+First, let d = 1 and assume that H(t) = 0.5 + 0.4s i n(4πt) , t ∈[ 0, 1],a n d σ2 = 1. The
+estimators that we compare are ˆH , ˜H , ˆH1, ˆH2, ˜H2 plus the approaches QV and IR considered
+by [ 1, 5]a n d[ 3], where ˜H , ˜H2 are ˆH and ˆH2 with bandwidth b selected by the LSCV
+approach in Section5. Note thatσ2 is assumed known for ˆH and ˜H but unknown for the other
+procedures. To implement our approaches, we set p = 3, q = 2 and use the Epanechnikov
+kernel. QV and IR do not produce estimation results in the boundary areas while all our
+approaches do. As such, all the ISEs are computed on the interval [0.1, 0.9] to make the
+comparisons fair.
+In the ﬁrst set of simulations, we compare the four procedures that do not require the
+knowledge of σ2, ˆH1, ˆH2 and QV and IR. The bandwidth parameter b for all estimators is
+taken from the set 0.3×0.80:19, and the results reported are based on theb’s having the small-
+est MISEs. Obviously, this requires the knowledge of H and is not a data-driven bandwidth
+selector. The plots in Figure 2 are the empirical pointwise quartiles based on n = 10,000 and
+1000 simulation runs; the trueH is also plotted in red. Among the four approaches, ˆH2 is the
+clearly winner and actually substantially improves upon its preliminary procedure ˆH1.O n e
+could also see that the performance of IR signiﬁcantly lags the other procedures for small
+values of H(t) .
+To visualize the convergence rates of all eight estimators, we let the number of observations
+vary from 1000 to 10,000 and compute the
+√
+MISEs based on 1000 simulation runs. The
+results are displayed in Table 1 and Figure 3, where Figure 3 contains the plots for the log
+MISEs. The bandwidths for ˆH , ˆH1, ˆH2, QV and IR are selected optimally as described in
+the previous paragraph while ˜H and ˜H2 use data-driven bandwidth determined by LCSV .
+By conducting linear regression on the log
+√
+MISEs, we arrive at very crude estimates of
+the convergence rates, which are n−0.54, n−0.52, n−0.44, n−0.49, n−0.47, n−0.39 and n−0.37 for
+ˆH , ˜H , ˆH1, ˆH2, ˜H2, QV and IR, respectively. It is important to note that although ˆH and ˜H
+
+===== PDF PAGE 14 =====
+HURST FUNCTION ESTIMATION 851
+FIG.2 . Empirical quantiles of ˆH1(t), ˆH2(t),Q V(t),I R(t) with n = 10,000 based on 1000 simulation runs ;
+green curves are5% and 95% pointwise empirical quantiles, respectively; blue curves are 25% and 75% empirical
+quantiles, respectively; black curves are empirical means .
+performs the best in this experiment assuming the true σ2, they will have a large bias when
+σ2 is misspeciﬁed. The performance of all other methods are not affected by the change of
+σ2.
+To evaluate the bandwidth selector LCSV in detail, we focus on ˆH with n = 1000 and
+select b from the set 0.3×0.80:8. This is done 1000 times. We compare our selection approach
+with the “oracle” bandwidth, which is obtained by assuming we know the true H(t) and
+select the bandwidth with smallest MISE for each run. Table 2 contains the number of times
+the individual bandwidths in 0.3 × 0.80:8 are selected by oracle and LSCV . Figure4 contains
+the empirical histograms of the integrated squared errors of ˆH and ˜H . It can be seen that the
+bandwidths selected by two approaches are fairly close. The result for ˜H2 are very similar,
+and we omit them here. However, the bandwidth selection method does not work well for ˜H1
+and tends to select the smallest bandwidth in the range of candidate bandwidths.
+Finally, we present some simulation results for the cased = 2 to illustrate the performance
+of our three estimators ˆH , ˆH1 and ˆH2. The model that we consider is the mBm on [0, 1]×
+[0, 1] with Hurst function H(x,y) = 0.5 + 0.4s i n(4πx) sin(2πy), where we assume that the
+TABLE 1√
+MISE for all estimators with a range of sample sizes
+n QV IR ˆH1 ˆH2 ˆH ˜H2 ˜H
+1000 0.1849 0.1792 0.1602 0.0576 0.01574 0.0604 0.0186
+2000 0.1451 0.1388 0.1131 0.0408 0.01060 0.0431 0.0131
+3000 0.1214 0.1201 0.0951 0.0328 0.00845 0.0365 0.0106
+4000 0.1085 0.1071 0.0845 0.0290 0.00736 0.0308 0.0091
+5000 0.0993 0.0987 0.0774 0.0263 0.00656 0.0285 0.0082
+6000 0.0926 0.0932 0.0720 0.0243 0.00595 0.0264 0.0074
+7000 0.0869 0.0866 0.0671 0.0221 0.00545 0.0241 0.0068
+8000 0.0821 0.0834 0.0628 0.0212 0.00504 0.0236 0.0064
+9000 0.0790 0.0800 0.0595 0.0193 0.00473 0.0216 0.0059
+10,000 0.0751 0.0758 0.0558 0.0183 0.00449 0.0206 0.0057
+
+===== PDF PAGE 15 =====
+852 J. SHEN AND T. HSING
+FIG.3 . Plot of log(MISE) versus logn.
+process is observed on a regular grid of size 166 × 166. For ease of presentation, we only
+show the estimation results on the circle (x − 0.5)2 + (y − 0.5)2 = 0.252. As before, we let
+p = 3a n dq = 2 where the direction of differencing is taken as h = (0, 1). With bandwidths
+equal to 0. 15 × 0.80:5, 300 runs of simulations were carried out. Figure 5 presents the the
+empirical quantiles of the estimation results for this simulation experiment using the optimal
+bandwidths based on MISE. One can see that ˆH continues to perform quite well assuming
+that σ2 is known, whereas for ˆH1, ˆH2 that do not require a priori knowledge of σ2, ˆH2
+outperforms ˆH1 by a wide margin.
+7. Discussions and extensions. In this section, we brieﬂy discuss the problems of relax-
+ing the assumptions of gridded data and constant variance.
+7.1. Nongridded data. So far, we have focused on the estimation of the Hurst function of
+the mBm based on gridded data. In some specialized non-gridded settings, our approach can
+be readily modiﬁed to produce estimators that have essentially the same rates of convergence
+as for the gridded case. To demonstrate, we focus on d = 1 and follow the approach of [12].
+Assume that we have observations X(ti),1 ≤ i ≤ n, with ti = ϕ((i − 1/2)/n),w h e r eϕ
+satisﬁes the following condition:
+[B] ϕ∈ Hp+1([0, 1]), p ≥ 1, is a strictly monotone and surjective mapping from [0, 1] to
+[0, 1], with its ﬁrst order derivative ϕ(1) bounded away from 0.
+Observe that [B] guarantees that the gaps between neighboring ti ’s are of the order n−1 .D e -
+note the modiﬁed estimators of ˆH , ˆH1 and ˆH2 for this setting as ˆH′, ˆH′
+1 and ˆH′
+2, respectively,
+whose deﬁnitions involve some new notation to be introduced below. For any givent ∈ (0, 1)
+and q = 1, 2,... ,d e ﬁ n exi(t) = ϕ(ϕ−1 (t) + i/n), i = 0,...,q ,a n d ai = (−1)i (q
+i
+)
+.A l s o ,
+let the symbol /Delta1q
+1/n X(t) stand for the quantity ∑q
+i=0
+aiX(xi(t)). Observe that xi(tj ) = ti+j ,
+TABLE 2
+Frequencies with which various bandwidths are picked by LSCV and oracle for ˆH based on 1000 simulation runs
+0.3 × 0.83 0.3 × 0.84 0.3 × 0.85 0.3 × 0.86 0.3 × 0.87 0.3 × 0.88
+LSCV 434 413 115 29 4 5
+Oracle 60 584 328 27 1 0
+
+===== PDF PAGE 16 =====
+HURST FUNCTION ESTIMATION 853
+FIG.4 . Empirical histograms of log(
+√
+ISE) based on ˆH with the oracle bandwidth and that selected by LSCV .
+which shows that /Delta1q
+1/n X(tj ) can be computed from data. It can be shown (cf. (2.5)) that
+2E log
+⏐⏐/Delta1q
+1/n X(t)
+⏐⏐ ≈ G
+(
+H(t) ;n,ϖ(t)
+)
+,
+where ϖ(t) := ϕ(1)(ϕ−1 (t)). Thus, G(H(t); n,ϖ(t)) can be estimated nonparametri-
+cally by the local polynomial estimator based on the log-transformed differenced data
+2l o g|/Delta1q
+1/n X(tj )|, as was done for the gridded case. This motivates the new estimators ˆH′,
+ˆH′
+1 and ˆH′
+2.
+Speciﬁcally, the deﬁnition of ˆH′
+1(t) is unchanged from ˆH1(t) since the deﬁnition does
+not involve inversion of G(H;n,h) .F o r ˆH′ and ˆH′
+2, however, since we need to solve
+ˆG(H;n,ϖ(t)) for H , the function ϖ(t) must be estimated. The condition [B] implies that
+ϖ(t) is differentiable, from which it is easily concluded that ϖ(t) can be estimated with
+precision O(1/n) using the pairs (i/n,t i); for instance, a smoothed version of the naive es-
+timator ∑
+i n(ti+1 − ti)I(ti,ti+1](t) will sufﬁce. Thus, to deﬁne ˆH′ and ˆH′
+2, we ﬁrst estimate
+ϖ(t) by some ˆϖ(t) and then proceed to estimateH(t) in much the same way as in ˆH and ˆH2
+using ˆϖ(t) and the /Delta1q
+1/n
+X(tj ). Section S.6 in the Supplementary Material [ 15]s h o w st h a t
+the rates of convergence of ˆH′, ˆH′
+1 and ˆH′
+2 are largely unchanged from their gridded-data
+FIG.5 . Empirical quantiles of ˆH , ˆH1, ˆH2 on the circle (x − 0.5)2 +(y − 0.5)2 = 0.252 based on 300 simulation
+runs; θ= arctan((y − 0.5)/(x − 0.5)); red curves are the true function; green curves are 5% and 95% pointwise
+empirical quantiles, respectively; blue curves are 25% and 75% empirical quantiles, respectively; black curves
+are empirical means.
+
+===== PDF PAGE 17 =====
+854 J. SHEN AND T. HSING
+counterparts ˆH , ˆH1 and ˆH2. A simulation study is also included there to demonstrate this
+numerically.
+We could go beyond the setting of [B] and consider data locations that are less regular; for
+instance, the ti ’s are distributed as i.i.d. uniform [0,1] or belong to a Poisson point process.
+In that case, one might be able to exclude those data for which the gaps are not of the order
+n−1 and also improvise in some ways in ˆH′, ˆH′
+1 and ˆH′
+2 to still obtain meaningful estimators.
+However, much of what we know so far in that regard is still preliminary and will require
+more investigations.
+7.2. Nonconstant variance. Consider the model
+Y(t) = σ(t)X(t),
+where X is mBm as deﬁned in Deﬁnition1.1 with σ = 1, and σ(t) a function that determines
+the variance of Y(t). Allowing σ(t) to vary with t broadens the mBm process considerably.
+As before, assume that Y is observed on a grid.
+First, consider the case that σ(t) is known. Deﬁne
+G(H;n,h,σ) := −2H logn + logσ
+2 + logg(H, 0,h) +E logχ2
+1 .
+As the constant variance case, one can ﬁrst obtain ˆG(H(t);n,h,σ(t)) by local polynomial
+regression based on data /Delta1q
+h/nY(ti) and then estimate H(t) by
+ˆH′(t) := G−1 ( ˆG
+(
+H(t);n,h,σ(t)
+)
+;n,h,σ(t)
+)
+.(7.1)
+Intuitively, the properties of ˆH′(t) should be quite similar to those of ˆH(t) in the constant
+variance case so long as σ(t) is sufﬁciently smooth. To that end, we deﬁne
+[S] σ(·) ∈ Hp((0, 1)d) and inft σ(t)>δ for some δ> 0.
+Propositions S.7.1 and S.7.2 of the Supplementary Material [ 15] show that the essence of
+Theorem 8.2 and Theorem 3.2 established for the constant variance assumption continues to
+hold for the nonconstant variance case under [S]. In particular, it can be seen that ˆH′(t) con-
+tinues to achieve the minimax convergence rate of(nd log2 n)− p
+2p+d under the two scenarios:
+• d ≤ 2, p ≥ q ≥ 2a n da n yH ,
+• d = 3, 3 >p ≥ q = 2a n da n yH.
+Next, we discuss the case where σ(t) is unknown. First, we consider ˆH1 which does not
+require knowing σ(t). Following the same steps as in the proof of Theorem 4.1 and Proposi-
+tion S.7.2, it is straightforward to conclude that the optimal convergence rate of ˆH1 based on
+Y is the same as that based on X when d ≤ 3a n dq ≥ 2, which is n− dp
+2p+d . This is somewhat
+worse than the minimax rate (nd log2 n)− p
+2p+d . One possible way to improve upon ˆH1 is to
+consider a modiﬁed version of ˆH2 obtained as follows. Step 1: estimateH(t) by ˆH1(t),s t e p2 :
+based on ˆH1, estimate σ(t) nonparametrically by some ˆσ(t), and step 3: based on ˆσ(t),e s -
+timate H(t) by ˆH(t). There are a few challenges in making this approach work. First, it in-
+volves the choices of three smoothing parameters, one for each of ˆH1, ˆσ and ˆH . This makes
+the implementation difﬁcult. Also, in order for ˆH2(t) to achieve the rate (nd log2 n)− p
+2p+d ,i t
+is necessary that ˆσ(t) ﬁrst achieves the rate n− dp
+2p+d (logn)− d
+2p+d . We conjecture that this is
+possible only if H(t) ≤ 0.5; see additional discussions and simulation results in Section S.7
+of the Supplementary Material [15]. A complete solution of this problem is beyond the scope
+of this paper.
+
+===== PDF PAGE 18 =====
+HURST FUNCTION ESTIMATION 855
+8. Proofs. Due to space limitation, we only include proofs of Theorem3.1, Theorem 3.2
+and Theorem 3.3 in this section. Proofs for other results can be found in the Supplementary
+Material [15].
+8.1. Proof of Theorem 3.1. The proof is based on the general approach introduced in
+Theorem 2.5 of [19], which, in our context, can be described as follows. For candidate Hurst
+functions H1 and H2,l e t K(H1∥H2) be the Kullback–Leibler divergence between mBms
+with Hurst functions H1 and H2 observed on /Omega1n ={ (j − 1/2)/n, j = 1,...,n }. Suppose
+that Hiδ, i = 0, 1,...,N δ are Nδ+ 1 candidate Hurst functions in Hp((0, 1),M) satisfying
+∥Hjδ − Hkδ∥q ≥ 2δ> 0, 0 ≤ j,k ≤ Nδ,(8.1)
+and
+1
+Nδ
+Nδ∑
+i=1
+K(Hiδ∥H0δ) ≤ αlog(Nδ),(8.2)
+where α∈ (0, 1/8).T h e n
+inf
+˜Hn
+sup
+H∈Hp((0,1),M)
+PH
+(
+∥ ˜Hn − H∥q ≥ δ
+)
+≥
+√ Nδ
+1 + √ Nδ
+(
+1 − 2α−
+√
+2α
+logNδ
+)
+> 0.
+We proceed to construct a set of functions that satisfy the conditions (8.1)a n d( 8.2) above
+where δand Nδ depend on n,a n dδcorresponds to the rate in the theorem.
+First, let H0,δ≡ 1/2, which is the Hurst function of the standard Brownian motion. Deﬁne
+κ(x) =
+⎧
+⎪⎨
+⎪⎩
+exp
+{
+− 1
+x + 1
+2
+− 1
+x − 1
+2
+}
+− 1
+2 <x< 1
+2,
+0o t h e r w i s e .
+It is clear that κ is a nonnegative function with support(−1/2, 1/2) and has derivatives of all
+orders. Let
+M1 = sup
+x
+⏐⏐κ(⌊p⌋+1)(x)
+⏐
+⏐
+/M and φ(x) = κ(x)/M1.
+Also, for some sequence m = mn,s e t
+φmj(x) = m−p φ(mx − j), j = 1,...,m − 1.
+We will specify m later and deﬁne δand Nδ in terms of m.
+It is clear that the support of φmj is ((j − 1/2)/m,(j + 1/2)/m), and therefore the φmj’s
+have nonoverlapping supports. For any vector a = (a1,...,a m−1 ) with each aj = 0o r1 ,
+deﬁne
+Ha(t) = 1
+2 +
+m−1∑
+j=1
+aj φmj(x).(8.3)
+Clearly, for sufﬁciently largem and all a,
+sup
+x,y∈(0,1)
+|H(⌊p⌋)
+a (x) − H(⌊p⌋)
+a (y)|
+|x − y|p−⌊p⌋
+≤ sup
+x,y∈[1/(2m),3/(2m)]
+m−(p−⌊p⌋)|φ(⌊p⌋)(mx − 1) − φ(⌊p⌋)(my − 1)|
+|x − y|p−⌊p⌋
+
+===== PDF PAGE 19 =====
+856 J. SHEN AND T. HSING
+≤ M sup
+x,y∈[1/(2m),3/(2m)]
+m−(p−⌊p⌋)|mx − my|
+|x − y|p−⌊p⌋
+≤ M sup
+x,y∈[1/(2m),3/(2m)]
+m−(p−⌊p⌋)|mx − my|p−⌊p⌋
+|x − y|p−⌊p⌋ = M.
+For different a and a′,w eh a v e
+∥Ha − Ha′∥q =
+
+
+
+∑
+j
+(
+aj − a′
+j
+)
+φmj
+
+
+
+
+q
+= m−p−1/q
+(∑
+j
+⏐
+⏐
+aj − a′
+j
+⏐
+⏐
+)
+1/q
+∥φ∥q.
+Denote by D1 the set of all vectors a such that if a,a′ ∈ D1,
+∑
+j
+⏐⏐aj − a′
+j
+⏐
+⏐
+> m − 1
+4 .
+By the Varshamov–Gilbert bound, we have
+#(D1) ≥ exp
+{
+(m − 1)/8
+}
+.
+Now take the Hiδ’s to be the Ha,a ∈ D1,a n dNδ= #(D1). It follows that
+∥Hiδ − Hjδ∥q ≥ m−p
+(m − 1
+4m
+)1/q
+∥φ∥q.
+Then let
+δ= m−p
+(m − 1
+4m
+)1/q
+∥φ∥q = O
+(
+m−p )
+.
+It follows from Proposition 8.1 below with an = O(m−p ) and bn = O(m−(p−1)) that there
+exists some C ∈ (0,∞ ) such that, uniformly in i,
+K(Hiδ∥H0δ) ≤ C
+(
+m−2(p−1) + nm−2p)
+log2 n
+for large n.F i xa n yα∈ (0, 1/8). To ensure that (8.2) holds, it sufﬁces to ﬁnd m such that
+αlog(Nδ) ≥ αm − 1
+8 ≥ C
+(
+m−2(p−1) + nm−2p)
+log2 n.
+To achieve the slowest rate δ, we pick the smallest m for each n such that this inequality
+holds, in which case
+m ∼ (C/α)
+(
+n log2 n
+) 1
+2p+1 .
+The proof is complete. □
+The proof of Theorem 3.1 now hinges on the computation of K(Hiδ∥H0δ), which is ac-
+complished in the proposition below.
+PROPOSITION 8.1. Let H0(t) ≡ 1/2 and H(t) = 1/2+φ(t), where supt |φ(t)|≤a n and
+supt |φ′(t)|≤b n with (an + bn) logn → 0. Then there is a ﬁnite (universal) constant C such
+that
+lim sup
+n→∞
+{(
+b2
+n + na2
+n
+)
+log2 n
+}−1 K(H ∥H0) ≤ C.(8.4)
+
+===== PDF PAGE 20 =====
+HURST FUNCTION ESTIMATION 857
+A detailed proof for this proposition can be found in the Supplementary Material [15]. The
+general idea is the following.
+Denote by X the mBm with Hurst function H . To simplify notation, we assume that the
+data is observed on{i/n,i = 1,...,n } instead of on /Omega1n. This does not change the conclusion
+in the result. Deﬁne
+Yi = √ n
+(
+X
+( i
+n
+)
+− X
+(i − 1
+n
+))
+,i = 1,...,n.
+Let /Sigma1be covariance matrix of (Y1,...,Y n). It is well known that
+K(H ∥H0) = 1
+2
+[
+− log|/Sigma1|−n + tr(/Sigma1)
+]
+.(8.5)
+Let D = (dij)n×n = /Sigma1− I and λi the eigenvalues of D. Intuitively, D will be a matrix
+shrinking to 0-matrix with n increasing. Under some conditions for the shrinking speed, we
+have
+− log|/Sigma1|=−
+∑
+i
+log(1 + λi) =− tr(D) + O
+(
+tr
+(
+D2))
+.(8.6)
+Now by (8.5), we can obtain
+K(H ∥H0) = O
+(
+tr
+(
+D2))
+= O
+(
+∥D∥2
+F
+)
+.
+Therefore, to prove this proposition, we need to carefully study how fast D converges to 0,
+for which a through proof is given in the Supplementary Material [15].
+8.2. Proofs of Theorem 3.2 and Theorem 3.3. We begin by developing a few technical
+results needed for the proof. For convenience, let
+Wn(t,h) := σ−1 nH(t)/Delta1q
+h/nX(t),
+Cn(t,s,h) := Cov
+(
+Wn(t,h),Wn(s,h)
+)
+.
+Clearly,
+Cn(t,s,h) = σ−2 nH(t)+H(s)/Delta1q
+h/n,t
+/Delta1q
+h/n,s
+C(t,s),
+where /Delta1q
+h/n,t and /Delta1q
+h/n,s
+denote differencing with respect to t and s, respectively.
+The following theorem addresses the behavior of the covariance of Wn(t,h) for different
+ranges of the gap. There are some similarities between this theorem and Theorem 1 in [10]o r
+Propositions 1 and 2 in [ 1]. However, the results here focus more on the mBm and provides
+the level of precision needed for our results. As noted before, the differencing direction h
+in this paper is generally assumed to be a unit vector that parallels an axis. The following
+theorem is one instance where this is not assumed. The proof is included in the Supplementary
+Material [15].
+THEOREM 8.2. In the following, let t,t +u/n ∈ /Omega1δ. Under assumptions [A1]–[A3], for
+any δ∈ (0, 1) and M> 0, there exist ﬁnite constants Cδ, Cδ,M such that uniformly in n, t:
+(i) |Cn(t,t + u/n, h) − g(H( t),u,h)|≤C δ,Mρn(t) for |u|≤M ;
+(ii) |Cn(t,t + u/n, h)|≤C δ|u|−ψ( t) for u satisfying q|h|+ 1 < |u| < 2bn;
+(iii) |Cn(t,t + u/n, h)|≤C δ|u|− ¯ψ for u satisfying |u| >q |h|+1;
+(iv) for |u|→∞ and |u| < 2bn,
+Cn(t,t + u/n, h) =
+(
+ch(t,u) + O(b logb)
+)
+|u|−ψ( t),
+where ch(t,u) is deﬁned in Theorem 3.3.
+
+===== PDF PAGE 21 =====
+858 J. SHEN AND T. HSING
+Our approach for proving Theorems 3.2 and 3.3 starts from the following decomposition:
+ˆG
+(
+H(t);n,h
+)
+=
+∑
+i
+2st,p,b(ti) log
+⏐⏐/Delta1q
+h/nX(ti)
+⏐⏐
+= I1(t,n,b) + ˜β1(t,h;n,b) + logσ2,
+(8.7)
+where
+I1(t,n,b) =− 2l o gn
+∑
+i
+st,p,b(ti)H(t i)
+and
+˜β1(t,h;n,b) = 2
+∑
+i
+st,p,b(ti) log
+⏐⏐Wn(ti,h)
+⏐
+⏐
+.
+Denote
+˜g(H, h) = log
+(
+g(H, 0,h)
+)
++E logχ2
+1 .(8.8)
+It is easy to see if H(t) bounded away from 1 and H(t) ∈ Hp((0, 1)d),t h e n˜g(H( t),h) ∈
+Hp((0, 1)d). Clearly, I1(t,n,b) approximates −2(logn)H(t ). Similarly, the following
+lemma suggests that ˜β1(t,h;n,b) could be a reasonable estimator of ˜g(H( t),h).
+LEMMA 8.3. Under assumption [A3], we have
+E
+[
+2l o g
+⏐⏐Wn(t,h)
+⏐
+⏐]
+= ˜g
+(
+H(t),h
+)
++ O
+(
+ρn(t)
+)
+.
+Thus, the asymptotic properties of ˆG(H(t);n,h) can be understood by conducting a care-
+ful analysis of ˜β1(t,h;n,b) and I1(t,n,b) , where both I1(t,n,b) and ˜β1(t,h;n,b) con-
+tribute to the asymptotic bias whereas ˜β1(t,h;n,b) determines the asymptotic variance and
+asymptotic distribution. This will be done in the following two lemmas whose proofs along
+with the proof of Lemma 8.3 are given in the Supplementary Material [15].
+LEMMA 8.4. Assume that [K], [A1], [A2] and [A3] hold. We have, uniformly for all
+t ∈[ 0, 1]d ,
+I1(t,n,b) =− 2l o g(n)
+(
+H(t) + R(t,b)
+)
++ O
+( log(n)
+(nb)2∧p
+)
+and
+R(t,b) = O
+(
+bp)
+.
+Furthermore, if p ∈N, we have
+R(t,b) = eT
+1
+(∫
+Dt,b
+K(z)A(z)AT (z)d z
+)−1
+×
+∫
+Dt,b
+K(z)A(z)
+( ∑
+|α|=p
+Rα(t)(bz)α
+)
+dz,
+where e1 = (1, 0,..., 0)T , zα is as deﬁned in (2.6),
+Dt,b ={ z : t + bz ∈ /Omega1δ}∩[ 0, 1]d,
+and
+Rα(t) = |α|
+α!
+∫ 1
+0
+(1 − s)|α|−1DαH(t + sbz)ds.
+
+===== PDF PAGE 22 =====
+HURST FUNCTION ESTIMATION 859
+LEMMA 8.5. Fo rt ∈ (0, 1)d , deﬁne
+Z(t,n)
+:= (nb)− d
+2
+{∑
+i
+K
+(ti − t
+b
+)(
+2l o g
+⏐⏐Wn(ti,h)
+⏐
+⏐
+− ˜g
+(
+H(ti),h
+))
+A
+(ti − t
+b
+)}
+.
+Assume that [A1], [A2] and [A3] hold. If 2ψ(t)>d , then
+Z(t,n) d→ N
+(
+0,σ 2
+H(t)
+∫
+Rd
+f(z)fT (z)d z
+)
+,
+where f(z) = K(z)A(z) and σ2
+H(t) is deﬁned by (3.9); if 2ψ(t) = d, then
+log− 1
+2 (nb)Z(t,n) d→ N(0,/Sigma1),
+where
+/Sigma1= Vd f(0)fT (0)
+g2(H(t , 0,h))
+∫
+B1(0)
+c2
+h(t,x)
+|x|d−1 dx;
+if 2ψ(t)<d , then the characteristic function for (nb)− d
+2 +ψ(t)aT Z(t,n) converges to
+φ(u) = exp
+{
+1
+2
+∞∑
+k=2
+(2iu)k
+k Sk
+}
+,
+where
+Sk =
+∫
+(B1(0))⊗k
+∏k
+i=1 ch(t, zi − zi+1)|zi − zi+1|−ψ( t)fa(zi)
+gk(H(t ), 0,h) dz1 ··· dzk,
+in which zk+1 := z1 and fa = aT f. In addition, for each δ∈ (0, 1) and a ∈Rd , there exist
+constants Cδ and Cδ,a such that all t ∈ /Omega1δ,
+⏐⏐E
+[
+Z(t,n)
+]⏐
+⏐
+≤ Cδ(nb)
+d
+2 ρn(t),
+and
+Var
+(
+aT Z(t,n)
+)
+≤
+⎧
+⎪⎪⎨
+⎪⎪⎩
+Cδ,a if 2ψ(t)>d,
+Cδ,a log(nb) if 2ψ(t) = d,
+Cδ,a(nb)d−2ψ(t) if 2ψ(t)<d.
+PROOFS FOR THEOREMS 3.2 AND 3.3. To simplify notation, write ˜g(t) := ˜g(H( t),h),
+where ˜g(H( t),h) is deﬁned by (8.8), and
+˜β := argmin
+βj1,...,βjS
+∑
+i
+K
+(ti − t
+b
+){
+2l o g
+⏐⏐Wn(ti,h)
+⏐
+⏐
+−
+S∑
+m=1
+βjm
+(ti − t
+b
+)jm
+}2
+.
+Thus we have
+∑
+i
+K
+(ti − t
+b
+){
+2l o g
+⏐
+⏐
+Wn(ti,h)
+⏐
+⏐
+− ˜βT A
+(ti − t
+b
+)}
+A
+(ti − t
+b
+)
+= 0.
+Plug this equation into the deﬁnition of Z(t,n) , basically replacing 2 log|Wn(ti,h)| by ˜βT A
+there, and we obtain
+Z(t,n) = (nb)− d
+2
+{∑
+i
+K
+(ti − t
+b
+)(
+˜βT A
+(ti − t
+b
+)
+− ˜g(ti)
+)
+A
+(ti − t
+b
+)}
+.
+
+===== PDF PAGE 23 =====
+860 J. SHEN AND T. HSING
+If p ∈N, denote the Taylor expansion of ˜g(t + bν) at t up to degree p − 1b y ˘g(t,bν).T h e n
+we have
+˘g(t,bν) − ˜g(t + bν) =− bp
+p!
+∑
+|i|=p
+[
+νiDi ˜g(t)
+]
++ o
+(
+(bν)p)
+.
+Deﬁne
+Mn(b,t) = (nb)−d ∑
+ν= i
+nb ,i∈/Omega1t
+A(ν)A(ν)T K(ν),
+where /Omega1t ={ i : i ∈Zd,t + i/n ∈ (0, 1)d}. On one hand,
+(nb)−d ∑
+ν= i
+nb ,i∈/Omega1t
+A(ν)K(ν)
+(˜βT A(ν) −˘g(t,bν)
+)
+= (nb)−d ∑
+ν= i
+nb ,i∈/Omega1t
+A(ν)A(ν)T K(ν)
+⎛
+⎜⎜
+⎜⎜⎜
+⎜⎝
+˜
+β1 − b|j1|
+j1!
+∂j1 ˜g(t)
+∂tj1
+...
+˜βS − b|jS|
+jS!
+∂jS ˜g(t)
+∂tjS
+⎞
+⎟⎟
+⎟⎟⎟
+⎟⎠
+= Mn(b,t)
+⎛
+⎜⎜
+⎜
+⎜⎜⎜⎝
+˜
+β1 − b|j1|
+j1!
+∂j1 ˜g(t)
+∂tj1
+...
+˜βS − b|jS|
+jS!
+∂jS ˜g(t)
+∂tjS
+⎞
+⎟⎟
+⎟
+⎟⎟⎟⎠
+.
+On the other hand,
+(nb)−d ∑
+ν= i
+nb ,i∈/Omega1t
+A(ν)K(ν)
+(˜βT A(ν) −˘g(t,bν)
+)
+= (nb)− d
+2 Z(t,n) + B(t,b) + o
+(
+bp)
+,
+where
+B(t,b) =− bp
+p!
+∑
+|i|=p
+[
+(nb)−d ∑
+ν∈{ j
+nb ,j∈/Omega1t}
+A(ν)K(ν)νiDi ˜g(t)
+]
+= O
+(
+bp)
+.
+If p/∈N, denote the Taylor expansion of ˜g(t + bν) at t up to degree ⌊p⌋ by ˘g(t,bν).T h e n
+we have
+˘g(t,bν) − ˜g(t + bν) = O
+(
+(bν)p)
+.
+From this, we can still get B(t,b) = O(bp), although an explicit form is not available. Thus
+⎛
+⎜⎜
+⎜
+⎜⎜⎜⎝
+˜
+β1 − b|j1|
+j1!
+∂j1 ˜g(t)
+∂tj1
+...
+˜βS − b|jS|
+jS!
+∂jS ˜g(t)
+∂tjS
+⎞
+⎟⎟
+⎟
+⎟⎟⎟⎠
+= Mn(b,t)−1(
+(nb)− d
+2 Z(t,n) + B(t,b) + o
+(
+bp))
+.
+
+===== PDF PAGE 24 =====
+HURST FUNCTION ESTIMATION 861
+It is easily shown that
+Mn(b,t) → M :=
+∫
+B1(0)
+A(ν)A(ν)T K(ν)d ν
+uniformly. Therefore,
+˜β1 = ˜g(t) +
+(
+1 + o(1)
+)
+eT
+1 M−1 (
+(nb)− d
+2 Z(t,n) + B(t,b)
+)
+.(8.9)
+Combining this with equation (8.7) and Lemma 8.4, we obtain
+ˆG
+(
+H(t);n,h
+)
+= ˜g
+(
+H(t),h
+)
+− 2l o g(n)H(t ) + logσ2 − 2l o g(n)R(t,b) + O
+( log(n)
+(nb)2∧p
+)
++ eT
+1 M−1 (
+(nb)− d
+2 Z(t,n) + B(t,b)
+)(
+1 + o(1)
+)
+= G
+(
+H(t);n,h
+)
+− 2l o g(n)R(t,b) + O
+( log(n)
+(nb)2∧p
+)
++ eT
+1 M−1 (
+(nb)− d
+2 Z(t,n) + B(t,b)
+)(
+1 + o(1)
+)
+,
+(8.10)
+where the last line uses the deﬁnitions of G and ˜g in equations (2.4)a n d(8.8). As such, the
+bias of ˆG(H(t);n,h) is
+Bias
+( ˆG
+(
+H(t);n,h
+))
+= O
+(
+log(n)R(t,b) + log(n)
+(nb)2∧p + (nb)− d
+2
+⏐⏐EZ(t,n)
+⏐
+⏐
++ eT
+1 M−1 B(t,b)
+)
+= O
+(
+log(n)
+(
+bp + (nb)−2∧p )
++ ρn(t)
+)
+= O
+(
+T1(n,b, t)
+)
+,
+(8.11)
+where the last line use facts that R(t,b),B( t,b) = O(bp) and |EZ(t,n)|= O((nb)
+d
+2 ρn(t))
+in Lemma 8.5. Similarly,
+Var
+( ˆG
+(
+H(t);n,h
+))
+= O
+(
+(nb)−d Var
+(
+eT
+1 M−1 Z(t,n)
+))
+= O
+(
+T2(n,b, t)
+)
+,
+(8.12)
+where the last step uses the result on the variance ofZ in Lemma 8.5. The two bounds, (8.11)
+and (8.12), complete the proof for Theorem 3.2.
+Finally, in view of (8.10), ˆG(H(t);n,h) − E ˆG(H(t);n,h) has the same asymptotic dis-
+tribution as that of eT
+1 M−1 (Z(t,n) − EZ(t,n)) . Applying Lemma 8.5, it is straightforward
+to obtain those asymptotic distributions listed in Theorem 3.3. This completes the proofs of
+Theorem 3.2 and Theorem 3.3. □
+Due to space limitation, the proofs of Theorem 3.4 and Corollary 3.5 are deferred to
+the Supplementary Material [ 15]. However, the general idea behind those is the simple fact
+∂G(H;n,h)/∂H =− 2l o gn+O(1). Intuitively,G(H;n,h) behaves increasingly like a lin-
+ear function with slope −2l o gn as n increases. Therefore, solving the inversion problem in
+obtaining ˆH will have the effect of shrinking the estimation error of ˆG(H(t);n,h) by the rate
+logn, and the asymptotic linearity of G(H;n,h) also allows ˆH to preserve the asymptotic
+distribution of ˆG(H(t);n,h). Detailed justiﬁcations of these can be found in the Supplemen-
+tary Material [15].
+
+===== PDF PAGE 25 =====
+862 J. SHEN AND T. HSING
+Acknowledgments. The authors wish to sincerely thank the referees and the Associate
+Editor for their very helpful comments that led to a considerable reﬁnement and generaliza-
+tion of the results.
+SUPPLEMENTARY MATERIAL
+Supplement to “Hurst function estimation” (DOI: 10.1214/19-AOS1825SUPP; .pdf).
+This supplemental material includes all the proofs not included in the paper.
+REFERENCES
+[1] B ARDET ,J . - M .a n dS URGAILIS , D. (2013). Nonparametric estimation of the local Hurst function
+of multifractional Gaussian processes. Stochastic Process . Appl. 123 1004–1045. MR3005013
+https://doi.org/10.1016/j.spa.2012.11.009
+[2] B ENASSI ,A . ,J AFFARD ,S .a n dR OUX , D. (1997). Elliptic Gaussian random processes. Rev. Mat. Iberoam.
+13 19–90. MR1462329 https://doi.org/10.4171/RMI/217
+[3] B ERTRAND ,P .R . ,F HIMA ,M .a n dG UILLIN , A. (2013). Local estimation of the Hurst index of multi-
+fractional Brownian motion by increment ratio statistic method. ESAIM Probab. Stat. 17 307–327.
+MR3066382 https://doi.org/10.1051/ps/2011154
+[4] B REUER ,P .a n dM AJOR , P. (1983). Central limit theorems for nonlinear functionals of Gaussian ﬁelds.
+J. Multivariate Anal. 13 425–441. MR0716933 https://doi.org/10.1016/0047-259X(83)90019-2
+[5] C OEURJOLLY , J.-F. (2005). Identiﬁcation of multifractional Brownian motion. Bernoulli 11 987–1008.
+MR2188838 https://doi.org/10.3150/bj/1137421637
+[6] C OHEN , S. (1999). From self-similarity to local self-similarity: The estimation problem. InFractals: Theory
+and Applications in Engineering 3–16. Springer, London. MR1726364
+[7] F ALCONER , K. J. (2002). Tangent ﬁelds and the local structure of random ﬁelds. J. Theoret. Probab. 15
+731–750. MR1922445 https://doi.org/10.1023/A:1016276016983
+[8] F AN,J .a n dGIJBELS , I. (1996). Local Polynomial Modelling and Its Applications. Monographs on Statistics
+and Applied Probability 66. CRC Press, London. MR1383587
+[9] H ERBIN , E. (2006). From N parameter fractional Brownian motions to N parameter multifractional Brow-
+nian motions. Rocky Mountain J . Math. 36 1249–1284. MR2274895 https://doi.org/10.1216/rmjm/
+1181069415
+[10] H SING ,T . ,B ROWN ,T .a n dT HELEN , B. (2016). Local intrinsic stationarity and its inference. Ann. Statist.
+44 2058–2088. MR3546443 https://doi.org/10.1214/15-AOS1402
+[11] L ÉVY-VÉHEL ,J .a n dP ELTIER , R. F. (1995). Multifractional Brownian motion: Deﬁnition and preliminary
+results. Rapport de Recherche de L’INRIA N2645.
+[12] L OH, W.-L. (2015). Estimating the smoothness of a Gaussian random ﬁeld from irregularly spaced data via
+higher-order quadratic variations. Ann. Statist. 43 2766–2794. MR3405611 https://doi.org/10.1214/
+15-AOS1365
+[13] M ANDELBROT ,B .B .a n dV AN NESS , J. W. (1968). Fractional Brownian motions, fractional noises and
+applications. SIAM Rev. 10 422–437. MR0242239 https://doi.org/10.1137/1010093
+[14] N OURDIN , I. (2012). Selected Aspects of Fractional Brownian Motion. Bocconi & Springer Series 4.
+Springer, Milan. MR3076266 https://doi.org/10.1007/978-88-470-2823-4
+[15] S HEN ,J .a n dH SING , T. (2020). Supplement to “Hurst function estimation.” https://doi.org/10.1214/
+19-AOS1825SUPP.
+[16] S TEIN , M. L. (1999). Interpolation of Spatial Data : Some Theory for Kriging. Springer Series in Statistics.
+Springer, New York.MR1697409 https://doi.org/10.1007/978-1-4612-1494-6
+[17] S TOEV,S .A .a n dT AQQU , M. S. (2006). How rich is the class of multifractional Brownian motions?
+Stochastic Process. Appl. 116 200–221. MR2197974 https://doi.org/10.1016/j.spa.2005.09.007
+[18] T AQQU , M. S. (1974/75). Weak convergence to fractional Brownian motion and to the Rosenblatt process.
+Z. Wahrsch. Ve r w. Gebiete 31 287–302. MR0400329 https://doi.org/10.1007/BF00532868
+[19] T SYBAKOV , A. B. (2009). Introduction to Nonparametric Estimation. Springer Series in Statistics. Springer,
+New York. Revised and extended from the 2004 French original. Translated by Vladimir Zaiats.
+MR2724359 https://doi.org/10.1007/b13794

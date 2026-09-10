@@ -1,0 +1,18 @@
+✖ [2944/2947] Building Hurst.EstimationToTesting (19s)
+trace: .> LEAN_PATH=/Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/packages/Cli/.lake/build/lib/lean:/Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/packages/batteries/.lake/build/lib/lean:/Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/packages/Qq/.lake/build/lib/lean:/Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/packages/aesop/.lake/build/lib/lean:/Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/packages/importGraph/.lake/build/lib/lean:/Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/packages/plausible/.lake/build/lib/lean:/Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/packages/mathlib/.lake/build/lib/lean:/Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/build/lib/lean /Users/jinqishen/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lean /Users/jinqishen/repo/lean_verification/hurst_function_estimation/Hurst/EstimationToTesting.lean -o /Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/build/lib/lean/Hurst/EstimationToTesting.olean -i /Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/build/lib/lean/Hurst/EstimationToTesting.ilean -c /Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/build/ir/Hurst/EstimationToTesting.c --setup /Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/build/ir/Hurst/EstimationToTesting.setup.json --json
+warning: Hurst/EstimationToTesting.lean:86:8: automatically included section variable(s) unused in theorem `_private.Hurst.EstimationToTesting.0.Hurst.exists_measurable_nearestPoint`:
+  mΘ
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit mΘ in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+error: Hurst/EstimationToTesting.lean:152:13: Unknown constant `ENNReal.mul_le_mul_left`
+error: Lean exited with code 1
+⚠ [2945/2947] Built Hurst.KLMixture (20s)
+warning: Hurst/KLMixture.lean:125:8: `MeasureTheory.lintegral_finset_sum` has been deprecated: Use `MeasureTheory.lintegral_finsetSum` instead
+warning: Hurst/KLMixture.lean:126:8: `MeasureTheory.lintegral_finset_sum` has been deprecated: Use `MeasureTheory.lintegral_finsetSum` instead
+⚠ [2946/2947] Built Hurst.MutualInformation (2.7s)
+warning: Hurst/MutualInformation.lean:230:8: `MeasureTheory.lintegral_finset_sum` has been deprecated: Use `MeasureTheory.lintegral_finsetSum` instead
+Some required targets logged failures:
+- Hurst.EstimationToTesting
+error: build failed

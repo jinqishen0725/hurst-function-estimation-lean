@@ -1,0 +1,14 @@
+import Hurst.MemoryMeanLimit
+import Hurst.WeightedRowEnergy
+#check variance_eq_integral_sq
+#check variance_eq_integral_sq_sub_mean
+#check integral_sq_sub_eq_variance_add
+#check integral_sq_sub_mean
+#check variance_eq
+#check variance_def
+#check integral_sub_const_sq
+#check MeasureTheory.integral_sub
+#check ProbabilityTheory.variance_add_const
+#check ProbabilityTheory.variance_const_sub
+#check ProbabilityTheory.variance_nonneg
+#check ProbabilityTheory.integrable_sq_iff_integrable_sq_sub_mean

@@ -1,0 +1,9 @@
+import Hurst.RawScaleTransfer
+#check Nat.le_ceil
+#check Nat.ceil_le
+#check Nat.ceil_pos
+#check Nat.ceil_lt_add_one
+#check Nat.ceil_le_add_one
+#check Nat.one_le_ceil
+#check Nat.cast_ceil
+#check Nat.ceil_lt

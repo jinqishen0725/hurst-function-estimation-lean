@@ -1,0 +1,9 @@
+import Hurst.ActiveSetReindex
+#check StrictMono.nat_le_nat
+#check StrictMono.monotone
+#check StrictMono.id_le
+#check StrictMono.le_apply
+#check Nat.dist_le_dist_of_le
+#check Nat.dist_le_dist_of_add_le_add
+#check Nat.sub_le_sub
+#check Fin.val_fin_lt

@@ -1,0 +1,270 @@
+{
+  "date": "2026-09-09",
+  "workflow": "written -> conditional Lean -> discharge inputs",
+  "written_status": "Proof21 completes explicitly stated unknown-scale fine-limit regimes; backlog unchanged.",
+  "conditional_mainline_complete": false,
+  "external_input_stage_started": false,
+  "note": "Conditional implications connected under explicit delayed supporting premises. INT-CLT, INT-VAR, INT-LONG, INT-SCALE, INT-MOM-RISK remain where listed. INT-MOM-RISK is an internal actual-model bound, not EXT-MOM; its derivation from EXT-MOM is still unformalized. Unconditional paper coverage remains 2/27.",
+  "results": [
+    {
+      "declaration": "Hurst.hurstHolder_q1_unknown_bias_of_scale_L1",
+      "status": "input_discharged",
+      "inputs": [
+        "normalized actual scale L1 error tends to zero"
+      ],
+      "discharged_by": [
+        "Hurst.hurstHolder_q1_scale_L1_negligible"
+      ],
+      "closed_theorem": "Hurst.hurstHolder_q1_unknown_scale_expected_bias_leading",
+      "scope": "integer p>=1, C^p, fixed interior t, literal optimal bandwidth, global H upper bound<3/4, any unknown nonzero scale"
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q1_conditional_all_scale_short_mainline",
+      "status": "conditional",
+      "original_results": [
+        "3.3",
+        "3.4",
+        "3.5",
+        "4.3"
+      ],
+      "inputs": [
+        "INT-CLT",
+        "INT-VAR"
+      ],
+      "scope": "q1,p=r+1>=1,0<a<=H<=b<3/4, H is C^p, fixed interior t, literal optimal bandwidth, any common nonzero scale",
+      "written_proofs": [
+        "11",
+        "13",
+        "21"
+      ]
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q1_conditional_raw_optimal_CLT",
+      "status": "conditional",
+      "original_results": [
+        "3.3",
+        "3.5"
+      ],
+      "inputs": [
+        "INT-CLT",
+        "INT-VAR"
+      ],
+      "scope": "q1,p=r+1>=1,0<a<=H<=b<3/4, H is C^p, fixed interior t, literal optimal bandwidth, any common nonzero scale; raw calibrated log statistic, limit mean -2R",
+      "written_proofs": [
+        "11",
+        "13"
+      ]
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q1_conditional_all_scale_pilot_CLT",
+      "status": "conditional",
+      "original_results": [
+        "4.1"
+      ],
+      "inputs": [
+        "INT-CLT: joined two-scale polynomial statistic",
+        "INT-VAR: joined correlation-square row bound, normalized weight energy and variance limit"
+      ],
+      "scope": "q1,p>=1, actual grid, arbitrary bandwidth/normalization satisfying explicit inputs, any nonzero scale",
+      "written_proofs": [
+        "15"
+      ]
+    },
+    {
+      "declaration": "Hurst.q1_conditional_allfinite_minimax_mainline",
+      "status": "conditional",
+      "original_results": [
+        "3.1",
+        "3.2",
+        "3.4",
+        "4.3"
+      ],
+      "inputs": [
+        "INT-MOM-RISK: Q1RawMomentBound (used only when s>2)"
+      ],
+      "scope": "q1,p>=1,0<a<1/2<b<3/4, M>0, fixed finite s>=1, whole (0,1), same fixed-range class, known and unknown nonzero scale",
+      "written_proofs": [
+        "18",
+        "19",
+        "20"
+      ]
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q2_conditional_all_scale_short_mainline",
+      "status": "conditional",
+      "original_results": [
+        "3.3",
+        "3.4",
+        "3.5",
+        "4.3"
+      ],
+      "inputs": [
+        "INT-CLT",
+        "INT-VAR",
+        "INT-SCALE"
+      ],
+      "scope": "q2,p=r+1>=2,0<a<=H<=b<u<1, H is C^p, fixed interior t, literal optimal bandwidth, any common nonzero scale",
+      "written_proofs": [
+        "11",
+        "13",
+        "21"
+      ]
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q2_conditional_raw_optimal_CLT",
+      "status": "conditional",
+      "original_results": [
+        "3.3",
+        "3.5"
+      ],
+      "inputs": [
+        "INT-CLT",
+        "INT-VAR"
+      ],
+      "scope": "q2,p=r+1>=2,0<a<=H<=b<u<1, H is C^p, fixed interior t, literal optimal bandwidth, any common nonzero scale; raw calibrated log statistic, limit mean -2R",
+      "written_proofs": [
+        "11",
+        "13"
+      ]
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q2_conditional_all_scale_pilot_CLT",
+      "status": "conditional",
+      "original_results": [
+        "4.1"
+      ],
+      "inputs": [
+        "INT-CLT: joined two-scale polynomial statistic",
+        "INT-VAR: joined correlation-square row bound, normalized weight energy and variance limit"
+      ],
+      "scope": "q2,p>=2, actual grid, arbitrary bandwidth/normalization satisfying explicit inputs, any nonzero scale",
+      "written_proofs": [
+        "15"
+      ]
+    },
+    {
+      "declaration": "Hurst.q2_conditional_allfinite_minimax_mainline",
+      "status": "conditional",
+      "original_results": [
+        "3.1",
+        "3.2",
+        "3.4",
+        "4.3"
+      ],
+      "inputs": [
+        "INT-MOM-RISK: Q2RawMomentBound (used only when s>2)"
+      ],
+      "scope": "q2,p>=2,0<a<1/2<b<1, M>0, fixed finite s>=1, whole (0,1), same fixed-range class, known and unknown nonzero scale",
+      "written_proofs": [
+        "18",
+        "19",
+        "20"
+      ]
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q1_conditional_all_scale_critical_mainline",
+      "status": "conditional",
+      "original_results": [
+        "3.3",
+        "3.4",
+        "4.3"
+      ],
+      "inputs": [
+        "INT-CLT: actual quadratic Gaussian limit",
+        "INT-VAR: weighted fourth-correlation double sum, normalized raw mean and second-moment smallness",
+        "INT-SCALE: two-bandwidth scale L1 smallness"
+      ],
+      "scope": "q1,p>=1,0<a<=H<=b<1, interior t, H(t)=3/4, positive bandwidths tending to zero with n*bandwidth tending to infinity; additional stated weighted moment/smallness inputs; any nonzero scale",
+      "written_proofs": [
+        "13",
+        "14",
+        "21"
+      ]
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q1_conditional_all_scale_long_mainline",
+      "status": "conditional",
+      "original_results": [
+        "3.3",
+        "3.4",
+        "4.3"
+      ],
+      "inputs": [
+        "INT-LONG: actual quadratic limit Q",
+        "INT-VAR: weighted fourth-correlation double sum, normalized raw mean and second-moment smallness",
+        "INT-SCALE: two-bandwidth scale L1 smallness"
+      ],
+      "scope": "q1,p>=1,0<a<=H<=b<1, interior t, H(t)>3/4, positive bandwidths tending to zero with n*bandwidth tending to infinity; additional stated weighted moment/smallness inputs; any nonzero scale",
+      "written_proofs": [
+        "13",
+        "14",
+        "21"
+      ]
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q1_conditional_all_scale_memory_mainline",
+      "status": "conditional",
+      "original_results": [
+        "3.3",
+        "3.4",
+        "4.3"
+      ],
+      "inputs": [
+        "INT-LONG or INT-CLT: actual quadratic limit Z",
+        "INT-VAR: weighted fourth-correlation energy and normalized raw moments",
+        "INT-SCALE"
+      ],
+      "scope": "q1,p>=1,0<a<=H<=b<1, interior t, explicit two-bandwidth hypotheses; general finite bias beta; estimator limit -Z-beta; any nonzero scale",
+      "written_proofs": [
+        "13",
+        "14",
+        "21"
+      ]
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q1_conditional_all_scale_pilot_memory_limit",
+      "status": "conditional",
+      "original_results": [
+        "4.1"
+      ],
+      "inputs": [
+        "INT-LONG or INT-CLT: joined quadratic limit",
+        "INT-VAR: joined weighted fourth-correlation energy smallness"
+      ],
+      "scope": "actual q1 two-scale joined pilot, explicit normalization and weighted conditions, any nonzero scale",
+      "written_proofs": [
+        "14",
+        "15"
+      ]
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q2_unknown_scale_expected_bias_of_scale_L1",
+      "status": "conditional",
+      "original_results": [
+        "3.4",
+        "4.3"
+      ],
+      "inputs": [
+        "INT-SCALE: E|actual q2 scale estimator|/(log n * delta^p) tends to zero"
+      ],
+      "scope": "q2,p=r+1>=2,C^p,interior t,literal optimal bandwidth,0<a<=H<=b<u<1,any unknown nonzero scale",
+      "written_proofs": [
+        "21"
+      ]
+    }
+  ],
+  "not_yet_closed_conditionally": [],
+  "input_registry": "verification/dependency_plan.md",
+  "completion_boundary": "Previous stage connected downstream implications only; it does not satisfy the user acceptance boundary.",
+  "external_literature_only_mainline_complete": false,
+  "unconditional_mainline_complete": false,
+  "not_yet_discharged": [
+    "INT-CLT: finite Hermite polynomial triangular-array limits, including joined pilot indices",
+    "INT-VAR: actual variance limits and weighted fourth-correlation/mean/second-moment smallness in memory branches",
+    "INT-LONG: actual quadratic-statistic to second-chaos limit",
+    "INT-SCALE: q2 optimal-bandwidth and memory-branch scale L1 smallness",
+    "INT-MOM-RISK: actual uniform calibrated raw moments; EXT-MOM to this bound is not formalized"
+  ],
+  "user_acceptance_boundary": "All internal supporting lemmas must be proved in Lean. Only explicitly identified published external lemmas may remain hypotheses.",
+  "mainline_complete": false
+}

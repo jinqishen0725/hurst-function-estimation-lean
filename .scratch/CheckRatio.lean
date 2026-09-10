@@ -1,0 +1,9 @@
+import Hurst.OptimalBandwidth
+import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
+#check Real.continuousAt_log
+#check Real.continuousAt_rpow_const
+#check Filter.Tendsto.rpow_const
+#check tendsto_one_div_atTop_nhds_zero_nat
+#check Filter.EventuallyEq.tendsto_iff
+#check Filter.Tendsto.congr'
+#check Real.log_mul

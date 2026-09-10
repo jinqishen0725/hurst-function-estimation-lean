@@ -1,0 +1,12 @@
+import Hurst.FirstStrideDecay
+import Hurst.LatticeCount
+#check Nat.dist_eq_sub_of_le_left
+#check Nat.dist_eq_sub_of_le_right
+#check Finset.card_le_univ
+#check Fintype.card_fin
+#check Real.rpow_mul
+#check Real.sqrt_eq_rpow
+#check Real.sq_sqrt
+#check Real.sqrt_sq_eq_abs
+#check Filter.Tendsto.mul_atTop
+#check Filter.Tendsto.atTop_mul_atTop

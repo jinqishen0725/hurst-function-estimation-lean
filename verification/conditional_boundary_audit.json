@@ -1,0 +1,178 @@
+{
+  "date": "2026-09-09",
+  "conditional_endpoints": 13,
+  "discharged_endpoints": 1,
+  "all_registered_source_hashes_match": true,
+  "external_literature_only_mainline_complete": false,
+  "warning": "Exact source statements are retained. The check verifies traceability and hashes, not hypothesis truth or mathematical sufficiency for a broader paper statement.",
+  "endpoints": [
+    {
+      "declaration": "Hurst.hurstHolder_q1_unknown_bias_of_scale_L1",
+      "status": "input_discharged",
+      "source": "Hurst/FirstUnknownConditionalBias.lean",
+      "line": 12,
+      "sha256": "d48ef6718b2aa02fe7d9b9970bdb998a83c60e0a3c00a56ae0a54cf4d885c494",
+      "lean_statement": "theorem hurstHolder_q1_unknown_bias_of_scale_L1 (a b M : ℝ) (r : ℕ)\n    (ha : 0<a) (hb : b<3/4) (hab : a≤b) (hM : 0≤M)\n    (f : ℝ → ℝ) (hf : f∈hurstHolderClass ((r:ℝ)+1) M) (hF : MapsTo f (Ioo (0:ℝ) 1) (Icc a b))\n    (hfc : ContDiffOn ℝ (r+1) f (Ioo (0:ℝ) 1)) (t : ℝ) (ht : t∈Ioo (0:ℝ) 1)\n    (hscale : Tendsto (fun n : ℕ => (∫ x,|q1LogScaleEstimator r n (scaleAverageResolution ((r:ℝ)+1) n) (optimalLocalBandwidth ((r:ℝ)+1) n) x|\n      ∂featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n)))/\n      (Real.log n*(optimalLocalBandwidth ((r:ℝ)+1) n)^(r+1))) atTop (𝓝 0)) :\n    Tendsto (fun n : ℕ => ((∫ x,q1UnknownLocalEstimator r n (scaleAverageResolution ((r:ℝ)+1) n) (optimalLocalBandwidth ((r:ℝ)+1) n) t x\n      ∂featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n)))-f t)/\n        (optimalLocalBandwidth ((r:ℝ)+1) n)^(r+1)) atTop\n      (𝓝 ((iteratedDeriv (r+1) f t/((r+1).factorial:ℝ))*equivalentKernelMoment r (r+1)))",
+      "declared_inputs": [
+        "normalized actual scale L1 error tends to zero"
+      ]
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q1_conditional_all_scale_short_mainline",
+      "status": "conditional",
+      "source": "Hurst/AllScaleShortMainline.lean",
+      "line": 10,
+      "sha256": "66a912fda8871c0cfd693517783894058fa232aabcf0bdef3c5f3253bc9d67d4",
+      "lean_statement": "theorem hurstHolder_q1_conditional_all_scale_short_mainline (a b M : ℝ) (r : ℕ) \n    (ha : 0<a) (hb : b<3/4) (hab : a≤b) (hM : 0≤M)\n    (f : ℝ → ℝ) (hf : f∈hurstHolderClass ((r:ℝ)+1) M)\n    (hF : MapsTo f (Ioo (0:ℝ) 1) (Icc a b))\n    (hfc : ContDiffOn ℝ (r+1) f (Ioo (0:ℝ) 1)) (t : ℝ) (ht : t∈Ioo (0:ℝ) 1) \n    (σ : ℝ) (hσ : σ≠0) (V : ℝ) (Vk : ℕ → ℝ) (hV : Tendsto Vk atTop (𝓝 V))\n    (hpoly : ∀ k,TendstoInDistribution\n      (fun (n : ℕ) x => Real.sqrt ((n:ℝ)*optimalLocalBandwidth ((r:ℝ)+1) n)*gaussianLogTruncationStatistic\n        (gridObservationFeatures n (midpointSampleHurst f hf.1 n))\n        (localPolynomialWeights r n 1 (optimalLocalBandwidth ((r:ℝ)+1) n) t) (gridStrideFirstCoefficients n 1) k x) atTop\n      (fun z : ℝ => Real.sqrt (Vk k)*z)\n      (fun n => featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n))) (gaussianReal 0 1)) :\n    TendstoInDistribution (fun (n : ℕ) x => 2*Real.sqrt ((n:ℝ)*optimalLocalBandwidth ((r:ℝ)+1) n)*Real.log n*\n      (q1LocalEstimator r n (optimalLocalBandwidth ((r:ℝ)+1) n) t (σ⁻¹ • x)-f t)) atTop\n      (fun z : ℝ => -(Real.sqrt V*z)+2*((iteratedDeriv (r+1) f t/((r+1).factorial:ℝ))*equivalentKernelMoment r (r+1)))\n      (fun n => featureGaussian (fun i => σ • gridObservationFeatures n (midpointSampleHurst f hf.1 n) i)) (gaussianReal 0 1) ∧\n    TendstoInDistribution (fun (n : ℕ) x => 2*Real.sqrt ((n:ℝ)*optimalLocalBandwidth ((r:ℝ)+1) n)*Real.log n*\n      (q1UnknownLocalEstimator r n (scaleAverageResolution ((r:ℝ)+1) n) (optimalLocalBandwidth ((r:ℝ)+1) n) t x-f t)) atTop\n      (fun z : ℝ => -(Real.sqrt V*z)+2*((iteratedDeriv (r+1) f t/((r+1).factorial:ℝ))*equivalentKernelMoment r (r+1)))\n      (fun n => featureGaussian (fun i => σ • gridObservationFeatures n (midpointSampleHurst f hf.1 n) i)) (gaussianReal 0 1)",
+      "declared_inputs": [
+        "INT-CLT",
+        "INT-VAR"
+      ]
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q1_conditional_raw_optimal_CLT",
+      "status": "conditional",
+      "source": "Hurst/ActualRawOptimalCLT.lean",
+      "line": 10,
+      "sha256": "24e0745a843a33bcbd690f3e589a0994c5464c842623b3eb613faee0b9d639e0",
+      "lean_statement": "theorem hurstHolder_q1_conditional_raw_optimal_CLT (a b M : ℝ) (r : ℕ) \n    (ha : 0<a) (hb : b<3/4) (hab : a≤b) (hM : 0≤M)\n    (f : ℝ → ℝ) (hf : f∈hurstHolderClass ((r:ℝ)+1) M)\n    (hF : MapsTo f (Ioo (0:ℝ) 1) (Icc a b))\n    (hfc : ContDiffOn ℝ (r+1) f (Ioo (0:ℝ) 1)) (t : ℝ) (ht : t∈Ioo (0:ℝ) 1) \n    (σ : ℝ) (hσ : σ≠0) (V : ℝ) (Vk : ℕ → ℝ) (hV : Tendsto Vk atTop (𝓝 V))\n    (hpoly : ∀ k,TendstoInDistribution\n      (fun (n : ℕ) x => Real.sqrt ((n:ℝ)*optimalLocalBandwidth ((r:ℝ)+1) n)*gaussianLogTruncationStatistic\n        (gridObservationFeatures n (midpointSampleHurst f hf.1 n))\n        (localPolynomialWeights r n 1 (optimalLocalBandwidth ((r:ℝ)+1) n) t) (gridStrideFirstCoefficients n 1) k x) atTop\n      (fun z : ℝ => Real.sqrt (Vk k)*z)\n      (fun n => featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n))) (gaussianReal 0 1)) :\n    TendstoInDistribution (fun (n : ℕ) x => Real.sqrt ((n:ℝ)*optimalLocalBandwidth ((r:ℝ)+1) n)*\n      (gaussianLogStatistic (localPolynomialWeights r n 1 (optimalLocalBandwidth ((r:ℝ)+1) n) t) (gridStrideFirstCoefficients n 1) (σ⁻¹ • x)-\n        calibrationOne (Real.log n) gaussianLogSquareMean (f t))) atTop\n      (fun z : ℝ => Real.sqrt V*z-2*((iteratedDeriv (r+1) f t/((r+1).factorial:ℝ))*equivalentKernelMoment r (r+1)))\n      (fun n => featureGaussian (fun i => σ • gridObservationFeatures n (midpointSampleHurst f hf.1 n) i)) (gaussianReal 0 1)",
+      "declared_inputs": [
+        "INT-CLT",
+        "INT-VAR"
+      ]
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q1_conditional_all_scale_pilot_CLT",
+      "status": "conditional",
+      "source": "Hurst/AllScalePilotMainline.lean",
+      "line": 10,
+      "sha256": "eb72373f653daf8a10ea4b89187c17b58e1940d8e136beecc3f75af7e193f83b",
+      "lean_statement": "theorem hurstHolder_q1_conditional_all_scale_pilot_CLT (p a b M : ℝ) (r : ℕ)\n    (hp : 1≤p) (ha : 0<a) (hb : b<1) (hab : a≤b) (hM : 0≤M)\n    (f : ℝ → ℝ) (hf : f∈hurstHolderClass p M) (hF : MapsTo f (Ioo (0:ℝ) 1) (Icc a b))\n    (σ : ℝ) (hσ : σ≠0) (t : ℝ) (δ A R : ℕ → ℝ) (C V : ℝ) (Vk : ℕ → ℝ) (hV : Tendsto Vk atTop (𝓝 V))\n    (hrow : ∀ᶠ n in atTop,∀ i,∑ j,featureCorrelation\n      (gridObservationFeatures n (midpointSampleHurst f hf.1 n))\n      (q1PilotJoinedCoefficients n i) (q1PilotJoinedCoefficients n j)^2≤R n)\n    (hweight : ∀ᶠ n in atTop,(A n)^2*R n*∑ i,pilotJoinedWeights (localPolynomialWeights r n 2 (δ n) t) i^2≤C)\n    (hpoly : ∀ k,TendstoInDistribution (fun n x => A n*gaussianLogTruncationStatistic\n      (gridObservationFeatures n (midpointSampleHurst f hf.1 n))\n      (pilotJoinedWeights (localPolynomialWeights r n 2 (δ n) t)) (q1PilotJoinedCoefficients n) k x) atTop\n      (fun z : ℝ => Real.sqrt (Vk k)*z)\n      (fun n => featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n))) (gaussianReal 0 1)) :\n    TendstoInDistribution (fun n x => A n*(q1Pilot r n (δ n) t x-\n      (∫ y,q1Pilot r n (δ n) t y ∂featureGaussian (fun i => σ • gridObservationFeatures n (midpointSampleHurst f hf.1 n) i)))) atTop\n      (fun z : ℝ => Real.sqrt V*z)\n      (fun n => featureGaussian (fun i => σ • gridObservationFeatures n (midpointSampleHurst f hf.1 n) i)) (gaussianReal 0 1)",
+      "declared_inputs": [
+        "INT-CLT: joined two-scale polynomial statistic",
+        "INT-VAR: joined correlation-square row bound, normalized weight energy and variance limit"
+      ]
+    },
+    {
+      "declaration": "Hurst.q1_conditional_allfinite_minimax_mainline",
+      "status": "conditional",
+      "source": "Hurst/ConditionalMinimaxMainline.lean",
+      "line": 10,
+      "sha256": "ace2740c9910c1fe48a6766aee005a459341e2549002ee1aecc0a2037e20c2d9",
+      "lean_statement": "theorem q1_conditional_allfinite_minimax_mainline (s : {s : ℝ // 1≤s})\n    (p a b M : ℝ) (hp : 1≤p) (ha0 : 0<a) (ha : a<1/2)\n    (hb0 : 1/2<b) (hb : b<3/4) (hM : 0<M)\n    (hraw : 2≤s.val → Q1RawMomentBound p a b M s.val) :\n    ∃ c>0,∃ C>0,∃ N : ℕ,2≤N ∧ ∀ n : ℕ,N≤n → ∀ σ : ℝ,σ≠0 →\n      ENNReal.ofReal (c*(lowerBoundRate p n)^2)≤\n        minimaxRiskDist (fun d => d^2) (subclassHurstTarget s (by linarith : 1≤p) (fixedRangeHurstClass p M a b))\n          (subclassHurstExperiment p M σ n (fixedRangeHurstClass p M a b)) ∧\n      minimaxRiskDist (fun d => d^2) (subclassHurstTarget s (by linarith : 1≤p) (fixedRangeHurstClass p M a b))\n          (subclassHurstExperiment p M σ n (fixedRangeHurstClass p M a b))≤\n        minimaxRiskDist (fun d => d^2) (unknownHurstTarget (a:=a) (b:=b) s (by linarith : 1≤p))\n          (unknownHurstExperiment p M a b n) ∧\n      minimaxRiskDist (fun d => d^2) (unknownHurstTarget (a:=a) (b:=b) s (by linarith : 1≤p))\n          (unknownHurstExperiment p M a b n)≤ENNReal.ofReal (C*(lowerBoundRate p n)^2)",
+      "declared_inputs": [
+        "INT-MOM-RISK: Q1RawMomentBound (used only when s>2)"
+      ]
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q2_conditional_all_scale_short_mainline",
+      "status": "conditional",
+      "source": "Hurst/AllScaleShortMainline.lean",
+      "line": 43,
+      "sha256": "66a912fda8871c0cfd693517783894058fa232aabcf0bdef3c5f3253bc9d67d4",
+      "lean_statement": "theorem hurstHolder_q2_conditional_all_scale_short_mainline (a b M : ℝ) (r : ℕ) (u : ℝ) (hr : 1≤r) (hu : u<1) (hbu : b<u)\n    (ha : 0<a) (hb : b<1) (hab : a≤b) (hM : 0≤M)\n    (f : ℝ → ℝ) (hf : f∈hurstHolderClass ((r:ℝ)+1) M)\n    (hF : MapsTo f (Ioo (0:ℝ) 1) (Icc a b))\n    (hfc : ContDiffOn ℝ (r+1) f (Ioo (0:ℝ) 1)) (t : ℝ) (ht : t∈Ioo (0:ℝ) 1) (htu : f t<u)\n    (σ : ℝ) (hσ : σ≠0) (V : ℝ) (Vk : ℕ → ℝ) (hV : Tendsto Vk atTop (𝓝 V))\n    (hpoly : ∀ k,TendstoInDistribution\n      (fun (n : ℕ) x => Real.sqrt ((n:ℝ)*optimalLocalBandwidth ((r:ℝ)+1) n)*gaussianLogTruncationStatistic\n        (gridObservationFeatures n (midpointSampleHurst f hf.1 n))\n        (localPolynomialWeights r n 2 (optimalLocalBandwidth ((r:ℝ)+1) n) t) (gridSecondCoefficients n) k x) atTop\n      (fun z : ℝ => Real.sqrt (Vk k)*z)\n      (fun n => featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n))) (gaussianReal 0 1))\n    (hscale : Tendsto (fun n : ℕ => (∫ x,|q2LogScaleEstimator (a/2) u r n\n      (scaleAverageResolution ((r:ℝ)+1) n) (optimalLocalBandwidth ((r:ℝ)+1) n) x|\n        ∂featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n)))/\n      (Real.log n*(optimalLocalBandwidth ((r:ℝ)+1) n)^(r+1))) atTop (𝓝 0)) :\n    TendstoInDistribution (fun (n : ℕ) x => 2*Real.sqrt ((n:ℝ)*optimalLocalBandwidth ((r:ℝ)+1) n)*Real.log n*\n      (q2LocalEstimator u r n (optimalLocalBandwidth ((r:ℝ)+1) n) t (σ⁻¹ • x)-f t)) atTop\n      (fun z : ℝ => -(Real.sqrt V*z)+2*((iteratedDeriv (r+1) f t/((r+1).factorial:ℝ))*equivalentKernelMoment r (r+1)))\n      (fun n => featureGaussian (fun i => σ • gridObservationFeatures n (midpointSampleHurst f hf.1 n) i)) (gaussianReal 0 1) ∧\n    TendstoInDistribution (fun (n : ℕ) x => 2*Real.sqrt ((n:ℝ)*optimalLocalBandwidth ((r:ℝ)+1) n)*Real.log n*\n      (q2UnknownLocalEstimator (a/2) u r n (scaleAverageResolution ((r:ℝ)+1) n) (optimalLocalBandwidth ((r:ℝ)+1) n) t x-f t)) atTop\n      (fun z : ℝ => -(Real.sqrt V*z)+2*((iteratedDeriv (r+1) f t/((r+1).factorial:ℝ))*equivalentKernelMoment r (r+1)))\n      (fun n => featureGaussian (fun i => σ • gridObservationFeatures n (midpointSampleHurst f hf.1 n) i)) (gaussianReal 0 1)",
+      "declared_inputs": [
+        "INT-CLT",
+        "INT-VAR",
+        "INT-SCALE"
+      ]
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q2_conditional_raw_optimal_CLT",
+      "status": "conditional",
+      "source": "Hurst/ActualRawOptimalCLT.lean",
+      "line": 60,
+      "sha256": "24e0745a843a33bcbd690f3e589a0994c5464c842623b3eb613faee0b9d639e0",
+      "lean_statement": "theorem hurstHolder_q2_conditional_raw_optimal_CLT (a b M : ℝ) (r : ℕ) (u : ℝ) (hr : 1≤r) (hu : u<1) (hbu : b<u)\n    (ha : 0<a) (hb : b<1) (hab : a≤b) (hM : 0≤M)\n    (f : ℝ → ℝ) (hf : f∈hurstHolderClass ((r:ℝ)+1) M)\n    (hF : MapsTo f (Ioo (0:ℝ) 1) (Icc a b))\n    (hfc : ContDiffOn ℝ (r+1) f (Ioo (0:ℝ) 1)) (t : ℝ) (ht : t∈Ioo (0:ℝ) 1) (htu : f t<u)\n    (σ : ℝ) (hσ : σ≠0) (V : ℝ) (Vk : ℕ → ℝ) (hV : Tendsto Vk atTop (𝓝 V))\n    (hpoly : ∀ k,TendstoInDistribution\n      (fun (n : ℕ) x => Real.sqrt ((n:ℝ)*optimalLocalBandwidth ((r:ℝ)+1) n)*gaussianLogTruncationStatistic\n        (gridObservationFeatures n (midpointSampleHurst f hf.1 n))\n        (localPolynomialWeights r n 2 (optimalLocalBandwidth ((r:ℝ)+1) n) t) (gridSecondCoefficients n) k x) atTop\n      (fun z : ℝ => Real.sqrt (Vk k)*z)\n      (fun n => featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n))) (gaussianReal 0 1))\n :\n    TendstoInDistribution (fun (n : ℕ) x => Real.sqrt ((n:ℝ)*optimalLocalBandwidth ((r:ℝ)+1) n)*\n      (gaussianLogStatistic (localPolynomialWeights r n 2 (optimalLocalBandwidth ((r:ℝ)+1) n) t) (gridSecondCoefficients n) (σ⁻¹ • x)-\n        calibrationTwo (Real.log n) gaussianLogSquareMean (f t))) atTop\n      (fun z : ℝ => Real.sqrt V*z-2*((iteratedDeriv (r+1) f t/((r+1).factorial:ℝ))*equivalentKernelMoment r (r+1)))\n      (fun n => featureGaussian (fun i => σ • gridObservationFeatures n (midpointSampleHurst f hf.1 n) i)) (gaussianReal 0 1)",
+      "declared_inputs": [
+        "INT-CLT",
+        "INT-VAR"
+      ]
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q2_conditional_all_scale_pilot_CLT",
+      "status": "conditional",
+      "source": "Hurst/AllScalePilotMainline.lean",
+      "line": 37,
+      "sha256": "eb72373f653daf8a10ea4b89187c17b58e1940d8e136beecc3f75af7e193f83b",
+      "lean_statement": "theorem hurstHolder_q2_conditional_all_scale_pilot_CLT (p a b M : ℝ) (r : ℕ)\n    (hp : 2≤p) (ha : 0<a) (hb : b<1) (hab : a≤b) (hM : 0≤M)\n    (f : ℝ → ℝ) (hf : f∈hurstHolderClass p M) (hF : MapsTo f (Ioo (0:ℝ) 1) (Icc a b))\n    (σ : ℝ) (hσ : σ≠0) (t : ℝ) (δ A R : ℕ → ℝ) (C V : ℝ) (Vk : ℕ → ℝ) (hV : Tendsto Vk atTop (𝓝 V))\n    (hrow : ∀ᶠ n in atTop,∀ i,∑ j,featureCorrelation\n      (gridObservationFeatures n (midpointSampleHurst f hf.1 n))\n      (q2PilotJoinedCoefficients n i) (q2PilotJoinedCoefficients n j)^2≤R n)\n    (hweight : ∀ᶠ n in atTop,(A n)^2*R n*∑ i,pilotJoinedWeights (localPolynomialWeights r n 4 (δ n) t) i^2≤C)\n    (hpoly : ∀ k,TendstoInDistribution (fun n x => A n*gaussianLogTruncationStatistic\n      (gridObservationFeatures n (midpointSampleHurst f hf.1 n))\n      (pilotJoinedWeights (localPolynomialWeights r n 4 (δ n) t)) (q2PilotJoinedCoefficients n) k x) atTop\n      (fun z : ℝ => Real.sqrt (Vk k)*z)\n      (fun n => featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n))) (gaussianReal 0 1)) :\n    TendstoInDistribution (fun n x => A n*(q2Pilot r n (δ n) t x-\n      (∫ y,q2Pilot r n (δ n) t y ∂featureGaussian (fun i => σ • gridObservationFeatures n (midpointSampleHurst f hf.1 n) i)))) atTop\n      (fun z : ℝ => Real.sqrt V*z)\n      (fun n => featureGaussian (fun i => σ • gridObservationFeatures n (midpointSampleHurst f hf.1 n) i)) (gaussianReal 0 1)",
+      "declared_inputs": [
+        "INT-CLT: joined two-scale polynomial statistic",
+        "INT-VAR: joined correlation-square row bound, normalized weight energy and variance limit"
+      ]
+    },
+    {
+      "declaration": "Hurst.q2_conditional_allfinite_minimax_mainline",
+      "status": "conditional",
+      "source": "Hurst/ConditionalMinimaxMainline.lean",
+      "line": 43,
+      "sha256": "ace2740c9910c1fe48a6766aee005a459341e2549002ee1aecc0a2037e20c2d9",
+      "lean_statement": "theorem q2_conditional_allfinite_minimax_mainline (s : {s : ℝ // 1≤s})\n    (p a b M : ℝ) (hp : 2≤p) (ha0 : 0<a) (ha : a<1/2)\n    (hb0 : 1/2<b) (hb : b<1) (hM : 0<M)\n    (hraw : 2≤s.val → Q2RawMomentBound p a b M s.val) :\n    ∃ c>0,∃ C>0,∃ N : ℕ,2≤N ∧ ∀ n : ℕ,N≤n → ∀ σ : ℝ,σ≠0 →\n      ENNReal.ofReal (c*(lowerBoundRate p n)^2)≤\n        minimaxRiskDist (fun d => d^2) (subclassHurstTarget s (by linarith : 1≤p) (fixedRangeHurstClass p M a b))\n          (subclassHurstExperiment p M σ n (fixedRangeHurstClass p M a b)) ∧\n      minimaxRiskDist (fun d => d^2) (subclassHurstTarget s (by linarith : 1≤p) (fixedRangeHurstClass p M a b))\n          (subclassHurstExperiment p M σ n (fixedRangeHurstClass p M a b))≤\n        minimaxRiskDist (fun d => d^2) (unknownHurstTarget (a:=a) (b:=b) s (by linarith : 1≤p))\n          (unknownHurstExperiment p M a b n) ∧\n      minimaxRiskDist (fun d => d^2) (unknownHurstTarget (a:=a) (b:=b) s (by linarith : 1≤p))\n          (unknownHurstExperiment p M a b n)≤ENNReal.ofReal (C*(lowerBoundRate p n)^2)",
+      "declared_inputs": [
+        "INT-MOM-RISK: Q2RawMomentBound (used only when s>2)"
+      ]
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q1_conditional_all_scale_critical_mainline",
+      "status": "conditional",
+      "source": "Hurst/AllScaleMemoryBranches.lean",
+      "line": 9,
+      "sha256": "55c3a79ebaeca5451678c16397f935b5d2f970d11f175e744c4392df889e215b",
+      "lean_statement": "theorem hurstHolder_q1_conditional_all_scale_critical_mainline (p a b M : ℝ) (r : ℕ)\n    (hp : 1≤p) (ha : 0<a) (hb : b<1) (hab : a≤b) (hM : 0≤M)\n    (f : ℝ → ℝ) (hf : f∈hurstHolderClass p M) (hF : MapsTo f (Ioo (0:ℝ) 1) (Icc a b))\n    (t : ℝ) (ht : t∈Ioo (0:ℝ) 1) (δ₁ δ₂ : ℕ → ℝ) (m : ℕ → ℕ)\n    (hcrit : f t=3/4)\n    (hδ₁ : ∀ᶠ n in atTop,0<δ₁ n) (hδ₁0 : Tendsto δ₁ atTop (𝓝 0))\n    (hN₁ : Tendsto (fun n : ℕ => (n:ℝ)*δ₁ n) atTop atTop)\n    (hδ₂ : ∀ᶠ n in atTop,0<δ₂ n) (hδ₂0 : Tendsto δ₂ atTop (𝓝 0))\n    (hN₂ : Tendsto (fun n : ℕ => (n:ℝ)*δ₂ n) atTop atTop)\n    (hm : ∀ᶠ n in atTop,0<m n) (σ : ℝ) (hσ : σ≠0)\n    \n    (htail : Tendsto (fun (n : ℕ) => ((firstCriticalNormalization n (δ₂ n)))^2*(∑ i,∑ j,|localPolynomialWeights r n 1 (δ₂ n) t i| * |localPolynomialWeights r n 1 (δ₂ n) t j| *\n      |featureCorrelation (gridObservationFeatures n (midpointSampleHurst f hf.1 n))\n        (gridDifferenceCoefficients n i) (gridDifferenceCoefficients n j)|^4)) atTop (𝓝 0))\n    (hquad : TendstoInDistribution (fun (n : ℕ) x => (firstCriticalNormalization n (δ₂ n))*gaussianLogQuadraticStatistic\n      (gridObservationFeatures n (midpointSampleHurst f hf.1 n))\n      (localPolynomialWeights r n 1 (δ₂ n) t) (gridDifferenceCoefficients n) x) atTop (fun z : ℝ => Real.sqrt (firstCriticalVariance r)*z)\n      (fun (n : ℕ) => featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n))) (gaussianReal 0 1))\n    (hmean : Tendsto (fun n : ℕ => (firstCriticalNormalization n (δ₂ n))*((∫ x,\n      gaussianLogStatistic (localPolynomialWeights r n 1 (δ₂ n) t) (gridDifferenceCoefficients n) x\n        ∂featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n)))-\n          calibrationOne (Real.log n) gaussianLogSquareMean (f t))) atTop (𝓝 0))\n    (hQ : Tendsto (fun n : ℕ => (firstCriticalNormalization n (δ₂ n))*(∫ x,\n      (gaussianLogStatistic (localPolynomialWeights r n 1 (δ₂ n) t) (gridDifferenceCoefficients n) x-\n        calibrationOne (Real.log n) gaussianLogSquareMean (f t))^2\n          ∂featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n)))/Real.log n) atTop (𝓝 0))\n    (hscale : Tendsto (fun (n : ℕ) => (firstCriticalNormalization n (δ₂ n))*(∫ x,|q1LogScaleEstimator r n (m n) (δ₁ n) x|\n      ∂featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n)))) atTop (𝓝 0)) :\n    TendstoInDistribution (fun (n : ℕ) x => 2*(firstCriticalNormalization n (δ₂ n))*Real.log n*(q1LocalEstimator r n (δ₂ n) t (σ⁻¹ • x)-f t)) atTop\n      (fun z => -(Real.sqrt (firstCriticalVariance r)*z)) (fun (n : ℕ) => featureGaussian (fun i => σ • gridObservationFeatures n (midpointSampleHurst f hf.1 n) i)) (gaussianReal 0 1) ∧\n    TendstoInDistribution (fun (n : ℕ) x => 2*(firstCriticalNormalization n (δ₂ n))*Real.log n*(q1UnknownTwoBandwidthEstimator r n (m n) (δ₁ n) (δ₂ n) t x-f t)) atTop\n      (fun z => -(Real.sqrt (firstCriticalVariance r)*z)) (fun (n : ℕ) => featureGaussian (fun i => σ • gridObservationFeatures n (midpointSampleHurst f hf.1 n) i)) (gaussianReal 0 1)",
+      "declared_inputs": [
+        "INT-CLT: actual quadratic Gaussian limit",
+        "INT-VAR: weighted fourth-correlation double sum, normalized raw mean and second-moment smallness",
+        "INT-SCALE: two-bandwidth scale L1 smallness"
+      ]
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q1_conditional_all_scale_long_mainline",
+      "status": "conditional",
+      "source": "Hurst/AllScaleMemoryBranches.lean",
+      "line": 46,
+      "sha256": "55c3a79ebaeca5451678c16397f935b5d2f970d11f175e744c4392df889e215b",
+      "lean_statement": "theorem hurstHolder_q1_conditional_all_scale_long_mainline (p a b M : ℝ) (r : ℕ)\n    (hp : 1≤p) (ha : 0<a) (hb : b<1) (hab : a≤b) (hM : 0≤M)\n    (f : ℝ → ℝ) (hf : f∈hurstHolderClass p M) (hF : MapsTo f (Ioo (0:ℝ) 1) (Icc a b))\n    (t : ℝ) (ht : t∈Ioo (0:ℝ) 1) (δ₁ δ₂ : ℕ → ℝ) (m : ℕ → ℕ)\n    (hlong : 3/4<f t)\n    (hδ₁ : ∀ᶠ n in atTop,0<δ₁ n) (hδ₁0 : Tendsto δ₁ atTop (𝓝 0))\n    (hN₁ : Tendsto (fun n : ℕ => (n:ℝ)*δ₁ n) atTop atTop)\n    (hδ₂ : ∀ᶠ n in atTop,0<δ₂ n) (hδ₂0 : Tendsto δ₂ atTop (𝓝 0))\n    (hN₂ : Tendsto (fun n : ℕ => (n:ℝ)*δ₂ n) atTop atTop)\n    (hm : ∀ᶠ n in atTop,0<m n) (σ : ℝ) (hσ : σ≠0)\n    {Ω' : Type*} [MeasurableSpace Ω'] (P' : Measure Ω') [IsProbabilityMeasure P'] (Q : Ω' → ℝ)\n    (htail : Tendsto (fun (n : ℕ) => ((firstLongNormalization (f t) n (δ₂ n)))^2*(∑ i,∑ j,|localPolynomialWeights r n 1 (δ₂ n) t i| * |localPolynomialWeights r n 1 (δ₂ n) t j| *\n      |featureCorrelation (gridObservationFeatures n (midpointSampleHurst f hf.1 n))\n        (gridDifferenceCoefficients n i) (gridDifferenceCoefficients n j)|^4)) atTop (𝓝 0))\n    (hquad : TendstoInDistribution (fun (n : ℕ) x => (firstLongNormalization (f t) n (δ₂ n))*gaussianLogQuadraticStatistic\n      (gridObservationFeatures n (midpointSampleHurst f hf.1 n))\n      (localPolynomialWeights r n 1 (δ₂ n) t) (gridDifferenceCoefficients n) x) atTop Q\n      (fun (n : ℕ) => featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n))) P')\n    (hmean : Tendsto (fun n : ℕ => (firstLongNormalization (f t) n (δ₂ n))*((∫ x,\n      gaussianLogStatistic (localPolynomialWeights r n 1 (δ₂ n) t) (gridDifferenceCoefficients n) x\n        ∂featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n)))-\n          calibrationOne (Real.log n) gaussianLogSquareMean (f t))) atTop (𝓝 0))\n    (hQ : Tendsto (fun n : ℕ => (firstLongNormalization (f t) n (δ₂ n))*(∫ x,\n      (gaussianLogStatistic (localPolynomialWeights r n 1 (δ₂ n) t) (gridDifferenceCoefficients n) x-\n        calibrationOne (Real.log n) gaussianLogSquareMean (f t))^2\n          ∂featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n)))/Real.log n) atTop (𝓝 0))\n    (hscale : Tendsto (fun (n : ℕ) => (firstLongNormalization (f t) n (δ₂ n))*(∫ x,|q1LogScaleEstimator r n (m n) (δ₁ n) x|\n      ∂featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n)))) atTop (𝓝 0)) :\n    TendstoInDistribution (fun (n : ℕ) x => 2*(firstLongNormalization (f t) n (δ₂ n))*Real.log n*(q1LocalEstimator r n (δ₂ n) t (σ⁻¹ • x)-f t)) atTop\n      (fun z => -Q z) (fun (n : ℕ) => featureGaussian (fun i => σ • gridObservationFeatures n (midpointSampleHurst f hf.1 n) i)) P' ∧\n    TendstoInDistribution (fun (n : ℕ) x => 2*(firstLongNormalization (f t) n (δ₂ n))*Real.log n*(q1UnknownTwoBandwidthEstimator r n (m n) (δ₁ n) (δ₂ n) t x-f t)) atTop\n      (fun z => -Q z) (fun (n : ℕ) => featureGaussian (fun i => σ • gridObservationFeatures n (midpointSampleHurst f hf.1 n) i)) P'",
+      "declared_inputs": [
+        "INT-LONG: actual quadratic limit Q",
+        "INT-VAR: weighted fourth-correlation double sum, normalized raw mean and second-moment smallness",
+        "INT-SCALE: two-bandwidth scale L1 smallness"
+      ]
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q1_conditional_all_scale_memory_mainline",
+      "status": "conditional",
+      "source": "Hurst/AllScaleMemoryMainline.lean",
+      "line": 10,
+      "sha256": "c56f2941ad3b2dfb8e5acf35413fe7cb17eaa83bc36df53ea803faf210f43277",
+      "lean_statement": "theorem hurstHolder_q1_conditional_all_scale_memory_mainline (p a b M : ℝ) (r : ℕ)\n    (hp : 1≤p) (ha : 0<a) (hb : b<1) (hab : a≤b) (hM : 0≤M)\n    (f : ℝ → ℝ) (hf : f∈hurstHolderClass p M) (hF : MapsTo f (Ioo (0:ℝ) 1) (Icc a b))\n    (t : ℝ) (ht : t∈Ioo (0:ℝ) 1) (δ₁ δ₂ A : ℕ → ℝ) (m : ℕ → ℕ)\n    (hA : ∀ᶠ n in atTop,0≤A n)\n    (hδ₁ : ∀ᶠ n in atTop,0<δ₁ n) (hδ₁0 : Tendsto δ₁ atTop (𝓝 0))\n    (hN₁ : Tendsto (fun n : ℕ => (n:ℝ)*δ₁ n) atTop atTop)\n    (hδ₂ : ∀ᶠ n in atTop,0<δ₂ n) (hδ₂0 : Tendsto δ₂ atTop (𝓝 0))\n    (hN₂ : Tendsto (fun n : ℕ => (n:ℝ)*δ₂ n) atTop atTop)\n    (hm : ∀ᶠ n in atTop,0<m n) (σ : ℝ) (hσ : σ≠0)\n    {Ω' : Type*} [MeasurableSpace Ω'] (P' : Measure Ω') [IsProbabilityMeasure P'] (Z : Ω' → ℝ) (β : ℝ)\n    (htail : Tendsto (fun n => (A n)^2*(∑ i,∑ j,|localPolynomialWeights r n 1 (δ₂ n) t i| * |localPolynomialWeights r n 1 (δ₂ n) t j| *\n      |featureCorrelation (gridObservationFeatures n (midpointSampleHurst f hf.1 n))\n        (gridDifferenceCoefficients n i) (gridDifferenceCoefficients n j)|^4)) atTop (𝓝 0))\n    (hquad : TendstoInDistribution (fun n x => A n*gaussianLogQuadraticStatistic\n      (gridObservationFeatures n (midpointSampleHurst f hf.1 n))\n      (localPolynomialWeights r n 1 (δ₂ n) t) (gridDifferenceCoefficients n) x) atTop Z\n      (fun n => featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n))) P')\n    (hmean : Tendsto (fun n : ℕ => A n*((∫ x,\n      gaussianLogStatistic (localPolynomialWeights r n 1 (δ₂ n) t) (gridDifferenceCoefficients n) x\n        ∂featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n)))-\n          calibrationOne (Real.log n) gaussianLogSquareMean (f t))) atTop (𝓝 β))\n    (hQ : Tendsto (fun n : ℕ => A n*(∫ x,\n      (gaussianLogStatistic (localPolynomialWeights r n 1 (δ₂ n) t) (gridDifferenceCoefficients n) x-\n        calibrationOne (Real.log n) gaussianLogSquareMean (f t))^2\n          ∂featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n)))/Real.log n) atTop (𝓝 0))\n    (hscale : Tendsto (fun n => A n*(∫ x,|q1LogScaleEstimator r n (m n) (δ₁ n) x|\n      ∂featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n)))) atTop (𝓝 0)) :\n    TendstoInDistribution (fun (n : ℕ) x => 2*A n*Real.log n*(q1LocalEstimator r n (δ₂ n) t (σ⁻¹ • x)-f t)) atTop\n      (fun z => -Z z-β) (fun n => featureGaussian (fun i => σ • gridObservationFeatures n (midpointSampleHurst f hf.1 n) i)) P' ∧\n    TendstoInDistribution (fun (n : ℕ) x => 2*A n*Real.log n*(q1UnknownTwoBandwidthEstimator r n (m n) (δ₁ n) (δ₂ n) t x-f t)) atTop\n      (fun z => -Z z-β) (fun n => featureGaussian (fun i => σ • gridObservationFeatures n (midpointSampleHurst f hf.1 n) i)) P'",
+      "declared_inputs": [
+        "INT-LONG or INT-CLT: actual quadratic limit Z",
+        "INT-VAR: weighted fourth-correlation energy and normalized raw moments",
+        "INT-SCALE"
+      ]
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q1_conditional_all_scale_pilot_memory_limit",
+      "status": "conditional",
+      "source": "Hurst/AllScalePilotMainline.lean",
+      "line": 64,
+      "sha256": "eb72373f653daf8a10ea4b89187c17b58e1940d8e136beecc3f75af7e193f83b",
+      "lean_statement": "theorem hurstHolder_q1_conditional_all_scale_pilot_memory_limit (p a b M : ℝ) (r : ℕ)\n    (hp : 1≤p) (ha : 0<a) (hb : b<1) (hab : a≤b) (hM : 0≤M)\n    (f : ℝ → ℝ) (hf : f∈hurstHolderClass p M) (hF : MapsTo f (Ioo (0:ℝ) 1) (Icc a b))\n    (σ : ℝ) (hσ : σ≠0) (t : ℝ) (δ A : ℕ → ℝ)\n    {Ω' : Type*} [MeasurableSpace Ω'] (P' : Measure Ω') [IsProbabilityMeasure P'] (Z : Ω' → ℝ)\n    (htail : Tendsto (fun n => (A n)^2*(∑ i,∑ j,\n      |pilotJoinedWeights (localPolynomialWeights r n 2 (δ n) t) i| *\n      |pilotJoinedWeights (localPolynomialWeights r n 2 (δ n) t) j| *\n      |featureCorrelation (gridObservationFeatures n (midpointSampleHurst f hf.1 n))\n        (q1PilotJoinedCoefficients n i) (q1PilotJoinedCoefficients n j)|^4)) atTop (𝓝 0))\n    (hquad : TendstoInDistribution (fun n x => A n*gaussianLogQuadraticStatistic\n      (gridObservationFeatures n (midpointSampleHurst f hf.1 n))\n      (pilotJoinedWeights (localPolynomialWeights r n 2 (δ n) t)) (q1PilotJoinedCoefficients n) x) atTop\n      Z\n      (fun n => featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n))) P') :\n    TendstoInDistribution (fun n x => A n*(q1Pilot r n (δ n) t x-\n      (∫ y,q1Pilot r n (δ n) t y ∂featureGaussian (fun i => σ • gridObservationFeatures n (midpointSampleHurst f hf.1 n) i)))) atTop\n      Z\n      (fun n => featureGaussian (fun i => σ • gridObservationFeatures n (midpointSampleHurst f hf.1 n) i)) P'",
+      "declared_inputs": [
+        "INT-LONG or INT-CLT: joined quadratic limit",
+        "INT-VAR: joined weighted fourth-correlation energy smallness"
+      ]
+    },
+    {
+      "declaration": "Hurst.hurstHolder_q2_unknown_scale_expected_bias_of_scale_L1",
+      "status": "conditional",
+      "source": "Hurst/SecondAllScaleBias.lean",
+      "line": 9,
+      "sha256": "a772aea592cfe84db7631d5f7f5ecd8f7d472e60aaab80378836e69c5c5e0241",
+      "lean_statement": "theorem hurstHolder_q2_unknown_scale_expected_bias_of_scale_L1 (a b M u : ℝ) (r : ℕ) (hr : 1≤r)\n    (ha : 0<a) (hb : b<1) (hab : a≤b) (hM : 0≤M) (hu : u<1) (hbu : b<u)\n    (f : ℝ → ℝ) (hf : f∈hurstHolderClass ((r:ℝ)+1) M) (hF : MapsTo f (Ioo (0:ℝ) 1) (Icc a b))\n    (hfc : ContDiffOn ℝ (r+1) f (Ioo (0:ℝ) 1)) (t : ℝ) (ht : t∈Ioo (0:ℝ) 1) (htu : f t<u)\n    (σ : ℝ) (hσ : σ≠0)\n    (hscale : Tendsto (fun n : ℕ => (∫ x,|q2LogScaleEstimator (a/2) u r n (scaleAverageResolution ((r:ℝ)+1) n) (optimalLocalBandwidth ((r:ℝ)+1) n) x|\n      ∂featureGaussian (gridObservationFeatures n (midpointSampleHurst f hf.1 n)))/\n      (Real.log n*(optimalLocalBandwidth ((r:ℝ)+1) n)^(r+1))) atTop (𝓝 0)) :\n    Tendsto (fun n : ℕ => ((∫ x,q2UnknownLocalEstimator (a/2) u r n (scaleAverageResolution ((r:ℝ)+1) n) (optimalLocalBandwidth ((r:ℝ)+1) n) t x\n      ∂featureGaussian (fun i => σ • gridObservationFeatures n (midpointSampleHurst f hf.1 n) i))-f t)/\n        (optimalLocalBandwidth ((r:ℝ)+1) n)^(r+1)) atTop\n      (𝓝 ((iteratedDeriv (r+1) f t/((r+1).factorial:ℝ))*equivalentKernelMoment r (r+1)))",
+      "declared_inputs": [
+        "INT-SCALE: E|actual q2 scale estimator|/(log n * delta^p) tends to zero"
+      ]
+    }
+  ]
+}

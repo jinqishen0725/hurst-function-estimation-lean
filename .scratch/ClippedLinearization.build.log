@@ -1,0 +1,11 @@
+⚠ [3076/3136] Replayed Hurst.Rates
+warning: Hurst/Rates.lean:52:39: Variable name `hL` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [3458/3458] Built Hurst.ClippedLinearization (11s)
+warning: Hurst/ClippedLinearization.lean:54:4: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+Build completed successfully (3458 jobs).

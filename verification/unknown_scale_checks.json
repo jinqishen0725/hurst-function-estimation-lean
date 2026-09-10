@@ -1,0 +1,90 @@
+{
+  "scope": "Finite exact Gaussian log-covariance diagnostics and reproducible Monte Carlo on actual mBm covariance. Neither is an asymptotic proof.",
+  "all_checks_passed": true,
+  "counterexample_diagnostics": [
+    {
+      "n": 256,
+      "m": 4,
+      "actual_variance": 3.8380789952828014,
+      "old_rhs_without_unspecified_constant": 2.590712446662314,
+      "ratio_to_old_rhs": 1.4814762634994492,
+      "n_to_2psi_over_L2_times_variance": 1.9971146418576977,
+      "predicted_positive_limit": 0.18040148633386402,
+      "max_n_times_combined_weight": 4.362203610550984
+    },
+    {
+      "n": 1024,
+      "m": 8,
+      "actual_variance": 2.0091421086496384,
+      "old_rhs_without_unspecified_constant": 1.3517227531503622,
+      "ratio_to_old_rhs": 1.4863566541046058,
+      "n_to_2psi_over_L2_times_variance": 1.3381651402801782,
+      "predicted_positive_limit": 0.18040148633386402,
+      "max_n_times_combined_weight": 4.996339392405744
+    },
+    {
+      "n": 4096,
+      "m": 16,
+      "actual_variance": 0.9288791116746787,
+      "old_rhs_without_unspecified_constant": 0.6530706822531362,
+      "ratio_to_old_rhs": 1.4223255413487335,
+      "n_to_2psi_over_L2_times_variance": 0.8592622978416536,
+      "predicted_positive_limit": 0.18040148633386402,
+      "max_n_times_combined_weight": 4.999084566552839
+    }
+  ],
+  "actual_backfitting_simulations": [
+    {
+      "n": 128,
+      "q": 1,
+      "replicates": 2000,
+      "bandwidth": 0.20145989610594014,
+      "average_centers": 3,
+      "max_n_times_absolute_combined_weight": 1.8096446065617107,
+      "scale_bias": 0.007439284284196436,
+      "scale_MSE": 3.0743402164179576,
+      "H_bias": -0.0017372079446776728,
+      "H_MSE": 0.03470492134213518,
+      "H_MSE_over_predicted_rate": 21.068646763998693
+    },
+    {
+      "n": 128,
+      "q": 2,
+      "replicates": 2000,
+      "bandwidth": 0.20145989610594014,
+      "average_centers": 3,
+      "max_n_times_absolute_combined_weight": 1.8096446065617107,
+      "scale_bias": 0.3355472452079914,
+      "scale_MSE": 7.235336202105309,
+      "H_bias": -0.009572232892076,
+      "H_MSE": 0.03814194731544191,
+      "H_MSE_over_predicted_rate": 23.155194819716982
+    },
+    {
+      "n": 256,
+      "q": 1,
+      "replicates": 2000,
+      "bandwidth": 0.166259254083501,
+      "average_centers": 3,
+      "max_n_times_absolute_combined_weight": 2.377878333620203,
+      "scale_bias": 0.06410441804739292,
+      "scale_MSE": 2.662473262227014,
+      "H_bias": 0.006104308380025628,
+      "H_MSE": 0.023610405580649235,
+      "H_MSE_over_predicted_rate": 30.900117906792897
+    },
+    {
+      "n": 256,
+      "q": 2,
+      "replicates": 2000,
+      "bandwidth": 0.166259254083501,
+      "average_centers": 3,
+      "max_n_times_absolute_combined_weight": 2.377878333620203,
+      "scale_bias": 0.3189794443017948,
+      "scale_MSE": 6.111711846813627,
+      "H_bias": -0.0005514606648581406,
+      "H_MSE": 0.026688620359932004,
+      "H_MSE_over_predicted_rate": 34.928731447435624
+    }
+  ]
+}

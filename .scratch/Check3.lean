@@ -1,0 +1,3 @@
+import Hurst.FirstLongDiagonalBand
+#check Finset.sum_le_sum_of_subset_of_nonneg
+#print Finset.sum_le_sum_of_subset_of_nonneg

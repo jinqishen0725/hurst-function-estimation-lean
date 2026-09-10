@@ -1,0 +1,12 @@
+{
+  "declarations_checked": 1155,
+  "allowed_foundation_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "sorryAx": false,
+  "custom_axioms": false,
+  "build_passed": true,
+  "complete_original_results": 2
+}

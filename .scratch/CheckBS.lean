@@ -1,0 +1,3 @@
+import Hurst.BardetSurgailisFixedRow
+#print Hurst.BardetSurgailisTheoremOnePartTwoScalarPolynomialHilbert
+#check Hurst.BardetSurgailisTheoremOnePartTwoScalarPolynomialHilbert

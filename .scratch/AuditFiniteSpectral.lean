@@ -1,0 +1,6 @@
+import Hurst.FiniteHermitianTracePowers
+
+#print axioms Hurst.centeredMatrixQuadratic_identDistrib_eigenvalueSquares
+#print axioms Hurst.centeredMatrixQuadratic_secondMoment_entries
+#print axioms Hurst.hermitian_trace_pow_eq_sum_eigenvalues_pow
+#print axioms Hurst.matrix_trace_pow_succ_cyclic_coordinates

@@ -1,0 +1,3581 @@
+
+===== PDF PAGE 1 =====
+SUPPLEMENT TO HURST FUNCTION ESTIMATION
+By Jinqi Shen and Tailen Hsing
+University of Michigan
+CONTENTS
+S.1 Proof for Proposition 8.1 . . . . . . . . . . . . . . . . . . . . . . . . 1
+S.2 Proof for Theorem 8.2 . . . . . . . . . . . . . . . . . . . . . . . . . 8
+S.3 Proofs for Lemma 8.3, Lemma 8.4 and Lemma 8.5 . . . . . . . . . 14
+S.4 Proofs of Theorem 3.4 and Corollary 3.5 . . . . . . . . . . . . . . . 26
+S.5 Proofs for Theorem 4.1, Theorem 4.2 and Theorem 4.3 . . . . . . . 28
+S.6 Supplemental proofs for Section 7.1 . . . . . . . . . . . . . . . . . . 36
+S.7 Supplementary proofs for Section 7.2 and additional discussions for
+non-constant variance . . . . . . . . . . . . . . . . . . . . . . . . . 38
+S.7.1 When σ(t) is known . . . . . . . . . . . . . . . . . . . . . . . 38
+S.7.2 When σ(t) is unknown . . . . . . . . . . . . . . . . . . . . . . 40
+References . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 43
+In order to diﬀerentiate sections and results in the supplement from those
+in the paper, we add a character ‘S’ in front of sections, lemmas, etc. in the
+supplement.
+S.1. Proof for Proposition 8.1.
+Lemma S.1.1. Suppose that δn > 0 is a sequence of constants such that
+nδn→ 1. Then, uniformly for all k, n∈ N, 1≤ k≤ n,
+⏐⏐⏐⏐⏐
+∫
+R
+1− eikx
+|x|2+δn
+dx−
+∫
+R
+1− ei(k−1)x
+|x|2+δn
+dx
+⏐⏐⏐⏐⏐
+=
+⏐⏐⏐⏐(k1+δn− (k− 1)1+δn)
+∫
+R
+1− eix
+|x|2+δn
+dx
+⏐⏐⏐⏐ = O(1),
+and
+⏐⏐⏐⏐⏐
+∫
+R
+(1− eikx) log|x|
+|x|2+δn
+dx−
+∫
+R
+(1− ei(k−1)x) log|x|
+|x|2+δn
+dx
+⏐⏐⏐⏐⏐ = O(log n).
+1
+
+===== PDF PAGE 2 =====
+2
+Proof. The result is trivial for k = 1. Assuming that k > 1 and n is
+large. By change of variables,
+⏐⏐⏐⏐⏐
+∫
+R
+1− eikx
+|x|2+δn
+dx−
+∫
+R
+1− ei(k−1)x
+|x|2+δn
+dx
+⏐⏐⏐⏐⏐ =
+⏐⏐⏐⏐(k1+δn− (k− 1)1+δn)
+∫
+R
+1− eix
+|x|2+δn
+dx
+⏐⏐⏐⏐
+≤
+⏐⏐⏐⏐(1 + δn)kδn
+∫
+R
+1− eix
+|x|2+δn
+dx
+⏐⏐⏐⏐
+≤ 2(1 + δn)
+∫
+R
+1− eix
+|x|2+δn
+dx = O(1),
+where the second line uses the Taylor expansion of x1+δn. Similarly,
+⏐⏐⏐⏐⏐
+∫
+R
+(1− eikx) log|x|
+|x|2+δn
+dx−
+∫
+R
+(1− ei(k−1)x) log|x|
+|x|2+δn
+dx
+⏐⏐⏐⏐⏐
+≤
+⏐⏐⏐⏐(k1+δn− (k− 1)1+δn)
+∫
+R
+(1− eix) log|x|
+|x|2+δn
+dx
+⏐⏐⏐⏐
++
+⏐⏐⏐⏐(k1+δn log k− (k− 1)1+δn log(k− 1))
+∫
+R
+(1− eix)
+|x|2+δn
+dx
+⏐⏐⏐⏐
+= O(log n).
+Lemma S.1.2. Let δn∈ [0, 1/2) and δn→ 0. Then, for all k = 1, 2, . . .,
+we have
+∫
+R
+eikx∥1− eix∥2
+|x|2+δn
+dx = O
+( δn
+k1−δn
+)
+.
+Proof. By straightforward calculations,
+∫
+R
+eikx∥1− eix∥2
+|x|2+δn
+dx = 2
+∫
+R
+cos(kx)(1− cos(x))
+|x|2+δn
+dx
+= 4
+∫ ∞
+0
+cos(kx)− 1
+2[cos((k + 1)x) + cos((k− 1)x)]
+x2+δn
+dx
+= 4Re
+(∫ ∞
+0
+f(x)dx
+)
+where
+f(z) = eikz− 1
+2[ei(k+1)z + ei(k−1)z]
+z2+δn
+.
+
+===== PDF PAGE 3 =====
+3
+To evaluate this, we resort to contour integration. For 0 < r < R < ∞,
+deﬁne the following four curves:
+• γ1 ={x : x from r to R}
+• γ2 ={Reiθ : θ from 0 to π
+2}
+• γ3 ={ix : x from R to r}
+• γ4 ={reiθ : θ from π
+2 to 0}.
+Denote by D the interior enclosed by the four curves on the complex plane.
+It is easy to see that f(z) is a holomorphic function on ¯D, and thus the
+contour integral
+∫
+γ1
+f(z)dz +
+∫
+γ2
+f(z)dz +
+∫
+γ3
+f(z)dz +
+∫
+γ4
+f(z)dz = 0.(S.1.1)
+Note that
+lim
+r→0,R→∞
+Re
+(∫
+γ1
+f(z)dz
+)
+= Re
+(∫ ∞
+0
+f(x)dx
+)
+,(S.1.2)
+which is our target. On γ2, Im(z)≥ 0 and∥eiz∥≤ 1. Thus,
+
+∫
+γ2
+f(z)dz
+≤
+∫
+γ2
+∥f(z)∥∥dz∥
+≤
+∫
+γ2
+∥eikz− 1
+2[ei(k+1)z + ei(k−1)z]∥
+∥z2+δn∥ ∥dz∥
+≤
+∫ π
+2
+0
+2
+R2+δn
+Rdθ
+= π
+R1+δn
+→ 0 as R→∞ .
+(S.1.3)
+Since eiz = 1 + iz− z2
+2 + o(∥z∥2), it follows that
+
+∫
+γ4
+f(z)dz
+≤
+∫
+γ4
+∥f(z)∥∥dz∥
+≤
+∫ π
+2
+0
+r2 + o(r2)
+r2+δn
+rdθ
+= O(r1−δn)→ 0 as r→ 0.
+(S.1.4)
+By (S.1.1) - (S.1.4), the integral in (S.1.2) is determined by
+∫
+γ3
+f(z)dz. It
+follows that
+Re
+(∫
+γ3
+f(z)dz
+)
+= Re
+(
+i
+∫ r
+R
+e−kx− 1
+2[e−(k+1)x + e−(k−1)x]
+x2+δne(2+δn)iπ
+2
+dx
+)
+
+===== PDF PAGE 4 =====
+4
+= sin
+(π
+2 δn
+)∫ R
+r
+e−kx− 1
+2[e−(k+1)x + e−(k−1)x]
+x2+δn
+dx.
+Thus,
+∫ ∞
+0
+f(x)dx = sin
+(π
+2 δn
+)∫ ∞
+0
+1
+2[e−(k+1)x + e−(k−1)x]− e−kx
+x2+δn
+dx.
+As sin( π
+2 δn) = O(δn) when δn→ 0, we only need to evaluate the integral on
+the right. For x≥ 0,
+0≤ e−kx
+(1
+2[ex + e−x]− 1
+)
+= e−kx
+( ∞∑
+m=1
+x2m
+(2m)!
+)
+≤ x2e−(k−1)x.
+With this we obtain a bound for the integral when k > 1 as
+∫ ∞
+0
+1
+2[e−(k+1)x + e−(k−1)x]− e−kx
+x2+δn
+dx
+≤
+∫ ∞
+0
+e−(k−1)x
+xδn
+dx
+= 1
+(k− 1)1−δn
+∫ ∞
+0
+e−x
+xδn
+dx
+≤ 1
+(k− 1)1−δn
+(∫ 1
+0
+e−x
+x1/2 dx +
+∫ ∞
+1
+e−xdx
+)
+≤ C
+(k− 1)1−δn
+≤ C2
+(k)1−δn
+,
+where C, C2 are some constants.
+Finally, it is easy to prove that the integral is also bounded for k = 1
+regardless of the choice of δn∈ [0, 1/2]. The proof of this lemma is complete.
+Proof for Proposition 8.1:
+Denote by X the mBm with Hurst function H. To simplify notation, we
+assume that the data is observed on {i/n, i = 1 , . . . , n} instead of on Ω n.
+This does not change the conclusion in the result. Deﬁne
+Yi =√n
+(
+X
+( i
+n
+)
+− X
+(i− 1
+n
+))
+, i = 1, . . . , n.
+
+===== PDF PAGE 5 =====
+5
+Let Σ be covariance matrix of ( Y1, . . . , Yn). It is well known that
+K(H∥H0) = 1
+2 [− log|Σ|− n + tr(Σ)] .(S.1.5)
+Let D = (dij)n×n = Σ− I and λi the eigenvalues of D. We will establish the
+following:
+(i) dii = O((an + n−1bn) logn) uniformly for all i
+(ii) ∑
+i̸=j d2
+ij = O
+(
+(bn log n)2 + na2
+n
+)
+(iii) ∑n
+j=1|dij|→ 0, uniformly for all i.
+It follows that
+− log|Σ| =−
+∑
+i
+log(1 + λi) =−tr(D) + O(tr(D2)),(S.1.6)
+where the ﬁnal equality uses the fact that λi→ 0 uniformly as n→∞ ,
+which follows from (i), (iii) and Gershgorin Circle Theorem. By (S.1.5),
+K(H∥H0) = O(tr(D2)) = O(∥D∥2
+F ),
+and (8.4) follows from (i) and (ii). The rest of the proof will focus on estab-
+lishing (i)-(iii).
+We ﬁrst refer to the following identity from Ayache, Cohen and V´ ehel
+(2000),
+∫
+R
+(eitx− 1)(e−isx− 1)
+|x|2H+1 dx
+= 1
+2
+( π
+HΓ(2H) sin(πH)
+)
+(|t|2H +|s|2H−| t− s|2H),
+(S.1.7)
+which holds for all ﬁxed constant H ∈ (0, 1), where i =√−1. Thus, the
+covariance function for the mBm with Hurst function H is
+C(s, t) = 1
+D(H(s))D(H(t))
+∫
+R
+(eisx− 1)(e−itx− 1)
+|x|H(s)+H(t)+1 dx,
+where D(H) is deﬁned in Deﬁnition 1.1. By letting t = s = 1 in (S.1.7), we
+get D2(H) = π
+2HΓ(2H) sin(πH). Deﬁne
+Ψx(t) = 1− eitx
+D(H(t))|x|H(t) ,
+
+===== PDF PAGE 6 =====
+6
+and write
+djk = n
+(
+C
+( j
+n , k
+n
+)
++ C
+(j− 1
+n , k− 1
+n
+)
+− C
+(j− 1
+n , k
+n
+)
+− C
+( j
+n , k− 1
+n
+))
+− I(j = k)
+= n
+∫
+R
+1
+|x|∆ 1
+n
+Ψx
+( j
+n
+)
+∆ 1
+n
+Ψx
+(k
+n
+)
+dx− I(j = k).
+Now,
+∆ 1
+n
+Ψx(t) = 1− eitx
+D(H(t))|x|H(t)− 1− ei(t− 1
+n )x
+D(H(t− 1
+n))|x|H(t− 1
+n )
+= ei(t− 1
+n)x− eitx
+D(H(t))|x|H(t)−
+(
+1− ei(t− 1
+n)x
+D(H(t))|x|H(t)− 1− ei(t− 1
+n )x
+D(H
+(
+t− 1
+n
+)
+)|x|H(t− 1
+n )
+)
+:= f1(x, t) + f2(x, t).
+Thus, we can express djk in terms of f1, f2 as
+djk = n
+∫
+R
+1
+|x|
+(
+f1
+(
+x, j
+n
+)
++ f2
+(
+x, j
+n
+))(
+f1
+(
+x, k
+n
+)
++ f2
+(
+x, k
+n
+))
+dx
+− I(j = k)
+where overline stands for complex conjugate. By the mean-value theorem
+and dominated convergence theorem,
+n
+∫
+R
+1
+|x| f2
+(
+x, j
+n
+)
+f2
+(
+x, k
+n
+)
+dx
+
+=
+
+1
+n
+∫
+R
+1
+|x|
+(1− eij−1
+n x)(D′(H(˜t1))H′(˜t1) + D(H(˜t1))H′(˜t1) log|x|)
+D(H(˜t1))|x|H(˜t1)
+× (1− eik−1
+n x)(D′(H(˜t2))H′(˜t2) + D(H(˜t2))H′(˜t2) log|x|)
+D(H(˜t2))|x|H(˜t2) dx
+
+≤ M1
+n
+(∫ 1
+0
+1
+x
+x2b2
+n log2 x
+x1+2an
+dx +
+∫ ∞
+1
+1
+x
+b2
+n log2 x
+x1−2an
+dx
+)
+where ˜t1∈ [ j−1
+n , j
+n], ˜t2∈ [ k−1
+n , k
+n] and M1 > 0 is a proper constant. The
+equations above require using mean-value theorem twice and consider the
+whole integral as the function to be diﬀerenced such that we can obtain
+
+===== PDF PAGE 7 =====
+7
+˜t1, ˜t2 unrelated to x. Since both integrals converge, we have uniformly for
+all j, k≥ 1,
+n
+∫
+R
+1
+|x| f2
+(
+x, j
+n
+)
+f2
+(
+x, k
+n
+)
+dx
+ = O(n−1b2
+n).(S.1.8)
+Similarly, by Lemma S.1.1 in the supplement of the paper, for some ˜t2∈
+[ k−1
+n , k
+n],
+⏐⏐⏐⏐⏐Re
+(
+n
+∫
+R
+1
+|x| f1
+(
+x, j
+n
+)
+f2
+(
+x, k
+n
+)
+dx
+)⏐⏐⏐⏐⏐
+=
+⏐⏐⏐⏐Re
+( ∫
+R
+1
+|x|
+ei(j
+n− 1
+n )x− eij
+n x
+D(H( j
+n))|x|H(j
+n )
+× (1− eik−1
+n x)(D′(H(˜t2))H′(˜t2) + D(H(˜t2))H′(˜t2) log|x|)
+D(H(˜t2))|x|H(˜t2) dx
+)⏐⏐⏐⏐
+≤ M2n−1bn
+⏐⏐⏐⏐⏐
+∫
+R
+(ei(j−1)x− eijx)(1− e−i(k−1)x)(1 + log|x| + log n)
+|x|1+H(j
+n )+H(˜t2)
+dx
+⏐⏐⏐⏐⏐
+= O(n−1bn log n).
+(S.1.9)
+Note that the bound in (S.1.9) dominates that in (S.1.8).
+To prove (i), we make use of (S.1.7) and perform a change of variables to
+get
+n
+∫
+R
+1
+|x| f1
+(
+x, j
+n
+)
+f1
+(
+x, j
+n
+)
+dx
+= n
+∫
+R
+(1− ei 1
+n x)(1− e−i 1
+n x)
+|x|2H(j
+n )+1D2(H( j
+n))
+dx
+= n1−2H(j
+n )
+∫
+R
+(1− eix)(1− e−ix)
+|x|2H(j
+n )+1D2(H( j
+n))
+dx
+= 1 + O (an log n) .
+(S.1.10)
+Thus, (i) is established using (S.1.8)-(S.1.10).
+To prove (ii), consider j̸= k in which case we have
+n
+∫
+R
+1
+|x| f1
+(
+x, j
+n
+)
+f1
+(
+x, k
+n
+)
+dx
+
+===== PDF PAGE 8 =====
+8
+= n
+D(H( j
+n))D(H( k
+n))
+∫
+R
+(eij
+n x− eij−1
+n x)(eik
+n x− eik−1
+n x)
+|x|1+H(j
+n )+H(k
+n )
+dx
+= n
+D(H( j
+n))D(H( k
+n))
+∫
+R
+eij−k
+n x∥1− ei 1
+n x∥2
+|x|1+H(j
+n )+H(k
+n )
+dx
+= n1−H(j
+n )−H(k
+n )
+D(H( j
+n))D(H( k
+n))
+∫
+R
+ei(j−k)x∥1− eix∥2
+|x|1+H(j
+n )+H(k
+n )
+dx.
+It is easy to see that uniformly for all j̸= k, n1−H(j
+n )−H(k
+n )
+D(H(j
+n ))D(H(k
+n )) = O(1), while,
+by Lemma S.1.2 in the supplement, the integral part isO((j−k)−1an). Thus,
+uniformly for all j̸= k,
+n
+∫
+R
+1
+|x| f1
+(
+x, j
+n
+)
+f1
+(
+x, k
+n
+)
+dx = O
+(
+(j− k)−1an
+)
+.(S.1.11)
+It follows that
+∑
+j̸=k
+(
+n
+∫
+R
+1
+|x| f1
+(
+x, j
+n
+)
+f1
+(
+x, k
+n
+)
+dx
+)2
+≤ M3
+n−1∑
+l=1
+(n− l)l−2a2
+n = O(na2
+n).
+Combining this with (S.1.8) and (S.1.9) shows (ii).
+To prove (iii), by (i), (S.1.8) and (S.1.9),
+n∑
+j=1
+|dij| = O(an log n) +
+∑
+j̸=i
+O
+(
+(i− j)−1an + n−1b2
+n + n−1bn log n
+)
+= O((an + bn) logn)→ 0.
+This completes the proof.
+⊔ ⊓
+S.2. Proof for Theorem 8.2.
+In the main paper and this supplement, we generally assume that h is a
+unit vector that is parallel to one of the axis. However, the results in this
+section do not require that assumption.
+Lemma S.2.1. Assume that [A3] holds. Then g(H, 0,h) is bounded away
+from 0 for any ﬁxed h.
+
+===== PDF PAGE 9 =====
+9
+Proof. A well-known result from Micchelli (1986) states the following:
+Let f(x) = (−1)k|x|γ, k∈ N+, 2k− 2 < γ < 2k. If for any n complex num-
+bers c1, . . . , cn, not all of them are zero, and any n distinct pointsx1, . . . ,xn
+in Rd satisfying
+n∑
+j=1
+cjxα
+j = 0,|α| < k,
+then we have
+n∑
+j=1
+n∑
+i=1
+cj¯cif(xj−xi) > 0.
+Applything this with k = 1, γ = 2 H, n = q + 1, xj = jh and ci =( q
+i−1
+)
+(−1)i−1, it is easy to conclude that g(H, 0,h) > 0 for any ﬁxed H∈
+(0, 1). One can see that g(H, 0,h) is continuous for H ∈ (0, 1). By (4.3),
+H(t)∈ [γ, 1− γ]. As [γ, 1− γ] is a compact set, min H∈[γ,1−γ] g(H, 0,h) > 0.
+This completes the proof of Lemma S.2.1.
+Lemma S.2.2. Lett,h∈ Rd, t,h̸= 0 and assume H(t)∈H q((0, 1)d),
+q∈ N. Then the coeﬃcient of |t|H(t)−q in (|t + φh|H(t+φh))(q)|φ=0 is a poly-
+nomial in H(t),|h|2 and⟨t,h⟩/|t|.
+Proof. We prove it by induction. The conclusion is trivial for q = 0.
+Now, assume the conclusion holds for q = Q and we will prove for q = Q+1.
+By straightforward calculations,
+(|t + φh|H(t+φh))(Q+1)|φ=0
+= (H(t + φh)|t + φh|H(t+φh)−2⟨t + φh,h⟩
++hT∇H(t + φh) log (|t + φh|)|t + φh|H(t+φh))(Q)|φ=0.
+Since this conclusion only involves the coeﬃcient of |t|H(t)−Q−1 and any
+derivative taken on H(t + φh) will generate higher order polynomial of |t|,
+it suﬃces to calculate
+H(t)(|t + φh|H(t+φh)−2⟨t + φh,h⟩)(Q)|φ=0
+= H(t)
+Q∑
+i=0
+[|t + φh|H(t+φh)−2](i)[⟨t + φh,h⟩](Q−i)|φ=0.
+As every term in the summation on the right is a polynomial function of
+H(t),|h|2 and⟨t,h⟩/|t|, the proof is accomplished by induction.
+
+===== PDF PAGE 10 =====
+10
+Lemma S.2.3. Assume that [A1], [A2], [A3] hold. Deﬁne
+f(φ, η;t,s,h) = ∂2q
+∂φq∂η q C(t + φh,s + ηh),
+and
+˜f(φ, η;t,s,h) = ∂2q
+∂φq∂η q|t + φh|H(t+φh)+H(s+ηh)D(H(t + φh), H(s + ηh)),
+where C andD are as in Deﬁnition 1.1. Then there is a ﬁnite constant Cδ
+such that for all large enough n and uniformly for all t,s∈ Ωδ,
+f(0, 0;t,s,h)≤ Cδ|t−s|−2q+H(s)+H(t);
+furthermore, uniformly for |t−s|→ 0, we have
+f(0, 0;t,s,h) = σ2(ch(t,t−s) + O(|t−s| log(|t−s|)))|t−s|−ψ(t),
+where ch(t,u) is the coeﬃcient of |u|−ψ(t) in
+− ∂2q
+∂φq∂η q
+1
+2|u + (φ− η)h|H(t+φh)+H(t+ηh)|φ=0,η=0,
+and, uniformly for all s,t∈ Ωδ,
+˜f(0, 0;t,s,h)≤ Cδ.
+Proof. Let
+I1 :=D(H(t + φh), H(s + ηh))|t + φh|H(t+φh)+H(s+ηh),
+I2 :=D(H(t + φh), H(s + ηh))|s + ηh|H(t+φh)+H(s+ηh),
+and
+I3 :=−D(H(t + φh), H(s + ηh))|t−s + (φ− η)h|H(t+φh)+H(s+ηh).
+Then we have
+f(0, 0;t,s,h) = σ2 ∂2q
+∂φq∂η q (I1 + I2 + I3)|φ=0,η=0
+and
+˜f(0, 0;t,s,h) = ∂2q
+∂φq∂η q I1|φ=0,η=0.
+
+===== PDF PAGE 11 =====
+11
+As t∈ Ωδ and|t + φh| is bounded away from 0 when φ→ 0, we have
+˜f(0, 0;t,s,h) = O(1) uniformly. Similar arguments can be made for I2 to
+deduce
+f(0, 0;t,s,h) = σ2 ∂2q
+∂φq∂η q I3|φ=0,η=0 + O(1).
+If|t−s| →0, the dominant term in f(0, 0;t,s,h) is the part resulted
+from taking derivative with respect to φ and η in the base of |t−s + (φ−
+η)h|H(t+φh)+H(s+ηh). By the deﬁnition of ch(t,t−s), we have
+f(0, 0;t,s,h) = σ2(ch(t,t−s) + O(|t−s| log(|t−s|)))|t−s|−ψ(t).
+Note that f(0, 0;t,s,h) = O(|t−s|−2q+H(s)+H(t)) as |t−s| →0, and
+f(0, 0;t,s,h) is bounded for |t−s| bounded away from 0 and t,s∈ Ωδ.
+Thus, there is some constant Cδ such that for all t,s∈ Ωδ,
+f(0, 0;t,s,h)≤ Cδ|t−s|−2q+H(s)+H(t).
+Proof for Theorem 8.2:
+Let aj = (−1)j(q
+j
+)
+, j = 0, . . . , q, then
+Cn(t,t +u/n,h) = nH(t)+H(t+ u
+n )(A1 + A2 + A3),
+where
+A1 =−
+q∑
+j1=0
+q∑
+j2=0
+aj1aj2
+⏐⏐⏐⏐
+j1h
+n −u
+n− j2h
+n
+⏐⏐⏐⏐
+H
+(
+t+j1h
+n
+)
++H
+(
+t+ u
+n +j2h
+n
+)
+D
+(
+H
+(
+t + j1h
+n
+)
+, H
+(
+t +u
+n + j2h
+n
+))
+,
+A2 =
+q∑
+j1=0
+q∑
+j2=0
+aj1aj2
+⏐⏐⏐⏐t + j1
+nh
+⏐⏐⏐⏐
+H
+(
+t+j1
+nh
+)
++H
+(
+t+ u
+n +j2
+nh
+)
+D
+(
+H
+(
+t + j1
+nh
+)
+, H
+(
+t +u
+n + j2
+nh
+))
+,
+and
+A3 =
+q∑
+j1=0
+q∑
+j2=0
+aj1aj2
+⏐⏐⏐⏐t +u
+n + j2
+nh
+⏐⏐⏐⏐
+H
+(
+t+j1
+nh
+)
++H
+(
+t+ u
+n +j2
+nh
+)
+
+===== PDF PAGE 12 =====
+12
+D
+(
+H
+(
+t + j1
+nh
+)
+, H
+(
+t +u
+n + j2
+nh
+))
+.
+Note thatD(., .) is a smooth function with bounded ﬁrst-order derivatives
+when H(t) is bounded from 0 and 1. Using the fact that n1/n− 1 =
+O
+(
+n−1 log n
+)
+, we conclude that, uniformly for all t and bounded u,
+nH(t)+H(t+ u
+n)A1− g(H(t),u,h)
+= O
+(
+|(j1− j2)h−u|2H(t)n−1 log n
+)
+= O
+(
+n−1 log n
+)
+.
+(S.2.12)
+By the result on ˜f in lemma S.2.3, we have uniformly for all t∈ Ωδ.
+nH(t)+H(t+ u
+n)A2 = O
+(
+nH(t)+H(t+ u
+n)−2q
+)
+= O
+(
+n−ψ(t) + n−1 log n
+)
+,
+(S.2.13)
+and similarly
+nH(t)+H(t+ u
+n )A3 = O
+(
+n−ψ(t) + n−1 log n
+)
+.(S.2.14)
+By (S.2.12)-(S.2.14), (i) follows.
+Next, consider (ii). By the result about f in Lemma S.2.3, we conclude
+that, uniformly for q|h|+1
+n <|t−s|≤ 2b andt,s∈ Ωδ,
+∆q
+h/n,1∆q
+h/n,2σ−2C(t,s)
+= σ−2
+∫ 1/n
+0
+···
+∫ 1/n
+0
+∂2q
+∂φ1 . . . ∂φq∂η1 . . . ∂ηq
+C
+(
+t +
+q∑
+i=1
+φih,s +
+q∑
+i=1
+ηih
+)
+dφdη
+= σ−2
+∫ 1/n
+0
+···
+∫ 1/n
+0
+f
+(
+0, 0,t +
+q∑
+i=1
+φih,s +
+q∑
+i=1
+ηih,h
+)
+dφdη
+∼ 1 + o(1)
+n2q
+∫
+[0,1]2d
+ch
+(
+t,u +
+q∑
+i=1
+(φi− ηi)h
+) ⏐⏐⏐⏐⏐
+u
+n + 1
+n
+q∑
+i=1
+(φi− ηi)h
+⏐⏐⏐⏐⏐
+−ψ(t)
+dφdη,
+(S.2.15)
+where the last line uses Lemma S.2.3, and u = n(t−s) satisfying q|h| + 1 <
+|u| < 2nb. One can verify that for some constant C,
+∫ 1
+0
+···
+∫ 1
+0
+⏐⏐⏐⏐⏐u +
+q∑
+i=1
+(φi− ηi)h
+⏐⏐⏐⏐⏐
+−ψ(t)
+dφdη≤ C(|u|− q|h|)−ψ(t).
+
+===== PDF PAGE 13 =====
+13
+Thus, when n is large enough, as sups,t|ch(s,t)| <∞,
+|Cn(t,s)|
+=
+⏐⏐⏐σ−2nH(t)+H(s)∆q
+h/n,1∆q
+h/n,2C(t,s)
+⏐⏐⏐
+∼ (1 + o(1))
+⏐⏐⏐⏐⏐
+∫
+[0,1]2d
+ch
+(
+t,u +
+q∑
+i=1
+(φi− ηi)h
+) ⏐⏐⏐⏐⏐u +
+q∑
+i=1
+(φi− ηi)h
+⏐⏐⏐⏐⏐
+−ψ(t)
+dφdη
+⏐⏐⏐⏐⏐
+≤ Cδ(|u|− q|h|)−ψ(t).
+This shows (ii).
+For (iii), similar to the derivation above, for n|t−s| > q|h| + 1 and
+t,s∈ Ωδ, we have
+|Cn(t,s)|
+=
+⏐⏐⏐⏐⏐σ−2nH(t)+H(s)
+∫ 1/n
+0
+···
+∫ 1/n
+0
+f
+(
+0, 0,t +
+q∑
+i=1
+φih,s +
+q∑
+i=1
+ηih,h
+)
+dφdη
+⏐⏐⏐⏐⏐
+≤ C′′n−2q+H(t)+H(s)
+∫ 1
+0
+···
+∫ 1
+0
+⏐⏐⏐⏐⏐t−s + 1
+n
+q∑
+i=1
+(φi− ηi)h
+⏐⏐⏐⏐⏐
+−2q+H(t)+H(s)
+dφdη
+≤ C′′n−2q+H(t)+H(s)(|t−s|− q|h|/n)−2q+H(t)+H(s)
+≤ C′′(n|t−s|− q|h|)−2q+H(s)+H(t)
+≤ C′′(n|t−s|− q|h|)− ¯ψ
+≤ Cδ(n|t−s|)− ¯ψ,
+where the third line uses Lemma S.2.3. This shows (iii).
+Furthermore, when|u|→∞ , by Lemma S.2.2,
+ch
+(
+t,u +
+q∑
+i=1
+(φi− ηi)h
+)
+→ ch (t,u) ,
+and ⏐⏐⏐⏐⏐u +
+q∑
+i=1
+(φi− ηi)h
+⏐⏐⏐⏐⏐
+−ψ(t)
+→|u|−ψ(t).
+Combining the previous two equations with (S.2.15), we have
+Cn(t,s) = (ch(t,t−s) + O(b log b))|u|−ψ(t).
+Thus, (iv) is established and the proof is complete.
+⊔ ⊓
+
+===== PDF PAGE 14 =====
+14
+S.3. Proofs for Lemma 8.3, Lemma 8.4 and Lemma 8.5.
+In the remaining part of the proof, as in the paper, we assume that h is
+a unit vector that parallels an axis.
+Proof for Lemma 8.3:
+By Theorem 8.2, we have
+E[W 2
+n(t,h)] = g(H(t), 0,h) + O(ρn).(S.3.16)
+As Wn(t,h) follows a normal distribution with mean 0, we have
+2E| log Wn(t,h)| = 2 log|EWn(t,h)| + E log χ2
+1.(S.3.17)
+The result follows from Lemma S.2.1 and (S.3.16).
+⊔ ⊓
+Proof for Lemma 8.4:
+Denote Dt,b ={z :t + bz∈ Ωδ}∩ [0, 1]d. Since K, A and H have continuous
+second-order derivatives, it is not hard to ﬁnd that
+(nb)−d ∑
+i
+K
+(ti−t
+b
+)
+A
+(ti−t
+b
+)
+A
+(ti−t
+b
+)T
+=
+∫
+Dt,b
+K (z) A (z) AT (z) dz + O
+( 1
+(nb)2∧p
+)
+and
+(nb)−d ∑
+i
+K
+(ti−t
+b
+)
+A
+(ti−t
+b
+)
+H(ti)
+=
+∫
+Dt,b
+K(z)A(z)H(t + bz)dz + O
+( 1
+(nb)2∧p
+)
+.
+By Theorem 2 in Newman (1974), we have
+I1(t, n, b) =2eT
+1
+(∫
+Dt,b
+K(z)A(z)AT (z)dz
+)−1
+×
+∫
+Dt,b
+K(z)A(z)H(t + bz)dz log
+(1
+n
+)
++ O
+( log(n)
+(nb)2∧p
+)
+.
+
+===== PDF PAGE 15 =====
+15
+By Taylor’s Theorem, when p∈ N, we have
+H(t + bz) = A(z)TC(t) +
+∑
+|α|=p
+Rα(t)(bz)α,
+where C(t)∈ Rp of which the ﬁrst element is H(t), and
+Rα(t) =|α|
+α!
+∫ 1
+0
+(1− s)|α|−1DαH(t + sbz)ds.
+Thus,
+2eT
+1
+(∫
+Dt,b
+K(z)A(z)AT (z)dz
+)−1 ∫
+Dt,b
+K(z)A(z)H(t + bz)dz log
+(1
+n
+)
+= 2 log
+(1
+n
+)
+H(t) + 2 log
+(1
+n
+)
+eT
+1
+(∫
+Dt,b
+K(z)A(z)AT (z)dz
+)−1
+×
+∫
+Dt,b
+K(z)A(z)
+
+ ∑
+|α|=p
+Rα(t)(bz)α
+
+ dz
+=−2 log(n)(H(t) + R(t, b)).
+It is obvious that R(t, b) = O(bp) uniformly for all t∈ Ωδ.
+When p /∈ N, we have
+H(t + bz) = A(z)TC(t) + O((bz)p),
+uniformly, where C(t)∈ R⌈p⌉ of which the ﬁrst element is H(t). By the
+same calculation above, we can still getR(t, b) = O(bp), although an explicit
+formula of R(t, b) is not available.
+⊔ ⊓
+Lemma S.3.1. Lett,t +u/n∈ Ωδ and assume that [A1]-[A3] hold. If
+|u|→∞ and|u| < 2bn, then
+g(H(t),u,h) = (ch(t,u) + o(1))|u|−ψ(t).
+Proof. With the same argument as (S.2.15) and proof for (iv) in The-
+orem 8.2 except for ignoring σ2 and changing C(t,s) to f(t,s) = − 1
+2|t−
+s|H(t)+H(s), we can get our lemma.
+
+===== PDF PAGE 16 =====
+16
+Lemma S.3.2. Deﬁne
+Yn(t,h) = Wn(t,h)√
+Var(Wn(t,h))
+,
+and
+rn(t,s;h) = Cov(Yn(t,h), Yn(s,h)).
+Assume [A1], [A2], [A3] and f to be a bounded function with supporting set
+on B1(0) and bounded ﬁrst order derivative. Then, if 2ψ(t) > d, for k≥ 2
+and uniformly for all t∈ Ωδ, we have
+(nb)−d ∑
+ti,tj∈Ωn
+f
+(ti−t
+b
+)
+f
+(tj−t
+b
+)
+rk
+n(ti,tj)
+→
+∫
+Dt,b
+f 2(z)dz
+∑
+j∈Zd
+(g(H(t),j,h)
+g(H(t), 0,h)
+)k
+.
+If 2ψ(t) = d, uniformly for all t∈ Ωδ, we have
+(nb)−d log−1(nb)
+∑
+ti,tj∈Ωn
+f
+(ti−t
+b
+)
+f
+(tj−t
+b
+)
+r2
+n(ti,tj)
+→ Vdf 2(0)
+g(H(t, 0,h))
+∫
+B1(0)
+c2
+h(t,x)
+|x|d−1 dx.
+If 2ψ(t) < d, for k≥ 2 and uniformly for all t∈ Ωδ, we have
+d−k
+n
+∑
+distinct ti1 ,...,tik∈Ωn
+k∏
+l=1
+rn
+(
+til,til+1
+)
+f
+(til−t
+b
+)
+→
+∫
+(B1(0))⊗k
+∏k
+i=1 ch(t, zi− zi+1)|zi− zi+1|−ψ(t)f(zi)
+gk(H(t), 0,h) dz1 . . . dzk,
+where dn = (nb)d−ψ(t) and zk+1 := z1.
+Proof. By the ﬁrst part of Theorem 8.2 and Lemma S.2.1, we have for
+any ﬁxedj andt∈ Ωδ,
+rn(t,t +j/n;h) = g(H(t),j,h)
+g(H(t), 0,h) + O(ρn(t)).(S.3.18)
+
+===== PDF PAGE 17 =====
+17
+By the second part of Theorem 8.2 and Lemma S.2.1, we have uniformly for
+t∈ Ωδ andj≤ nb,
+rn(t,t +j/n;h)≤ C|j|−ψ(t),(S.3.19)
+where C is some constant. By Fatou’s Lemma,
+∑
+j∈Zd
+(g(H(t),j,h)
+g(H(t), 0,h)
+)k
+= lim
+m→∞
+∑
+j∈Zd∩Bm(0)
+(g(H(t),j,h)
+g(H(t), 0,h)
+)k
+≤ lim
+m→∞
+lim inf
+n→∞
+∑
+j∈Zd∩Bm(0)
+rk
+n(t,t +j
+n;h)
+≤ C lim
+m→∞
+∑
+j∈Zd∩Bm(0)
+|j|−kψ(t)
+≤
+∑
+j∈Zd
+|j|−kψ(t) <∞.
+(S.3.20)
+While t is arbitrary in Ω δ, for convenience we will assume that t is a grid
+point in Ω n; if t is not in Ω n then we could replace t by the closest point
+in Ω n and the bias will be a lower order term. With this simpliﬁcation, we
+relabel the points ti as t +i/n with i in some subset Ω t of Zd, such that
+t +i/n∈ Ωδ∩ Bb(t). For a ﬁxed positive m, write
+(nb)−d ∑
+i,j∈Ωt
+f
+(i
+nb
+)
+f
+(j
+nb
+)
+rk
+n(t +i/n,t +j/n)
+=
+∫
+Dt,b
+f 2(z)dz
+∑
+j∈Zd
+(g(H(t),j,h)
+g(H(t), 0,h)
+)k
++ ϵn,m,1 +··· + ϵn,m,5
+where
+ϵn,m,1 = (nb)−d
+
+∑
+i,j
+−
+∑
+i
+∑
+|j−i|≤m
+
+ f
+(i
+nb
+)
+f
+(j
+nb
+)
+rk
+n(t +i/n,t +j/n),
+ϵn,m,2 = (nb)−d
+( ∑
+i
+∑
+|j|≤m
+f
+(i
+nb
+)
+f
+(i +j
+nb
+)
+rk
+n(t +i/n,t + (i +j)/n)
+−
+∑
+i
+∑
+|j|≤m
+f 2
+(i
+nb
+)
+rk
+n(t +i/n,t + (i +j)/n
+)
+,
+
+===== PDF PAGE 18 =====
+18
+ϵn,m,3 = (nb)−d ∑
+i
+∑
+|j|≤m
+f 2
+(i
+nb
+)
+rk
+n(t +i/n,t + (i +j)/n)
+−
+∫
+Dt,b
+f 2(z)dz
+∑
+|j|≤m
+rk
+n(t,t +j/n),
+ϵn,m,4 =
+∫
+Dt,b
+f 2(z)dz
+∑
+|j|≤m
+rk
+n(t,t +j/n)
+−
+∫
+Dt,b
+f 2(z)dz
+∑
+|j|≤m
+(g(H(t),j,h)
+g(H(t), 0,h)
+)k
+,
+ϵn,m,5 =
+∫
+Dt,b
+f 2(z)dz
+∑
+|j|≤m
+(g(H(t),j,h)
+g(H(t), 0,h)
+)k
+−
+∫
+Dt,b
+f 2(z)dz
+∑
+|j|∈Zd
+(g(H(t),j,h)
+g(H(t), 0,h)
+)k
+.
+We will show that for i = 1, . . . ,5,
+lim
+m→∞
+lim sup
+n→∞
+|ϵn,m,i| = 0.(S.3.21)
+For ϵn,m,1,
+|ϵn,m,1| = (nb)−d ∑
+i
+∑
+j>m
+⏐⏐⏐⏐f
+(i
+nb
+)
+f
+(i +j
+nb
+)
+rk
+n(t +i/n,t + (i +j)/n)
+⏐⏐⏐⏐
+≤ C(nb)−d ∑
+i
+⏐⏐⏐⏐f
+(i
+nb
+)⏐⏐⏐⏐
+∑
+|j|>m
+|j|−kψ(t)
+≤ Cmd−1−kψ(t)
+for some C <∞.
+|ϵn,m,2|≤ (nb)−d ∑
+i
+∑
+|j|≤m
+⏐⏐⏐⏐f
+(i
+nb
+) [
+f
+(i +j
+nb
+)
+− f
+(i
+nb
+)]⏐⏐⏐⏐×
+rk
+n
+(
+t + i
+n ,t +i +j
+n
+)
+= O((nb)−1).
+
+===== PDF PAGE 19 =====
+19
+Also, ϵn,m,3 = O((nb)−1+b) is a direct result of Riemann approximation and
+(S.3.18). That ( S.3.21) holds for i = 4, 5 follows from (S.3.18) and (S.3.20),
+respectively. Thus, the ﬁrst part of this lemma is established.
+For the second part of this lemma, by Lemma S.3.1 and Lemma S.2.1, we
+know that as n and|i−j|→∞ andti,tj∈ Bb(t),
+rn(ti,tj) =
+( ch(t,i−j)
+g(H(t), 0,h)) + o(1)
+)
+|i−j|−ψ(t).(S.3.22)
+One can verify that for all t∈ (0, 1)d, there exists a N≥ 1, such that for all
+n≥ N, Ωt = Bnb(0)∩ Zd and
+n−d log−1(n)
+∑
+i,j∈[−n,n]d,i̸=j
+|i−j|−d = O(1).(S.3.23)
+Denote
+ϵ′
+n,m,δ,1 = 1
+(nb)d log(nb)
+∑
+i,j∈Ωt
+f
+(i
+nb
+)
+f
+(j
+nb
+)
+r2
+n(t +i/n,t +j/n)
+− 1
+(nb)d log(nb)
+∑
+i,j∈Bnb(0)
+|i−j|≥m
+f
+(i
+nb
+)
+f
+(j
+nb
+)
+r2
+n(t +i/n,t +j/n),
+ϵ′
+n,m,δ,2 = 1
+(nb)d log(nb)
+∑
+i,j∈Bnb(0)
+|i−j|≥m
+f
+(i
+nb
+)
+f
+(j
+nb
+)
+r2
+n(t +i/n,t +j/n)
+− 1
+(nb)d log(nb)
+∑
+i,j∈Bnb(0)
+|i−j|≥m
+f
+(i
+nb
+)
+f
+(j
+nb
+) c2
+h(t,i−j)
+g2(H(t), 0,h))|i−j|−d,
+ϵ′
+n,m,δ,3 = 1
+(nb)d log(nb)
+∑
+i,j∈Bnb(0)
+|i−j|≥m
+f
+(i
+nb
+)
+f
+(j
+nb
+) c2
+h(t,i−j)
+g2(H(t), 0,h))|i−j|−d
+− 1
+(nb)d log(nb)
+∑
+i,j∈Bnb(0)
+m≤|i−j|≤δnb
+f
+(i
+nb
+)
+f
+(j
+nb
+) c2
+h(t,i−j)
+g2(H(t), 0,h))|i−j|−d,
+ϵ′
+n,m,δ,4 = 1
+(nb)d log(nb)
+∑
+i,j∈Bnb(0)
+m≤|i−j|≤δnb
+(
+f
+(i
+nb
+)
+f
+(j
+nb
+)
+− f 2(0)
+)
+×
+
+===== PDF PAGE 20 =====
+20
+c2
+h(t,i−j)
+g2(H(t), 0,h))|i−j|−d,
+ϵ′
+n,m,δ,5 = f 2(0)
+(nb)d log(nb)
+∑
+i,j∈Bnb(0)
+m≤|i−j|≤δnb
+c2
+h(t,i−j)
+g2(H(t), 0,h))|i−j|−d
+− f 2(0)
+(nb)d log(nb)
+∫
+x,y∈Bnb(0)−B1(0)
+m≤|x−y|≤δnb
+c2
+h(t,x− y)
+g2(H(t), 0,h))|x− y|−ddxdy,
+ϵ′
+n,m,δ,6 = f 2(0)
+(nb)d log(nb)
+∫
+x,y∈Bnb(0)−B1(0)
+m≤|x−y|≤δnb
+c2
+h(t,x− y)
+g2(H(t), 0,h))|x− y|−ddxdy
+− Vdf 2(0)
+g2(H(t, 0,h))
+∫
+|x|=1
+c2
+h(t,x)dx.
+We will show
+lim
+δ→0
+lim
+m→∞
+lim
+n→∞
+|ϵ′
+n,m,δ,i| = 0, i = 1, . . . ,6.(S.3.24)
+First,
+|ϵ′
+n,m,δ,1|≤ (nb)−d log−1(nb)
+∑
+i∈Bnb(0)
+Vdmd sup
+z
+|f(z)|2
+= O
+( md
+log(nb)
+)
+→ 0 as n→∞ .
+That (S.3.24) holds for i = 2 is a consequence of (S.3.22) and (S.3.23). Next,
+|ϵ′
+n,m,δ,3|≤ supz f 2(z) supz c2
+h(t,z)
+(nb)d log(nb)g2(H(t), 0,h)
+∑
+i∈Bnb(0),|j|∈[δnb,nb]
+|j|−d
+= O
+( log(δ)
+log(nb)
+)
+→ 0 as n→∞ .
+That (S.3.24) holds for i = 4 follows from (S.3.23), smoothness of f(.) and
+boundness of ch(., .). That (S.3.24) holds for i = 5 is due to (S.3.23), bound-
+edness and smoothness of ch(., .) and
+lim
+m→∞
+sup
+|i|>m
+⏐⏐⏐⏐⏐
+c2
+h(t,i)|i|−d
+∫
+[i,i+1] c2
+h(t,x)|x|−ddx− 1
+⏐⏐⏐⏐⏐ = 0.
+
+===== PDF PAGE 21 =====
+21
+Speciﬁcally, there exists an M1 > 0 such that
+(nb)−d log−1(nb)
+∫
+x,y∈Bnb(0)−B1(0)
+m≤|x−y|≤δnb
+f 2(0) c2
+h(t,x− y)
+g2(H(t), 0,h))|x− y|−ddxdy < M1.
+Thus,
+lim
+m→∞
+|ϵ′
+n,m,δ,5|≤ (nb)−d log−1(nb)f 2(0) lim
+m→∞
+|Sn,m/In,m− 1|In,m
+≤M1 lim
+m→∞
+sup
+|i|>m
+⏐⏐⏐⏐⏐
+c2
+h(t,i)|i|−d
+∫
+[i,i+1] c2
+h(t,x)|x|−ddx− 1
+⏐⏐⏐⏐⏐ = 0,
+where Sn,m and In,m represent the summation part and integration part,
+respectively, in ϵ′
+n,m,δ,5.
+Finally, for ϵ′
+n,m,δ,6, letting
+Θ := (cos θ1, sin θ1 cos θ2, . . . ,
+d−2∏
+i=1
+sin θi cos θd−1,
+d−1∏
+i=1
+sin θi)
+we have
+lim
+δ→0
+lim
+n→∞
+f 2(0)
+(nb)d log(nb)
+∫
+x,y∈Bnb(0)−B1(0)
+m≤|x−y|≤δnb
+c2
+h(t,x− y)
+g2(H(t), 0,h))|x− y|−ddxdy
+= lim
+δ→0
+lim
+n→∞
+f 2(0)
+(nb)d log(nb)
+∫
+x∈Bnb(0)−B1(0)
+∫
+m≤|y|≤δnb
+c2
+h(t, y)
+g2(H(t), 0,h))|y|−ddydx
+= lim
+δ→0
+lim
+n→∞
+Vdf 2(0)
+log(nb)
+∫
+[0,2π]d
+∫ δnb
+m
+c2
+h(t, Θ)
+g2(H(t), 0,h))|r|−1
+d−2∏
+i=1
+sind−i−1 θidrdθ
+= Vdf 2(0)
+∫
+[0,2π]d
+c2
+h(t, Θ)
+g2(H(t), 0,h))
+d−2∏
+i=1
+sind−i−1 θidθ
+= Vdf 2(0)
+∫ 1
+0
+∫
+[0,2π]d
+c2
+h(t, Θ)
+g2(H(t), 0,h))
+d−2∏
+i=1
+sind−i−1 θidθdr
+= Vdf 2(0)
+g2(H(t, 0,h))
+∫
+B1(0)
+c2
+h(t,x)
+|x|d−1 dx,
+where the change of variables on the second line uses the properties that
+c2
+h(t,x) does not depend on|x|, as indicated by Lemma S.2.2. This concludes
+the proof of the second part of the lemma.
+
+===== PDF PAGE 22 =====
+22
+For the third part of the lemma, by (S.3.22), we have for alln distinctti,tj∈
+Bb(t),
+|rn(ti,tj)|≤ C(t,h)|i−j|−ψ(t).
+Let
+ϵ′′
+n,m,1 = d−k
+n
+∑
+distinct ti1 ,...,tik∈Ωn
+k∏
+l=1
+rn
+(
+til,til+1
+)
+f
+(til−t
+b
+)
+− d−k
+n
+∑
+distinct ti1 ,...,tik∈Ωn,|is−it|>m
+k∏
+l=1
+rn
+(
+til,til+1
+)
+f
+(til−t
+b
+)
+,
+ϵ′′
+n,m,2 = d−k
+n
+∑
+distinct ti1 ,...,tik∈Ωn,|is−it|>m
+k∏
+l=1
+rn
+(
+til,til+1
+)
+f
+(til−t
+b
+)
+− d−k
+n
+∑
+distinct i1,...,ik∈Ωn,|is−it|>m
+∏k
+l=1 ch(t,il−il+1)|il−il+1|−ψ(t)f(il)
+gk(H(t), 0,h) ,
+ϵ′′
+n,m,3 = d−k
+n
+∑
+distinct i1,...,ik∈Ωn,|is−it|>m
+∏k
+l=1 ch(t,il−il+1)|il−il+1|−ψ(t)f(il)
+gk(H(t), 0,h)
+−
+∫
+(B1(0))⊗k
+∏k
+i=1 ch(t, zi− zi+1)|zi− zi+1|−ψ(t)f(zi)
+gk(H(t), 0,h) dz1 . . . dzk.
+We will prove
+lim
+m→∞
+lim
+n→∞
+|ϵ′′
+n,m,i| = 0, i = 1, 2, 3.(S.3.25)
+It follows that
+|ϵ′′
+n,m,1|≤ kmdVdCk(t,h) sup
+[ f 2ch
+g(H(t, 0,h))
+]k
+×
+d−k
+n
+∑
+i1,...,ik∈Ωt
+1−ψ(t)|i2−i3|−ψ(t) . . .|ik−i1|−ψ(t)
+= O(d−1
+n )→ 0.
+That (S.3.25) holds for i = 2 is a direct result of (S.3.22). That (S.3.25)
+holds for i = 3 follows from arguments similar to those in the proofs above
+regarding ϵ′
+n,m,5 and ϵ′
+n,m,6, and we omit the details here.
+
+===== PDF PAGE 23 =====
+23
+Lemma S.3.3. Assume [A1], [A2], [A3] and f to be a bounded function
+with support on B1(0). Then for k≥ 2 and uniformly for all t∈ Ωδ, we
+have
+∑
+i,j
+f
+(ti−t
+b
+)
+f
+(tj−t
+b
+)
+rk
+n(ti,tj)≤
+
+
+
+(nb)2d−2ψ(t)C(f, δ), if 2ψ(t) < d,
+(nb)d log(nb)C(f, δ), if 2ψ(t) = d,
+(nb)dC(f, δ), if 2ψ(t) > d,
+where C(f, δ) depends only on δ and f.
+Proof. By the second part of Theorem 8.2 and Lemma S.2.1, we have
+uniformly for t∈ Ωδ and|j|≤ nb,
+rn
+(
+t,t +j
+n;h
+)
+≤ C|j|−ψ(t).(S.3.26)
+For|ti−t| < b ,|j|≤ nb, as H(t) has bounded ﬁrst order derivative and
+nb→ 1, we know that when n is large enough, we have
+rn
+(
+ti,ti +j
+n;h
+)
+≤ C|j|−ψ(ti)≤ C|j|−ψ(t)|nb|M b≤ C′|j|−ψ(t),
+where supt|H′(t)|≤ M. Thus,
+∑
+i,j
+f
+(ti−t
+b
+)
+f
+(tj−t
+b
+)
+rk
+n(ti,tj)
+≤ sup
+z
+|f(z)|2 ∑
+i,j
+r2
+n(ti,tj)
+≤ sup
+z
+|f(z)|2 ∑
+i,j
+(C′)2|j|−2ψ(t)
+≤
+
+
+
+(nb)dC(f, δ), if 2ψ(t) > d,
+(nb)d log(nb)C(f, δ), if 2ψ(t) = d,
+(nb)2d−2ψ(t)C(f, δ), if 2ψ(t) < d.
+The proof is complete.
+The following is a well-known result (cf. Breuer and Major, 1983) needed
+in some parts of the proofs below.
+Lemma S.3.4. If ξ and η are jointly Gaussian random variables, Eξ =
+Eη = 0, Eξ2 = Eη2 = 1, Eξη = r, then
+EHk(ξ)Hl(τ) = δ(k, l)rkk!,
+where δ denotes the Kronecker delta.
+
+===== PDF PAGE 24 =====
+24
+Proof for Lemma 8.5:
+Deﬁne Yn(t,h) and rn as in Lemma S.3.2. For all a with|a| = 1,
+aT (Z(t, n)− EZ(t, n)) = (nb)−d
+2
+∑
+i
+K
+(ti−t
+b
+)
+F (Yn(ti,h))aTA
+(ti−t
+b
+)
+.
+where F is as deﬁned in (3.8). Denote fa(x) = K(t)aTA(t), which is a
+bounded function with a second derivative, and by (S.3.17) we can rewrite
+aT (Z(t, n)− E[Z(t, n)]) as
+aT (Z(t, n)− E[Z(t, n)]) = (nb)−d
+2
+
+
+
+∑
+i∈Ωt
+fa
+(i
+nb
+)
+F (Yn(ti,h))
+
+
+ .
+Denote
+σ2
+l,f(t) =
+∫
+Dt,b
+f 2(z)dz
+∑
+j∈Zd
+(g(H(t),j,h)
+g(H(t), 0,h)
+)l
+, l≥ 2,
+and
+σ2
+f(t) =
+∞∑
+l=2
+c2
+l l!σ2
+l,f(t) = σ2
+H(t)
+∫
+Dt,b
+f 2(z)dz.
+By derivations similar to the proof of Theorem 1 in Breuer and Major (1983)
+(changing all r(.) in their proof to rn(.); using (S.3.19) when proving con-
+vergence to 0; using Lemma S.3.2 when proving the limit of summation of
+rn(.); distributing fa(.) properly in the proof), we get
+aTZ(t, n) d→ N
+(
+0, σ2
+fa(t)
+)
+.
+As a is arbitrary, we have
+Z(t, n) d→ N
+(
+0, σ2
+H(t)
+∫
+Dt,b
+f(z)f T (z)dz
+)
+.
+Similarly, following Theorem 1’ in Breuer and Major (1983), we prove when
+2ψ(t) = d,
+log− 1
+2 (nb)Z(t, n) d→ N(0, Σ),
+
+===== PDF PAGE 25 =====
+25
+where
+Σ = Vdf(0)f T (0)
+g2(H(t), 0,h)
+∫
+|x|=1
+c2
+h(t,x)dx.
+When 2ψ(t) < d, following the proof of Proposition 6.1 in Taqqu (1975)
+and changing the matrix DN(1) in that proof to a matrix whose diago-
+nal elements are f( i
+nb) and conducting some other corresponding modiﬁ-
+cations, we can establish the convergence of the characteristic function of
+(nb)−d
+2 +ψ(t)aTZ to
+φ(u) = exp
+{
+1
+2
+∞∑
+k=2
+(2iu)k
+k Sk
+}
+.
+To establish the uniform bound of the bias, as A
+(ti−t
+b
+)
+and K
+(ti−t
+b
+)
+are
+bounded, we have uniformly for t∈ Ωδ
+E[Z(t, n)] = O(2E[log|Wn(ti)|− ˜g(ti)]) = O((nb)
+d
+2 ρn).
+For the variance, it follows from Lemma S.3.4 that
+(nb)dE
+(
+aTZ(t, n)− aT E[Z(t, n)]
+)2
+= E
+
+ ∑
+i∈Ωt
+fa
+(i
+nb
+)
+F (Yn(ti,h))
+
+
+2
+=
+∑
+i,j∈Ωt
+fa
+(i
+nb
+)
+fa
+(j
+nb
+) ∞∑
+l=2
+c2
+l l!rl
+n(ti, tj),
+which, by Lemma S.3.3, is bounded by
+sup
+z
+|fa(z)|2
+∞∑
+l=2
+c2
+l l!
+∑
+i,j∈Ωt
+r2
+n(ti, tj)
+≤
+
+
+
+Cδ,a(nb)d, if 2ψ(t) > d,
+Cδ,a(nb)d log(nb), if 2ψ(t) = d
+Cδ,a(nb)2d−2ψ(t), if 2ψ(t) < d.
+⊔ ⊓
+
+===== PDF PAGE 26 =====
+26
+S.4. Proofs of Theorem 3.4 and Corollary 3.5.
+Proof for Theorem 3.4:
+Let γ be the constant deﬁned in (4.3). It follows that
+G′(H; n,h) =−2 logn + O(1) and G′′(H; n,h) = O(1)
+for H ∈ [γ/2, 1− γ/2]. Below, when there is no ambiguity, we denote
+G(·; n,h) by G and the inverse by G−1(·) to simplify notation. It is easy
+to verify that
+∂
+∂ξ G−1(ξ) = 1
+G′(G−1(ξ)) = 1
+G′(H) =− 1
+2 logn + O
+( 1
+log2 n
+)
+,(S.4.27)
+and
+∂2
+∂ξ2 G−1(ξ) =
+( 1
+G′(G−1(ξ))
+)′
+=− G′′(H)
+(G′(H))3 = O
+( 1
+log3 n
+)
+(S.4.28)
+where H = G−1(ξ). Let A to be the event on which
+G(1− γ/2; n,h)≤ ˆG(H(t); n,h)≤ G(γ/2; n,h).
+On A, by (S.4.28) and Taylor’s expansion, we have
+ˆH(t)− H(t)
+= G−1
+(
+ˆG(H(t); n,h)
+)
+− G−1 (G(H(t); n,h))
+= G−1(G(H(t); n,h))′
+(
+ˆG(H(t); n,h)− G(H(t); n,h)
+)
++ O
+((
+ˆG(H(t); n,h)− G(H(t); n,h)
+)2
+/ log3 n
+)
+.
+(S.4.29)
+For convenience of notation, deﬁne
+Vn = E
+(
+ˆG(H(t); n,h)− G(H(t); n,h)
+)2
+.
+For n large enough, we have
+P(Ac)≤ P
+(⏐⏐⏐ ˆG(H(t); n,h)− G(H(t); n,h)
+⏐⏐⏐≥ γ log n
+2
+)
+≤
+(γ log n
+2
+)−2
+Vn.
+(S.4.30)
+
+===== PDF PAGE 27 =====
+27
+By (S.4.27) and (S.4.29),
+E
+[(
+ˆH(t)− H(t)
+)
+IA
+]
+= G−1(G(H(t); n,h))′E
+[(
+ˆG(H(t); n,h)− G(H(t); n,h)
+)
+IA
+]
++ O(Vn/log3 n)
+=−(2 logn)−1E
+[
+ˆG(H(t); n,h)− G(H(t); n,h)
+]
++ Rn
++ O(T1(n, b,t)/ log2 n) + O(Vn/log3 n),
+(S.4.31)
+where, by the Cauchy-Schwarz inequality and (S.4.30),
+|Rn| = O
+(
+(log n)−1)⏐⏐⏐E
+[(
+ˆG(H(t); n,h)− G(H(t); n,h)
+)
+IAc
+]⏐⏐⏐
+≤ O
+(
+(log n)−1)
+E1/2
+[
+ˆG(H(t); n,h)− G(H(t); n,h)
+]2
+P1/2(Ac)
+= O(Vn/ log2 n).
+(S.4.32)
+On the other hand, since both ˆH(t) and H(t)∈ [0, 1],
+⏐⏐⏐E
+[(
+ˆH(t)− H(t)
+)
+IAc
+]⏐⏐⏐≤ 2P(Ac) = O(Vn/ log2 n).(S.4.33)
+By (S.4.31)-(S.4.33),
+E
+[
+ˆH(t)− H(t)
+]
+=− (2 logn)−1 E
+[
+ˆG(H(t); n,h)− G(H(t); n,h)
+]
++ O((T1(n, b,t) + Vn)/ log2 n).
+A similar argument gives
+E
+[
+ˆH(t)− H(t)
+]2
+= O(Vn/ log2 n).
+Finally, we turn to the asymptotic distributions. By Theorem 3.2,
+E ˆG(H(t); n,h)− G(H(t); n,h) = o(log n).
+By this and the fact that G(b; n,h)− G(a; n,h) = O(log n) for any ﬁxed
+a < b in [γ/2, 1− γ/2], we conclude readily that
+E ˆG(H(t); n,h)∈ [G(1− γ/2; n,h), G(γ/2; n,h)]
+
+===== PDF PAGE 28 =====
+28
+for large n. By the mean value theorem and (S.4.27), we have on the event
+A
+(
+ˆH(t)− G−1
+(
+E ˆG(H(t); n,h)
+))
+log n
+=
+(
+G−1
+(
+ˆG(H(t); n,h)
+)
+− G−1
+(
+E ˆG(H(t); n,h)
+))
+log n
+= G−1(˜θ)′
+(
+ˆG(H(t); n,h)− E ˆG(H(t); n,h)
+)
+log n
+∼− 1
+2
+(
+ˆG(H(t); n,h)− E ˆG(H(t); n,h)
+)
+.
+(S.4.34)
+The result on asymptotic distribution stated in the Theorem 3.4 is then a
+simple consequence of Slutsky’s Theorem.
+⊔ ⊓
+Proof for Corollary 3.5:
+The asymptotic distribution of ˆG(H(t); n,h)− G(H(t)) in Corollary 3.5
+follows from Theorem 3.3 and the asymptotic bias in (3.7). Similarly to
+(S.4.34),
+(
+G−1
+(
+E ˆG(H(t); n,h)
+)
+− H(t)
+)
+log n
+=
+(
+G−1
+(
+E ˆG(H(t); n,h)
+)
+− G−1 (G(H(t)))
+)
+log n
+= G−1(˜θ)′
+(
+E ˆG(H(t); n,h)− G(H(t))
+)
+log n
+∼− 1
+2
+(
+E ˆG(H(t); n,h)− G(H(t))
+)
+.
+Thus, the asymptotic distribution of ( ˆH(t)− H(t)) logn in Corollary 3.5
+follows as for ˆG(H(t); n,h)− G(H(t)) using (3.7) and (S.4.34).
+⊔ ⊓
+S.5. Proofs for Theorem 4.1, Theorem 4.2 and Theorem 4.3.
+Proof for Theorem 4.1:
+The result for variance is a direct consequence of Theorem 3.2. For bias, by
+(8.7) and the fact that I1(t, n, b) will be canceled in E[ ˆH1], we have
+(2 log 2)E[ ˆH1] = E[ ˜β1(t, 2h; n, b1)− ˜β1(t,h; n, b1)]
+= log g(t, 0, 2h)− log g(t, 0,h) + O(bp + ρn(t))
+
+===== PDF PAGE 29 =====
+29
+= (2 log 2) H(t) + O(bp + ρn(t)),
+where the second line uses (8.9).
+The following is a sketch for the proof of the asymptotic distribution. We
+will omit the details here since they are straightforward. From the proof of
+Theorem 3.3, under proper normalization a(n, b,t) = (nb)−d/2, we have
+a(n, b,t)
+(
+˜β1(t, 2h; n, b)− E[ ˜β1(t, 2h; n, b)]
+) d→ N
+(
+0, ξ2(t)
+)
+.
+By similar derivations, we can actually conclude that the vector
+a(n, b,t)
+(
+˜β1(t,h; n, b)− E[ ˜β1(t,h; n, b)], ˜β1(t,h; n, 2b)− E[ ˜β1(t,h; n, 2b)]
+)
+converges to a bivariate Gaussian distribution. Thus, the asymptotic vari-
+ance of the diﬀerence of the components of this random vector must be in
+[(2
+d
+2− 1)2ξ2(t), (2
+d
+2 + 1)2ξ2(t)].
+⊔ ⊓
+Proof for Theorem 4.2:
+To simplify our notation in this proof, let Cδ denote a constant depending
+on δ which may vary from line to line.
+By deﬁnitions, we have
+ˆlog σ2 = 1
+#(Ωm∩ Ωδ)
+∑
+t∈Ωm∩Ωδ
+(
+ˆG(H(t); n,h) + 2 ˆH1(t) logn
+− log g( ˆH γ
+1 (t), 0,h)− E[log χ2
+1]
+)
+,
+and
+log σ2 = G(H(t); n,h) + 2H(t) logn− log g(H(t), 0,h)− E[log χ2
+1].
+Thus,
+ˆlog σ2− log σ2
+= 1
+#(Ωm∩ Ωδ)
+∑
+t∈Ωm∩Ωδ
+(
+ˆG(H(t); n,h) + 2 ˆH1(t) logn
+− G(H(t); n,h)− 2H(t) logn
+)
+− 1
+#(Ωm∩ Ωδ)
+∑
+t∈Ωm∩Ωδ
+(
+log g( ˆH γ
+1 (t), 0,h)− log g(H(t), 0,h)
+)
+:=I′
+1 + I′
+2.
+(S.5.35)
+
+===== PDF PAGE 30 =====
+30
+It is easy to see that
+E
+(
+ˆlog σ2− log σ2
+)2
+≤ 2E(I′
+1)2 + 2E(I′
+2)2.(S.5.36)
+We consider E(I′
+1)2 and E(I′
+2)2 separately.
+Lemma S.5.1. Under the condition of Theorem 4.2, we have
+E[I′
+1] = O(T′
+1(n, b1)).
+If m≤ 1/(3b1),
+Var(I′
+1)≤ Cδ log2(n)
+(
+m−dT′
+2(n, b1) + m2 ¯ψ−2dn−2 ¯ψ
+m∑
+l=1
+l−2 ¯ψ+d−1
+)
+;
+if m > 1/(3b1),
+Var(I′
+1)≤ Cδ log2(n)
+(
+bd
+1T′
+2(n, b1)
+2nb1∑
+l=1
+l−2 ¯ψ+d−1 + m2 ¯ψ−2dn−2 ¯ψ
+m∑
+l=1
+l−2 ¯ψ+d−1
+)
+.
+Proof. The conclusion about bias is a direct result of Theorem 4.1 and
+Theorem 3.2.
+From part (iii) in Theorem 8.2 and Lemma S.2.1, uniformly for t,s∈ Ωδ
+and n|t−s| > q|h| + 1,
+|rn(s,t)|≤ n−2q+2 ¯H Cδ|s−t|−2q.(S.5.37)
+Then we have
+Var
+(
+I′
+1
+)
+= Var
+( 1
+#(Ωm∩ Ωδ)
+∑
+t∈Ωm∩Ωδ
+(
+ˆG(H(t); n,h)
++ log n
+2 log 2
+(
+ˆG(H(t); n/2,h)− ˆG(H(t); n,h)
+)))
+≤ CδVar
+
+ log n
+#(Ωm∩ Ωδ)
+∑
+t∈Ωm∩Ωδ
+ˆG(H(t); n,h)
+
+
+≤ Cδ log2(n)m−2dVar
+
+ ∑
+t∈Ωm∩Ωδ
+ˆG(H(t); n,h)
+
+ .
+(S.5.38)
+
+===== PDF PAGE 31 =====
+31
+To calculate Var
+(∑
+t∈Ωm∩Ωδ
+ˆG(H(t); n,h)
+)
+, we need to do a further decom-
+position of Cov
+(
+ˆG(H(t); n,h), ˆG(H(t′); n,h)
+)
+as
+⏐⏐⏐Cov
+(
+ˆG(H(t); n,h), ˆG(H(t′); n,h)
+)⏐⏐⏐
+=
+⏐⏐⏐Cov
+(
+˜β1(t,h; n, b1), ˜β1(t′,h; n, b1)
+)⏐⏐⏐
+=
+⏐⏐⏐⏐Cov
+( ∑
+ti∈Ωδ
+2St,p,b1(ti) log|Wn(ti,h)| ,
+∑
+ti∈Ωδ
+2St′,p,b1(ti) log|Wn(ti,h)|
+)⏐⏐⏐⏐
+≤ Cδ(nb1)−2d
+⏐⏐⏐⏐Cov
+( ∑
+|j|≤nb1,j∈Zd
+2 log|Wn(t +j/n,h)|,
+∑
+|j′|≤nb1,j′∈Zd
+2 logWn|t′ +j′/n,h|
+)⏐⏐⏐⏐,
+(S.5.39)
+where the two equalities use the equation (8.7) and the ensuing derivations
+while the inequality uses the fact that St,p,b(s) = O
+(
+(nb)−d)
+uniformly for
+any b,t,s.
+We need to discuss the impact of|t−t′|. Fort,t′∈ Ωm∩Ωδ,|t−t′|≥ 3b1,
+it is easy to verify that for n large enough,
+|t +j/n− (t′ +j′/n)|≥ 1
+3|t−t′|≥ b1≥ q|h| + 1
+n .
+Then by arguments with Hermite polynomials similar to those in Lemma S.3.3
+and (S.5.37), we have
+⏐⏐⏐⏐⏐⏐
+Cov
+
+ ∑
+|j|≤nb1,j∈Zd
+2 log|Wn(t +j/n,h)|,
+∑
+|j′|≤nb1,j′∈Zd
+2 logWn|(t′ +j′/n,h)|
+
+
+⏐⏐⏐⏐⏐⏐
+≤ Cδ
+∑
+|j|,|j′|≤nb1,j,j′∈Zd
+r2
+n(t +j/n,t′ +j′/n)
+≤ Cδ(nb1)2d(n|t−t′|)−2 ¯ψ.
+(S.5.40)
+For ﬁxedt,t′∈ Ωm∩ Ωδ,|t−t′| < 3b1 and ﬁxed j, the number of diﬀerent
+j′ such that|n(t−t′) +j−j′|≤ q|h| + 1 is uniformly bounded. Thus, for
+
+===== PDF PAGE 32 =====
+32
+|t−t′| < 3b1, we have
+⏐⏐⏐⏐⏐⏐
+Cov
+
+ ∑
+|j|≤nb1,j∈Zd
+2 log|Wn(t +j/n,h)|,
+∑
+|j′|≤nb1,j′∈Zd
+2 log|Wn(t′ +j′/n,h)|
+
+
+⏐⏐⏐⏐⏐⏐
+≤ Cδ
+∑
+|j|,|j′|≤nb1,j,j′∈Zd
+r2
+n(t +j/n,t′ +j′/n)
+≤ Cδ(nb1)d
+
+1 +
+∑
+|j|<2nb1
+n−2 ¯ψ|t−t′ +j/n|−2 ¯ψI(n|t−t′ +j/n| > q|h| + 1)
+
+
+≤ Cδ(nb1)d
+⌈2nb1⌉∑
+l=1
+l−2 ¯ψ+d−1.
+(S.5.41)
+Combining (S.5.39), (S.5.40) and (S.5.41), we have
+⏐⏐⏐Cov
+(
+ˆG(H(t); n,h), ˆG(H(t′); n,h)
+)⏐⏐⏐
+≤
+{
+Cδ(n|t−t′|)−2 ¯ψ if|t−t′|≥ 3b1,
+Cδ(nb1)−d ∑⌈2nb1⌉
+l=1 l−2 ¯ψ+d−1 if|t−t′| < 3b1.
+(S.5.42)
+We discuss the bound 3b1 instead of 2b1 + q|h|+1
+n since we need|t−t′ + (j−
+j′)/n|≥ C|t−t′| for some constant C > 0 in (S.5.40).
+Now, if m≤ 1/(3b1),|t−t′|≥ 3b1 for all t,t1∈ Ωm,t̸= t1. Then by
+(S.5.38) and (S.5.39) we have
+Var(I′
+1)
+≤ Cδ log2(n)m−2d ∑
+t∈Ωm∩Ωδ
+Var
+(
+ˆG(H(t); n,h)
+)
++ Cδ log2(n)m−2d ∑
+t,t′∈Ωm∩Ωδ,t̸=t′
+Cov( ˆG(H(t); n,h), ˆG(H(t′); n,h))
+≤ Cδm−d log2(n)T′
+2(n, b1) + Cδ log2(n)m−2d
+
+ ∑
+t,t′∈Ωm∩Ωδ,t̸=t′
+n−2 ¯ψ|t−t′|−2 ¯ψ
+
+
+≤ Cδm−d log2(n)T′
+2(n, b1) + Cδ log2(n)m−2d
+(
+n−2 ¯ψ
+m∑
+l=1
+l−2 ¯ψ+d−1m2 ¯ψ
+)
+= Cδm−d log2(n)T′
+2(n, b1) + Cδ log2(n)m2 ¯ψ−2dn−2 ¯ψ
+m∑
+l=1
+l−2 ¯ψ+d−1;
+
+===== PDF PAGE 33 =====
+33
+if m > 1/(3b1), we can calculate the number of pairs of t,t′∈ Ωm satisfying
+|t−t′|≤ 3b1, which is no larger than O
+(
+md
+(
+b1
+1/m
+)d)
+= O(md(mb1)d).
+Thus
+Var(I′
+1)
+≤ Cδ log2(n)m−2d ∑
+t,t′∈Ωm∩Ωδ,|t−t′|≤3b1
+Cov
+(
+ˆG(H(t); n,h), ˆG(H(t′); n,h)
+)
++ Cδ log2(n)m−2d ∑
+t,t′∈Ωm∩Ωδ,|t−t′|>3b1
+Cov
+(
+ˆG(H(t); n,h), ˆG(H(t′); n,h)
+)
+≤ Cδ log2(n)m−2d(nb1)−d
+
+md(mb1)d
+⌈2nb1⌉∑
+l=2q+1
+l−2 ¯ψ+d−1
+
+
++ Cδ log2(n)m−2d
+
+ ∑
+t,t′∈Ωm∩Ωδ,t̸=t′
+n−2 ¯ψ|t−t′|−2 ¯ψ
+
+
+≤ Cδbd
+1 log2(n)T′
+2(n, b1)
+2nb1∑
+l=1
+l−2 ¯ψ+d−1 + Cδ log2(n)m2 ¯ψ−2dn−2 ¯ψ
+m∑
+l=1
+l−2 ¯ψ+d−1.
+The lemma now follows from the two bounds in Lemma S.5.1.
+Lemma S.5.2. Under the conditions of Theorem 4.2,
+E(I′
+2)2 = O((T′
+1(n, b1))2 + T′
+2(n, b1)).
+Furthermore, if T′
+2(n, b1) = O(T′
+1(n, b1)), then we have
+EI′
+2 = O(T′
+1(n, b1)).
+Remark: From this lemma and Lemma S.5.1, we could see that, in
+terms of rate, the only term related to the choice of m is Var( I′
+1). We
+do a brief discussion about the choice of m here, although it is beyond
+the scope of Theorem 4.2. As the bound for m > 1/(3b1) is no better
+than the bound for m ≤ 1/(3b1) and m ∼ 1/b1, there is no need to
+take m ≫ 1/b1. Interestingly, when m ≤ 1/b1, it is easy to verify that
+m−dT′
+2(n, b1)≥ m2 ¯ψ−2dn−2 ¯ψ ∑m
+l=1 l−2 ¯ψ+d−1 for all the choice of ¯ψ and b1
+satisfying [A2]. Now, as m−dT′
+2(n, b1) is a monotone decreasing function of
+m, the optimal choice of m will be m∼ 1/b1, which is what we take in
+Theorem 4.2.
+
+===== PDF PAGE 34 =====
+34
+Proof. By the Cauchy-Schwarz inequality,
+E(I′
+2)2≤ 1
+#(Ωm∩ Ωδ)
+∑
+t∈Ωm∩Ωδ
+E
+[
+log g( ˆH γ
+1 (t), 0,h)− log g(H(t), 0,h)
+]2
+.
+So we only need a uniform bound ofE
+[
+log g( ˆH γ
+1 (t), 0,h)− log g(H(t), 0,h)
+]2
+fort∈ Ωδ.
+Deﬁne the eventA to be ˆH1(t)∈ [H(t)−γ/2, H(t)+γ/2]. As ∂
+∂H log g(H, 0,h)
+is bounded on [ γ/2, 1− γ/2], we have
+E
+[(
+log g( ˆH γ
+1 (t), 0,h)− log g(H(t), 0,h)
+)2
+IA
+]
+≤ CδE
+[(
+ˆH1(t)− H(t)
+)2
+IA
+]
+≤ CδE
+[(
+ˆH1(t)− H(t)
+)2]
+.
+On the event Ac, we have
+P(Ac)≤ P
+(
+| ˆH1(t)− H(t)|≥ γ
+2
+)
+≤ CδE
+[(
+ˆH1(t)− H(t)
+)2]
+.(S.5.43)
+As log g( ˆH γ
+1 (t), 0,h) is bounded and
+E
+[(
+ˆH1(t)− H(t)
+)2]
+= O((T′
+1(n, b1))2 + T′
+2(n, b1)),
+we have
+E
+[(
+log g( ˆH γ
+1 (t), 0,h)− log g(H(t), 0,h)
+)2
+IAc
+]
+≤ O((T′
+1(n, b1))2 + T′
+2(n, b1)).
+This completes the proof for the ﬁrst part of the lemma.
+For the second part of the lemma, we apply the fact that ∂
+∂H log g(H, 0,h)
+and ∂2
+∂H 2 log g(H, 0,h) are bounded on [γ/2, 1−γ/2]. Using arguments similar
+to those in (S.4.31), (S.4.32), we obtain
+E
+[(
+log g( ˆH γ
+1 (t), 0,h)− log g(H(t), 0,h)
+)
+IA
+]
+= (log g(H(t), 0,h))′E
+[(
+ˆH1(t)− H(t)
+)
+IA
+]
++ O((T′
+1(n, b1))2 + T′
+2(n, b1))
+= (log g(H(t), 0,h))′E
+[
+ˆH1(t)− H(t)
+]
++ O((T′
+1(n, b1))2 + T′
+2(n, b1))
+= O(T′
+1(n, b1)).
+(S.5.44)
+
+===== PDF PAGE 35 =====
+35
+By (S.5.43) and the fact that log g( ˆH γ
+1 (t), 0,h) is bounded on Ac,
+E
+[(
+log g( ˆH γ
+1 (t), 0,h)− log g(H(t), 0,h)
+)
+IA
+]
+= O(T′
+1(n, b1)).(S.5.45)
+Now we return to the proof of our theorem. According to Lemma S.5.1,
+if m∼ 1/(3b1), we have
+Var(I′
+1) = Cδ log2(n)
+
+bd
+1T′
+2(n, b1) + b2d−2 ¯ψ
+1 n−2 ¯ψ
+⌈1/b1⌉∑
+l=1
+l−2 ¯ψ+d−1
+
+ .
+We will establish Var(I′
+1) = o(T′
+2(n, b1)) in the remaining proof. First, since
+bd
+1 log2(n) → 0, we have bd
+1 log2(n)T′
+2(n, b1) = o(T′
+2(n, b1)). On the other
+hand, if 2 ¯ψ > d ,
+log2(n)b2d−2 ¯ψ
+1 n−2 ¯ψ
+⌈1/b1⌉∑
+l=1
+l−2 ¯ψ+d−1 = O(log2(n)b2d−2 ¯ψ
+1 n−2 ¯ψ)
+= O(log2(n)b2d
+1 (nb1)d−2 ¯ψ(nb1)−d) = o((nb1)−d);
+if 2 ¯ψ = d, we have
+log2(n)b2d−2 ¯ψ
+1 n−2 ¯ψ
+⌈1/b1⌉∑
+l=1
+l−2 ¯ψ+d−1 = o((nb1)−d log n);
+if 2 ¯ψ < d ,
+log2(n)b2d−2 ¯ψ
+1 n−2 ¯ψ
+⌈1/b1⌉∑
+l=1
+l−2 ¯ψ+d−1 = O(log2 nbd
+1n−2 ¯ψ) = o((nb1)−2 ¯ψ).
+Combining all the situations above, we have
+log2(n)b2d−2 ¯ψ
+1 n−2 ¯ψ
+⌈1/b1⌉∑
+l=1
+l−2 ¯ψ+d−1 = o(T′
+2(n, b1)).
+Therefore, Var(I′
+1) = o(T′
+2(n, b1)). The theorem is established by combining
+(S.5.35), (S.5.36), Lemma S.5.1, S.5.2 and remarks after S.5.2.
+Proof for Theorem 4.3:
+The proof is essentially identical to that of Theorem 3.4 and therefore will
+not be repeated.
+⊔ ⊓
+
+===== PDF PAGE 36 =====
+36
+S.6. Supplemental proofs for Section 7.1. This section provides
+theoretical support for Section 7.1, which considers the non-gridded data
+setting of Loh (2015). Let condition [B] and ∆q
+1/nX(t) be as deﬁned in Section
+7.1. The main result of this section is the following proposition, which serves
+the same role as that of Theorem 8.2 for the gridded case.
+Proposition S.6.1. In the following let t, t+ u/n∈ Ωδ. Under assump-
+tions [A1]-[A3] and [B], for any δ∈ (0, 1) and M > 0, there exist ﬁnite
+constants Cδ, Cδ,M such that uniformly in n, t,
+(i) |Cov(∆q
+1/nX(t), ∆q
+1/nX(t + u/n))− g(H(t), u, ϖ(t))|≤ Cδ,M ρn(t) for
+|u|≤ M;
+(ii) |Cov(∆q
+1/nX(t), ∆q
+1/nX(t + u/n))|≤ Cδ|u|−ψ(t) for u satisfying q + 1 <
+|u| < 2bn.
+(iii) |Cov(∆q
+1/nX(t), ∆q
+1/nX(t+u/n))|≤ Cδ|u|− ¯ψ for u satisfying|u| > q +1.
+Proof. We only provide a sketch here since the arguments are similar
+to those in the proof of Theorem 8.2. Deﬁne
+f′(η1, η2; t, s, h) = ∂2q
+∂η q
+1∂η q
+2
+(
+C(ϕ(˜t + η1h), ϕ(˜s + η2h))
+)
+and
+˜f′(η1, η2; t, s, h) = ∂2q
+∂η q
+1∂η q
+2
+(
+|ϕ(˜t + η1h)|H◦ϕ(˜t+η1h)+H◦ϕ(˜s+η2h)
+×D(H◦ ϕ(˜t + η1h), H◦ ϕ(˜s + η2h))
+)
+,
+where ˜t = ϕ−1(t) and ˜s = ϕ−1(s). As t∈ Ωδ and the derivative of ϕ is
+bounded from 0 and ∞, ˜t will also be bounded from 0.
+By the same argument used in Lemma S.2.3, we can establish the follow-
+ing: for large n, there is some ﬁnite constant Cδ such that
+f′(0, 0; t, s, h)≤ Cδ|t− s|−2q+H(s)+H(t)(S.6.46)
+and
+˜f′(0, 0; t, s, h)≤ Cδ(S.6.47)
+uniformly for all s, t∈ Ωδ. Denote xi = xi(t) and x′
+i = xi(t + u/n) for
+simplicity. As in the proof of Theorem 8.2, write
+Cov(∆q
+1/nX(t), ∆q
+1/nX(t + u/n))
+
+===== PDF PAGE 37 =====
+37
+= nH(t)+H(t+u
+n )
+q∑
+i,j=0
+aiajD(H(xi), H(x′
+j))
+(
+|xi|H(xi)+H(x′
+j)
++|x′
+j|H(xi)+H(x′
+j)−| xi− x′
+j|H(xi)+H(x′
+j)
+)
+=: nH(t)+H(t+u
+n )(A′
+2 + A′
+3 + A′
+1)
+where A′
+1, A′
+2, A′
+3 are deﬁned in a similar way as A1, A2, A3. It follows that
+both nH(t)+H(t+u
+n )A′
+2 and nH(t)+H(t+u
+n )A′
+3 are O(n−ψ(t)), which are exactly
+the same as what was established for A2 and A3 in the proof of Theorem 8.2.
+With bounded u, we have for each term in A′
+1
+nH(t)+H(t+u
+n )D(H(xi), H(x′
+j))|xi− x′
+j|H(xi)+H(x′
+j)
+= n2H(t)+O(n−1)
+(1
+2 + O(n−1)
+) ⏐⏐⏐⏐
+ϖ(t)(i− j) + u
+n + O(n−2)
+⏐⏐⏐⏐
+2H(t)+O(n−1)
+= nO(n−1)
+(1
+2 + O(n−1)
+) ⏐⏐ϖ(t)(i− j) + u + O(n−1)
+⏐⏐2H(t)+O(n−1)
+= 1
+2|ϖ(t)(i− j) + u|2H(t) + O(n−1 log n).
+Therefore,
+|A′
+1− g(H(t), u, ϖ(t))| = O(n−1 log n).
+Combining the above, (i) of the proposition is proved.
+Applying (S.6.46) and (S.6.47), the proofs for (ii) and (iii) are essentially
+the same as those for the corresponding parts in Theorem 8.2, and are
+omitted here.
+Applying Proposition S.6.1, we obtain
+2E log
+⏐⏐⏐∆q
+1/nX(t)
+⏐⏐⏐ = G(H(t); n, ϖ(t)) + O(ρn(t)).(S.6.48)
+Proposition S.6.1 together with (S.6.48) and the fact that sup t| ˆϖ(t)−
+ϖ(t)| = O(n−1) show that the rates of convergence of the estimators ˆH′, ˆH′
+1
+and ˆH′
+2 are the same as those for ˆH, ˆH1 and ˆH2.
+We conducted a simulation study for which the results are presented in
+Figure S1. We assume ϕ(x) = ( x2 + 0.5x)/1.5; note that ϕ′(1) = 5 ϕ′(0)
+so that the sizes of the gaps in the data do vary quite a bit from location
+to location. For ˆH′ and ˆH′
+2, we used a naive estimator ˆϖ(t) of ϖ(t) where
+ˆϖ(t) = ∑
+i n(ti+1− ti)I(ti,ti+1](t). Figure S1 below presents the simulation
+
+===== PDF PAGE 38 =====
+38
+results of log(MISE) versus sample size for ˆH′, ˆH′
+1 and ˆH′
+2 based on non-
+gridded data and those for ˆH, ˆH1 and ˆH2 based on gridded data. As can be
+seen, the rates for ˆH′, ˆH′
+1 and ˆH′
+2 are somewhat but not substantially worse
+than those for ˆH, ˆH1 and ˆH2.
+Fig S1. Plot of log(MISE) versus logn
+S.7. Supplementary proofs for Section 7.2 and additional dis-
+cussions for non-constant variance.
+S.7.1. When σ(t) is known. Deﬁne
+Wn,X(t,h) := nH(t)∆q
+h/nX(t),
+Wn,Y (t,h) := σ−1(t)nH(t)∆q
+h/nY (t),
+Cn,X(t,s,h) := Cov (Wn,X(t,h), Wn,X(s,h)) ,
+Cn,Y (t,s,h) := Cov (Wn,Y (t,h), Wn,Y (s,h)) .
+Lemma S.7.1. In the following let t,t +u/n∈ Ωδ. Under assumptions
+[A1]-[A3], [S] and q≥ 2, for any δ∈ (0, 1) and M > 0, there exist ﬁnite
+constants Cδ, Cδ,M such that uniformly in n,t,
+(i) |Cn,Y (t,t +u/n,h)− g(H(t),u,h)|≤ Cδ,M ρn(t) for|u|≤ M;
+(ii) |Cn,Y (t,t +u/n,h)|≤ Cδ(|u|−ψ(t) + n−1|u|−(q+1)+2H(t) + n−2) foru
+satisfying q|h| + 1 <|u| < 2bn.
+Proposition S.7.2. Suppose [K], [A1]-[A3] and [S] hold. Additional, we
+assume q≥ 2 and d≤ 3. Then for any δ∈ (0, 1), we have uniformly for any
+
+===== PDF PAGE 39 =====
+39
+t∈ Ωδ,
+E
+(
+ˆG(H(t); n,h, σ(t))
+)
+− G(H(t); n,h, σ(t)) = O (T1(n, b,t)) ,(S.7.49)
+and
+Var
+(
+ˆG(H(t); n,h, σ(t))
+)
+= O
+(
+(nb)−d
+)
+.
+Remark. It follows readily from this proposition that ˆH′(t) still achieves
+the minimax convergence rate ( nd log2 n)− p
+2p+d under those two scenarios:
+• d≤ 2, p≥ q≥ 2 and any H;
+• d = 3, 3 > p≥ q = 2 and any H.
+Proof for Lemma S.7.1:
+By induction, we have
+∆q
+h/nY (t) =
+q∑
+l=0
+(q
+l
+)
+∆l
+h/nX(t)∆q−l
+h/nσ(t + lh/n)
+:= σ(t)∆q
+h/nX(t) + ϵ(t).
+Uniformly, we have Var(∆ l
+h/nX(t)) = O(n−2H(t)), l≥ 1, and ∆ l
+h/nσ(t) =
+O(n−2), l≥ 2. Thus, for any q≥ 2 and l < q ,
+Var(∆l
+h/nX(t)∆q−l
+h/nσ(t + lh/n))
+= O(n−2H(t)I(l̸=0)−2 min(2,q−l))
+= O(n−2H(t)−2)
+uniformly. Therefore,
+|Cn,Y (t,t +u/n,h)− Cn,X(t,t +u/n,h)| = O(n−1)
+uniformly. This equation and (i) in Theorem 8.2 establish (i) in Lemma S.7.1.
+To prove (ii), we consider in detail the following expression
+Cov(∆q
+h/nX(t), ∆l
+h/nX(t +u/n)), 0≤ l≤ q.
+Deﬁne
+fq,l(φ, η;t,s,h) = ∂q+l
+∂φq∂η l C(t + φh,s + ηh).
+
+===== PDF PAGE 40 =====
+40
+As q≥ 2, following the same steps as in Lemma S.2.3, it can be shown that
+when n is large enough we have uniformly for t,s∈ Ωδ,
+fq,l(0, 0;t,s,h)≤ Cδ|t−s|−(q+l)+H(s)+H(t).
+Then by the same steps in the proof of (ii) of Theorem 8.2, we have uniformly
+for 0≤ l≤ q, q|h| + 1 <|u| < 2bn,
+|n2H(t)Cov(∆q
+h/nX(t), ∆l
+h/nX(t +u/n))|≤ Cδ|u|−(q+l)+2H(t).
+Thus,
+|n2H(t)Cov(∆q
+h/nX(t), ϵ(t +u/n)|≤ Cδ|u|−(q+1)+2H(t)n−1.(S.7.50)
+Combining (S.7.50), part (ii) of Theorem 8.2 and the fact that Var( ϵ(t)) =
+O(n−2−2H(t)), part (ii) in Lemma S.7.1 is proved.
+⊔ ⊓
+Proof for Proposition S.7.2:
+The proof for bias follows exactly as that for bias in Theorem 3.2 using (i)
+in Lemma S.7.1. For the variance, using the notations in Lemma S.3.3, we
+only need to show ∑
+i,j f
+(ti−t
+b
+)
+f
+(tj−t
+b
+)
+r2
+n(ti,tj) = O((nb)d), which follows
+from (ii) of Lemma S.7.1 and q≥ 2, d≤ 3.
+⊔ ⊓
+S.7.2. When σ(t) is unknown. With Proposition S.7.2 and arguments
+similar to those in Theorem 4.1, we can prove that the convergence rate
+of ˆH1 based on Y (t) is the same as those based on X(t) when d≤ 3 and
+q ≥ 2, namely, n− dp
+2p+d . However, H1 does not achieve the minimax rate
+(nd log2 n)− p
+2p+d . One possible way to improve this is to adopt a modiﬁed
+version of ˆH2, as follows:
+Step 1: estimate H(t) by ˆH1,
+step 2: based on ˆH1, estimate σ(t) nonparametrically by some ˆσ(t), and
+step 3: with ˆσ(t) replacing true σ(t), estimate H(t) by ˆH(t).
+To verify the rate of this approach, we present the following intuitive argu-
+ments. We focus on the case d = 1. Suppose that we ﬁrst apply ˆH1 with p1,
+q1≥ 2 and b1. We have
+log
+(
+n
+ˆH1(ti)∆1/nY (ti)
+)2
+
+===== PDF PAGE 41 =====
+41
+= log σ2(ti) + log
+(
+n
+ˆH1(ti)∆1/nX(ti)
+)2
++ Op(n−2+2H(t))
+= log σ2(ti) + 2( ˆH1(ti)− H(ti)) logn + log χ2
+1,i
++op(n−1−δ1) + O(ρn(ti))
+= log σ2(ti) + 2( ˆH1(ti)− H(ti)) logn + ϵi + E[log χ2
+1] + op(n−1−δ1)
+where the third line uses (i) in Theorem 8.2 with δ1 > 0 being a small
+constant,
+χ2
+1,i =
+(
+∆1/nX(ti)
+)2 /σ2(∆1/nX(ti))
+and
+ϵi = log χ2
+1,i− E[log χ2
+1].
+Intuitively, one can estimate log σ2(t) by conducting another local poly-
+nomial regression esstimate based on the data log
+(
+nˆH1(ti)∆1/nY (ti)
+)2
+−
+E[log χ2
+1], with parameters p2, b2. We ﬁrst consider the variance of ˆlog σ2(t).
+Note that by (iii) of Theorem 8.2 and the fact that ϵi is a function of a
+Gaussian variable with Hermite rank 2, if H(t) < 0.5 uniformly, we would
+have Cov(ϵi, ϵj) = O(|i− j|−2 ¯ψ) = o(|i− j|−2). According to Hall and Hart
+(1990), the variance contributed by ϵi is O(nb2)−1. Also, by (S.5.42) and
+the ensuing arguments (replacing m by nb2 or n appropriately), the vari-
+ance contributed by ˆH1(ti) can be calculated to be O((nb2)−1 log2 n). The
+bias should be O(bp1
+1 + bp2
+2 ) since both steps are local polynomial regres-
+sion. Therefore, the convergence rate of ˆlog σ2(t) will only be diﬀerent from
+O
+(
+n− p2
+2p2+1
+)
+by a log term and the estimator would favor a small b1. The-
+oretically, if σ(t) has higher order smoothness than H(t) and H stays close
+to the interval (0, 1/2) so that we can estimate σ(t) at a rate faster than the
+minimax rate, then we conjecture that the estimated σ(t) could be used in
+place of the true σ(t) for the inversion that would then lead to the minimax
+rate for estimating H(t).
+One may also consider higher-order diﬀerencing for ˆlog σ2(t); that is
+log
+(
+n
+ˆH1(ti)∆q2
+1/nY (ti)
+)2
+= log σ2(ti) + log
+(
+n
+ˆH1(ti)∆q2
+1/nX(ti)
+)2
++ Op(n−1−δ)
+= log σ2(ti) + 2( ˆH1(ti)− H(ti)) logn + ϵi + E[log χ2
+1]
++g(H(ti), 0, 1) + Op(n−1−δ),
+
+===== PDF PAGE 42 =====
+42
+and the local polynomial regression based on data
+log
+(
+n
+ˆH1(ti)∆q
+1/nY (ti)
+)2
+− E[log χ2
+1]− g( ˆH1(ti), 0, 1).
+This is plausible but to analyze its properties, a much tighter version of
+Lemma S.5.2 is needed for analyzing the variance contributed by ˆH1(ti) in
+g( ˆH1(ti), 0, 1). These ideas will be pursued in future work.
+We have done some simulations for this situation with d = 1 and q2 = 1,
+H(t) = 0 .25 + 0.2 sin(4πt) and σ(t) = (sin(3 πt) + 2)2, t∈ (0, 1). Note that
+H(t)∈ (0, 0.5). We chose q1 = 2, p1 = p2 = 3 and a varying of bandwidths
+b1 and b2.
+We ﬁrst present the simulation result for estimating logσ2(t). The number
+of grid points ranges from 5,000 to 10,000 and we repeat the experiment for
+200 times for each case. The calculated log
+√
+M ISE for log( σ2) is plotted
+in Figure S2. The plot shows a polynomial convergence rate, but a crude
+estimation of the convergence rate is n−0.34, which is slower than the con-
+jectured rate n− 3
+2×3+1≈ n−0.43. We could also obtained the quantile plots in
+Figure S3 for 10,000 grid points with the optimal bandwidth b1 = 0.05 and
+b2 = 0 .4. As a comparison, with the same setup, the optimal bandwidth
+Fig S2. Plot of log(MISE) versus logn for ˆlogσ2
+for directly applying ˆH1 is 0.28, which is much larger than the optimal b1
+mentioned before, indicating an undersmoothing of ˆH1 is desired when we
+estimate log(σ2(t)).
+We also conducted simulations for calculating ˆH2 with ˆlog σ2(t) plugged
+in for the true value (with b1 = 0 .05, b2 = 0 .4) under p = 3, q = 2 and
+
+===== PDF PAGE 43 =====
+43
+Fig S3. Empirical quantiles of ˆlogσ2 100 simulation runs; red curve is the true function;
+green curves are 5% and 95% pointwise empirical quantiles, respectively; blue curves are
+25% and 75% empirical quantiles, respectively; black curves are empirical means.
+varying b3. The smallest
+√
+M ISE for ˆH2 is 0.0526. For comparison, the
+smallest
+√
+M ISE for directly applying ˆH1 is 0 .0629. The corresponding
+empirical quantile plots are given in Figure S4. Although ˆH2 performed
+better than directly applying ˆH1, it is not clear whether there is a diﬀerence
+in convergence rates.
+⊔ ⊓
+References.
+Ayache, A., Cohen, S. and V´ehel, J. L. (2000). The covariance structure of multi-
+fractional Brownian motion, with application to long range dependence. In Acoustics,
+Speech, and Signal Processing, 2000. ICASSP’00. Proceedings. 2000 IEEE International
+Conference on 6 3810–3813. IEEE.
+Breuer, P. and Major, P. (1983). Central limit theorems for nonlinear functionals of
+Gaussian ﬁelds. J. Multivariate Anal. 13 425–441. MR716933
+Hall, P. and Hart, J. D. (1990). Nonparametric regression with long-range dependence.
+Stochastic Processes and Their Applications 36 339–351.
+Loh, W.-L. (2015). Estimating the smoothness of a Gaussian random ﬁeld from irregularly
+spaced data via higher-order quadratic variations. The Annals of Statistics 43 2766–
+2794.
+Micchelli, C. A. (1986). Interpolation of scattered data: distance matrices and condi-
+tionally positive deﬁnite functions. Constr. Approx. 2 11–22. MR891767
+Newman, M. (1974). How to determine the accuracy of the output of a matrix inversion
+program. J. Res. Nat. Bur. Standards Sect. B 78B 65–68. MR0356463
+
+===== PDF PAGE 44 =====
+44
+Fig S4. Empirical quantiles of ˆH1 and ˆH2 with plugged in ˆlogσ2(t) based on 100 simulation
+runs; red curves are true functions; green curves are 5% and 95% pointwise empirical
+quantiles, respectively; blue curves are 25% and 75% empirical quantiles, respectively; black
+curves are empirical means.
+Taqqu, M. S. (1975). Weak convergence to fractional Brownian motion and to the
+Rosenblatt process. Z. Wahrscheinlichkeitstheorie und Verw. Gebiete 31 287–302.
+MR0400329

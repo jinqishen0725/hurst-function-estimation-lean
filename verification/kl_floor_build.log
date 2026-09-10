@@ -1,0 +1,49 @@
+⚠ [3099/3345] Replayed Hurst.GaussianKLMulti
+warning: Hurst/GaussianKLMulti.lean:275:10: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
+warning: Hurst/GaussianKLMulti.lean:275:67: `ContinuousLinearMap.one_apply` has been deprecated: Use `one_apply_eq_self` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.one_apply` to `one_apply_eq_self x`).
+warning: Hurst/GaussianKLMulti.lean:289:10: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
+warning: Hurst/GaussianKLMulti.lean:289:67: `ContinuousLinearMap.one_apply` has been deprecated: Use `one_apply_eq_self` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.one_apply` to `one_apply_eq_self x`).
+⚠ [3631/3632] Replayed Hurst.Rates
+warning: Hurst/Rates.lean:52:39: Variable name `hL` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+✖ [3632/3632] Building Hurst.GaussianKLBound (15s)
+trace: .> LEAN_PATH=/Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/packages/Cli/.lake/build/lib/lean:/Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/packages/batteries/.lake/build/lib/lean:/Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/packages/Qq/.lake/build/lib/lean:/Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/packages/aesop/.lake/build/lib/lean:/Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/packages/importGraph/.lake/build/lib/lean:/Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/packages/plausible/.lake/build/lib/lean:/Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/packages/mathlib/.lake/build/lib/lean:/Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/build/lib/lean /Users/jinqishen/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lean /Users/jinqishen/repo/lean_verification/hurst_function_estimation/Hurst/GaussianKLBound.lean -o /Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/build/lib/lean/Hurst/GaussianKLBound.olean -i /Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/build/lib/lean/Hurst/GaussianKLBound.ilean -c /Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/build/ir/Hurst/GaussianKLBound.c --setup /Users/jinqishen/repo/lean_verification/hurst_function_estimation/.lake/build/ir/Hurst/GaussianKLBound.setup.json --json
+warning: Hurst/GaussianKLBound.lean:82:96: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Hurst/GaussianKLBound.lean:83:12: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+error: Hurst/GaussianKLBound.lean:94:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑?U * ↑(star ?U)
+in the target expression
+  (↑hA.eigenvectorUnitary * star ↑hA.eigenvectorUnitary * B).trace = B.trace
+
+d : ℕ
+A : Matrix (Fin d) (Fin d) ℝ
+hA : A.IsHermitian
+e : Matrix (Fin d) (Fin d) ℝ ≃⋆ₐ[ℝ] Matrix (Fin d) (Fin d) ℝ :=
+  (Unitary.conjStarAlgAut ℝ (Matrix (Fin d) (Fin d) ℝ)) (star hA.eigenvectorUnitary)
+B : Matrix (Fin d) (Fin d) ℝ
+⊢ (↑hA.eigenvectorUnitary * star ↑hA.eigenvectorUnitary * B).trace = B.trace
+error: Hurst/GaussianKLBound.lean:111:6: Type mismatch: After simplification, term
+  symmetric_trace_square (A - 1) hs
+ has type
+  @Eq ℝ (∑ i, ∑ j, (A - 1) i j * (A - 1) j i) (∑ i, ∑ j, (A - 1) i j ^ 2)
+but is expected to have type
+  @Eq ℝ (∑ x, ∑ j, (A - 1) x j * (A - 1) j x) (∑ i, ∑ j, (A - 1) i j ^ 2)
+error: Lean exited with code 1
+Some required targets logged failures:
+- Hurst.GaussianKLBound
+error: build failed

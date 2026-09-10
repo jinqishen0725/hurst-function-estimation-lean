@@ -1,0 +1,15 @@
+import Hurst.Harmonizable
+import Hurst.BumpPacking
+#check MeasureTheory.integral_add_right_eq_self
+#check MeasureTheory.integral_add_left_eq_self
+#check MeasureTheory.Measure.integral_comp_mul_left
+#check HasCompactSupport.comp_left
+#check HasCompactSupport.comp_homeomorph
+#check Homeomorph.addRight
+#check Homeomorph.mulLeft₀
+#check MeasureTheory.setIntegral_eq_of_subset_of_forall_sdiff_eq_zero
+#check Continuous.integrable_of_hasCompactSupport
+#check MeasureTheory.integral_sum
+#check Continuous.rpow_const
+#check Real.rpow_mul
+#check MeasureTheory.integral_const_mul

@@ -1,0 +1,66 @@
+{
+  "description": "Numerical evidence only; does not certify probability-limit statements",
+  "kernel": "f(z)=(35/32)(1-z^2)^3 for |z|<1, zero otherwise; p=1",
+  "integral_f_squared_exact": "350/429",
+  "corrected_critical_limit": 0.4589160839160839,
+  "printed_formula_using_definition_of_ch": 0.67291259765625,
+  "printed_formula_using_erroneous_1D_remark_ch": 2.691650390625,
+  "critical_variance": [
+    {
+      "N": 128,
+      "N_var_over_logN": 1.3158239785507142
+    },
+    {
+      "N": 512,
+      "N_var_over_logN": 1.1254563520776253
+    },
+    {
+      "N": 2048,
+      "N_var_over_logN": 1.0042779255479228
+    },
+    {
+      "N": 8192,
+      "N_var_over_logN": 0.9203783151363004
+    },
+    {
+      "N": 32768,
+      "N_var_over_logN": 0.8588504931418387
+    },
+    {
+      "N": 131072,
+      "N_var_over_logN": 0.8117994908253455
+    }
+  ],
+  "printed_bump_values": [
+    {
+      "x": 0,
+      "kappa": 1.0
+    },
+    {
+      "x": 0.25,
+      "kappa": 14.391916095149899
+    },
+    {
+      "x": 0.4,
+      "kappa": 7250.958085841073
+    },
+    {
+      "x": 0.45,
+      "kappa": 169331420.58494225
+    }
+  ],
+  "q1_missing_inverse_example": {
+    "log_n": 1,
+    "c": 0,
+    "H_domain": "(0,1)",
+    "G_range": "(-2,0)",
+    "omitted_input": -3
+  },
+  "critical_log_slope": [
+    0.45916965942181437,
+    0.4589750061642614,
+    0.45893045787237674,
+    0.4589196501778379,
+    0.4589169734516467
+  ]
+}

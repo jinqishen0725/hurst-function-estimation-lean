@@ -1,0 +1,9 @@
+import Hurst.LebesgueIntervalFeatures
+#check Fin.castLE
+#check Fin.natAdd
+#check Fin.addNat
+#check Fin.castAdd
+#check Fin.lastCases
+#check Fin.sum_univ_add
+#check Fin.sum_univ_castSucc
+#check Finset.sum_fin_eq_sum_range

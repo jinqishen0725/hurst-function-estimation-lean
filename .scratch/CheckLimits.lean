@@ -1,0 +1,9 @@
+import Hurst.MemoryMeanLimit
+#check Real.tendsto_rpow_atTop
+#check Real.tendsto_rpow_neg_atTop
+#check Filter.Tendsto.inv_atTop_zero
+#check tendsto_inv_atTop_zero
+#check Real.tendsto_sqrt_atTop
+#check Filter.Tendsto.sqrt
+#check Filter.Tendsto.rpow_const
+#check Real.rpow_natCast

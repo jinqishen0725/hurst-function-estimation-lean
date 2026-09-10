@@ -1,0 +1,10 @@
+⚠ [3100/3260] Replayed Hurst.GaussianLinearMap
+warning: Hurst/GaussianLinearMap.lean:16:2: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+⚠ [3105/3260] Replayed Hurst.GridWhitening
+warning: Hurst/GridWhitening.lean:60:2: 'change (WithLp.ofLp (Matrix.toEuclideanCLM (𝕜 := ℝ) (differenceWhiteningMatrix ℓ) x)) i = _' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+✔ [3641/3641] Built Hurst.FirstStrideMixed (2.4s)
+Build completed successfully (3641 jobs).

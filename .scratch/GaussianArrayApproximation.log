@@ -1,0 +1,10 @@
+.scratch/GaussianArrayApproximation.lean:32:26: warning: Variable name `hW` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+.scratch/GaussianArrayApproximation.lean:35:8: warning: Variable name `hX` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`

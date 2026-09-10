@@ -1,0 +1,38 @@
+.scratch/CheckMoment.lean:5:7: error(lean.unknownIdentifier): Unknown identifier `memLp_natCast_iff`
+.scratch/CheckMoment.lean:6:7: error(lean.unknownIdentifier): Unknown identifier `memLp_natCast_iff_integrable`
+.scratch/CheckMoment.lean:7:7: error(lean.unknownIdentifier): Unknown identifier `memLp_iff_integrable`
+.scratch/CheckMoment.lean:8:7: error(lean.unknownIdentifier): Unknown identifier `memLp_of_integrable_norm_rpow`
+MeasureTheory.MemLp.integrable_norm_rpow.{u_1, u_2} {α : Type u_1} {β : Type u_2} {m : MeasurableSpace α}
+  {μ : Measure α} [NormedAddCommGroup β] {f : α → β} {p : ENNReal} (hf : MemLp f p μ) (hp_ne_zero : p ≠ 0)
+  (hp_ne_top : p ≠ ⊤) : Integrable (fun x => ‖f x‖ ^ p.toReal) μ
+.scratch/CheckMoment.lean:10:7: error(lean.unknownIdentifier): Unknown constant `MeasureTheory.MemLp.pow`
+.scratch/CheckMoment.lean:11:7: error(lean.unknownIdentifier): Unknown constant `Fintype.sum_le_sum_of_surjective`
+.scratch/CheckMoment.lean:12:7: error(lean.unknownIdentifier): Unknown constant `Finset.sum_le_sum_of_injOn`
+Finset.sum_le_sum_of_subset_of_nonneg.{u_1, u_5} {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N]
+  {f : ι → N} {s t : Finset ι} [AddLeftMono N] (h : s ⊆ t) (hf : ∀ i ∈ t, i ∉ s → 0 ≤ f i) : ∑ i ∈ s, f i ≤ ∑ i ∈ t, f i
+Finset.sum_fiberwise.{u_1, u_2, u_4} {ι : Type u_1} {κ : Type u_2} {M : Type u_4} [AddCommMonoid M] [DecidableEq κ]
+  [Fintype κ] (s : Finset ι) (g : ι → κ) (f : ι → M) : ∑ j, ∑ i ∈ s with g i = j, f i = ∑ i ∈ s, f i
+Fintype.prod_fiberwise.{u_4, u_6, u_7} {M : Type u_4} {κ : Type u_6} {ι : Type u_7} [Fintype ι] [Fintype κ]
+  [CommMonoid M] [DecidableEq κ] (g : ι → κ) (f : ι → M) : ∏ j, ∏ i, f ↑i = ∏ i, f i
+Fintype.sum_pow.{u_5, u_7} {ι : Type u_5} {R : Type u_7} [Fintype ι] [CommSemiring R] (f : ι → R) (n : ℕ) :
+  (∑ a, f a) ^ n = ∑ p, ∏ i, f (p i)
+Fintype.card_le_of_surjective.{u_1, u_2} {α : Type u_1} {β : Type u_2} [Fintype α] [Fintype β] (f : α → β)
+  (h : Function.Surjective f) : Fintype.card β ≤ Fintype.card α
+Equiv.ofInjective.{u_3, u_4} {α : Sort u_3} {β : Type u_4} (f : α → β) (hf : Function.Injective f) : α ≃ ↑(Set.range f)
+Fintype.equivFin.{u_4} (α : Type u_4) [Fintype α] : α ≃ Fin (Fintype.card α)
+Finset.prod_const.{u_1, u_4} {ι : Type u_1} {M : Type u_4} {s : Finset ι} [CommMonoid M] (b : M) :
+  ∏ _x ∈ s, b = b ^ s.card
+.scratch/CheckMoment.lean:21:7: error(lean.unknownIdentifier): Unknown constant `Finset.sum_image_le`
+.scratch/CheckMoment.lean:22:7: error(lean.unknownIdentifier): Unknown constant `Function.Surjective.sum_comp_le_sum`
+Measurable.pow_const.{u_2, u_3, u_4} {β : Type u_2} {γ : Type u_3} {α : Type u_4} [MeasurableSpace β]
+  [MeasurableSpace γ] [Pow β γ] [MeasurablePow β γ] {m : MeasurableSpace α} {f : α → β} (hf : Measurable f) (c : γ) :
+  Measurable fun x => f x ^ c
+MeasureTheory.MemLp.integrable.{u_1, u_5} {α : Type u_1} {ε : Type u_5} {m : MeasurableSpace α} {μ : Measure α}
+  [TopologicalSpace ε] [ContinuousENorm ε] {q : ENNReal} (hq1 : 1 ≤ q) {f : α → ε} [IsFiniteMeasure μ]
+  (hfq : MemLp f q μ) : Integrable f μ
+MeasureTheory.MeasurePreserving.integral_comp.{u_1, u_5, u_6} {α : Type u_1} {G : Type u_5} [NormedAddCommGroup G]
+  [NormedSpace ℝ G] {m : MeasurableSpace α} {μ : Measure α} {β : Type u_6} {x✝ : MeasurableSpace β} {f : α → β}
+  {ν : Measure β} (h₁ : MeasurePreserving f μ ν) (h₂ : MeasurableEmbedding f) (g : β → G) :
+  ∫ (x : α), g (f x) ∂μ = ∫ (y : β), g y ∂ν
+.scratch/CheckMoment.lean:26:7: error(lean.unknownIdentifier): Unknown constant `Function.Surjective.fintypeCard_le`
+.scratch/CheckMoment.lean:27:7: error(lean.unknownIdentifier): Unknown constant `Finset.sum_le_sum_of_surjOn`

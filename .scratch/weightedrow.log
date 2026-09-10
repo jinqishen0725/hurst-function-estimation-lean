@@ -1,0 +1,23 @@
+.scratch/WeightedRowEnergy.lean:12:19: warning: Variable name `hL0` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+.scratch/WeightedRowEnergy.lean:69:5: warning: Variable name `ha` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+.scratch/WeightedRowEnergy.lean:69:31: warning: Variable name `hb` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+.scratch/WeightedRowEnergy.lean:103:31: warning: 'first
+| rfl
+| ring' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+.scratch/WeightedRowEnergy.lean:103:31: warning: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`

@@ -1,0 +1,13 @@
+.scratch/MomentExpansion.lean:18:10: error(lean.unknownIdentifier): Unknown identifier `aestronglyMeasurable_fun_prod`
+.scratch/MomentExpansion.lean:50:15: error: `simp` made no progress
+
+Note: The target expression is not type-correct under the `instances` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    q
+  has type
+    MomentPattern m
+  but is expected to have type
+    (v : Fin (m + 1)) × { f // Function.Surjective f }
+  in the application
+    q.fst

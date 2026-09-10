@@ -1,0 +1,12 @@
+import Hurst.GaussianLog
+import Mathlib.RingTheory.Polynomial.Hermite.Gaussian
+import Mathlib.MeasureTheory.Integral.IntegralEqImproper
+#check Polynomial.induction_on'
+#check Polynomial.eval_mul
+#check Polynomial.hasDerivAt
+#check Polynomial.derivative_map
+#check tendsto_neg_atBot_atTop
+#check rpow_mul_exp_neg_mul_sq_isLittleO_exp_neg
+#check Polynomial.eval_X
+#check Real.integral_gaussian
+#check integral_gaussian

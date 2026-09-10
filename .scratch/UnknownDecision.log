@@ -1,0 +1,7 @@
+.scratch/UnknownDecision.lean:49:13: warning: This simp argument is unused:
+  continuousHurstDecision
+
+Hint: Omit it from the simp argument list.
+  simp only [c̵o̵n̵t̵i̵n̵u̵o̵u̵s̵H̵u̵r̵s̵t̵D̵e̵c̵i̵s̵i̵o̵n̵,̵ ̵q2UnknownSpatialEstimator, q2UnknownLocalEstimator, smooth, Fintype.sum_option, w, z]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

@@ -1,0 +1,6 @@
+.lake/
+.DS_Store
+__pycache__/
+
+# Malformed zero-byte files produced by a failed external-source extraction.
+/.scratch/bs_src/

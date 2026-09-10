@@ -1,0 +1,27 @@
+.scratch/GaussianLogStein.lean:37:40: warning: 'funext y' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+.scratch/GaussianLogStein.lean:37:50: warning: 'rfl' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+.scratch/GaussianLogStein.lean:37:50: warning: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+.scratch/GaussianLogStein.lean:65:39: warning: '(funext x; rfl)' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+.scratch/GaussianLogStein.lean:65:39: warning: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+.scratch/GaussianLogStein.lean:63:23: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+.scratch/GaussianLogStein.lean:65:21: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`

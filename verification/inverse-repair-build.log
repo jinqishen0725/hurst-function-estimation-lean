@@ -1,0 +1,8 @@
+⚠ [3082/3457] Replayed Hurst.Rates
+warning: Hurst/Rates.lean:52:39: Variable name `hL` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+✔ [3457/3457] Built Hurst.InverseRepair (3.8s)
+Build completed successfully (3457 jobs).

@@ -1,0 +1,12 @@
+import Hurst.OptimalCombinedRawEvenMoment
+#check MeasureTheory.lpNorm_eq_integral_norm_rpow_toReal
+#check MeasureTheory.toReal_eLpNorm
+#check ENNReal.ofReal_le_ofReal_iff
+#check ENNReal.ofReal_le_ofReal_iff
+#check Real.rpow_le_rpow
+#check Real.rpow_natCast
+#check Real.rpow_inv_natCast_pow
+#check Real.rpow_inv_rpow
+#check Real.rpow_nonneg
+#check Real.rpow_pos_of_pos
+#check MeasureTheory.integral_nonneg

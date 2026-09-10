@@ -1,0 +1,298 @@
+{
+  "date": "2026-09-09",
+  "local_toolchain": "v4.31.0",
+  "repositories": [
+    {
+      "repo": "Lean-MoDS/StatsMLlib",
+      "sha": "8e6661fe1d5abf0f56ed6b2b8ed0fda37cdc32a1",
+      "url": "https://github.com/Lean-MoDS/StatsMLlib/tree/8e6661fe1d5abf0f56ed6b2b8ed0fda37cdc32a1",
+      "toolchain": "leanprover/lean4:v4.33.0",
+      "license": "Apache-2.0",
+      "fetched_files": [
+        {
+          "path": "StatsMLlib/Probability/Gaussian/LipschitzConcentration.lean",
+          "sha256": "de36303635f6cccb7228b99385403e9d22cf204f98523f03dcde9d2156b97920",
+          "text_placeholder_tokens_found": false
+        }
+      ],
+      "integration": "not integrated",
+      "transitive_project_audit": "not performed"
+    },
+    {
+      "repo": "RemyDegenne/testing-lower-bounds",
+      "sha": "5d4c306593b8426846ead569bbcbb781e2a965e9",
+      "url": "https://github.com/RemyDegenne/testing-lower-bounds/tree/5d4c306593b8426846ead569bbcbb781e2a965e9",
+      "toolchain": "leanprover/lean4:v4.13.0-rc3",
+      "license": "Apache-2.0",
+      "fetched_files": [],
+      "integration": "not integrated",
+      "transitive_project_audit": "not performed"
+    },
+    {
+      "repo": "StatLean/Stat-Lean",
+      "sha": "855b6afb69fead1bef066111732ed44df181040e",
+      "url": "https://github.com/StatLean/Stat-Lean/tree/855b6afb69fead1bef066111732ed44df181040e",
+      "toolchain": "leanprover/lean4:v4.29.1",
+      "license": "Apache-2.0",
+      "fetched_files": [
+        {
+          "path": "LICENSE",
+          "sha256": "d5945fe0f38866a919940212b0e3b5b0c30629b923c3e26dcce026571a29cd93",
+          "text_placeholder_tokens_found": null
+        },
+        {
+          "path": "StatLean/Minimaxity/EstimationToTesting.lean",
+          "sha256": "fe925ddb2da82b2ec8f2e02b1a4c87f094b4326677d8ffe8762d58b9d452a382",
+          "text_placeholder_tokens_found": false
+        },
+        {
+          "path": "StatLean/Minimaxity/Fano/FanoLowerBound.lean",
+          "sha256": "ad36846a8bfb768c2f89f81165ed8ed2a98db885644334e92a97ddd19b0a0c02",
+          "text_placeholder_tokens_found": false
+        },
+        {
+          "path": "StatLean/Minimaxity/ForMathlib/GaussianKL.lean",
+          "sha256": "3e6d0e0f060ec1a0039e1674d7d145cf7a7ddeae932c38cf4d8de5b3f46128db",
+          "text_placeholder_tokens_found": false
+        },
+        {
+          "path": "StatLean/Minimaxity/ForMathlib/GaussianKLMulti.lean",
+          "sha256": "2496d3df00b61bd92e8ef20faa45bb01b57e29797deacd995f74af87bd4cb105",
+          "text_placeholder_tokens_found": false
+        },
+        {
+          "path": "StatLean/Minimaxity/ForMathlib/KLDataProcessing.lean",
+          "sha256": "f4be1eefdd55c18ce4757f32ca78c7cf9c3c7ca6391428a273bc8b17764ab2f8",
+          "text_placeholder_tokens_found": false
+        },
+        {
+          "path": "StatLean/Minimaxity/ForMathlib/KLDivergence.lean",
+          "sha256": "2c796c0d26fc6db1acf5072e9855d1ba113fb9d0765f15e167442ed84f71dd3c",
+          "text_placeholder_tokens_found": false
+        },
+        {
+          "path": "StatLean/Minimaxity/Defs.lean",
+          "sha256": "bdb9fffe69122332ff53c23dd5ca7dff46209aa3e8288babc2708ed77dcd2d0c",
+          "text_placeholder_tokens_found": false
+        },
+        {
+          "path": "StatLean/Minimaxity/Fano/MutualInformation.lean",
+          "sha256": "7e2c6b00b9ba3b7fe37f203e882dbc3c841d3deebc96eb08a0944fdc3d8ad197",
+          "text_placeholder_tokens_found": false
+        }
+      ],
+      "integration": "Selected Gaussian KL, data processing, product KL, mixture minimization, Fano definitions, estimation-to-testing, mutual information and Fano lower bounds; all other imports use pinned mathlib.",
+      "transitive_project_audit": "All selected integrated public theorems and their transitive proof dependencies are audited in verification/axioms.log. This is not an audit of the entire upstream repository."
+    },
+    {
+      "repo": "statopia/statlean4",
+      "sha": "dd2c4bbc72b7c643e62985d77c84755b31aec9f5",
+      "url": "https://github.com/statopia/statlean4/tree/dd2c4bbc72b7c643e62985d77c84755b31aec9f5",
+      "toolchain": "leanprover/lean4:v4.28.0-rc1",
+      "license": "not found in inspected tree; not copied",
+      "fetched_files": [
+        {
+          "path": "Statlean/Gaussian/Hermite.lean",
+          "sha256": "c48d2bde7b04c110ce4738467a4e65edc9a16792041c37173ba86978e89682c6",
+          "text_placeholder_tokens_found": false
+        }
+      ],
+      "integration": "not integrated",
+      "transitive_project_audit": "not performed"
+    }
+  ],
+  "local_adaptation_sha256": "c979a28fc263c9b67372bdb26a6910aa713f0f85f4153063662584a6108b1915",
+  "note": "Source text inspection is not kernel validation; actual integrated declarations are checked in axioms.log.",
+  "local_adaptations": [
+    {
+      "path": "Hurst/GaussianKL.lean",
+      "sha256": "c979a28fc263c9b67372bdb26a6910aa713f0f85f4153063662584a6108b1915"
+    },
+    {
+      "path": "Hurst/KLDataProcessing.lean",
+      "sha256": "8543a400725fb91328f97648629690bb6ea5bcf70bcd0e1e5bfaa0566ea7d7d0"
+    },
+    {
+      "path": "Hurst/KLProduct.lean",
+      "sha256": "35a7ed2f3560e5f68cdb6994c4813bdb0eb50c766259f00b56dbd26479a6ddca"
+    },
+    {
+      "path": "Hurst/GaussianKLMulti.lean",
+      "sha256": "c15c8a60c47b8e5d5108b2a5f4bb590c98712e1f0b18f38f9092ad95668c9788"
+    },
+    {
+      "path": "Hurst/FanoDefs.lean",
+      "sha256": "145ff81617f5d6ab7fa825acedf8b81e4a05f9bdc86ae88945ddd4697b30c745"
+    },
+    {
+      "path": "Hurst/EstimationToTesting.lean",
+      "sha256": "9bd8a1afcbeaaaaf68696fd2a8a8cad3d4a098e9b3006ca7633277ca5a7b0655"
+    },
+    {
+      "path": "Hurst/KLMixture.lean",
+      "sha256": "a7d07675ab698ee3fc0f1e4fa4dd13c9425d68765a6ac36b4510ed783e1d0c34"
+    },
+    {
+      "path": "Hurst/MutualInformation.lean",
+      "sha256": "ccbf54fbdef36c6e782423175f0d9f1c2d6a0e3cb7899f02a90de3e79de87cfc"
+    },
+    {
+      "path": "Hurst/FanoLowerBound.lean",
+      "sha256": "9010a619c39dd8c3f4a06054b0eef5ef29e35ea9f9b98f5f7d92a2b5df432fda"
+    }
+  ],
+  "fano_dependency_closure": {
+    "StatLean.Minimaxity.Fano.FanoLowerBound": {
+      "lines": 770,
+      "imports": [
+        "StatLean.Minimaxity.EstimationToTesting",
+        "StatLean.Minimaxity.Fano.MutualInformation"
+      ],
+      "placeholders": []
+    },
+    "StatLean.Minimaxity.EstimationToTesting": {
+      "lines": 202,
+      "imports": [
+        "StatLean.Minimaxity.Defs"
+      ],
+      "placeholders": []
+    },
+    "StatLean.Minimaxity.Defs": {
+      "lines": 154,
+      "imports": [],
+      "placeholders": []
+    },
+    "StatLean.Minimaxity.Fano.MutualInformation": {
+      "lines": 286,
+      "imports": [
+        "StatLean.Minimaxity.Defs",
+        "StatLean.Minimaxity.ForMathlib.KLDivergence"
+      ],
+      "placeholders": []
+    },
+    "StatLean.Minimaxity.ForMathlib.KLDivergence": {
+      "lines": 311,
+      "imports": [],
+      "placeholders": []
+    }
+  },
+  "hermite_integration": {
+    "source": "Independent proofs from local mathlib v4.31.0",
+    "modules": [
+      "Hurst.GaussianPolynomial",
+      "Hurst.HermiteAlgebra",
+      "Hurst.HermiteOrthogonality",
+      "Hurst.GaussianHermite",
+      "Hurst.MomentDetermination",
+      "Hurst.GaussianCompleteness",
+      "Hurst.HermiteSpan",
+      "Hurst.HermiteTotal",
+      "Hurst.GaussianHilbert",
+      "Hurst.HermiteParity",
+      "Hurst.HermiteConditional",
+      "Hurst.GaussianPolynomialLaw",
+      "Hurst.HermitePair",
+      "Hurst.GaussianRegression",
+      "Hurst.JointHermite",
+      "Hurst.HilbertDiagonal",
+      "Hurst.GaussianPullback",
+      "Hurst.GaussianLogHermite",
+      "Hurst.GaussianHermiteCovariance",
+      "Hurst.GaussianLogStein",
+      "Hurst.GaussianLogRank",
+      "Hurst.HermiteRankBound",
+      "Hurst.GaussianLogResidual",
+      "Hurst.GaussianResidualCovariance",
+      "Hurst.GaussianLogSeries"
+    ],
+    "external_hermite_code_copied": false,
+    "completed": "Gaussian integration by parts, moment determination, complete Hermite Hilbert basis, actual joint Gaussian identities and L2 series; exact log-square rank two and rank-four residual bound",
+    "remaining": "Gaussian multi-index moment estimates and array distribution limits"
+  },
+  "hermite_truncation_integration": {
+    "source": "Independent proofs from local mathlib v4.31.0 and verified project Hermite basis",
+    "modules": [
+      "Hurst.HermiteTruncation",
+      "Hurst.WeightedSchur",
+      "Hurst.HilbertSchur",
+      "Hurst.HermitePolynomialTruncation",
+      "Hurst.GaussianArrayL2",
+      "Hurst.WeightEnergy",
+      "Hurst.GaussianArrayApproximation",
+      "Hurst.FeatureStandardGaussian",
+      "Hurst.FeatureHermiteApproximation",
+      "Hurst.GridHermiteApproximation",
+      "Hurst.HermiteTailEnergy",
+      "Hurst.L2TestApproximation",
+      "Hurst.FeatureHermiteTests"
+    ],
+    "completed": "Actual finite polynomial truncation; uniform correlated-array and q1/q2 fixed-class L2 bounds; actual bounded Lipschitz test error",
+    "remaining": "Finite polynomial correlated-array CLT, variance limits, high moments and non-Gaussian limits"
+  },
+  "fine_bias_integration": {
+    "source": "Local mathlib v4.31.0 Taylor/Peano, matrix inverse continuity, Lipschitz and moment inequalities; independent clipping proof",
+    "modules": [
+      "Hurst.InteriorKernelMoments",
+      "Hurst.InteriorDesignLimit",
+      "Hurst.PointwiseTaylor",
+      "Hurst.LocalTaylorLeading",
+      "Hurst.LocalLeadingLimit",
+      "Hurst.EquivalentKernel",
+      "Hurst.CalibratedBiasLimit",
+      "Hurst.GaussianMeanApproximation",
+      "Hurst.ActualMeanResidual",
+      "Hurst.MeanLimitTransfer",
+      "Hurst.GridBiasRemainderLimit",
+      "Hurst.ActualMeanLeading",
+      "Hurst.OptimalBiasBandwidth",
+      "Hurst.OptimalMeanLeading",
+      "Hurst.ClippedLinearization",
+      "Hurst.ExpectedLinearization",
+      "Hurst.CalibrationLipschitz",
+      "Hurst.ExpectedInverseLimit",
+      "Hurst.BiasVarianceScale",
+      "Hurst.OptimalLogVariance",
+      "Hurst.SecondEstimatorBias",
+      "Hurst.FirstEstimatorBias",
+      "Hurst.OptimalNormalization",
+      "Hurst.InverseL1Linearization",
+      "Hurst.KnownScaleEstimatorBias"
+    ],
+    "completed": "Known nonzero scale, fixed interior t, integer p=r+1 and C^p regularity: actual equivalent-kernel bias and optimal-bandwidth expected q1/q2 estimator bias complete, with strict interior clipping for q2. Pointwise and L1 inverse linearization use second moments only.",
+    "remaining": "Correlated-array CLT, actual variance limits, high moments/s>2, critical/long-memory limits, unknown-scale fine bias and broader bandwidth/noninteger fine-bias scopes remain."
+  },
+  "triangular_L1_transfer": {
+    "source": "Local mathlib v4.31.0 ConvergenceInDistribution bounded Lipschitz criterion and Bochner Markov inequality",
+    "modules": [
+      "Hurst.InverseL1Limit",
+      "Hurst.ScaledL1Probability",
+      "Hurst.FirstEstimatorLinearization",
+      "Hurst.SecondEstimatorLinearization",
+      "Hurst.InverseProbabilityLimit",
+      "Hurst.ActualEstimatorProbability",
+      "Hurst.KnownScaleLinearization",
+      "Hurst.TriangularL1Transfer"
+    ],
+    "completed": "Actual q1/q2 optimal-bandwidth inverse remainder tends to zero in normalized L1 and probability under the batch25 interior C^p assumptions; arbitrary known nonzero scale has actual L1 conclusion. Varying-space L1 weak-limit transfer proved using mathlib bounded Lipschitz criterion, conditional on an existing input distribution limit. Actual correlated-array CLT and variance limits, high moments/s>2, critical/long-memory and unknown-scale fine limits remain.",
+    "restriction": "The available mathlib CentralLimitTheorem requires iid input and is not used as a correlated-array CLT. The transfer theorem has explicit input convergence hypothesis."
+  },
+  "unknown_scale_L1_bridge": {
+    "source": "Existing project contraction, q1 sharper scale risk and mathlib second-moment inequalities; no new external theorem assumed for the closed q1 bias",
+    "modules": [
+      "Hurst.OracleScaleL1",
+      "Hurst.OracleScaleBias",
+      "Hurst.OracleScaleDistribution",
+      "Hurst.ActualScaleIntegrability",
+      "Hurst.ScaledMomentLimit",
+      "Hurst.FirstScaleNegligible",
+      "Hurst.FirstUnknownConditionalBias",
+      "Hurst.SecondUnknownConditionalBias",
+      "Hurst.FirstUnknownFineBias",
+      "Hurst.ActualUnknownConditionalLimits",
+      "Hurst.FirstUnknownScaleTests",
+      "Hurst.FirstUnknownAllScaleBias"
+    ],
+    "completed": "Written proof21 fills unknown-scale fine limits in explicit regimes. Actual q1 expected leading bias proved with no remaining statistical input, including any unknown nonzero common scale. Actual q2 expected bias is conditional on improved scale L1 error. Actual q1/q2 distribution transfer requires scale negligibility and the known-scale reference limit. Conditional mainline phase remains in progress; finite-polynomial CLT/variance, long-memory and all finite loss moment chains still need completion before the delayed input proofs.",
+    "conditional_registry": "verification/conditional_results.json"
+  }
+}

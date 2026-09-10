@@ -1,0 +1,171 @@
+{
+  "direct_proof_documents": 20,
+  "numbered_results_mapped": 27,
+  "local_links_valid": true,
+  "display_math_delimiters_balanced": true,
+  "lean_sources_unchanged": true,
+  "critical_coefficients_exact_checks": [
+    "3/8",
+    "3/128",
+    "9/16"
+  ],
+  "new_proofs_lean_verified": false,
+  "scope": "Document consistency and selected exact algebra checks; not an independent proof certification.",
+  "document_sha256": {
+    "direct_proofs/01_inverse_and_limits.md": "3a2ba76ea5ecdee0949cedc09acab2dc5a673f5402add61324dfc9b4607899dc",
+    "direct_proofs/02_local_polynomial_bias.md": "ce48d06fac3d1d306225b1b370e199a58d526130bc64e4ebf320bd046cf7eda2",
+    "direct_proofs/03_critical_variance_and_clt.md": "ebfae90f3764cdb8d3883a1cd9f5faf084c2831a0d8761a9746cdb12f27a9cf4",
+    "direct_proofs/04_covariance_remainders.md": "96b0c8b295eea4b50fd044a3844a0293fb1751b0af7bdc790d44e894fa94da95",
+    "direct_proofs/05_normalization_and_log_moments.md": "c79fe49981f4cb47a0ef6b1685a4bf045a38d4d39dbf0f65be05190884cef457",
+    "direct_proofs/06_fourier_integrals.md": "ac591a0ce97107e04039d8fa32506e1d80a9fecb1f5ac071643aeb36d9186991",
+    "direct_proofs/07_bump_packing_and_lower_bound.md": "d5b65f669f4af8c52a31cfba03cb24a0814429541a532da59ec2fa924d33261e",
+    "direct_proofs/08_centering_and_long_memory.md": "55a140e1f2f94c465d144c17d33f4e2d00612f14a1318dc8e8dd40e8b76619cb",
+    "direct_proofs/09_minimax_lower_bound_complete.md": "3a5b1918906dd1463617e9f20d64598b47f087dcab7fc4c0df51cbce9a6ca147",
+    "direct_proofs/10_q2_mbm_mse.md": "0ac5f6fe923b2097be1b9424bfe6b7158a7c272a545a2cb7c4ac344a767c173f",
+    "direct_proofs/11_q2_mbm_short_memory_clt.md": "28704ab4c3a9e9000ad18263f5c4f5c5f5d7ad16d2bfd4597a039180651bf598",
+    "direct_proofs/12_q1_mbm_covariance_mse.md": "9efc3d5f360e19385e3e5ffb14c58349ff60b49213a67b1a2e3295c5bb0a1589",
+    "direct_proofs/13_q1_short_and_critical_clt.md": "d3afaa906c2c31425a749abe6f6021f89cf4ee9272dfe59ccd206eda51f3bdbb",
+    "direct_proofs/14_q1_long_memory_limit.md": "40e3b278f78b4f1deba676ae71d6dd11d8d0596a4c37ed7743384b3fc9a0aa85",
+    "direct_proofs/15_two_scale_pilot.md": "6640d3d632c6975d437671d21987fe04f037aacc0d9f77609392c970fc9b77b2",
+    "direct_proofs/16_scale_spatial_average.md": "cf297a7b54549cbc963f472c1c7c39a1546d788197a9a79fd4ac3da395188873",
+    "direct_proofs/17_unknown_scale_backfitting.md": "59b4e3ead9c261addf891811f87802934fd47f6b860429290f750ad2b10b68c9",
+    "direct_proofs/18_full_domain_l2_minimax.md": "f768b6de66df852505af201cd12d657d01791145fb72ddf42d2b9a4c09034236",
+    "direct_proofs/19_all_finite_loss_moments.md": "15867cf590b58a542366fb320136ddde63af4353dd3ab6e5b75a2650a3a17493",
+    "direct_proofs/20_p1_minimax_lower_bound.md": "8e43009bd81c2325dab268da08a349c265e175781c9f9d6da97b589365695f4b",
+    "direct_proofs/README.md": "26c3945c1be7fbcd000569058f59050a47fed5ed665049e22072bcb541dd1d0c"
+  },
+  "completed_minimax_written_chain": [
+    "Proposition 8.1 repaired",
+    "Theorem 3.1 repaired"
+  ],
+  "minimax_numeric_checks": "verification/minimax_kl_checks.json",
+  "inline_math_delimiters_balanced": true,
+  "equation_tags_unique_within_each_document": true,
+  "completed_q2_written_scope": {
+    "dimension": 1,
+    "difference_order": 2,
+    "smoothness": "p>=2",
+    "scale": "known",
+    "domain": "fixed interior interval",
+    "H_range": "fixed compact subset of (0,1)",
+    "claims": [
+      "actual covariance estimates with corrected growing-lag remainder",
+      "log mean approximation",
+      "actual local polynomial bias and variance",
+      "MSE rate",
+      "short-memory CLT",
+      "inverse linearization and refined bias",
+      "corrected optimal-bandwidth Gaussian means under pointwise Taylor expansion"
+    ],
+    "full_original_results_marked_complete": false
+  },
+  "q2_numeric_checks": "verification/q2_mbm_checks.json",
+  "original_pdfs_unchanged": true,
+  "completed_q1_written_scope": {
+    "dimension": 1,
+    "difference_order": 1,
+    "smoothness": "p>=1 with stated interior Holder/Lipschitz control",
+    "scale": "known",
+    "domain": "fixed interior points; uniform estimates only with stated margins or transition factor",
+    "bandwidth": "b->0, nb->infinity, b log n->0",
+    "claims": [
+      "actual covariance and corrected remainder",
+      "actual log mean",
+      "three variance rates and MSE",
+      "short-memory CLT including non-absolutely-summable correlations",
+      "nonconstant-H critical CLT with variance 9/16 times integral omega squared",
+      "actual long-memory second-chaos convergence",
+      "cyclic integral identification with self-adjoint spectrum",
+      "inverse centering and reflection",
+      "short-memory optimal-bandwidth corrected means under pointwise Taylor expansion"
+    ],
+    "new_counterexample": "S.2.3 printed relative remainder fails for H(x)=3/4+epsilon*(x-exp(-1/3))",
+    "full_original_results_marked_complete": false
+  },
+  "q1_numeric_checks": "verification/q1_mbm_checks.json",
+  "completed_unknown_scale_written_scope": {
+    "dimension": 1,
+    "difference_orders": [
+      1,
+      2
+    ],
+    "domain": "fixed interior regions",
+    "smoothness": "p>=q and previously stated interior regularity",
+    "scale": "unknown positive constant",
+    "claims": [
+      "actual two-scale pilot bias and variance",
+      "short/critical joint CLT and q1 long-memory joint limit",
+      "actual spatial weight aggregation",
+      "corrected S.5.1 variance and actual long-memory counterexample",
+      "S.5.2 actual clipped pilot moments",
+      "scale MSE and conditional bias",
+      "final correlated-error MSE and conditional bias"
+    ],
+    "same_rate_condition": "global short memory on the working interval; automatic q2, q1 requires sup H<3/4",
+    "new_counterexample": "S.5.1: constant H=7/8, q=p=1, b=n^-1/2, m=floor(1/(4b)); variance log^2(n)n^-1/2 versus printed O(log^2(n)n^-3/4)",
+    "full_original_results_marked_complete": false
+  },
+  "unknown_scale_numeric_checks": "verification/unknown_scale_checks.json",
+  "completed_full_domain_minimax_written_scope": {
+    "dimension": 1,
+    "losses": "Expected squared Ls(0,1) norm and probability rate, 1<=s<=2",
+    "parameter_class": "Original Holder seminorm <= M with fixed eta<=H<=h_star, eta<1/2<h_star",
+    "branches": [
+      "q=2, p>=2, h_star<1",
+      "q=1, p>1, h_star<3/4"
+    ],
+    "scales": "Known positive constant; unknown positive constant uniformly over sigma>0",
+    "claims": [
+      "Global derivative bounds from original seminorm and bounded values",
+      "Actual near-origin background covariance bounds",
+      "All valid grid points have uniformly bounded squared-correlation row sums",
+      "Uniform two-endpoint local polynomial Gram stability with selected positive kernel",
+      "Uniform full-domain pointwise MSE upper bound",
+      "Internal scale estimate with full-domain final inversion",
+      "Full-domain same-class minimax upper and lower bounds"
+    ],
+    "rate_squared": "(n log^2 n)^(-2p/(2p+1))",
+    "not_claimed": [
+      "p=1 matching lower bound",
+      "s>2 matching upper bound",
+      "higher-dimensional minimax",
+      "Boundary CLTs",
+      "Lean formalization",
+      "Independent proof certification"
+    ]
+  },
+  "full_domain_minimax_numeric_checks": "verification/full_domain_minimax_checks.json",
+  "markdown_files_checked": 49,
+  "completed_all_finite_loss_written_scope": {
+    "dimension": 1,
+    "domain": "whole (0,1), including uniform pointwise moment bounds up to both endpoints",
+    "branches": [
+      "q=2, p>=2, eta<=H<=1-eta, 0<eta<1/2",
+      "q=1, p>=1, eta<=H<=h_star, 0<eta<1/2<h_star<3/4"
+    ],
+    "parameter_class": "Original Holder seminorm <= fixed M and fixed value margins",
+    "losses": "Every fixed finite Ls norm, 1<=s<infinity; expected squared norm and probability rate",
+    "scale": "Known constant or unknown positive constant uniformly over sigma>0",
+    "rate_squared": "(n log^2 n)^(-2p/(2p+1))",
+    "new_claims": [
+      "All fixed finite Gaussian-log weighted moments via weak-correlation residue classes and repeated-index partitions",
+      "Actual pilot high moments",
+      "Actual aggregate scale high moments",
+      "Full-domain high-moment inverse bounds",
+      "Actual KL under a log(2n)<=c0 and Lip(H)<=b0, without b log n ->0",
+      "p=1 fixed-amplitude packing and Fano lower bound"
+    ],
+    "external_dependency": "Bardet-Surgailis Lemma 1 scalar Hermite-rank-2 specialization; see verification/minimax_external_dependencies.json",
+    "not_claimed": [
+      "Higher-dimensional minimax",
+      "s=infinity",
+      "Arbitrary smaller parameter classes excluding a neighborhood of H=1/2",
+      "All original model extensions",
+      "Lean formalization",
+      "Independent proof certification"
+    ]
+  },
+  "minimax_endpoint_moment_numeric_checks": "verification/minimax_endpoint_moment_checks.json",
+  "lean_sources_unchanged_scope": "Historical snapshot: the written-proof phase through documents 19/20. Subsequent Lean changes are tracked separately in lean_formalization_progress.json.",
+  "subsequent_lean_progress": "verification/lean_formalization_progress.json"
+}

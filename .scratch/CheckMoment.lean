@@ -1,0 +1,27 @@
+import Hurst.ConditionalMomentMinimax
+import Mathlib.Algebra.Order.Chebyshev
+import Mathlib.Data.Fintype.Card
+open MeasureTheory ProbabilityTheory
+#check memLp_natCast_iff
+#check memLp_natCast_iff_integrable
+#check memLp_iff_integrable
+#check memLp_of_integrable_norm_rpow
+#check MemLp.integrable_norm_rpow
+#check MemLp.pow
+#check Fintype.sum_le_sum_of_surjective
+#check Finset.sum_le_sum_of_injOn
+#check Finset.sum_le_sum_of_subset_of_nonneg
+#check Finset.sum_fiberwise
+#check Fintype.prod_fiberwise
+#check Fintype.sum_pow
+#check Fintype.card_le_of_surjective
+#check Equiv.ofInjective
+#check Fintype.equivFin
+#check Finset.prod_const
+#check Finset.sum_image_le
+#check Function.Surjective.sum_comp_le_sum
+#check Measurable.pow_const
+#check MemLp.integrable
+#check MeasurePreserving.integral_comp
+#check Function.Surjective.fintypeCard_le
+#check Finset.sum_le_sum_of_surjOn

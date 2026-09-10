@@ -1,0 +1,21 @@
+{
+  "proof_document": "direct_proofs/19_all_finite_loss_moments.md",
+  "dependencies": [
+    {
+      "authors": "Jean-Marc Bardet and Donatas Surgailis",
+      "title": "Moment bounds and central limit theorems for Gaussian subordinated arrays",
+      "url": "https://arxiv.org/pdf/1104.4732",
+      "locator": "Lemma 1, printed page 3, equation (2.4)",
+      "specialization": "scalar dimension nu=1, Hermite rank m=2; partial centering alpha; epsilon<1/(v-1)",
+      "application_checks": [
+        "Distinct indices within fixed residue classes are epsilon-standard",
+        "Actual squared correlation row sums are uniformly bounded",
+        "Only singleton multiplicities require Hermite rank 2",
+        "All powers of centered log-square have finite L2 norm",
+        "Repeated-index partitions handled separately"
+      ],
+      "lean_formalized": false
+    }
+  ],
+  "not_a_proof_certification": true
+}

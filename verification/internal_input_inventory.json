@@ -1,0 +1,62 @@
+{
+  "date": "2026-09-09",
+  "acceptance_rule": "Every internal supporting result must be proved in Lean. A final theorem may retain only a premise that is an exact, cited theorem from the external literature, together with ordinary model and parameter assumptions.",
+  "inputs": [
+    {
+      "id": "INT-MOM-RISK",
+      "owner": "int_mom_risk",
+      "status": "discharged",
+      "target": [
+        "Hurst.Q1RawMomentBound",
+        "Hurst.Q2RawMomentBound"
+      ],
+      "allowed_external_dependency": "Bardet-Surgailis Lemma 1, arXiv:1104.4732, Lemma 1 / equation (2.4)",
+      "acceptance": "Prove the actual-model raw bounds from the exact external moment lemma interface; repeated indices, correlation grouping, weights, pilot and scale terms are internal."
+    },
+    {
+      "id": "INT-SCALE",
+      "owner": "int_scale",
+      "status": "discharged",
+      "target": [
+        "q2 optimal-bandwidth scale L1 smallness",
+        "q1 critical and long-memory two-bandwidth scale L1 smallness"
+      ],
+      "allowed_external_dependency": null,
+      "acceptance": "Derive each smallness statement from existing actual covariance, weight and bias bounds in Lean."
+    },
+    {
+      "id": "INT-CLT",
+      "owner": "int_clt_var",
+      "status": "in_progress",
+      "target": [
+        "q1 and q2 finite-Hermite triangular-array CLT",
+        "joined two-scale pilot CLT"
+      ],
+      "allowed_external_dependency": "An exact cited Gaussian subordinated triangular-array CLT may be retained if its full statement is encoded and every actual-model hypothesis is proved in Lean.",
+      "acceptance": "No premise may simply restate convergence of the final finite-polynomial statistic."
+    },
+    {
+      "id": "INT-VAR",
+      "owner": "int_clt_var and root",
+      "status": "discharged",
+      "target": [
+        "short-memory variance limits",
+        "critical and long-memory weighted fourth-correlation, mean and second-moment smallness"
+      ],
+      "allowed_external_dependency": null,
+      "acceptance": "Prove the actual weighted limits from local covariance limits, weight asymptotics and summability."
+    },
+    {
+      "id": "INT-LONG",
+      "owner": "int_long_resume and root",
+      "status": "in_progress",
+      "target": [
+        "actual q1 quadratic statistic convergence to the stated second-chaos law",
+        "joined pilot long-memory quadratic limit where used"
+      ],
+      "allowed_external_dependency": "A precisely cited general second-chaos or Gaussian quadratic-form convergence theorem may be retained; actual kernel/operator convergence and theorem applicability are internal.",
+      "acceptance": "No premise may assume convergence of the actual q1 quadratic statistic itself."
+    }
+  ],
+  "mainline_complete": false
+}

@@ -1,0 +1,12 @@
+import Hurst.FrozenLagCorrelation
+#check Continuous.rpow
+#check ContinuousAt.rpow
+#check ContinuousOn.rpow
+#check Real.continuous_const_rpow
+#check Real.continuous_rpow
+#check continuousAt_rpow
+#check Real.continuousAt_rpow_const
+#check tendsto_zero_iff_norm_tendsto_zero
+#check tendsto_zero_iff_abs_tendsto_zero
+#check Real.continuous_sqrt
+#check Real.continuousAt_sqrt
