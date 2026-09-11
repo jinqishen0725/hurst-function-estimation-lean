@@ -1,5 +1,33 @@
 # Parallel wave prompts (2026-09-10 17:20 window, interrupted by rate limit)
 
+## COORDINATOR PLAYBOOK (2026-09-11, from flow post-mortem)
+
+Agent flow archetypes observed (success rate / typical time):
+- A. Explorer-fail (goal-only prompt): ~0% useful output; time goes to repo reading + API guessing.
+  FIX: paste exact definitions + exact target statement into the prompt (T1 vs T1' A/B: 0 output
+  in 26 min vs landed in ~30 min).
+- B. Assembler (all inputs already landed; prompt lists input lemma names + proof route): high
+  success, 25-40 min (T3, T12d, T9a).
+- C. Pure-math mini (self-contained statement): ~100% success, 10-45 min (T4, T7, T10, T9b).
+- D. Repair (broken file + exact error lines + single-file ownership): high success, 25-45 min
+  (T7-fix, T10-fix).
+- E. Long-grind (big target in API-heavy area: integrals/rpow/Fubini/pi-Fubini): token burn,
+  error cascades (T5' 5h/113M; C's two sessions). Split into C-sized pieces or use repair-mode.
+
+Dispatch checklist (adopted 2026-09-11):
+1. Prompt contains: exact target statement; exact signatures of every input lemma (generate via
+   `rg -n "^theorem" <files>` before dispatch — T12d's hip-shape surprise would have been caught);
+   repo dialect dictionary reference (verification/lean_agent_protocol.md — REQUIRED read).
+2. Engines before assemblies: order tasks so every agent compiles against already-BUILT oleans;
+   this is what makes 4-way parallelism coordination-free.
+3. Mid-flight: check file mtimes each notification round; at ~2x budget STOP the agent and
+   switch to repair-mode (prompt budgets are advisory only — T5' proved agents don't self-enforce).
+4. On long-runners: send a status query offering land-now / breakdown-request / degrade-to-base-case
+   options (T5c pattern).
+5. After landing: verify compile myself, grep forbidden constructs, build olean, commit, fold new
+   API gotchas into lean_agent_protocol.md.
+
+
 ## FINE-GRAINED WAVES (2026-09-10 ~17:40 plan; 4 concurrent max, ~25 min budget each)
 
 Wave A (launched 17:40):

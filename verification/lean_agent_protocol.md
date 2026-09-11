@@ -54,6 +54,15 @@ discovery ladder below; it is dramatically faster than guess-and-recompile.
   Hurst/HyperplaneNull.lean and Hurst/ContinuumCutoffAssembly.lean already did — reuse.
 - Frobenius: `Matrix.frobenius_norm_mul` (submultiplicativity) exists; |tr(AB)| ≤ ‖A‖_F‖B‖_op is
   FALSE (A=B=I) — use √n·‖·‖_F forms (Hurst/TracePowerTransfer.lean).
+- `Nat.dist_eq` is now the METRIC Dist instance, not the nat-distance lemma — use
+  `Nat.dist` definitional unfolding + omega. `Finset.sum_const` takes the value explicitly
+  (`∑ x ∈ s, b = s.card • b`), no hypothesis. `Real.rpow_two` is real-pow; bridging Nat-pow
+  to rpow needs `Real.rpow_natCast` + `Real.rpow_mul`; watch `^` right-associativity
+  (`x ^ (-psi) ^ 2` parses as `x ^ ((-psi)^2)`).
+- Tactic blocks as positional args leave metavars unassigned — use `show (1:ℝ) ≤ (2:ℝ) by
+  norm_num` instead of inline `by norm_num`.
+- `set x := e with h` rewrites in ALL hypotheses; ℕ-vs-ℝ cast forms are defeq but not
+  exact-unifiable through rpow — bridge with `push_cast`.
 
 ## 5. Honesty rules (unchanged)
 No sorry/admit/axiom/native_decide. If a statement is false, prove the corrected statement and
