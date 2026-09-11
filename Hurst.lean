@@ -509,3 +509,4 @@ import Hurst.WeakCorrelationGrouping
 import Hurst.WeightedEvenMomentBound
 import Hurst.WeightedMergedWeights
 import Hurst.WeightedPatternBound
+import Hurst.JoinedPilotActualMarginal
