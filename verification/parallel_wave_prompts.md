@@ -1,5 +1,25 @@
 # Parallel wave prompts (2026-09-10 17:20 window, interrupted by rate limit)
 
+## FINE-GRAINED WAVES (2026-09-10 ~17:40 plan; 4 concurrent max, ~25 min budget each)
+
+Wave A (launched 17:40):
+- T1 → Hurst/RieszWalkAlgebra*.lean: open-path identification
+  matrixPathCoordinateSum A k i j = rieszOpenPathSum A k i j (induction on k via rieszVertexSeq_shift).
+- T4 → Hurst/HyperplaneNull*.lean: {z : Fin k → ℝ | z i = z j} null under Measure.pi volume
+  (incl. Icc-restricted variants).
+- T7 → Hurst/PowerSumBound*.lean: ∑_{j<n}(j+1)^{−β} ≤ n^{1−β}/(1−β)+1 (0<β<1);
+  bonus: (2*S n/m n)^psi → 1 from m n / S n → 2.
+- T10 → Hurst/TailExtraction*.lean: (S_k^{(J)})^{1/k} → lambda J for decreasing nonneg ℓ2 lambda,
+  S_k^{(J)} = ∑'_{j≥J} lambda j^k (ties + strict-tail squeeze; J=0 and lambda J=0 cases).
+
+Wave B: T2 closed-walk/trace identification (extends T1); T5 Schur dominator ∫∏_i f(z_i,z_{i+1}) ≤ μ^k;
+T8 mesh factorization ρ=(2S/m)^ψ→1 + single-edge band difference; T11 array max-extraction (J=0).
+Wave C: assemblies — T3 Predicate 1; T6 Predicate 3 (dominated convergence); T9 Predicate 2;
+T12 peeling induction + uniqueness corollary.
+Wave D: R4 k=2 insurance; H1 eigenvalue perturbation; H2 trace-power transfer; H3 op-norm bound;
+H4 eventual nondegeneracy padding.
+
+
 All nine agents were launched in parallel on 2026-09-10 ~17:19 and were stopped after
 ~9 minutes (API rate limit [1302], no files produced — all were still in the
 read/explore phase). The working tree was clean at stop time. Relaunch them after
