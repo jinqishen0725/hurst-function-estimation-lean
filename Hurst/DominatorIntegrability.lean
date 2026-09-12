@@ -52,8 +52,9 @@ lemma measurable_abs_rpow (r : ℝ) (y : ℝ) :
   measurable_rpow_of_nonneg ((measurable_id.sub measurable_const).abs)
     (fun x => abs_nonneg _) r
 
-lemma measurable_finset_prod_real {ι : Type*} {s : Finset ι} {f : ι → ℝ → ℝ}
-    (h : ∀ i ∈ s, Measurable (f i)) : Measurable (fun a => ∏ i ∈ s, f i a) := by
+lemma measurable_finset_prod_real {ι α : Type*} [MeasurableSpace α] {s : Finset ι}
+    {f : ι → α → ℝ} (h : ∀ i ∈ s, Measurable (f i)) :
+    Measurable (fun a => ∏ i ∈ s, f i a) := by
   classical
   induction s using Finset.induction_on with
   | empty => simpa using measurable_const
@@ -62,8 +63,9 @@ lemma measurable_finset_prod_real {ι : Type*} {s : Finset ι} {f : ι → ℝ �
       exact (h i (Finset.mem_insert_self i s)).mul
         (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
-lemma measurable_finset_prod_ennreal {ι : Type*} {s : Finset ι} {f : ι → ℝ → ℝ≥0∞}
-    (h : ∀ i ∈ s, Measurable (f i)) : Measurable (fun a => ∏ i ∈ s, f i a) := by
+lemma measurable_finset_prod_ennreal {ι α : Type*} [MeasurableSpace α] {s : Finset ι}
+    {f : ι → α → ℝ≥0∞} (h : ∀ i ∈ s, Measurable (f i)) :
+    Measurable (fun a => ∏ i ∈ s, f i a) := by
   classical
   induction s using Finset.induction_on with
   | empty => simpa using measurable_const
@@ -78,13 +80,9 @@ lemma ofReal_finset_prod {ι : Type*} (s : Finset ι) (f : ι → ℝ) (h : ∀ 
   induction s using Finset.induction_on with
   | empty => simp
   | insert i s hi ih =>
-      rw [Finset.prod_insert hi, Finset.prod_insert hi]
-      have hprod := Finset.prod_nonneg (fun j hj => h j (Finset.mem_insert_of_mem hj))
-      calc ENNReal.ofReal (f i * ∏ j ∈ s, f j)
-          = ENNReal.ofReal (f i) * ENNReal.ofReal (∏ j ∈ s, f j) :=
-            ENNReal.ofReal_mul (h i (Finset.mem_insert_self i s))
-        _ = ∏ j ∈ insert i s, ENNReal.ofReal (f j) := by
-            simp only [Finset.prod_insert hi, ← ih fun j hj => h j (Finset.mem_insert_of_mem hj)]
+      rw [Finset.prod_insert hi, Finset.prod_insert hi,
+        ENNReal.ofReal_mul (h i (Finset.mem_insert_self i s)),
+        ← ih (fun j hj => h j (Finset.mem_insert_of_mem hj))]
 
 /-! ### One-dimensional vertex and edge factors -/
 
@@ -116,6 +114,10 @@ lemma measurable_domEdge₂ (psi : ℝ) :
     (measurable_fst.sub measurable_snd).abs
   exact ENNReal.measurable_ofReal.comp
     (measurable_rpow_of_nonneg habs (fun p => abs_nonneg _) (-psi))
+
+lemma domEdge_symm (psi : ℝ) (a b : ℝ) : domEdge psi a b = domEdge psi b a := by
+  unfold domEdge
+  rw [abs_sub_comm]
 
 lemma domVert_mul_domEdge_eq (psi c : ℝ) (omega : ℝ → ℝ) (x y : ℝ) :
     domVert c omega x * domEdge psi x y
@@ -155,13 +157,13 @@ lemma cubeInd_mul_domEdge_eq (psi : ℝ) (x a : ℝ) :
 
 lemma cubeInd_mul_domEdge_domEdge_eq (psi : ℝ) (x a b : ℝ) :
     cubeInd x * domEdge psi x a * domEdge psi x b
-      = ENNReal.ofReal ((Icc (-1 : ℝ) 1).indicator (fun _ : ℝ => (1 : ℝ)) x *
-          |x - a| ^ (-psi) * |x - b| ^ (-psi)) := by
+      = ENNReal.ofReal ((Icc (-1 : ℝ) 1).indicator
+          (fun y : ℝ => |y - a| ^ (-psi) * |y - b| ^ (-psi)) x) := by
   unfold cubeInd domEdge
   by_cases hx : x ∈ Icc (-1 : ℝ) 1
-  · simp only [Set.indicator_of_mem hx, one_mul]
-    rw [ENNReal.ofReal_one, one_mul]
-    exact (ENNReal.ofReal_mul (Real.rpow_nonneg (abs_nonneg (x - a)) (-psi))).symm
+  · rw [Set.indicator_of_mem hx, Set.indicator_of_mem hx,
+      ENNReal.ofReal_mul (Real.rpow_nonneg (abs_nonneg (x - a)) (-psi)),
+      ENNReal.ofReal_one, one_mul]
   · simp [Set.indicator_of_notMem hx]
 
 /-! ### The singular one-factor integrability -/
@@ -199,8 +201,9 @@ lemma indicator_lintegral_le {g : ℝ → ℝ} (hgnn : ∀ x, 0 ≤ g x)
   have hfnn : ∀ x : ℝ, 0 ≤ (Icc (-1 : ℝ) 1).indicator g x := by
     intro x
     by_cases hx : x ∈ Icc (-1 : ℝ) 1
-    · rw [← ind_mul_eq_indicator g x, Set.indicator_of_mem hx, one_mul]
-    · rw [← ind_mul_eq_indicator g x, Set.indicator_of_notMem hx, zero_mul]
+    · rw [Set.indicator_of_mem hx]
+      exact hgnn x
+    · rw [Set.indicator_of_notMem hx]
   rw [← ofReal_integral_eq_lintegral_ofReal hf (Filter.Eventually.of_forall hfnn)]
   refine ENNReal.ofReal_le_ofReal ?_
   have heq : ∫ x, (Icc (-1 : ℝ) 1).indicator g x = ∫ x in Icc (-1 : ℝ) 1, g x :=
@@ -314,28 +317,15 @@ lemma vertexEdgeEdge_lintegral_le (psi c B ν₂ : ℝ) (omega : ℝ → ℝ)
           rw [cubeInd_mul_domEdge_domEdge_eq]
   refine le_trans (lintegral_mono hpoint) ?_
   rw [lintegral_const_mul' (ENNReal.ofReal (|c| * B)) _ ENNReal.ofReal_ne_top]
-  have hintform : ∀ x : ℝ, ENNReal.ofReal ((Icc (-1 : ℝ) 1).indicator (fun _ : ℝ => (1 : ℝ)) x *
-      |x - a| ^ (-psi) * |x - b| ^ (-psi))
-      = ENNReal.ofReal ((Icc (-1 : ℝ) 1).indicator
-          (fun y : ℝ => |y - a| ^ (-psi) * |y - b| ^ (-psi)) x) := by
-    intro x
-    rw [mul_assoc, ind_mul_eq_indicator (fun y : ℝ => |y - a| ^ (-psi) * |y - b| ^ (-psi)) x]
-  have hintform2 : ∫⁻ x : ℝ, ENNReal.ofReal ((Icc (-1 : ℝ) 1).indicator (fun _ : ℝ => (1 : ℝ)) x *
-      |x - a| ^ (-psi) * |x - b| ^ (-psi)) ∂volume
-      = ∫⁻ x : ℝ, ENNReal.ofReal ((Icc (-1 : ℝ) 1).indicator
-          (fun y : ℝ => |y - a| ^ (-psi) * |y - b| ^ (-psi)) x) ∂volume :=
-    lintegral_congr (fun x => hintform x)
-  rw [hintform2]
   calc ENNReal.ofReal (|c| * B)
         * ∫⁻ x : ℝ, ENNReal.ofReal ((Icc (-1 : ℝ) 1).indicator
             (fun y : ℝ => |y - a| ^ (-psi) * |y - b| ^ (-psi)) x) ∂volume
-      ≤ ENNReal.ofReal ν₂ :=
-        indicator_lintegral_le
-          (fun x => mul_nonneg (Real.rpow_nonneg (abs_nonneg (x - a)) (-psi))
-            (Real.rpow_nonneg (abs_nonneg (x - b)) (-psi)))
-          hint2 ν₂ (hν2 a b)
-    _ ≤ ENNReal.ofReal (|c| * B) * ENNReal.ofReal ν₂ := by
-        gcongr
+      ≤ ENNReal.ofReal (|c| * B) * ENNReal.ofReal ν₂ := by
+          gcongr
+          exact indicator_lintegral_le
+            (fun x => mul_nonneg (Real.rpow_nonneg (abs_nonneg (x - a)) (-psi))
+              (Real.rpow_nonneg (abs_nonneg (x - b)) (-psi)))
+            hint2 ν₂ (hν2 a b)
     _ = ENNReal.ofReal (|c| * B * ν₂) :=
             (ENNReal.ofReal_mul (mul_nonneg (abs_nonneg c) hBpos)).symm
 
@@ -346,16 +336,16 @@ lemma vertex_lintegral_le (c B : ℝ) (omega : ℝ → ℝ)
   have hBpos : 0 ≤ B := le_trans (abs_nonneg _) (hB 0 (by simp))
   refine le_trans (lintegral_mono (fun x => domVert_le_of_bound c B omega hB x)) ?_
   rw [lintegral_const_mul (ENNReal.ofReal (|c| * B)) measurable_cubeInd]
-  have hgnn1 : ∀ x : ℝ, 0 ≤ (1 : ℝ) := fun _ => le_of_lt (by norm_num)
-  have hf1 : Integrable ((Icc (-1 : ℝ) 1).indicator (fun _ : ℝ => (1 : ℝ)))
-      (volume : Measure ℝ) := (integrable_const (1 : ℝ)).indicator measurableSet_Icc
   have hci : ∫⁻ x : ℝ, cubeInd x ∂volume = ENNReal.ofReal 2 := by
-    have h := indicator_lintegral_le (g := fun _ : ℝ => (1 : ℝ)) hgnn1 hf1 2 (by norm_num)
-    simpa [cubeInd] using h
-  rw [hci]
-  have h2c : (2 : ℝ) * (|c| * B) = |c| * B * 2 := by ring
-  rw [← ENNReal.ofReal_mul (mul_nonneg (abs_nonneg c) hBpos), h2c]
-  exact le_refl _
+    have hcube : cubeInd = (Icc (-1 : ℝ) 1).indicator (fun _ : ℝ => (1 : ℝ≥0∞)) := by
+      funext x
+      by_cases hx : x ∈ Icc (-1 : ℝ) 1
+      · simp [cubeInd, hx]
+      · simp [cubeInd, hx]
+    rw [hcube, lintegral_indicator_const measurableSet_Icc, Real.volume_Icc]
+    norm_num
+  rw [hci, ← ENNReal.ofReal_mul (mul_nonneg (abs_nonneg c) hBpos)]
+  exact le_of_eq (congrArg ENNReal.ofReal (by ring))
 
 /-! ### Peeling the first coordinate of a pi-integral to the inner integral -/
 
@@ -380,31 +370,36 @@ lemma lintegral_pi_cons {n : ℕ} {G : (Fin (n+1) → ℝ) → ℝ≥0∞} (hG :
 edge factors on consecutive pairs. -/
 def chainOC (psi c : ℝ) (omega : ℝ → ℝ) (n : ℕ) (t : Fin (n+1) → ℝ) : ℝ≥0∞ :=
   (∏ j : Fin (n+1), domVert c omega (t j)) *
-  (∏ j : Fin n, domEdge psi (t j) (t j.succ))
+  (∏ j : Fin n, domEdge psi (t (Fin.castSucc j)) (t (Fin.succ j)))
 
-lemma chainOC_cons (psi c : ℝ) (omega : ℝ → ℝ) (n : ℕ) (x : ℝ) (t : Fin (n+1) → ℝ) :
-    chainOC psi c omega (n+1) (Fin.cons x t)
+lemma chainOC_cons (psi c : ℝ) (omega : ℝ → ℝ) (n : ℕ) (x : ℝ) (t : Fin (n+1) → ℝ)
+    (u : Fin (n+2) → ℝ) (hu0 : u 0 = x) (hu : ∀ i : Fin (n+1), u i.succ = t i) :
+    chainOC psi c omega (n+1) u
       = domVert c omega x * domEdge psi x (t 0) * chainOC psi c omega n t := by
   unfold chainOC
-  rw [Fin.prod_univ_succ]
-  simp only [Fin.cons_zero, Fin.cons_succ]
-  rw [Fin.prod_univ_succ]
-  simp only [Fin.cons_zero, Fin.cons_succ]
+  have hv : ∏ j : Fin (n+2), domVert c omega (u j)
+      = domVert c omega x * ∏ j : Fin (n+1), domVert c omega (t j) := by
+    rw [Fin.prod_univ_succ, hu0]
+    simp only [hu]
+  have he : ∏ j : Fin (n+1), domEdge psi (u (Fin.castSucc j)) (u (Fin.succ j))
+      = domEdge psi x (t 0) * ∏ j : Fin n, domEdge psi (t (Fin.castSucc j)) (t (Fin.succ j)) := by
+    rw [Fin.prod_univ_succ]
+    simp only [hu0, hu, ← Fin.succ_castSucc, Fin.castSucc_zero]
+  rw [hv, he]
   ring
 
 lemma measurable_chainOC (psi c : ℝ) (omega : ℝ → ℝ) (homega : Measurable omega) (n : ℕ) :
     Measurable (chainOC psi c omega n) := by
-  have hvb : ∀ j : Fin (n+1), Measurable
-      (fun t : Fin (n+1) → ℝ => domVert c omega (t j)) := fun j =>
-    (measurable_domVert c omega homega).comp (measurable_eval_apply j)
-  have hee : ∀ j : Fin n, Measurable
-      (fun t : Fin (n+1) → ℝ => domEdge psi (t (Fin.castSucc j)) (t (Fin.succ j))) := fun j =>
-    (measurable_domEdge₂ psi).comp
-      ((measurable_eval_apply (Fin.castSucc j)).prodMk
-        (measurable_eval_apply (Fin.succ j)))
   unfold chainOC
-  exact (measurable_finset_prod_ennreal (fun j _ => hvb j)).mul
-    (measurable_finset_prod_ennreal (fun j _ => hee j))
+  exact (measurable_finset_prod_ennreal
+      (f := fun (j : Fin (n+1)) (t : Fin (n+1) → ℝ) => domVert c omega (t j))
+      fun j _ => (measurable_domVert c omega homega).comp (measurable_eval_apply j)).mul
+    (measurable_finset_prod_ennreal
+      (f := fun (j : Fin n) (t : Fin (n+1) → ℝ) =>
+        domEdge psi (t (Fin.castSucc j)) (t (Fin.succ j)))
+      fun j _ => (measurable_domEdge₂ psi).comp
+        ((measurable_eval_apply (Fin.castSucc j)).prodMk
+          (measurable_eval_apply (Fin.succ j))))
 
 lemma chainOC_lintegral_le (psi c B ν₁ : ℝ) (omega : ℝ → ℝ)
     (hpsi1 : 0 < psi) (hpsi2 : 2 * psi < 1)
@@ -427,11 +422,16 @@ lemma chainOC_lintegral_le (psi c B ν₁ : ℝ) (omega : ℝ → ℝ)
           = Measure.dirac (Fin.elim0) :=
         MeasureTheory.Measure.volume_pi_eq_dirac (x := Fin.elim0)
       rw [hvolume, lintegral_dirac]
-      exact vertex_lintegral_le c B omega hB
+      simpa using vertex_lintegral_le c B omega hB
   | succ n ih =>
       rw [lintegral_pi_cons (G := chainOC psi c omega (n+1))
         (measurable_chainOC psi c omega homega (n+1))]
-      rw [chainOC_cons]
+      have hcons : ∀ (t' : Fin (n+1) → ℝ) (x : ℝ),
+          chainOC psi c omega (n+1) (Fin.cons x t')
+            = domVert c omega x * domEdge psi x (t' 0) * chainOC psi c omega n t' := fun t' x =>
+        chainOC_cons psi c omega n x t' (Fin.cons x t')
+          (show (Fin.cons x t' : Fin (n+2) → ℝ) (0 : Fin (n+2)) = x by simp) (fun i => by simp)
+      simp only [hcons]
       have hmeas2 : ∀ t : Fin (n+1) → ℝ, Measurable
           (fun x : ℝ => domVert c omega x * domEdge psi x (t 0)) := fun t =>
         (measurable_domVert c omega homega).mul (measurable_domEdge psi (t 0))
@@ -439,11 +439,10 @@ lemma chainOC_lintegral_le (psi c B ν₁ : ℝ) (omega : ℝ → ℝ)
           ∫⁻ x : ℝ, domVert c omega x * domEdge psi x (t 0) * chainOC psi c omega n t ∂volume
             ≤ ENNReal.ofReal (|c| * B * ν₁) * chainOC psi c omega n t := by
         intro t
-        rw [← lintegral_const_mul (chainOC psi c omega n t) (hmeas2 t)]
-        exact (mul_comm _ _) ▸
-          mul_le_mul_of_nonneg_left
-            (vertexEdge_lintegral_le psi c B ν₁ omega hpsi1 hpsi2 hB hν1 hνpos (t 0))
-            (le_of_eq rfl)
+        rw [lintegral_mul_const _ (hmeas2 t)]
+        exact mul_le_mul_of_nonneg_right
+          (vertexEdge_lintegral_le psi c B ν₁ omega hpsi1 hpsi2 hB hν1 hνpos (t 0))
+          zero_le
       refine le_trans (lintegral_mono hstep) ?_
       rw [lintegral_const_mul (ENNReal.ofReal (|c| * B * ν₁))
         (measurable_chainOC psi c omega homega n)]
@@ -452,7 +451,7 @@ lemma chainOC_lintegral_le (psi c B ν₁ : ℝ) (omega : ℝ → ℝ)
                 ∂(Measure.pi fun _ : Fin (n+1) => (volume : Measure ℝ))
           ≤ ENNReal.ofReal (|c| * B * ν₁)
               * (ENNReal.ofReal (2 * |c| * B) * ENNReal.ofReal (|c| * B * ν₁) ^ n) :=
-            mul_le_mul_of_nonneg_left ih (le_of_eq rfl)
+            mul_le_mul_of_nonneg_left ih zero_le
       _ = ENNReal.ofReal (2 * |c| * B) * ENNReal.ofReal (|c| * B * ν₁) ^ (n + 1) := by
             rw [pow_succ]
             ring
@@ -460,69 +459,85 @@ lemma chainOC_lintegral_le (psi c B ν₁ : ℝ) (omega : ℝ → ℝ)
 /-! ### The dominator, peeled -/
 
 set_option maxHeartbeats 1000000 in
-lemma dominator_cons (psi c : ℝ) (omega : ℝ → ℝ) (n : ℕ) (x : ℝ) (t : Fin (n+1) → ℝ) :
-    ENNReal.ofReal (continuumCutoffDominator (n+2) psi c omega (Fin.cons x t))
+lemma dominator_cons (psi c : ℝ) (omega : ℝ → ℝ) (n : ℕ) (x : ℝ) (t : Fin (n+1) → ℝ)
+    (u : Fin (n+2) → ℝ) (hu0 : u 0 = x) (hu : ∀ i : Fin (n+1), u i.succ = t i) :
+    ENNReal.ofReal (continuumCutoffDominator (n+2) psi c omega u)
       = domVert c omega x * domEdge psi x (t 0) * domEdge psi (t (Fin.last n)) x *
-        chainOC psi c omega (n+1) t := by
-  have hprod : ENNReal.ofReal (continuumCutoffDominator (n+2) psi c omega (Fin.cons x t))
+        chainOC psi c omega n t := by
+  have hcyc0 : finCyclicSucc (0 : Fin (n+2)) = Fin.succ (0 : Fin (n+1)) := by
+    have h1 : (0 : Fin (n+2)).val + 1 < n + 2 := by simp only [Fin.val_zero]; omega
+    simp only [finCyclicSucc, dif_pos h1]
+    exact Fin.ext rfl
+  have hlast : finCyclicSucc (Fin.succ (Fin.last n)) = (0 : Fin (n+2)) := by
+    have h1 : ¬ ((Fin.succ (Fin.last n)).val + 1 < n + 2) := by
+      simp only [Fin.val_succ, Fin.val_last]
+      omega
+    simp only [finCyclicSucc, dif_neg h1]
+    exact Fin.ext rfl
+  have hmid : ∀ j : Fin n,
+      finCyclicSucc (Fin.succ (Fin.castSucc j)) = Fin.succ (Fin.succ j) := by
+    intro j
+    have hv : (Fin.succ (Fin.castSucc j)).val = j.val + 1 := by
+      simp [Fin.val_succ, Fin.val_castSucc]
+    have h2 : (Fin.succ (Fin.castSucc j)).val + 1 < n + 2 := by rw [hv]; omega
+    simp only [finCyclicSucc, dif_pos h2]
+    exact Fin.ext rfl
+  have hprod : ENNReal.ofReal (continuumCutoffDominator (n+2) psi c omega u)
       = ∏ i : Fin (n+2), ENNReal.ofReal
-          ((Icc (-1 : ℝ) 1).indicator (fun _ : ℝ => (1 : ℝ)) (Fin.cons x t i) *
-            |omega (Fin.cons x t i)| * |c| *
-            |Fin.cons x t i - Fin.cons x t (finCyclicSucc i)| ^ (-psi)) := by
+          ((Icc (-1 : ℝ) 1).indicator (fun _ : ℝ => (1 : ℝ)) (u i) *
+            (|omega (u i)| * |c| * |u i - u (finCyclicSucc i)| ^ (-psi))) := by
     show ENNReal.ofReal (∏ i : Fin (n+2),
-        (Icc (-1 : ℝ) 1).indicator (fun _ : ℝ => (1 : ℝ)) (Fin.cons x t i) *
-          |omega (Fin.cons x t i)| * |c| *
-          |Fin.cons x t i - Fin.cons x t (finCyclicSucc i)| ^ (-psi)) = _
-    exact ofReal_finset_prod _ _ (fun i _ => by positivity)
+        (Icc (-1 : ℝ) 1).indicator (fun _ : ℝ => (1 : ℝ)) (u i) *
+          (|omega (u i)| * |c| * |u i - u (finCyclicSucc i)| ^ (-psi))) = _
+    exact ofReal_finset_prod Finset.univ _ (fun i _ =>
+      mul_nonneg (Set.indicator_nonneg (fun _ _ => zero_le_one) _)
+        (mul_nonneg (mul_nonneg (abs_nonneg _) (abs_nonneg c))
+          (Real.rpow_nonneg (abs_nonneg _) (-psi))))
   rw [hprod]
   have hterm : ∀ i : Fin (n+2),
-      ENNReal.ofReal ((Icc (-1 : ℝ) 1).indicator (fun _ : ℝ => (1 : ℝ)) (Fin.cons x t i) *
-        |omega (Fin.cons x t i)| * |c| *
-        |Fin.cons x t i - Fin.cons x t (finCyclicSucc i)| ^ (-psi))
-      = domVert c omega (Fin.cons x t i) *
-        domEdge psi (Fin.cons x t i) (Fin.cons x t (finCyclicSucc i)) :=
-    fun i => domVert_mul_domEdge_eq psi c omega _ _
-  rw [Finset.prod_congr rfl (fun i _ => hterm i), Finset.prod_mul_distrib,
-    Fin.prod_univ_succ, Fin.prod_univ_succ]
-  have hcyc0 : finCyclicSucc (0 : Fin (n+2)) = (1 : Fin (n+2)) := by
-    simp only [finCyclicSucc]
-    exact Fin.ext (by simp; omega)
-  have hlast : finCyclicSucc (Fin.succ (Fin.last n)) = (0 : Fin (n+2)) := by
-    simp only [finCyclicSucc, Fin.val_succ, Fin.val_last]
-    exact Fin.ext (by omega)
-  have hmid : ∀ j : Fin n,
-      Fin.cons x t (finCyclicSucc (Fin.succ (Fin.castSucc j))) = t (Fin.succ j) := by
-    intro j
-    have hc : finCyclicSucc (Fin.succ (Fin.castSucc j))
-        = (Fin.succ (Fin.succ j) : Fin (n+1)) := by
-      simp only [finCyclicSucc, Fin.val_succ, Fin.val_castSucc]
-      exact Fin.ext (by simp; omega)
-    rw [hc, Fin.cons_succ x t (Fin.succ j)]
-  rw [hcyc0, Fin.cons_zero, Fin.cons_succ x t (0 : Fin (n+1))]
-  rw [Fin.prod_univ_castSucc]
-  have hcast1 : ∀ j : Fin n, Fin.cons x t (Fin.castSucc j) = t j := fun j =>
-    congrArg t (Fin.ext rfl)
-  have hlastc : Fin.cons x t (finCyclicSucc (Fin.succ (Fin.last n))) = x := by
-    rw [hlast, Fin.cons_zero]
-  simp only [hmid, hcast1, hlastc]
+      ENNReal.ofReal ((Icc (-1 : ℝ) 1).indicator (fun _ : ℝ => (1 : ℝ)) (u i) *
+        (|omega (u i)| * |c| * |u i - u (finCyclicSucc i)| ^ (-psi)))
+      = domVert c omega (u i) * domEdge psi (u i) (u (finCyclicSucc i)) := by
+    intro i
+    unfold domVert domEdge
+    rw [← ENNReal.ofReal_mul (mul_nonneg
+      (mul_nonneg (Set.indicator_nonneg (fun _ _ => zero_le_one) _) (abs_nonneg _))
+      (abs_nonneg c))]
+    congr 1
+    ring
+  rw [Finset.prod_congr rfl (fun i _ => hterm i), Finset.prod_mul_distrib]
+  have hv : ∏ i : Fin (n+2), domVert c omega (u i)
+      = domVert c omega x * ∏ j : Fin (n+1), domVert c omega (t j) := by
+    rw [Fin.prod_univ_succ, hu0]
+    simp only [hu]
+  have he : ∏ i : Fin (n+2), domEdge psi (u i) (u (finCyclicSucc i))
+      = domEdge psi x (t 0) * ((∏ j : Fin n, domEdge psi (t (Fin.castSucc j)) (t (Fin.succ j)))
+          * domEdge psi (t (Fin.last n)) x) := by
+    rw [Fin.prod_univ_succ, hcyc0, Fin.prod_univ_castSucc]
+    simp only [hcyc0, hlast, hmid, hu0, hu]
+  rw [hv, he]
+  unfold chainOC
   ring
 
 /-- Measurability of the dominator. -/
 lemma measurable_dominator (k : ℕ) (psi c : ℝ) (omega : ℝ → ℝ) (homega : Measurable omega) :
     Measurable (continuumCutoffDominator k psi c omega) := by
-  show Measurable (fun z => ∏ i : Fin k,
+  show Measurable (fun z : Fin k → ℝ => ∏ i : Fin k,
     (Icc (-1 : ℝ) 1).indicator (fun _ : ℝ => (1 : ℝ)) (z i) *
-      |omega (z i)| * |c| * |z i - z (finCyclicSucc i)| ^ (-psi))
+      (|omega (z i)| * |c| * |z i - z (finCyclicSucc i)| ^ (-psi)))
   have hev : ∀ i : Fin k, Measurable (fun z : Fin k → ℝ => z i) := fun i =>
     measurable_eval_apply i
-  exact measurable_finset_prod_real (fun i _ =>
-    (((measurable_const.indicator measurableSet_Icc).comp (hev i)).mul
-      (homega.abs.comp (hev i))).mul
-      (measurable_rpow_of_nonneg ((hev i).sub (hev (finCyclicSucc i))).abs
-        (fun z => abs_nonneg _) (-psi)))
+  exact measurable_finset_prod_real
+    (f := fun (i : Fin k) (z : Fin k → ℝ) =>
+      (Icc (-1 : ℝ) 1).indicator (fun _ : ℝ => (1 : ℝ)) (z i) *
+        (|omega (z i)| * |c| * |z i - z (finCyclicSucc i)| ^ (-psi)))
+    (fun i _ => ((measurable_const.indicator measurableSet_Icc).comp (hev i)).mul
+      (((homega.abs.comp (hev i)).mul measurable_const).mul
+        (measurable_rpow_of_nonneg ((hev i).sub (hev (finCyclicSucc i))).abs
+          (fun z => abs_nonneg _) (-psi))))
 
-/-- The explicit finite bound for the dominator's pi-lintegral. -/
 set_option maxHeartbeats 1000000 in
+/-- The explicit finite bound for the dominator's pi-lintegral. -/
 theorem continuumCutoffDominator_lintegral_le (k : ℕ) (psi c : ℝ) (omega : ℝ → ℝ)
     (B_omega ν₁ ν₂ : ℝ) (hk : 2 ≤ k)
     (hpsi1 : 0 < psi) (hpsi2 : 2 * psi < 1)
@@ -540,45 +555,58 @@ theorem continuumCutoffDominator_lintegral_le (k : ℕ) (psi c : ℝ) (omega : �
   rw [lintegral_pi_cons
     (G := fun z => ENNReal.ofReal (continuumCutoffDominator (n+2) psi c omega z))
     (ENNReal.measurable_ofReal.comp (measurable_dominator (n+2) psi c omega homega_meas))]
-  rw [dominator_cons]
+  have hdom : ∀ (t' : Fin (n+1) → ℝ) (x : ℝ),
+      ENNReal.ofReal (continuumCutoffDominator (n+2) psi c omega (Fin.cons x t'))
+        = domVert c omega x * domEdge psi x (t' 0) * domEdge psi (t' (Fin.last n)) x *
+          chainOC psi c omega n t' := fun t' x =>
+    dominator_cons psi c omega n x t' (Fin.cons x t')
+      (show (Fin.cons x t' : Fin (n+2) → ℝ) (0 : Fin (n+2)) = x by simp) (fun i => by simp)
+  simp only [hdom]
   have hmeasfun : ∀ t : Fin (n+1) → ℝ, Measurable
       (fun x : ℝ => domVert c omega x * domEdge psi x (t 0) * domEdge psi x (t (Fin.last n))) :=
-    fun t => (measurable_domVert c omega homega_meas).mul
-      ((measurable_domEdge psi (t 0)).mul (measurable_domEdge psi (t (Fin.last n))))
+    fun t => ((measurable_domVert c omega homega_meas).mul
+      (measurable_domEdge psi (t 0))).mul (measurable_domEdge psi (t (Fin.last n)))
   have hinner : ∀ t : Fin (n+1) → ℝ,
-      ∫⁻ x : ℝ, domVert c omega x * domEdge psi x (t 0) * domEdge psi x (t (Fin.last n)) ∂volume
-        ≤ ENNReal.ofReal (|c| * B_omega * ν₂) * chainOC psi c omega (n+1) t := by
+      ∫⁻ x : ℝ, domVert c omega x * domEdge psi x (t 0)
+          * domEdge psi (t (Fin.last n)) x * chainOC psi c omega n t ∂volume
+        ≤ ENNReal.ofReal (|c| * B_omega * ν₂) * chainOC psi c omega n t := by
     intro t
-    rw [← lintegral_const_mul (chainOC psi c omega (n+1) t) (hmeasfun t)]
-    calc (∫⁻ x : ℝ, domVert c omega x * domEdge psi x (t 0) * domEdge psi x (t (Fin.last n)) ∂volume)
-        * chainOC psi c omega (n+1) t
-        = chainOC psi c omega (n+1) t * ∫⁻ x : ℝ,
-            domVert c omega x * domEdge psi x (t 0) * domEdge psi x (t (Fin.last n)) ∂volume :=
-          mul_comm _ _
-      _ ≤ chainOC psi c omega (n+1) t * ENNReal.ofReal (|c| * B_omega * ν₂) :=
-          mul_le_mul_of_nonneg_left
-            (vertexEdgeEdge_lintegral_le psi c B_omega ν₂ omega hpsi1 hpsi2 hB hν2 hνpos.2
-              (t 0) (t (Fin.last n))) (by positivity)
-      _ = ENNReal.ofReal (|c| * B_omega * ν₂) * chainOC psi c omega (n+1) t := mul_comm _ _
+    have heq : ∀ x : ℝ, domVert c omega x * domEdge psi x (t 0)
+          * domEdge psi (t (Fin.last n)) x * chainOC psi c omega n t
+        = domVert c omega x * domEdge psi x (t 0) * domEdge psi x (t (Fin.last n))
+          * chainOC psi c omega n t := by
+      intro x
+      rw [domEdge_symm psi (t (Fin.last n)) x]
+    simp only [heq]
+    rw [lintegral_mul_const _ (hmeasfun t)]
+    exact mul_le_mul_of_nonneg_right
+      (vertexEdgeEdge_lintegral_le psi c B_omega ν₂ omega hpsi1 hpsi2 hB hν2 hνpos.2
+        (t 0) (t (Fin.last n))) zero_le
   refine le_trans (lintegral_mono hinner) ?_
   rw [lintegral_const_mul (ENNReal.ofReal (|c| * B_omega * ν₂))
-    (measurable_chainOC psi c omega homega_meas (n+1))]
+    (measurable_chainOC psi c omega homega_meas n)]
   have hchain := chainOC_lintegral_le psi c B_omega ν₁ omega hpsi1 hpsi2 hB hν1 hνpos.1
     homega_meas n
   have hBpos : 0 ≤ B_omega := le_trans (abs_nonneg _) (hB 0 (by simp))
+  have hE1 : 0 ≤ |c| * B_omega * ν₁ := mul_nonneg (mul_nonneg (abs_nonneg c) hBpos) hνpos.1
+  have hE2 : 0 ≤ |c| * B_omega * ν₂ := mul_nonneg (mul_nonneg (abs_nonneg c) hBpos) hνpos.2
+  have hexp : (n + 2 - 2 : ℕ) = n := by omega
   calc ENNReal.ofReal (|c| * B_omega * ν₂)
-        * ∫⁻ t : Fin (n+1) → ℝ, chainOC psi c omega (n+1) t
+        * ∫⁻ t : Fin (n+1) → ℝ, chainOC psi c omega n t
             ∂(Measure.pi fun _ : Fin (n+1) => (volume : Measure ℝ))
       ≤ ENNReal.ofReal (|c| * B_omega * ν₂)
           * (ENNReal.ofReal (2 * |c| * B_omega) * ENNReal.ofReal (|c| * B_omega * ν₁) ^ n) :=
-        mul_le_mul_of_nonneg_left hchain (le_of_eq rfl)
+        mul_le_mul_of_nonneg_left hchain zero_le
     _ = ENNReal.ofReal
           (2 * |c| * B_omega * (|c| * B_omega * ν₂) * (|c| * B_omega * ν₁) ^ (n + 2 - 2)) := by
-        rw [pow_succ, ← ENNReal.ofReal_mul
-          (mul_nonneg (mul_nonneg (abs_nonneg c) hBpos) hνpos.2)
-          (mul_nonneg (by nlinarith) (mul_nonneg (mul_nonneg (abs_nonneg c) hBpos) hνpos.1)),
-          ← ENNReal.ofReal_mul (by nlinarith) (by nlinarith), ← pow_succ']
-        congr 2
+        rw [hexp, ← ENNReal.ofReal_pow hE1,
+          ← mul_assoc (ENNReal.ofReal (|c| * B_omega * ν₂))
+            (ENNReal.ofReal (2 * |c| * B_omega))
+            (ENNReal.ofReal ((|c| * B_omega * ν₁) ^ n)),
+          ← ENNReal.ofReal_mul hE2,
+          ← ENNReal.ofReal_mul (mul_nonneg hE2
+            (mul_nonneg (by norm_num : (0:ℝ) ≤ 2 * |c|) hBpos))]
+        congr 1
         ring
 
 /-- **Integrability of the continuum cutoff dominator.** -/
@@ -595,19 +623,17 @@ theorem continuumCutoffDominator_integrable
     hpsi2 homega_meas homegaB hν1 hν2 hνpos
   have hnonneg : ∀ z, 0 ≤ continuumCutoffDominator k psi c omega z := by
     intro z
-    unfold continuumCutoffDominator
-    exact Finset.prod_nonneg (fun i _ => by positivity)
-  refine ⟨?_, (measurable_dominator k psi c omega homega_meas).aestronglyMeasurable⟩
-  have heq : ∫⁻ z, ‖continuumCutoffDominator k psi c omega z‖₊
-        ∂(volume : Measure (Fin k → ℝ))
-      = ∫⁻ z, ENNReal.ofReal (continuumCutoffDominator k psi c omega z)
-          ∂(volume : Measure (Fin k → ℝ)) := by
-    refine lintegral_congr (fun z => ?_)
-    rw [Real.nnnorm_of_nonneg (hnonneg z), ENNReal.coe_toNNReal]
-  show (∫⁻ z, ‖continuumCutoffDominator k psi c omega z‖₊
-      ∂(volume : Measure (Fin k → ℝ)) ≠ ∞)
-  rw [heq, hbound]
-  exact ENNReal.ofReal_ne_top
+    show 0 ≤ ∏ i : Fin k,
+      (Icc (-1 : ℝ) 1).indicator (fun _ : ℝ => (1 : ℝ)) (z i) *
+        (|omega (z i)| * |c| * |z i - z (finCyclicSucc i)| ^ (-psi))
+    exact Finset.prod_nonneg (fun i _ =>
+      mul_nonneg (Set.indicator_nonneg (fun _ _ => zero_le_one) (z i))
+        (mul_nonneg (mul_nonneg (abs_nonneg (omega (z i))) (abs_nonneg c))
+          (Real.rpow_nonneg (abs_nonneg (z i - z (finCyclicSucc i))) (-psi))))
+  refine ⟨(measurable_dominator k psi c omega homega_meas).aestronglyMeasurable, ?_⟩
+  rw [hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall hnonneg)]
+  refine lt_of_le_of_lt hbound ?_
+  exact ENNReal.ofReal_lt_top
 
 end
 end Hurst
@@ -624,8 +650,7 @@ open scoped ENNReal
 #check @Measurable.eval
 #check @Fin.insertNth_zero'
 #check @Fin.prod_univ_castSucc
-#check @Measurable.prod_mk
-#check @set_integral_const
+#check @hasFiniteIntegral_iff_ofReal
 #check @Real.volume_Icc
 #check @MeasureTheory.Integrable.mono'
 #check @ofReal_integral_eq_lintegral_ofReal
