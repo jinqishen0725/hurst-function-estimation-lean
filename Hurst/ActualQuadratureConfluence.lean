@@ -420,21 +420,225 @@ discharge route (elementary, entrywise): the Riesz side satisfies
 `∑_{ij} G_ij² ≤ S⁻² * B_ω² * ∑ R_ij² ≤ B_ω² * Cref`; and the actual side
 satisfies `‖Ā‖ ≤ ‖Ā − 𝔾‖ + ‖𝔾‖ ≤ 1 + B_ω * √Cref` by the triangle
 inequality and the energy convergence of
-`actualQ1_meshEnergy_tendsto_zero`.  Only the mechanical Finset bookkeeping
-of this sketch is not yet mechanized here. -/
+`actualQ1_meshEnergy_tendsto_zero`.  The discharge of this Prop from the
+ordinary hypotheses (`|ω| ≤ B_ω` on `[-1,1]`, the
+`rankRieszKernel_energy_le_const`-shaped constant `Cref`, and the unweighted
+energy convergence) is mechanized in `actualQ1UniformFrobeniusBound_of_bounded`. -/
 def ActualQ1UniformFrobeniusBound (f : ℝ → ℝ) (hf : f ∈ hurstHolderClass p M)
     (r : ℕ) (δ : ℕ → ℝ) (t : ℝ) : Prop :=
   ∃ C : ℝ, 0 ≤ C ∧ ∀ᶠ n in atTop,
     max ‖actualQ1NormalizedActualMatrix f hf r n (δ n) t‖
       ‖actualQ1RieszMatrix f r n (δ n) t‖ ≤ C
 
+/-! ### Discharge of the uniform Frobenius bound -/
+
+/-- Frobenius norm of a real finite matrix as the square root of the sum of
+squared entries. -/
+private theorem frobenius_norm_eq_sqrt_sum_sq {m : ℕ} (A : Matrix (Fin m) (Fin m) ℝ) :
+    ‖A‖ = Real.sqrt (∑ i : Fin m, ∑ j : Fin m, A i j ^ 2) := by
+  rw [Matrix.frobenius_norm_def, Real.sqrt_eq_rpow]
+  congr 1
+  exact Finset.sum_congr rfl fun i _ =>
+    Finset.sum_congr rfl fun j _ => by rw [Real.norm_eq_abs, Real.rpow_two, sq_abs]
+
+/-- The Frobenius norm of the Riesz comparison matrix is at most
+`B_ω * √Cref`.  Entrywise `G_ij = S⁻¹ * ω(z_i) * R_ij` with
+`z_i = rieszCycleGridPoint · i ∈ [-1,1]` (`rieszCycleGridPoint_mem_Icc`), so
+`G_ij² ≤ (B_ω * S⁻¹)² * R_ij²`; summing and using the
+`rankRieszKernel_energy_le_const`-shaped energy bound `Cref` gives
+`∑ G_ij² ≤ B_ω² * Cref`. -/
+private theorem actualQ1_riesz_frobenius_le
+    (f : ℝ → ℝ) (r : ℕ) (n : ℕ) (_hn : 0 < n) (δ t : ℝ) (_hδ : 0 < δ)
+    (hcard : 0 < (localWeightActiveSet n 1 δ t).card)
+    (hS1 : 1 ≤ (n : ℝ) * δ)
+    (hcardle : ((localWeightActiveSet n 1 δ t).card : ℝ) ≤ 3 * ((n : ℝ) * δ))
+    (Bω : ℝ) (hBω : ∀ z ∈ Set.Icc (-1 : ℝ) 1, |equivalentKernel r z| ≤ Bω)
+    (Cref : ℝ)
+    (hCref : ∀ (S : ℝ) (m : ℕ), 1 ≤ S → (m : ℝ) ≤ 3 * S →
+      realScaleMeshEnergy S
+        (rankRieszKernel S (2 - 2 * f t) (f t * (2 * f t - 1)) :
+          Fin m → Fin m → ℝ) ≤ Cref) :
+    ‖actualQ1RieszMatrix f r n δ t‖ ≤ Bω * Real.sqrt Cref := by
+  have hS0 : 0 < (n : ℝ) * δ := lt_of_lt_of_le zero_lt_one hS1
+  have hinv : 0 < ((n : ℝ) * δ)⁻¹ := inv_pos.mpr hS0
+  have hw : ∀ i : Fin (localWeightActiveSet n 1 δ t).card,
+      |equivalentKernel r
+        (rieszCycleGridPoint (localWeightActiveSet n 1 δ t).card i)| ≤ Bω :=
+    fun i => hBω _ (rieszCycleGridPoint_mem_Icc hcard i)
+  have hBω0 : 0 ≤ Bω := le_trans (abs_nonneg _) (hw ⟨0, hcard⟩)
+  -- entrywise square bound
+  have hpt : ∀ i j : Fin (localWeightActiveSet n 1 δ t).card,
+      actualQ1RieszMatrix f r n δ t i j ^ 2
+        ≤ (Bω * ((n : ℝ) * δ)⁻¹) ^ 2 *
+          rankRieszKernel ((n : ℝ) * δ) (2 - 2 * f t) (f t * (2 * f t - 1)) i j ^ 2 := by
+    intro i j
+    have hentry : actualQ1RieszMatrix f r n δ t i j
+        = ((n : ℝ) * δ)⁻¹ *
+          equivalentKernel r
+            (rieszCycleGridPoint (localWeightActiveSet n 1 δ t).card i) *
+          rankRieszKernel ((n : ℝ) * δ) (2 - 2 * f t) (f t * (2 * f t - 1)) i j := by
+      simp only [actualQ1RieszMatrix, weightedRieszDiscreteMatrix_apply]
+    rw [hentry, mul_pow]
+    have hwij : |((n : ℝ) * δ)⁻¹ *
+        equivalentKernel r
+          (rieszCycleGridPoint (localWeightActiveSet n 1 δ t).card i)|
+        ≤ Bω * ((n : ℝ) * δ)⁻¹ := by
+      rw [abs_mul, abs_of_pos hinv]
+      calc ((n : ℝ) * δ)⁻¹ *
+            |equivalentKernel r
+              (rieszCycleGridPoint (localWeightActiveSet n 1 δ t).card i)|
+          = |equivalentKernel r
+              (rieszCycleGridPoint (localWeightActiveSet n 1 δ t).card i)| *
+            ((n : ℝ) * δ)⁻¹ := mul_comm _ _
+        _ ≤ Bω * ((n : ℝ) * δ)⁻¹ :=
+          mul_le_mul_of_nonneg_right (hw i) hinv.le
+    have hsq : (((n : ℝ) * δ)⁻¹ *
+        equivalentKernel r
+          (rieszCycleGridPoint (localWeightActiveSet n 1 δ t).card i)) ^ 2
+        ≤ (Bω * ((n : ℝ) * δ)⁻¹) ^ 2 := by
+      rw [← sq_abs]
+      exact sq_le_sq'
+        (by linarith [hwij, abs_nonneg (((n : ℝ) * δ)⁻¹ *
+          equivalentKernel r
+            (rieszCycleGridPoint (localWeightActiveSet n 1 δ t).card i))])
+        hwij
+    exact mul_le_mul_of_nonneg_right hsq (sq_nonneg _)
+  -- the energy bound, unfolded to the square-sum form
+  have hCref' : ((n : ℝ) * δ)⁻¹ ^ 2 *
+      ∑ i : Fin (localWeightActiveSet n 1 δ t).card,
+        ∑ j : Fin (localWeightActiveSet n 1 δ t).card,
+          rankRieszKernel ((n : ℝ) * δ) (2 - 2 * f t) (f t * (2 * f t - 1)) i j ^ 2
+      ≤ Cref := by
+    have h := hCref ((n : ℝ) * δ) (localWeightActiveSet n 1 δ t).card hS1 hcardle
+    simpa only [realScaleMeshEnergy] using h
+  -- the square-sum bound for the Riesz matrix
+  have hsum : ∑ i : Fin (localWeightActiveSet n 1 δ t).card,
+      ∑ j : Fin (localWeightActiveSet n 1 δ t).card,
+        actualQ1RieszMatrix f r n δ t i j ^ 2
+      ≤ Bω ^ 2 * Cref := by
+    have h1 : ∑ i : Fin (localWeightActiveSet n 1 δ t).card,
+        ∑ j : Fin (localWeightActiveSet n 1 δ t).card,
+          actualQ1RieszMatrix f r n δ t i j ^ 2
+        ≤ ∑ i : Fin (localWeightActiveSet n 1 δ t).card,
+          ∑ j : Fin (localWeightActiveSet n 1 δ t).card,
+            (Bω * ((n : ℝ) * δ)⁻¹) ^ 2 *
+              rankRieszKernel ((n : ℝ) * δ) (2 - 2 * f t)
+                (f t * (2 * f t - 1)) i j ^ 2 :=
+      Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => hpt i j
+    calc ∑ i : Fin (localWeightActiveSet n 1 δ t).card,
+        ∑ j : Fin (localWeightActiveSet n 1 δ t).card,
+          actualQ1RieszMatrix f r n δ t i j ^ 2
+        ≤ ∑ i : Fin (localWeightActiveSet n 1 δ t).card,
+          ∑ j : Fin (localWeightActiveSet n 1 δ t).card,
+            (Bω * ((n : ℝ) * δ)⁻¹) ^ 2 *
+              rankRieszKernel ((n : ℝ) * δ) (2 - 2 * f t)
+                (f t * (2 * f t - 1)) i j ^ 2 := h1
+      _ = (Bω * ((n : ℝ) * δ)⁻¹) ^ 2 *
+            ∑ i : Fin (localWeightActiveSet n 1 δ t).card,
+              ∑ j : Fin (localWeightActiveSet n 1 δ t).card,
+                rankRieszKernel ((n : ℝ) * δ) (2 - 2 * f t)
+                  (f t * (2 * f t - 1)) i j ^ 2 := by
+          simp only [Finset.mul_sum]
+      _ = Bω ^ 2 * (((n : ℝ) * δ)⁻¹ ^ 2 *
+            ∑ i : Fin (localWeightActiveSet n 1 δ t).card,
+              ∑ j : Fin (localWeightActiveSet n 1 δ t).card,
+                rankRieszKernel ((n : ℝ) * δ) (2 - 2 * f t)
+                  (f t * (2 * f t - 1)) i j ^ 2) := by
+          rw [mul_pow]
+          ring
+      _ ≤ Bω ^ 2 * Cref := mul_le_mul_of_nonneg_left hCref' (sq_nonneg Bω)
+  calc ‖actualQ1RieszMatrix f r n δ t‖
+      = Real.sqrt (∑ i : Fin (localWeightActiveSet n 1 δ t).card,
+          ∑ j : Fin (localWeightActiveSet n 1 δ t).card,
+            actualQ1RieszMatrix f r n δ t i j ^ 2) :=
+        frobenius_norm_eq_sqrt_sum_sq _
+    _ ≤ Real.sqrt (Bω ^ 2 * Cref) := Real.sqrt_le_sqrt hsum
+    _ = Real.sqrt (Bω ^ 2) * Real.sqrt Cref := Real.sqrt_mul (sq_nonneg Bω) Cref
+    _ = Bω * Real.sqrt Cref := by rw [Real.sqrt_sq hBω0]
+
+/-- **Discharge of the uniform Frobenius bound.**  From the ordinary inputs — a
+bound `B_ω` for `|equivalentKernel r ·|` on `[-1,1]`, the Riesz kernel-energy
+constant `Cref` in the shape of `rankRieszKernel_energy_le_const`, and the
+(unweighted) mesh-energy convergence of the kernel comparison — the uniform
+Frobenius bound holds: eventually both `‖Ā_n‖` and `‖𝔾_n‖` are at most
+`1 + B_ω * √Cref`.  The Riesz side is `actualQ1_riesz_frobenius_le` (using that
+`card ≤ 3 * S` and `S ≥ 1` eventually, from
+`localWeightActiveSet_card_ratio_tendsto_two`); the actual side follows from
+the triangle inequality since the Frobenius difference tends to zero. -/
+theorem actualQ1UniformFrobeniusBound_of_bounded
+    (f : ℝ → ℝ) (hf : f ∈ hurstHolderClass p M) (r : ℕ) (δ : ℕ → ℝ) (t : ℝ)
+    (ht : t ∈ Ioo (0 : ℝ) 1)
+    (hδpos : ∀ᶠ n in atTop, 0 < δ n)
+    (hδ0 : Tendsto δ atTop (𝓝 0))
+    (hN : Tendsto (fun n : ℕ => (n : ℝ) * δ n) atTop atTop)
+    (Bω : ℝ) (hBω : ∀ z ∈ Set.Icc (-1 : ℝ) 1, |equivalentKernel r z| ≤ Bω)
+    (Cref : ℝ)
+    (hCref : ∀ (S : ℝ) (m : ℕ), 1 ≤ S → (m : ℝ) ≤ 3 * S →
+      realScaleMeshEnergy S
+        (rankRieszKernel S (2 - 2 * f t) (f t * (2 * f t - 1)) :
+          Fin m → Fin m → ℝ) ≤ Cref)
+    (hE : Tendsto (fun n : ℕ => realScaleMeshEnergy ((n : ℝ) * δ n)
+        (actualQ1WeightedActualKernel f hf r n (δ n) t -
+          actualQ1WeightedRieszKernel f r n (δ n) t)) atTop (𝓝 0)) :
+    ActualQ1UniformFrobeniusBound f hf r δ t := by
+  unfold ActualQ1UniformFrobeniusBound
+  obtain ⟨hcardpos, hratio⟩ := localWeightActiveSet_card_ratio_tendsto_two 1 t ht δ
+    hδpos hδ0 hN
+  have hS1 : ∀ᶠ n : ℕ in atTop, (1 : ℝ) ≤ (n : ℝ) * δ n := hN.eventually_ge_atTop 1
+  have hcard3 : ∀ᶠ n : ℕ in atTop,
+      ((localWeightActiveSet n 1 (δ n) t).card : ℝ) ≤ 3 * ((n : ℝ) * δ n) := by
+    filter_upwards [hcardpos, hδpos, hratio.eventually_lt_const
+      (show ((2 : ℝ) < 3) by norm_num)] with n hcard hδ hlt
+    have hn : 0 < n := by
+      have hlt2 := (localWeightActiveIndex n 1 (δ n) t ⟨0, hcard⟩).isLt
+      omega
+    have hS0 : (0 : ℝ) < (n : ℝ) * δ n := mul_pos (by exact_mod_cast hn) hδ
+    have hle := (div_lt_iff₀ hS0).mp hlt
+    linarith
+  -- the Riesz side is uniformly bounded
+  have hriesz : ∀ᶠ n : ℕ in atTop,
+      ‖actualQ1RieszMatrix f r n (δ n) t‖ ≤ Bω * Real.sqrt Cref := by
+    filter_upwards [hcardpos, hδpos, hS1, hcard3] with n hcard hδ hS1n hcard3n
+    have hn : 0 < n := by
+      have hlt := (localWeightActiveIndex n 1 (δ n) t ⟨0, hcard⟩).isLt
+      omega
+    exact actualQ1_riesz_frobenius_le f r n hn (δ n) t hδ hcard hS1n hcard3n Bω hBω
+      Cref hCref
+  -- the Frobenius difference tends to zero, so it is eventually at most 1
+  have hnormE := actualQ1_frobenius_norm_tendsto_zero f hf r δ t hδpos hE
+  have hdiff1 : ∀ᶠ n : ℕ in atTop,
+      ‖actualQ1NormalizedActualMatrix f hf r n (δ n) t -
+        actualQ1RieszMatrix f r n (δ n) t‖ ≤ 1 := by
+    filter_upwards [hnormE.eventually_lt_const
+      (show ((0 : ℝ) < 1) by norm_num)] with n hlt
+    exact le_of_lt hlt
+  refine ⟨1 + Bω * Real.sqrt Cref, ?_, ?_⟩
+  · have hBω0 : 0 ≤ Bω :=
+      le_trans (abs_nonneg _) (hBω 0 ⟨by norm_num, by norm_num⟩)
+    exact add_nonneg zero_le_one (mul_nonneg hBω0 (Real.sqrt_nonneg Cref))
+  · filter_upwards [hdiff1, hriesz] with n h1 h2
+    refine max_le ?_ (le_trans h2 (by linarith))
+    have htri : ‖actualQ1NormalizedActualMatrix f hf r n (δ n) t‖
+        ≤ ‖actualQ1NormalizedActualMatrix f hf r n (δ n) t -
+            actualQ1RieszMatrix f r n (δ n) t‖
+          + ‖actualQ1RieszMatrix f r n (δ n) t‖ := by
+      have hadd := norm_add_le
+        (actualQ1NormalizedActualMatrix f hf r n (δ n) t -
+          actualQ1RieszMatrix f r n (δ n) t)
+        (actualQ1RieszMatrix f r n (δ n) t)
+      simpa using hadd
+    linarith
+
 /-! ### All fixed power traces of the normalized actual matrix -/
 
 /-- **Trace-power convergence (deliverable 2 + 3).**  Under the quadrature
-instance and the dimension-weighted perturbation hypothesis `hPert` (plus the
-uniform Frobenius bound `hBound`), every fixed power trace of the
-mesh-normalized actual matrix converges to the weighted Riesz cycle
-integral. -/
+instance and the dimension-weighted perturbation hypothesis `hPert`, every
+fixed power trace of the mesh-normalized actual matrix converges to the
+weighted Riesz cycle integral.  The former uniform-Frobenius-bound hypothesis
+is discharged internally from the ordinary hypotheses `Bω`/`hBω` (the bound
+for `|ω|` on `[-1,1]`) and `Cref`/`hCref` (the kernel-energy constant in the
+shape of `rankRieszKernel_energy_le_const`), via
+`actualQ1UniformFrobeniusBound_of_bounded`. -/
 theorem actualQ1_trace_pow_tendsto
     (p a b M : ℝ) (r : ℕ) (hp : 1 ≤ p) (ha : 0 < a) (hb : b < 1) (hab : a ≤ b)
     (hM : 0 ≤ M) (f : ℝ → ℝ) (hf : f ∈ hurstHolderClass p M)
@@ -454,7 +658,12 @@ theorem actualQ1_trace_pow_tendsto
       realScaleMeshEnergy ((n : ℝ) * δ n)
         (actualQ1WeightedActualKernel f hf r n (δ n) t -
           actualQ1WeightedRieszKernel f r n (δ n) t)) atTop (𝓝 0))
-    (hBound : ActualQ1UniformFrobeniusBound f hf r δ t)
+    (Bω : ℝ) (hBω : ∀ z ∈ Set.Icc (-1 : ℝ) 1, |equivalentKernel r z| ≤ Bω)
+    (Cref : ℝ)
+    (hCref : ∀ (S : ℝ) (m : ℕ), 1 ≤ S → (m : ℝ) ≤ 3 * S →
+      realScaleMeshEnergy S
+        (rankRieszKernel S (2 - 2 * f t) (f t * (2 * f t - 1)) :
+          Fin m → Fin m → ℝ) ≤ Cref)
     (k : ℕ) (hk : 2 ≤ k) :
     Tendsto (fun n : ℕ => Matrix.trace
         ((actualQ1NormalizedActualMatrix f hf r n (δ n) t) ^ k))
@@ -510,11 +719,13 @@ theorem actualQ1_trace_pow_tendsto
     (by rw [hpsi]; have := (hF ht).2; linarith)
     (by rw [hpsi]; linarith)
     (equivalentKernel_continuous r) fun z hz => hB z
-  -- the Frobenius perturbation input, in the √(2/card) · δ' form
-  obtain ⟨C, hC0, hC⟩ := hBound
-  have henergy := actualQ1_frobenius_norm_tendsto_zero f hf r δ t hδpos
-    (actualQ1_meshEnergy_tendsto_zero p a b M r hp ha hb hab hM f hf hF t ht
-      hlong δ hδpos hδ0 hN R hR hcut henv)
+  -- the Frobenius perturbation input, in the √(2/card) · δ' form; the uniform
+  -- Frobenius bound is discharged from the ordinary hypotheses
+  have hEmesh := actualQ1_meshEnergy_tendsto_zero p a b M r hp ha hb hab hM f hf hF
+    t ht hlong δ hδpos hδ0 hN R hR hcut henv
+  obtain ⟨C, hC0, hC⟩ := actualQ1UniformFrobeniusBound_of_bounded f hf r δ t ht
+    hδpos hδ0 hN Bω hBω Cref hCref hEmesh
+  have henergy := actualQ1_frobenius_norm_tendsto_zero f hf r δ t hδpos hEmesh
   have hE0 : Tendsto (fun n : ℕ => ((localWeightActiveSet n 1 (δ n) t).card : ℝ) *
       realScaleMeshEnergy ((n : ℝ) * δ n)
         (actualQ1WeightedActualKernel f hf r n (δ n) t -
@@ -610,7 +821,12 @@ theorem actualQ1_eigenvalue_even_power_sums
       realScaleMeshEnergy ((n : ℝ) * δ n)
         (actualQ1WeightedActualKernel f hf r n (δ n) t -
           actualQ1WeightedRieszKernel f r n (δ n) t)) atTop (𝓝 0))
-    (hBound : ActualQ1UniformFrobeniusBound f hf r δ t)
+    (Bω : ℝ) (hBω : ∀ z ∈ Set.Icc (-1 : ℝ) 1, |equivalentKernel r z| ≤ Bω)
+    (Cref : ℝ)
+    (hCref : ∀ (S : ℝ) (m : ℕ), 1 ≤ S → (m : ℝ) ≤ 3 * S →
+      realScaleMeshEnergy S
+        (rankRieszKernel S (2 - 2 * f t) (f t * (2 * f t - 1)) :
+          Fin m → Fin m → ℝ) ≤ Cref)
     (k : ℕ) (hk : 2 ≤ k) (hkev : Even k) :
     Tendsto (fun n : ℕ => ∑ i : Fin (localWeightActiveSet n 1 (δ n) t).card,
         (actualQ1Hermitian f hf r n (δ n) t).eigenvalues i ^ k)
@@ -636,7 +852,7 @@ theorem actualQ1_eigenvalue_even_power_sums
         (equivalentKernel r) from (hRiesz k hk).tsum_eq]
   refine Tendsto.congr' (htr.mono fun n h => h.symm) ?_
   exact actualQ1_trace_pow_tendsto p a b M r hp ha hb hab hM f hf t ht hlong
-    δ hδpos hδ0 hN hF R hR hcut henv hPert hBound k hk
+    δ hδpos hδ0 hN hF R hR hcut henv hPert Bω hBω Cref hCref k hk
 
 
 /-- **The main theorem (signed form).**  For the actual q1 long-memory
@@ -671,7 +887,12 @@ theorem actualQ1EigenvaluePowerSums_tendsto
       realScaleMeshEnergy ((n : ℝ) * δ n)
         (actualQ1WeightedActualKernel f hf r n (δ n) t -
           actualQ1WeightedRieszKernel f r n (δ n) t)) atTop (𝓝 0))
-    (hBound : ActualQ1UniformFrobeniusBound f hf r δ t)
+    (Bω : ℝ) (hBω : ∀ z ∈ Set.Icc (-1 : ℝ) 1, |equivalentKernel r z| ≤ Bω)
+    (Cref : ℝ)
+    (hCref : ∀ (S : ℝ) (m : ℕ), 1 ≤ S → (m : ℝ) ≤ 3 * S →
+      realScaleMeshEnergy S
+        (rankRieszKernel S (2 - 2 * f t) (f t * (2 * f t - 1)) :
+          Fin m → Fin m → ℝ) ≤ Cref)
     (j : ℕ) :
     Tendsto (fun n : ℕ => padRearranged
       (fun i => |(actualQ1Hermitian f hf r n (δ n) t).eigenvalues i|) j)
@@ -708,8 +929,8 @@ theorem actualQ1EigenvaluePowerSums_tendsto
     hmtop hlam
     (fun k hk hkev =>
       actualQ1_eigenvalue_even_power_sums p a b M r hp ha hb hab hM f hf hF t ht
-        hlong δ hδpos hδ0 hN lam hlam hRiesz R hR hcut henv hPert hBound k hk
-        hkev)
+        hlong δ hδpos hδ0 hN lam hlam hRiesz R hR hcut henv hPert Bω hBω Cref
+        hCref k hk hkev)
     j
 
 end Hurst
