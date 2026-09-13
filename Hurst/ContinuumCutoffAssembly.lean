@@ -62,7 +62,7 @@ theorem cyclicHyperplaneUnion_null {k : ℕ} (hk : 2 ≤ k) :
     exact measure_biUnion_finset_le _ _
   have hzero : ∑ i : Fin k, volume {z : Fin k → ℝ | z i = z (finCyclicSucc i)} = 0 := by
     refine Finset.sum_eq_zero fun i _ => ?_
-    exact HyperplaneNull.measure_hyperplane_eq_zero
+    exact measure_hyperplane_eq_zero
       (Ne.symm (finCyclicSucc_ne_self hk i))
   rw [hzero] at hle
   exact le_antisymm hle zero_le

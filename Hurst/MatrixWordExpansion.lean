@@ -367,7 +367,7 @@ theorem card_words_with_true_le (k : ℕ) (S : Finset (Fin k → Bool))
 /-! ### Trace corollary -/
 
 /-- The absolute trace is bounded by `√(card n)` times the Frobenius norm. -/
-theorem abs_trace_le_sqrt_card_mul_frobenius {n : Type*} [Fintype n] [DecidableEq n]
+theorem abs_trace_le_sqrt_card_mul_frobenius_of_fintype {n : Type*} [Fintype n] [DecidableEq n]
     (Z : Matrix n n ℝ) :
     |Matrix.trace Z| ≤ Real.sqrt (Fintype.card n) * ‖Z‖ := by
   have hnorm : ‖Z‖ = Real.sqrt (∑ i : n, ∑ j : n, |Z i j| ^ 2) := by
@@ -413,7 +413,7 @@ theorem abs_trace_matrix_pow_binomial_le {d : ℕ} (A B : Matrix (Fin d) (Fin d)
           rw [card_matrix_words, Nat.cast_pow, Nat.cast_ofNat]
   calc |Matrix.trace ((c₁ • A + c₂ • B) ^ k)|
       ≤ Real.sqrt (Fintype.card (Fin d)) * ‖(c₁ • A + c₂ • B) ^ k‖ :=
-        abs_trace_le_sqrt_card_mul_frobenius _
+        abs_trace_le_sqrt_card_mul_frobenius_of_fintype _
     _ = Real.sqrt d * ‖(c₁ • A + c₂ • B) ^ k‖ := by rw [Fintype.card_fin]
     _ ≤ Real.sqrt d * ((2 ^ k : ℝ) * (max (|c₁| * ‖A‖) (|c₂| * ‖B‖)) ^ k) :=
         mul_le_mul_of_nonneg_left hbound (Real.sqrt_nonneg _)

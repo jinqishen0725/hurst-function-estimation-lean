@@ -18,6 +18,8 @@ by pure `ring` algebra.  No analysis, no norms — the norm bookkeeping belongs
 to the consumer.
 -/
 
+namespace Hurst
+
 theorem prod_telescope {k : ℕ} (u t : ℕ → ℝ) :
     (∏ i ∈ Finset.range k, u i) - (∏ i ∈ Finset.range k, t i) =
       ∑ i ∈ Finset.range k, (∏ j ∈ Finset.range i, u j) * (u i - t i) *
@@ -77,3 +79,5 @@ theorem prod_telescope_insert {k : ℕ} (ρ : ℝ) (u t : ℕ → ℝ) (s : ℕ)
     exact Finset.prod_insert (f := t) (Finset.notMem_erase s (Finset.range k))
   rw [hEq, hU, hT, hE]
   ring
+
+end Hurst

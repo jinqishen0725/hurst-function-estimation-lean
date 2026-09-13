@@ -7,16 +7,16 @@ For distinct coordinates `i ≠ j` in `Fin k`, the set of vectors with `z i = z 
 linear subspace of `Fin k → ℝ`, hence null for the product Lebesgue measure
 `volume = Measure.pi (fun _ => volume)`.  We record:
 
-* `Hurst.HyperplaneNull.measurableSet_hyperplane` : the hyperplane is measurable;
-* `Hurst.HyperplaneNull.measure_hyperplane_eq_zero` : `volume {z | z i = z j} = 0`;
-* `Hurst.HyperplaneNull.measure_pi_hyperplane_eq_zero` : the same in explicit `Measure.pi` form;
-* `Hurst.HyperplaneNull.measure_hyperplane_inter_eq_zero` : its intersection with any set is null;
-* `Hurst.HyperplaneNull.measure_hyperplane_inter_cube_eq_zero` : the version inside the cube
+* `Hurst.measurableSet_hyperplane` : the hyperplane is measurable;
+* `Hurst.measure_hyperplane_eq_zero` : `volume {z | z i = z j} = 0`;
+* `Hurst.measure_pi_hyperplane_eq_zero` : the same in explicit `Measure.pi` form;
+* `Hurst.measure_hyperplane_inter_eq_zero` : its intersection with any set is null;
+* `Hurst.measure_hyperplane_inter_cube_eq_zero` : the version inside the cube
   `∏ _, Icc (-1 : ℝ) 1`;
 * null-measurability companions.
 -/
 
-namespace Hurst.HyperplaneNull
+namespace Hurst
 
 open MeasureTheory Set
 
@@ -112,4 +112,4 @@ theorem nullMeasurableSet_hyperplane_inter_cube {i j : Fin k} (hij : i ≠ j) :
     NullMeasurableSet ({z : Fin k → ℝ | z i = z j} ∩ pi univ (fun _ => Icc (-1 : ℝ) 1)) volume :=
   NullMeasurableSet.of_null (measure_hyperplane_inter_cube_eq_zero hij)
 
-end Hurst.HyperplaneNull
+end Hurst

@@ -22,7 +22,7 @@ Landed here:
 * `abs_trace_rieszMeshDiff_split`: the core split estimate
   `|tr(U^k) - rho^k tr(T^k)| <= sqrt(m) * ((||Dg||_F + rho*||T||_F)^k - (rho*||T||_F)^k)`,
   i.e. the sum over the words carrying at least one `Dg` factor, each word
-  bounded via `frobenius_matWord_le'` and `abs_trace_le_sqrt_card_mul_frobenius`,
+  bounded via `frobenius_matWord_le'` and `abs_trace_le_sqrt_card_mul_frobenius_of_fintype`,
   transported by `sum_word_scalars_erase_eq`.
 * `abs_trace_rieszMeshDiff_split_bernoulli`: the Bernoulli corollary
   `<= sqrt(m) * k * ||Dg||_F * (||Dg||_F + rho*||T||_F)^(k-1)`.
@@ -262,7 +262,7 @@ theorem abs_trace_rieszMeshDiff_split (m R : ℕ) (S psi c : ℝ) (omega : ℝ �
         = Real.sqrt ((m : ℝ)) * ∑ w ∈ E, ‖f w‖ := by
       rw [Finset.mul_sum]
     refine le_trans (Finset.sum_le_sum fun w _ => ?_) (le_of_eq hmulsum)
-    · have ht := abs_trace_le_sqrt_card_mul_frobenius (f w)
+    · have ht := abs_trace_le_sqrt_card_mul_frobenius_of_fintype (f w)
       rw [hcard] at ht
       exact ht
   have hs3 : Real.sqrt ((m : ℝ)) * ∑ w ∈ E, ‖f w‖
