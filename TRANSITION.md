@@ -447,3 +447,69 @@ The current one-dimensional mainline is complete only when all of the following 
 6. `summary.md` gives a per-major-result verdict, required correction, mathematical scope, Lean status, and remaining external dependency consistent with those artifacts.
 
 Until then, the accurate short description is: **the one-dimensional minimax and deterministic/risk backbone is largely formalized; the generic short-memory CLT is internally reduced to the exact external theorem; the actual short-memory instantiation and the long-memory spectral/Riesz closure remain.**
+
+
+---
+
+## 12. Status update: 2026-09-13 (long-memory second-chaos chain closed to one rate hypothesis)
+
+This section supersedes the older status prose above wherever they disagree.
+
+### What is now theorems (all imported, full build 9114 jobs, axiom audit green, 2169 proof declarations)
+
+- **All three Riesz cutoff predicates are theorems** under ordinary hypotheses:
+  `fixedCutoffMatrixLatticeReindex` (Hurst/FixedCutoffReindexAssembly.lean),
+  `hasUniformDiscreteRieszCutoffRemoval` (Hurst/BandRemovalComplete.lean),
+  `hasContinuumRieszCutoffRemoval` (Hurst/ContinuumCutoffNuGlue.lean via the peeling
+  integrability in Hurst/DominatorIntegrability.lean and the uniform shift bounds in
+  Hurst/TwoFactorShiftBound.lean).
+- **`hasWeightedRieszCycleQuadrature_instance`** (Hurst/RieszQuadratureInstance.lean):
+  the three-predicate confluence, ordinary hypotheses only.
+- **The eigenvalue matching chain is complete**: tail extraction (Hurst/TailExtraction.lean),
+  array max extraction (Hurst/MaxExtraction*.lean), residual subtraction
+  (Hurst/PeelingSubtraction.lean), induction assembly (Hurst/PeelingInduction.lean —
+  `paddedRearranged_tendsto`), signed variant (Hurst/EvenPeeling.lean —
+  `paddedAbsRearranged_tendsto`, even power sums only, for signed spectra).
+- **The actual q1 long-memory chain is assembled** through
+  `actualQ1EigenvaluePowerSums_tendsto_ordinary` (Hurst/KernelEnergyRateDischarge.lean):
+  ordinary hypotheses + the kernel-energy rate `hPert` + the cutoff satisfiability
+  (PROVED: `ordinary_cutoff_satisfiable`, R = floor(S^gamma)+1 with 0 < gamma < 4h0−3).
+- **The signed consumption interface is complete**:
+  `gaussianLogQuadraticStatistic_tendsto_secondChaos_of_signedMatching`
+  (Hurst/SignedInterfaceFinal.lean) — Slutsky/L2 transfer from |lambda|-matching plus
+  negative-mass smallness; replaces the hNN-restricted consumption theorem.
+- Short-memory P1 endpoints (Hurst/ActualActiveBSCLT.lean) and the unknown-scale
+  marginal bridge (Hurst/JoinedPilotActualMarginal.lean) are unconditional (only the
+  exact external Bardet–Surgailis theorem + ordinary model assumptions).
+
+### The single remaining analysis item
+
+- **`hPert`**: the dimension-weighted kernel-energy rate
+  `card * realScaleMeshEnergy S (K_A − K_G) → 0`.  The unweighted convergence is a
+  theorem; the rate is the last open item.  The investigation (Hurst/KernelEnergyRate.lean)
+  proved the energy→0 chain fully quantitative and reduced the rate to three strengthened
+  inputs; the band-parameter balance was then shown UNSATISFIABLE in one packaging
+  (`strengthened_cutoff_unsatisfiable`) and the honest packaging now carries `hPert`
+  directly (Hurst/KernelEnergyRateDischarge.lean).  Discharging it requires a quantitative
+  upgrade of the kernel-approximation error (a rate on the mesh-Hilbert-Schmidt
+  convergence; the weight-error upgrade is `localPolynomialWeights_active_rank_uniform_tendsto`
+  made quantitative — its proof is explicit-algebra and believed mechanical).
+- `hNegMass` of the signed interface reduces exactly to `hPert`'s rate
+  (`||A_n − B_n|| = O(m^{-1/2−eta})`), documented in Hurst/SignedInterfaceFinal.lean.
+
+### Negative findings recorded (documented, kept)
+
+- `strengthened_cutoff_unsatisfiable`: the strengthened cutoff (extra S factor) is
+  refuted — the naive hres bundle was vacuous and was replaced by honest hypotheses.
+- Unconditional r=1 weight nonnegativity is FALSE (one-sided windows); weights are
+  signed in general, hence the signed route (EvenPeeling + EigenvaluePerturbation +
+  SignedInterfaceFinal) is the required path; the r=1 pointwise criterion
+  (Hurst/LocalLinearWeightsNonneg.lean) remains available as a simplification.
+
+### Restart guide
+
+Everything is imported and audited.  Remaining work: (1) discharge `hPert`
+(quantitative kernel-approximation rate — see above), then (2) the signed consumption
+theorem chain gives the q1 long-memory endpoint unconditionally, (3) refresh
+summary.md per-result verdicts.  Protocol and playbook:
+verification/lean_agent_protocol.md, verification/parallel_wave_prompts.md.
