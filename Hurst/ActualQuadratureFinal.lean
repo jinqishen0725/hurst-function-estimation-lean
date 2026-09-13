@@ -585,22 +585,6 @@ theorem actualQ1LongStatistic_tendsto_secondChaos_signed
           (actualQ1Coeff n (δ n) t)
           (actualQ1SpectralWeight f r n (δ n) t)).eigenvalues i)
       lam hm hmtop hlam hPowW
-  -- htr2: the weighted-correlation-energy input, from hPow at k = 2
-  have htr2W : Tendsto (fun n : ℕ =>
-      ∑ i : Fin (localWeightActiveSet n 1 (δ n) t).card,
-        ∑ j : Fin (localWeightActiveSet n 1 (δ n) t).card,
-          actualQ1SpectralWeight f r n (δ n) t i *
-            actualQ1SpectralWeight f r n (δ n) t j *
-            (featureCorrelation
-              (actualQ1Obs f n (midpointSampleHurst f hf.1 n))
-              (actualQ1Coeff n (δ n) t i)
-              (actualQ1Coeff n (δ n) t j)) ^ 2)
-      atTop (𝓝 (∑' j : ℕ, lam j ^ 2)) := by
-    refine Tendsto.congr (fun n => ?_) (hPowW 2 (by norm_num) ⟨1, by norm_num⟩)
-    exact weightedFeatureQuadraticMatrix_sum_eigenvalues_sq
-      (actualQ1Obs f n (midpointSampleHurst f hf.1 n))
-      (actualQ1Coeff n (δ n) t)
-      (actualQ1SpectralWeight f r n (δ n) t)
   -- hNegMass: transported to the explicit eigenvalue form
   have hNegMassW : Tendsto (fun n : ℕ =>
       ∑ i : Fin (localWeightActiveSet n 1 (δ n) t).card,
@@ -611,11 +595,43 @@ theorem actualQ1LongStatistic_tendsto_secondChaos_signed
       atTop (𝓝 0) := by
     refine Tendsto.congr (fun n => Finset.sum_congr rfl fun i _ => ?_) hNegMass
     exact congrArg (fun z : ℝ => (min z 0) ^ 2) (hPt n i)
-  exact gaussianLogQuadraticStatistic_tendsto_secondChaos_of_signedMatching
+  -- the matrix-level signed packaging (no feature-section instance binders:
+  -- the statistic-level application instantiates stuck-mvar typeclass
+  -- searches that whnf-explode; the matrix level avoids them entirely)
+  have hmatrix := centeredMatrixQuadratic_tendsto_secondChaos_of_signedMatching
     (fun n : ℕ => (localWeightActiveSet n 1 (δ n) t).card)
-    (fun n => actualQ1Obs f n (midpointSampleHurst f hf.1 n))
-    (fun n => actualQ1SpectralWeight f r n (δ n) t)
-    (fun n => actualQ1Coeff n (δ n) t)
-    hane P' Q lam hQ hmtop hAbsW htr2W hNegMassW
+    (fun n => weightedFeatureQuadraticMatrix
+        (actualQ1Obs f n (midpointSampleHurst f hf.1 n))
+        (actualQ1Coeff n (δ n) t)
+        (actualQ1SpectralWeight f r n (δ n) t))
+    (fun n => weightedFeatureQuadraticMatrix_isHermitian
+        (actualQ1Obs f n (midpointSampleHurst f hf.1 n))
+        (actualQ1Coeff n (δ n) t)
+        (actualQ1SpectralWeight f r n (δ n) t))
+    P' Q lam hQ hmtop hAbsW (hPowW 2 (by norm_num) ⟨1, by norm_num⟩) hNegMassW
+  -- transfer: the statistic is a.s.-equal to the centered matrix quadratic
+  refine tendstoInDistribution_of_identDistrib_rows_varying
+    (fun n => featureGaussian (actualQ1Obs f n (midpointSampleHurst f hf.1 n)))
+    (fun n => ProbabilityTheory.stdGaussian
+      (EuclideanSpace ℝ (Fin (localWeightActiveSet n 1 (δ n) t).card)))
+    P'
+    (fun n x => gaussianLogQuadraticStatistic
+      (actualQ1Obs f n (midpointSampleHurst f hf.1 n))
+      (actualQ1SpectralWeight f r n (δ n) t)
+      (actualQ1Coeff n (δ n) t) x)
+    (fun n => centeredMatrixQuadratic (weightedFeatureQuadraticMatrix
+        (actualQ1Obs f n (midpointSampleHurst f hf.1 n))
+        (actualQ1Coeff n (δ n) t)
+        (actualQ1SpectralWeight f r n (δ n) t)))
+    Q atTop ?_ hmatrix
+  intro n
+  exact (gaussianLogQuadraticStatistic_identDistrib_normalizedCoordinates
+      (actualQ1Obs f n (midpointSampleHurst f hf.1 n))
+      (actualQ1Coeff n (δ n) t)
+      (actualQ1SpectralWeight f r n (δ n) t)).trans
+    (centeredSpectralSquares_featureGaussian_identDistrib_centeredMatrixQuadratic
+      (actualQ1Obs f n (midpointSampleHurst f hf.1 n))
+      (actualQ1Coeff n (δ n) t)
+      (actualQ1SpectralWeight f r n (δ n) t) (hane n))
 --
 end Hurst
