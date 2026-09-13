@@ -1428,17 +1428,6 @@
 'Hurst.strengthened_cutoff_unsatisfiable' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.ordinary_cutoff_satisfiable' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.actualQ1EigenvaluePowerSums_tendsto_ordinary' depends on axioms: [propext, Classical.choice, Quot.sound]
-verification/AxiomAudit.lean:1295:14: error(lean.unknownIdentifier): Unknown constant `Hurst.q1BalanceCutoff_pos`
-verification/AxiomAudit.lean:1296:14: error(lean.unknownIdentifier): Unknown constant `Hurst.q1BalanceCutoff_le`
-verification/AxiomAudit.lean:1297:14: error(lean.unknownIdentifier): Unknown constant `Hurst.q1BalanceCutoff_gt`
-verification/AxiomAudit.lean:1298:14: error(lean.unknownIdentifier): Unknown constant `Hurst.q1BalanceCutoff_tendsto_atTop`
-verification/AxiomAudit.lean:1299:14: error(lean.unknownIdentifier): Unknown constant `Hurst.tailEnvelope_decay_of_R`
-verification/AxiomAudit.lean:1300:14: error(lean.unknownIdentifier): Unknown constant `Hurst.R_balance_cutoff`
-verification/AxiomAudit.lean:1301:14: error(lean.unknownIdentifier): Unknown constant `Hurst.R_balance_exists`
-verification/AxiomAudit.lean:1302:14: error(lean.unknownIdentifier): Unknown constant `Hurst.q1_pair_offband_relative`
-verification/AxiomAudit.lean:1303:14: error(lean.unknownIdentifier): Unknown constant `Hurst.realScaleMeshBandEnergy_nonneg`
-verification/AxiomAudit.lean:1304:14: error(lean.unknownIdentifier): Unknown constant `Hurst.hPert_discharged`
-verification/AxiomAudit.lean:1305:14: error(lean.unknownIdentifier): Unknown constant `Hurst.actualQ1EigenvaluePowerSums_tendsto_discharged`
 'Hurst.continuousKernelGram_quadratic' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.continuousKernelGram_posDef' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.continuousKernelGram_continuous' depends on axioms: [propext, Classical.choice, Quot.sound]

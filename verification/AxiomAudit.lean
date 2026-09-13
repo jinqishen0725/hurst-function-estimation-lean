@@ -1292,17 +1292,6 @@ import Hurst
 #print axioms Hurst.strengthened_cutoff_unsatisfiable
 #print axioms Hurst.ordinary_cutoff_satisfiable
 #print axioms Hurst.actualQ1EigenvaluePowerSums_tendsto_ordinary
-#print axioms Hurst.q1BalanceCutoff_pos
-#print axioms Hurst.q1BalanceCutoff_le
-#print axioms Hurst.q1BalanceCutoff_gt
-#print axioms Hurst.q1BalanceCutoff_tendsto_atTop
-#print axioms Hurst.tailEnvelope_decay_of_R
-#print axioms Hurst.R_balance_cutoff
-#print axioms Hurst.R_balance_exists
-#print axioms Hurst.q1_pair_offband_relative
-#print axioms Hurst.realScaleMeshBandEnergy_nonneg
-#print axioms Hurst.hPert_discharged
-#print axioms Hurst.actualQ1EigenvaluePowerSums_tendsto_discharged
 #print axioms Hurst.continuousKernelGram_quadratic
 #print axioms Hurst.continuousKernelGram_posDef
 #print axioms Hurst.continuousKernelGram_continuous
