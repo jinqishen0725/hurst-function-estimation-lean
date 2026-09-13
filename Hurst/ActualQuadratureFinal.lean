@@ -449,128 +449,173 @@ theorem actualQ1_trace_pow_tendsto_of_frozenPert
 /-! ## Deliverable (3): the signed packaging hookup -/
 
 
-/-! ## Deliverable (3) status note
+/-! ## Deliverable (3): the signed packaging hookup — landed
 
-The signed packaging hookup `actualQ1LongStatistic_tendsto_secondChaos_signed`
-(statement: `gaussianLogQuadraticStatistic_tendsto_secondChaos_of_signedMatching`
-instantiated with `v n := actualQ1Obs f n (midpointSampleHurst f hf.1 n)`,
-`w n := actualQ1SpectralWeight f r n (δ n) t`, `a n := actualQ1Coeff n (δ n) t`;
-`hAbs` discharged from the even-power-sum convergence `hPow` via
-`paddedAbsRearranged_tendsto`, `htr2` from
-`weightedFeatureQuadraticMatrix_sum_eigenvalues_sq` at `k = 2`, `hane` and
-`hNegMass` explicit) is fully drafted below but its elaboration hits a
-`whnf` heartbeat timeout: the defeq between `(actualQ1Hermitian ...).eigenvalues`
-and `(weightedFeatureQuadraticMatrix_isHermitian (v n) ...).eigenvalues` forces
-unfolding the CFC.sqrt-based `weightedFeatureQuadraticMatrix`.  It is kept as a
-commented draft; uncomment and recompile with a higher heartbeat budget (or
-after `actualQ1Hermitian` is restated without CFC) to land it. -/
--- set_option maxHeartbeats 10000000 in
--- /-- **The signed endpoint of the corrected route (deliverable 3).**  The
--- statistic-level signed packaging
--- `gaussianLogQuadraticStatistic_tendsto_secondChaos_of_signedMatching`
--- instantiated on the ACTUAL data (`v` = the harmonizable grid features of the
--- midpoint sample, `w` = the `S^{ψ-1}`-normalized spectral weights, `a` = the
--- first-stride difference coefficients).  Of the signed matching data:
---
--- * `hAbs` (the padded decreasing rearrangement of `|eigenvalues|` converges to
---   `lam`) is DISCHARGED from the even-power-sum convergence `hPow` via
---   `paddedAbsRearranged_tendsto` — `hPow` is exactly the output shape of the
---   corrected-route quadrature (hypothesis `hFrozenQuad` of
---   `actualQ1_trace_pow_tendsto_of_frozenPert` plus the eigenvalue trace
---   identity `trace_pow_weightedFeatureQuadraticMatrix_eq`);
--- * `htr2` (the weighted-correlation-energy input) is DISCHARGED from `hPow` at
---   `k = 2` via `weightedFeatureQuadraticMatrix_sum_eigenvalues_sq`;
--- * `hane` (nonzero feature rows) and `hNegMass` (vanishing negative-spectrum
---   mass) remain explicit — see the module scope note. -/
--- theorem actualQ1LongStatistic_tendsto_secondChaos_signed
---     (f : ℝ → ℝ) (hf : f ∈ hurstHolderClass p M) (r : ℕ) (t : ℝ)
---     (δ : ℕ → ℝ) (hδpos : ∀ᶠ n in atTop, 0 < δ n)
---     (hδ0 : Tendsto δ atTop (𝓝 0))
---     (hN : Tendsto (fun n : ℕ => (n : ℝ) * δ n) atTop atTop)
---     (ht : t ∈ Ioo (0 : ℝ) 1)
---     {Theta : Type*} [MeasurableSpace Theta]
---     (P' : Measure Theta) [IsProbabilityMeasure P']
---     (Q : Theta → ℝ) (lam : ℕ → ℝ)
---     (hQ : IsSecondChaosSeriesLaw P' Q lam)
---     (hlam : Antitone lam ∧ ∀ j, 0 ≤ lam j ∧ Summable (fun j => lam j ^ 2))
---     (hm : ∀ n, 0 < (localWeightActiveSet n 1 (δ n) t).card)
---     (hPow : ∀ k : ℕ, 2 ≤ k → Even k → Tendsto
---       (fun n : ℕ => ∑ i : Fin (localWeightActiveSet n 1 (δ n) t).card,
---         (actualQ1Hermitian f hf r n (δ n) t).eigenvalues i ^ k)
---       atTop (𝓝 (∑' j : ℕ, lam j ^ k)))
---     (hane : ∀ (n : ℕ) (k : Fin (localWeightActiveSet n 1 (δ n) t).card),
---       ∑ i, actualQ1Coeff n (δ n) t k i •
---         actualQ1Obs f n (midpointSampleHurst f hf.1 n) i ≠ 0)
---     (hNegMass : Tendsto (fun n : ℕ =>
---       ∑ i : Fin (localWeightActiveSet n 1 (δ n) t).card,
---         (min ((actualQ1Hermitian f hf r n (δ n) t).eigenvalues i) 0) ^ 2)
---       atTop (𝓝 0)) :
---     TendstoInDistribution
---       (fun (n : ℕ) x => gaussianLogQuadraticStatistic
---         (actualQ1Obs f n (midpointSampleHurst f hf.1 n))
---         (actualQ1SpectralWeight f r n (δ n) t)
---         (actualQ1Coeff n (δ n) t) x)
---       atTop Q (fun n => featureGaussian
---         (actualQ1Obs f n (midpointSampleHurst f hf.1 n))) P' := by
---   -- the active-card cardinality tends to infinity
---   have hmtop : Tendsto (fun n : ℕ => (localWeightActiveSet n 1 (δ n) t).card)
---       atTop atTop := by
---     obtain ⟨hcardpos, hratio⟩ := localWeightActiveSet_card_ratio_tendsto_two 1
---       t ht δ hδpos hδ0 hN
---     rw [Filter.tendsto_atTop_atTop]
---     intro N
---     have hall : ∀ᶠ n : ℕ in atTop, (1 : ℝ) <
---         ((localWeightActiveSet n 1 (δ n) t).card : ℝ) / ((n : ℝ) * δ n) ∧
---         (N : ℝ) ≤ (n : ℝ) * δ n ∧ (1 : ℝ) ≤ (n : ℝ) * δ n := by
---       filter_upwards [hratio.eventually_const_lt one_lt_two,
---         hN.eventually_ge_atTop (N : ℝ), hN.eventually_ge_atTop 1] with n h1 h2 h3
---       exact ⟨h1, h2, h3⟩
---     obtain ⟨i, hi⟩ := Filter.eventually_atTop.mp hall
---     refine ⟨i, fun a ha => ?_⟩
---     obtain ⟨h1, h2, h3⟩ := hi a ha
---     have hS0 : (0 : ℝ) < (a : ℝ) * δ a := by linarith
---     have hle : ((a : ℝ) * δ a) ≤ (localWeightActiveSet a 1 (δ a) t).card := by
---       have hfac : ((localWeightActiveSet a 1 (δ a) t).card : ℝ)
---           = ((localWeightActiveSet a 1 (δ a) t).card : ℝ) / ((a : ℝ) * δ a) *
---             ((a : ℝ) * δ a) :=
---         (div_mul_cancel₀ ((localWeightActiveSet a 1 (δ a) t).card : ℝ)
---           (ne_of_gt hS0)).symm
---       rw [hfac]
---       exact le_trans (by rw [one_mul])
---         (le_of_lt (mul_lt_mul_of_pos_right h1 hS0))
---     exact_mod_cast (h2.trans hle)
---   -- hAbs: the even-power sums imply the padded |λ|-rearrangement convergence
---   have hAbs : ∀ j : ℕ, Tendsto (fun n : ℕ => padRearranged
---       (fun i : Fin (localWeightActiveSet n 1 (δ n) t).card =>
---         |(actualQ1Hermitian f hf r n (δ n) t).eigenvalues i|) j)
---       atTop (𝓝 (lam j)) :=
---     paddedAbsRearranged_tendsto
---       (fun n : ℕ => (localWeightActiveSet n 1 (δ n) t).card)
---       (fun n i => (actualQ1Hermitian f hf r n (δ n) t).eigenvalues i)
---       lam hm hmtop hlam hPow
---   -- htr2: the weighted-correlation-energy input, from hPow at k = 2
---   have htr2 : Tendsto (fun n : ℕ =>
---       ∑ i : Fin (localWeightActiveSet n 1 (δ n) t).card,
---         ∑ j : Fin (localWeightActiveSet n 1 (δ n) t).card,
---           actualQ1SpectralWeight f r n (δ n) t i *
---             actualQ1SpectralWeight f r n (δ n) t j *
---             (featureCorrelation
---               (actualQ1Obs f n (midpointSampleHurst f hf.1 n))
---               (actualQ1Coeff n (δ n) t i)
---               (actualQ1Coeff n (δ n) t j)) ^ 2)
---       atTop (𝓝 (∑' j : ℕ, lam j ^ 2)) :=
---     by
---       refine Tendsto.congr ?_ (hPow 2 (by norm_num) ⟨1, by norm_num⟩)
---       intro n
---       exact weightedFeatureQuadraticMatrix_sum_eigenvalues_sq
---         (actualQ1Obs f n (midpointSampleHurst f hf.1 n))
---         (actualQ1Coeff n (δ n) t)
---         (actualQ1SpectralWeight f r n (δ n) t)
---   exact gaussianLogQuadraticStatistic_tendsto_secondChaos_of_signedMatching
---     (fun n : ℕ => (localWeightActiveSet n 1 (δ n) t).card)
---     (fun n => actualQ1Obs f n (midpointSampleHurst f hf.1 n))
---     (fun n => actualQ1SpectralWeight f r n (δ n) t)
---     (fun n => actualQ1Coeff n (δ n) t)
---     hane P' Q lam hQ hmtop hAbs htr2 hNegMass
+The elaboration hazard documented previously (an irreducible `whnf` heartbeat
+timeout on the defeq
+`(actualQ1Hermitian …).eigenvalues ≡ (weightedFeatureQuadraticMatrix_isHermitian (v n) …).eigenvalues`,
+forced by CFC.sqrt unfolding) is avoided structurally: the two Hermitian
+wrappers are bound by the exact defining equation of `actualQ1Hermitian`
+(`hEv`), the pointwise eigenvalue identity is obtained by `congrArg` (`hPt`),
+and every input of
+`gaussianLogQuadraticStatistic_tendsto_secondChaos_of_signedMatching` is
+transported to the EXPLICIT `weightedFeatureQuadraticMatrix_isHermitian` form
+(`hPowW`, `hAbsW`, `htr2W`, `hNegMassW`), so the final application performs no
+defeq check on eigenvalues at all. -/
+
+set_option maxHeartbeats 10000000 in
+/-- **The signed endpoint of the corrected route (deliverable 3).**  The
+statistic-level signed packaging
+`gaussianLogQuadraticStatistic_tendsto_secondChaos_of_signedMatching`
+instantiated on the ACTUAL data (`v` = the harmonizable grid features of the
+midpoint sample, `w` = the `S^{ψ-1}`-normalized spectral weights, `a` = the
+first-stride difference coefficients).  Of the signed matching data:
+
+* `hAbs` (the padded decreasing rearrangement of `|eigenvalues|` converges to
+  `lam`) is DISCHARGED from the even-power-sum convergence `hPow` via
+  `paddedAbsRearranged_tendsto` — `hPow` is exactly the output shape of the
+  corrected-route quadrature (hypothesis `hFrozenQuad` of
+  `actualQ1_trace_pow_tendsto_of_frozenPert` plus the eigenvalue trace
+  identity `trace_pow_weightedFeatureQuadraticMatrix_eq`);
+* `htr2` (the weighted-correlation-energy input) is DISCHARGED from `hPow` at
+  `k = 2` via `weightedFeatureQuadraticMatrix_sum_eigenvalues_sq`;
+* `hane` (nonzero feature rows) and `hNegMass` (vanishing negative-spectrum
+  mass) remain explicit — see the module scope note. -/
+theorem actualQ1LongStatistic_tendsto_secondChaos_signed
+    (f : ℝ → ℝ) (hf : f ∈ hurstHolderClass p M) (r : ℕ) (t : ℝ)
+    (δ : ℕ → ℝ) (hδpos : ∀ᶠ n in atTop, 0 < δ n)
+    (hδ0 : Tendsto δ atTop (𝓝 0))
+    (hN : Tendsto (fun n : ℕ => (n : ℝ) * δ n) atTop atTop)
+    (ht : t ∈ Ioo (0 : ℝ) 1)
+    {Theta : Type*} [MeasurableSpace Theta]
+    (P' : Measure Theta) [IsProbabilityMeasure P']
+    (Q : Theta → ℝ) (lam : ℕ → ℝ)
+    (hQ : IsSecondChaosSeriesLaw P' Q lam)
+    (hlam : Antitone lam ∧ ∀ j, 0 ≤ lam j ∧ Summable (fun j => lam j ^ 2))
+    (hm : ∀ n, 0 < (localWeightActiveSet n 1 (δ n) t).card)
+    (hPow : ∀ k : ℕ, 2 ≤ k → Even k → Tendsto
+      (fun n : ℕ => ∑ i : Fin (localWeightActiveSet n 1 (δ n) t).card,
+        (actualQ1Hermitian f hf r n (δ n) t).eigenvalues i ^ k)
+      atTop (𝓝 (∑' j : ℕ, lam j ^ k)))
+    (hane : ∀ (n : ℕ) (k : Fin (localWeightActiveSet n 1 (δ n) t).card),
+      ∑ i, actualQ1Coeff n (δ n) t k i •
+        actualQ1Obs f n (midpointSampleHurst f hf.1 n) i ≠ 0)
+    (hNegMass : Tendsto (fun n : ℕ =>
+      ∑ i : Fin (localWeightActiveSet n 1 (δ n) t).card,
+        (min ((actualQ1Hermitian f hf r n (δ n) t).eigenvalues i) 0) ^ 2)
+      atTop (𝓝 0)) :
+    TendstoInDistribution
+      (fun (n : ℕ) x => gaussianLogQuadraticStatistic
+        (actualQ1Obs f n (midpointSampleHurst f hf.1 n))
+        (actualQ1SpectralWeight f r n (δ n) t)
+        (actualQ1Coeff n (δ n) t) x)
+      atTop Q (fun n => featureGaussian
+        (actualQ1Obs f n (midpointSampleHurst f hf.1 n))) P' := by
+  -- the exact eigenvalue binding: `actualQ1Hermitian` IS the
+  -- `weightedFeatureQuadraticMatrix_isHermitian` of the actual data (its
+  -- defining equation); everything below is transported to the explicit form
+  -- so the final application never checks a defeq on `.eigenvalues`.
+  have hEv : ∀ n : ℕ, actualQ1Hermitian f hf r n (δ n) t
+      = weightedFeatureQuadraticMatrix_isHermitian
+          (actualQ1Obs f n (midpointSampleHurst f hf.1 n))
+          (actualQ1Coeff n (δ n) t)
+          (actualQ1SpectralWeight f r n (δ n) t) := fun _ => rfl
+  have hPt : ∀ (n : ℕ) (i : Fin (localWeightActiveSet n 1 (δ n) t).card),
+      (actualQ1Hermitian f hf r n (δ n) t).eigenvalues i
+        = (weightedFeatureQuadraticMatrix_isHermitian
+            (actualQ1Obs f n (midpointSampleHurst f hf.1 n))
+            (actualQ1Coeff n (δ n) t)
+            (actualQ1SpectralWeight f r n (δ n) t)).eigenvalues i := fun n i =>
+    congrArg (fun H : (weightedFeatureQuadraticMatrix
+        (actualQ1Obs f n (midpointSampleHurst f hf.1 n))
+        (actualQ1Coeff n (δ n) t)
+        (actualQ1SpectralWeight f r n (δ n) t)).IsHermitian =>
+      H.eigenvalues i) (hEv n)
+  -- the active-card cardinality tends to infinity
+  have hmtop : Tendsto (fun n : ℕ => (localWeightActiveSet n 1 (δ n) t).card)
+      atTop atTop := by
+    obtain ⟨_, hratio⟩ := localWeightActiveSet_card_ratio_tendsto_two 1
+      t ht δ hδpos hδ0 hN
+    rw [Filter.tendsto_atTop_atTop]
+    intro N
+    have hall : ∀ᶠ n : ℕ in atTop, (1 : ℝ) <
+        ((localWeightActiveSet n 1 (δ n) t).card : ℝ) / ((n : ℝ) * δ n) ∧
+        (N : ℝ) ≤ (n : ℝ) * δ n ∧ (1 : ℝ) ≤ (n : ℝ) * δ n := by
+      filter_upwards [hratio.eventually_const_lt one_lt_two,
+        hN.eventually_ge_atTop (N : ℝ), hN.eventually_ge_atTop 1] with n h1 h2 h3
+      exact ⟨h1, h2, h3⟩
+    obtain ⟨i, hi⟩ := Filter.eventually_atTop.mp hall
+    refine ⟨i, fun a ha => ?_⟩
+    obtain ⟨h1, h2, h3⟩ := hi a ha
+    have hS0 : (0 : ℝ) < (a : ℝ) * δ a := by linarith
+    have hle : ((a : ℝ) * δ a) ≤ (localWeightActiveSet a 1 (δ a) t).card := by
+      have hfac : ((localWeightActiveSet a 1 (δ a) t).card : ℝ)
+          = ((localWeightActiveSet a 1 (δ a) t).card : ℝ) / ((a : ℝ) * δ a) *
+            ((a : ℝ) * δ a) :=
+        (div_mul_cancel₀ ((localWeightActiveSet a 1 (δ a) t).card : ℝ)
+          (ne_of_gt hS0)).symm
+      rw [hfac]
+      exact le_trans (by rw [one_mul])
+        (le_of_lt (mul_lt_mul_of_pos_right h1 hS0))
+    exact_mod_cast (h2.trans hle)
+  -- the even power sums, in the explicit weightedFeatureQuadraticMatrix form
+  have hPowW : ∀ k : ℕ, 2 ≤ k → Even k → Tendsto (fun n : ℕ =>
+      ∑ i : Fin (localWeightActiveSet n 1 (δ n) t).card,
+        (weightedFeatureQuadraticMatrix_isHermitian
+            (actualQ1Obs f n (midpointSampleHurst f hf.1 n))
+            (actualQ1Coeff n (δ n) t)
+            (actualQ1SpectralWeight f r n (δ n) t)).eigenvalues i ^ k)
+      atTop (𝓝 (∑' j : ℕ, lam j ^ k)) := by
+    intro k hk hev
+    refine Tendsto.congr (fun n => Finset.sum_congr rfl fun i _ => ?_)
+      (hPow k hk hev)
+    exact congrArg (fun z : ℝ => z ^ k) (hPt n i)
+  -- hAbs: the even-power sums imply the padded |λ|-rearrangement convergence
+  have hAbsW : ∀ j : ℕ, Tendsto (fun n : ℕ => padRearranged
+      (fun i : Fin (localWeightActiveSet n 1 (δ n) t).card =>
+        |(weightedFeatureQuadraticMatrix_isHermitian
+            (actualQ1Obs f n (midpointSampleHurst f hf.1 n))
+            (actualQ1Coeff n (δ n) t)
+            (actualQ1SpectralWeight f r n (δ n) t)).eigenvalues i|) j)
+      atTop (𝓝 (lam j)) :=
+    paddedAbsRearranged_tendsto
+      (fun n : ℕ => (localWeightActiveSet n 1 (δ n) t).card)
+      (fun n i => (weightedFeatureQuadraticMatrix_isHermitian
+          (actualQ1Obs f n (midpointSampleHurst f hf.1 n))
+          (actualQ1Coeff n (δ n) t)
+          (actualQ1SpectralWeight f r n (δ n) t)).eigenvalues i)
+      lam hm hmtop hlam hPowW
+  -- htr2: the weighted-correlation-energy input, from hPow at k = 2
+  have htr2W : Tendsto (fun n : ℕ =>
+      ∑ i : Fin (localWeightActiveSet n 1 (δ n) t).card,
+        ∑ j : Fin (localWeightActiveSet n 1 (δ n) t).card,
+          actualQ1SpectralWeight f r n (δ n) t i *
+            actualQ1SpectralWeight f r n (δ n) t j *
+            (featureCorrelation
+              (actualQ1Obs f n (midpointSampleHurst f hf.1 n))
+              (actualQ1Coeff n (δ n) t i)
+              (actualQ1Coeff n (δ n) t j)) ^ 2)
+      atTop (𝓝 (∑' j : ℕ, lam j ^ 2)) := by
+    refine Tendsto.congr (fun n => ?_) (hPowW 2 (by norm_num) ⟨1, by norm_num⟩)
+    exact weightedFeatureQuadraticMatrix_sum_eigenvalues_sq
+      (actualQ1Obs f n (midpointSampleHurst f hf.1 n))
+      (actualQ1Coeff n (δ n) t)
+      (actualQ1SpectralWeight f r n (δ n) t)
+  -- hNegMass: transported to the explicit eigenvalue form
+  have hNegMassW : Tendsto (fun n : ℕ =>
+      ∑ i : Fin (localWeightActiveSet n 1 (δ n) t).card,
+        (min ((weightedFeatureQuadraticMatrix_isHermitian
+            (actualQ1Obs f n (midpointSampleHurst f hf.1 n))
+            (actualQ1Coeff n (δ n) t)
+            (actualQ1SpectralWeight f r n (δ n) t)).eigenvalues i) 0) ^ 2)
+      atTop (𝓝 0) := by
+    refine Tendsto.congr (fun n => Finset.sum_congr rfl fun i _ => ?_) hNegMass
+    exact congrArg (fun z : ℝ => (min z 0) ^ 2) (hPt n i)
+  exact gaussianLogQuadraticStatistic_tendsto_secondChaos_of_signedMatching
+    (fun n : ℕ => (localWeightActiveSet n 1 (δ n) t).card)
+    (fun n => actualQ1Obs f n (midpointSampleHurst f hf.1 n))
+    (fun n => actualQ1SpectralWeight f r n (δ n) t)
+    (fun n => actualQ1Coeff n (δ n) t)
+    hane P' Q lam hQ hmtop hAbsW htr2W hNegMassW
 --
 end Hurst
