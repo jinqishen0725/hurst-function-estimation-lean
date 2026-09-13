@@ -8,7 +8,7 @@ import Hurst.OptimalActiveRowDensity
 /-!
 # Discharge round for the `hPert` hypothesis of `Hurst.ActualQuadratureConfluence`
 
-This file attempts the discharge of
+This file documents the discharge of
 
 `hPert : card n * realScaleMeshEnergy S (actualQ1WeightedActualKernel -
   actualQ1WeightedRieszKernel) -> 0`
@@ -16,7 +16,11 @@ This file attempts the discharge of
 via the dimension-weighted rate `kernelEnergy_card_rate`
 (`Hurst.KernelEnergyRate`), whose band bridges consume the STRENGTHENED
 cutoff `S * (S^(2ψ-2) * card * (2R+1)) -> 0` in place of the ordinary
-`hcut`.  Findings, each landed as a theorem:
+`hcut`.  The strengthened cutoff turned out to be REFUTABLE under the
+ordinary model (`strengthened_cutoff_unsatisfiable`), so the chain does
+not close; the file lands the investigation's findings and the final
+HONEST packaging of the main theorem.  Findings, each landed as a
+theorem:
 
 * `q1TailEnvelopeFreePart`, `q1ActualLongTailEnvelope_eq` : the long-tail
   envelope is EXACTLY `free part + 16 / (R+1)`; the free part does not
@@ -48,16 +52,22 @@ cutoff `S * (S^(2ψ-2) * card * (2R+1)) -> 0` in place of the ordinary
   energy is `Θ(S^(2ψ))` whenever the row weights are not `o(1)`; the
   `√card` loss of the trace-power transfer is not absorbable for these
   kernels.
-* `actualQ1EigenvaluePowerSums_tendsto_ordinary` (the chain): the main
-  theorem with `hPert` REPLACED: the dimension-weighted rate is now
-  PRODUCED by `kernelEnergy_card_rate` from the hypothesis bundle `hres`
-  (existentially packaged over one `R`).  The ordinary inputs `hcut` and
-  `henv` of the original theorem are re-derived inside: `hcut` from the
-  strengthened cutoff by `S ≥ 1`; `henv` from the free-part rate `hEfree`
-  (the item-1+2 balance class) combined with `card -> ∞` and the
-  bundle's `R -> ∞`.  Documented residue (see the theorem docstring):
-  the two weighted band rates and the weighted relative off-diagonal
-  bound remain explicit.
+* `ordinary_cutoff_satisfiable` (the positive packaging finding): the
+  ORDINARY cutoff `S^(2ψ-2) * card * (2R+1) -> 0` IS jointly
+  satisfiable with `R -> ∞` (take `R = ⌊S^γ⌋ + 1` with
+  `0 < γ < 4*h0 - 3`, a nonempty range exactly in the `hlong` regime
+  `h0 > 3/4`), unlike the strengthened cutoff refuted below.
+* `actualQ1EigenvaluePowerSums_tendsto_ordinary` (the chain, final
+  honest form): the main theorem with the perturbation input taken
+  DIRECTLY at the `hPert` shape of `Hurst.ActualQuadratureConfluence`
+  and the ordinary cutoff `hcut` as an explicit (satisfiable)
+  hypothesis.  An earlier draft instead PRODUCED the rate from an
+  existential bundle `hres` whose strengthened-cutoff member is
+  refutable, making that theorem VACUOUS; see the theorem docstring
+  and `strengthened_cutoff_unsatisfiable` for why the bundle packaging
+  was abandoned.  The ordinary envelope input `henv` is still derived
+  inside, from the free-part rate `hEfree` (the item-1+2 balance
+  class) combined with `card -> ∞` and `R -> ∞`.
 -/
 
 set_option maxHeartbeats 1000000
@@ -294,7 +304,29 @@ below by `3 * S^(2ψ) -> ∞`.  Consequently the band-bridge hypotheses of
 the ordinary model, for any choice of the free parameter `R`: the
 diagonal mismatch of the actual versus Riesz kernels (`B_ii = 0` versus
 `A_ii = S^ψ` up to row weights) makes the dimension-weighted band energy
-`Θ(S^(2ψ))`. -/
+`Θ(S^(2ψ))`.
+
+Critical-review verdict (recorded 2026-09-12): an external review claimed
+this statement is FALSE when `3/4 < h0 < 1`, on the ground that the proof
+"applies `tendsto_rpow_atTop` to `S^(2-4*h0)`, which diverges only for
+`h0 < 1/2`".  That reading is INCORRECT.  The exponent `2*(2-2*h0) - 2
+= 2 - 4*h0` belongs to the LEADING factor only; the sequence also carries
+`card ≍ 2 * S` and one explicit factor `S`, so its net asymptotic exponent
+is `(2 - 4*h0) + 1 + 1 = 2*(2-2*h0) = 4 - 4*h0`, which is `> 0` exactly
+under the stated hypothesis `h0 < 1`.  The proof's `tendsto_rpow_atTop`
+is applied (see `hpow` below) to `X^(2*(2-2*h0))`, i.e. to the NET
+exponent, and `linarith` discharges `0 < 2*(2-2*h0)` from `h0 < 1`.  The
+review's counterexample "`2 * S^(4-4*h0) * (2R+1) -> 0` for constant `R`"
+is arithmetically wrong: for `h0 ∈ (3/4, 1)` one has `4 - 4*h0 ∈ (0,1)`,
+so that quantity tends to `∞`, not to `0`.  The theorem is therefore kept
+in its sharp form with hypothesis `h0 < 1` (no `h0 < 1/2` restriction).
+It is not invoked downstream; it documents why the earlier
+existential-bundle packaging of
+`actualQ1EigenvaluePowerSums_tendsto_ordinary` (a bundle carrying the
+strengthened cutoff as a member, consumed to re-derive the ordinary
+cutoff) was VACUOUS, and why that theorem now takes the ordinary cutoff
+`hcut` (satisfiable, see `ordinary_cutoff_satisfiable`) and the
+card-weighted energy rate `hPert` as direct honest hypotheses. -/
 theorem strengthened_cutoff_unsatisfiable
     (h0 t : ℝ) (ht : t ∈ Ioo (0 : ℝ) 1) (hh0 : h0 < 1)
     (δ : ℕ → ℝ) (hδpos : ∀ᶠ n in atTop, 0 < δ n)
@@ -342,13 +374,17 @@ theorem strengthened_cutoff_unsatisfiable
     have hr3 : (3 : ℝ) ≤ 2 * (R n : ℝ) + 1 := by linarith
     have hstep1 : X ^ (2 * (2 - 2 * h0) - 2) * X * X
         = X ^ (2 * (2 - 2 * h0)) := by
-      have hexp2 : (2 * (2 - 2 * h0) - 2) + 2 = 2 * (2 - 2 * h0) := by ring
+      have hexp2 : (2 * (2 - 2 * h0) - 2) + 1 + 1 = 2 * (2 - 2 * h0) := by ring
+      have hsplit : X ^ (2 * (2 - 2 * h0) - 2) * X
+          = X ^ (2 * (2 - 2 * h0) - 2 + 1) := by
+        rw [Real.rpow_add hSn (2 * (2 - 2 * h0) - 2) 1, Real.rpow_one]
+      have hjoin : X ^ (2 * (2 - 2 * h0) - 2 + 1) * X
+          = X ^ (2 * (2 - 2 * h0) - 2 + 1 + 1) := by
+        rw [Real.rpow_add hSn (2 * (2 - 2 * h0) - 2 + 1) 1, Real.rpow_one]
       calc X ^ (2 * (2 - 2 * h0) - 2) * X * X
-          = X ^ (2 * (2 - 2 * h0) - 2) * (X * X) := by ring
-        _ = X ^ (2 * (2 - 2 * h0) - 2) * X ^ (2 : ℝ) := by
-            rw [Real.rpow_natCast]; ring
-        _ = X ^ (2 * (2 - 2 * h0) - 2 + 2) :=
-            (Real.rpow_add hSn (2 * (2 - 2 * h0) - 2) 2).symm
+          = (X ^ (2 * (2 - 2 * h0) - 2) * X) * X := by ring
+        _ = X ^ (2 * (2 - 2 * h0) - 2 + 1) * X := by rw [hsplit]
+        _ = X ^ (2 * (2 - 2 * h0) - 2 + 1 + 1) := hjoin
         _ = X ^ (2 * (2 - 2 * h0)) := by rw [hexp2]
     calc (1 : ℝ) ≤ 3 * X ^ (2 * (2 - 2 * h0)) := by linarith
       _ = X ^ (2 * (2 - 2 * h0) - 2) * X * X * 3 := by rw [hstep1]; ring
@@ -374,47 +410,137 @@ theorem strengthened_cutoff_unsatisfiable
           rw [hkey]
           exact le_trans hmid hlast
   obtain ⟨N1, hN1⟩ := Filter.eventually_atTop.mp hpt
-  obtain ⟨N2, hN2⟩ :=
-    Tendsto.eventually_lt_const (show ((0 : ℝ) < 1) by norm_num) hg
+  obtain ⟨N2, hN2⟩ := Filter.eventually_atTop.mp
+    (Tendsto.eventually_lt_const (show ((0 : ℝ) < 1) by norm_num) hg)
   have hboth := hN1 (max N1 N2) (le_max_left _ _)
   have hlt' := hN2 (max N1 N2) (le_max_right _ _)
   exact absurd hboth (not_le.mpr hlt')
 
-/-! ## The chain: `kernelEnergy_card_rate` produces `hPert` -/
+/-! ## The positive packaging finding: the ordinary cutoff IS satisfiable -/
 
-/-- **The packaged theorem (discharge-chain form).**  This is
-`actualQ1EigenvaluePowerSums_tendsto` with `hPert` REPLACED: the
-dimension-weighted rate is now PRODUCED, by `kernelEnergy_card_rate`,
-from the hypothesis bundle `hres` (existentially packaged over one
-bandwidth `R`, the weight-error bound `w`, the relative tail error `e`,
-and the constants `U`, `C`).  The ordinary inputs `hcut` and `henv` of
-the original theorem are re-derived inside:
+/-- **The ordinary cutoff is jointly satisfiable with `R -> ∞`.**  Take
+`R = ⌊S^γ⌋ + 1` with `0 < γ < 4 * h0 - 3` (a nonempty range exactly in
+the long-memory regime `h0 > 3/4`, i.e. the `hlong` hypothesis of the
+main theorem): then `R ≥ 1` (always), `R -> ∞`, and the ORDINARY cutoff
+`S^(2*(2-2*h0)-2) * card * (2R+1) -> 0`, using the eventual bound
+`card ≤ 3 * S` (delivered under the ordinary model by
+`localWeightActiveSet_card_ratio_tendsto_two`, since `card / S -> 2`).
+Together with `strengthened_cutoff_unsatisfiable` this locates the exact
+honest strength of the cutoff input: it may be assumed at its ordinary
+strength (jointly with `R -> ∞`), but not at the `* S`-strengthened
+strength, for any `R`.  This is the packaging used by the final form of
+`actualQ1EigenvaluePowerSums_tendsto_ordinary`. -/
+theorem ordinary_cutoff_satisfiable
+    (h0 : ℝ) (card : ℕ → ℕ) (S : ℕ → ℝ)
+    (hS : Tendsto S atTop atTop)
+    (hcardub : ∀ᶠ n in atTop, (card n : ℝ) ≤ 3 * S n)
+    (hh0 : 3 / 4 < h0) :
+    ∃ R : ℕ → ℕ, (∀ᶠ n in atTop, 1 ≤ R n) ∧
+      Tendsto (fun n : ℕ => (R n : ℝ)) atTop atTop ∧
+      Tendsto (fun n : ℕ => (S n) ^ (2 * (2 - 2 * h0) - 2) *
+        (card n : ℝ) * (2 * (R n : ℝ) + 1)) atTop (𝓝 0) := by
+  obtain ⟨γ, hγpos, hγlt⟩ : ∃ γ : ℝ, 0 < γ ∧ γ < 4 * h0 - 3 :=
+    ⟨(4 * h0 - 3) / 2, by linarith, by linarith⟩
+  set R : ℕ → ℕ := fun n => Nat.floor (S n ^ γ) + 1 with hRdef
+  refine ⟨R, Eventually.of_forall fun _ => Nat.le_add_left 1 _, ?_, ?_⟩
+  · -- R -> ∞, from S^γ -> ∞ and R > S^γ
+    have hSγ : Tendsto (fun n : ℕ => S n ^ γ) atTop atTop :=
+      (tendsto_rpow_atTop hγpos).comp hS
+    rw [Filter.tendsto_atTop_atTop]
+    intro β
+    obtain ⟨N, hN'⟩ := Filter.eventually_atTop.mp
+      (hSγ.eventually_ge_atTop (β : ℝ))
+    refine ⟨N, fun a ha => ?_⟩
+    have hge : (β : ℝ) ≤ S a ^ γ := hN' a ha
+    have hlt := Nat.lt_floor_add_one (S a ^ γ)
+    show (β : ℝ) ≤ ((Nat.floor (S a ^ γ) + 1 : ℕ) : ℝ)
+    push_cast
+    linarith
+  · -- the ordinary cutoff, bounded by 15 * S^(γ + 3 - 4*h0), exponent < 0
+    have hS1 : ∀ᶠ n in atTop, (1 : ℝ) ≤ S n := hS.eventually_ge_atTop 1
+    have hSγ1 : ∀ᶠ n in atTop, (1 : ℝ) ≤ S n ^ γ :=
+      ((tendsto_rpow_atTop hγpos).comp hS).eventually_ge_atTop 1
+    have hRle : ∀ᶠ n in atTop, (R n : ℝ) ≤ S n ^ γ + 1 := by
+      filter_upwards [hS1] with n hSn
+      show ((Nat.floor (S n ^ γ) + 1 : ℕ) : ℝ) ≤ S n ^ γ + 1
+      have hf := Nat.floor_le (Real.rpow_nonneg (by linarith : (0 : ℝ) ≤ S n) γ)
+      push_cast
+      linarith
+    have hexp : 2 * (2 - 2 * h0) - 2 + 1 + γ = γ + 3 - 4 * h0 := by ring
+    have hsmall := tendsto_rpow_neg_of_atTop S (γ + 3 - 4 * h0)
+      (by linarith) hS
+    apply squeeze_zero'
+    · filter_upwards [hS1] with n hSn
+      exact mul_nonneg (mul_nonneg
+        (Real.rpow_nonneg (by linarith : (0 : ℝ) ≤ S n) _)
+        (Nat.cast_nonneg _)) (by positivity)
+    · filter_upwards [hcardub, hRle, hSγ1, hS1] with n hc hr hγ1 hSn
+      have hSn' : 0 < S n := lt_of_lt_of_le zero_lt_one hSn
+      have hpow0 : 0 ≤ S n ^ (2 * (2 - 2 * h0) - 2) := by positivity
+      have hband : (2 * (R n : ℝ) + 1) ≤ 5 * S n ^ γ := by
+        have h2 : (2 : ℝ) * (R n : ℝ) ≤ 2 * (S n ^ γ + 1) := by
+          exact mul_le_mul_of_nonneg_left hr (by norm_num)
+        linarith
+      have hkey : (S n) ^ (2 * (2 - 2 * h0) - 2) * S n * S n ^ γ
+          = S n ^ (γ + 3 - 4 * h0) := by
+        have hsplit : (S n) ^ (2 * (2 - 2 * h0) - 2) * S n
+            = (S n) ^ (2 * (2 - 2 * h0) - 2 + 1) := by
+          rw [Real.rpow_add hSn' (2 * (2 - 2 * h0) - 2) 1, Real.rpow_one]
+        have hjoin : (S n) ^ (2 * (2 - 2 * h0) - 2 + 1) * S n ^ γ
+            = (S n) ^ (2 * (2 - 2 * h0) - 2 + 1 + γ) := by
+          rw [Real.rpow_add hSn' (2 * (2 - 2 * h0) - 2 + 1) γ]
+        calc (S n) ^ (2 * (2 - 2 * h0) - 2) * S n * S n ^ γ
+            = ((S n) ^ (2 * (2 - 2 * h0) - 2) * S n) * S n ^ γ := by ring
+          _ = (S n) ^ (2 * (2 - 2 * h0) - 2 + 1) * S n ^ γ := by rw [hsplit]
+          _ = (S n) ^ (2 * (2 - 2 * h0) - 2 + 1 + γ) := hjoin
+          _ = S n ^ (γ + 3 - 4 * h0) := by rw [hexp]
+      calc (S n) ^ (2 * (2 - 2 * h0) - 2) * (card n : ℝ) *
+            (2 * (R n : ℝ) + 1)
+          ≤ (S n) ^ (2 * (2 - 2 * h0) - 2) * (3 * S n) * (5 * S n ^ γ) :=
+            mul_le_mul (mul_le_mul_of_nonneg_left hc hpow0) hband
+              (by positivity) (by positivity)
+        _ = 15 * (S n ^ (2 * (2 - 2 * h0) - 2) * S n * S n ^ γ) := by ring
+        _ = 15 * S n ^ (γ + 3 - 4 * h0) := by rw [hkey]
+    · simpa using hsmall.const_mul 15
 
-* `hcut` from the strengthened cutoff `cut * S -> 0` (bundle member)
-  via `S ≥ 1`;
-* `henv` from the free-envelope-part rate `hEfree` (the item-1+2 balance
-  class `√card * q1TailEnvelopeFreePart -> 0`, applied per constant
-  triple) combined with `card -> ∞` (`localWeightActiveSet_card_tendsto_atTop`)
-  and the bundle's `R -> ∞`.
+/-! ## The honest chain: ordinary cutoff + direct `hPert` rate -/
 
-DOCUMENTED RESIDUE (per the honesty rules; do not force):
+/-- **The packaged theorem (honest form).**  This is
+`actualQ1EigenvaluePowerSums_tendsto` with its three asymptotic inputs
+made explicit at their honest strength, and nothing else:
 
-* the bundle members `card * realScaleMeshBandEnergy(A) -> 0` and
-  `card * realScaleMeshBandEnergy(B) -> 0` would follow from the
-  strengthened cutoff only for the UNSCALED kernels of
-  `Hurst.KernelEnergyRate`; by `strengthened_cutoff_unsatisfiable` that
-  cutoff is refuted under the ordinary model (the diagonal obstruction
-  `A_ii - B_ii = u_i * S^ψ` across `~card` rows), so these two members
-  are kept explicit;
-* the weighted relative off-diagonal bound is kept explicit: it is
-  false at rows where the equivalent-kernel profile vanishes
-  (`|B i j| = 0` forces `A i j = 0`), and the repository's weighted
-  kernel theorem deliberately avoids it (it uses the split
-  `u*(A-B) + (u-v)*B` instead);
-* the weight-error rate is carried at its honest strength
-  `card * w² -> 0` (item 3; see
-  `card_mul_weight_sq_tendsto_zero_of_row_rate` for the explicit
-  `K / S`-rate sufficient condition). -/
+* `hcut` : the ORDINARY cutoff
+  `S^(2ψ-2) * card * (2R+1) -> 0`, jointly satisfiable with `R -> ∞`
+  per `ordinary_cutoff_satisfiable` (take `R = ⌊S^γ⌋ + 1` with
+  `0 < γ < 4 * f t - 3`, a nonempty range exactly under `hlong`);
+* `hPert` : the card-weighted kernel-energy rate, taken DIRECTLY at
+  exactly the shape of the `hPert` hypothesis of
+  `Hurst.ActualQuadratureConfluence`;
+* `henv` is NOT a hypothesis: it is derived inside from `hEfree` (the
+  item-1+2 free-envelope-part rate, itself satisfiable per
+  `q1_band_cut_envelope_sqrt_card_balance` with the same choice of `R`)
+  combined with `card -> ∞` (`localWeightActiveSet_card_tendsto_atTop`)
+  and the hypothesis `R -> ∞`.
+
+HISTORY / HONESTY NOTE.  An earlier draft packaged the perturbation
+input in an existential bundle
+`hres : ∃ R w e U C, ...` whose second-to-last member was the
+STRENGTHENED cutoff `S^(2ψ-2) * card * (2R+1) * S -> 0`, consumed to
+re-derive `hcut`.  By `strengthened_cutoff_unsatisfiable` that member
+holds for NO bandwidths and NO choice of `R` under the ordinary model,
+so the bundled theorem was VACUOUS (an unsatisfiable hypothesis carries
+no information).  The remaining bundle members do not survive either:
+the two weighted band rates are produced from the strengthened cutoff by
+the bridges of `kernelEnergy_card_rate`, and the diagonal obstruction
+(`A_ii = S^ψ` versus `B_ii = 0` across `~ card` rows) that refutes the
+cutoff also blocks any packaging that requires killing the weighted band
+term of the comparison-kernel difference.  The honest repair is to let
+the theorem consume `hPert` directly, at the exact strength at which it
+is stated in `Hurst.ActualQuadratureConfluence`; the trace-power
+transfer to the eigenvalues then happens inside
+`actualQ1EigenvaluePowerSums_tendsto` (via
+`Hurst.ActualMeshTraceTransfer` / `Hurst.TracePowerTransfer`), which
+needs only `hPert` and not the strengthened cutoff. -/
 theorem actualQ1EigenvaluePowerSums_tendsto_ordinary
     (p a b M : ℝ) (r : ℕ) (hp : 1 ≤ p) (ha : 0 < a) (hb : b < 1) (hab : a ≤ b)
     (hM : 0 ≤ M) (f : ℝ → ℝ) (hf : f ∈ hurstHolderClass p M)
@@ -439,66 +565,25 @@ theorem actualQ1EigenvaluePowerSums_tendsto_ordinary
       Real.sqrt ((localWeightActiveSet n 1 (δ n) t).card : ℝ) *
         q1TailEnvelopeFreePart b Ccov Ctail L M (f t) n (δ n)
           ((n : ℝ) * δ n)) atTop (𝓝 0))
-    (hres : ∃ (R : ℕ → ℕ) (w e : ℕ → ℝ) (U C : ℝ),
-      (∀ᶠ n in atTop, 1 ≤ R n) ∧
-      Tendsto (fun n : ℕ => (R n : ℝ)) atTop atTop ∧
-      (∀ᶠ n in atTop, 0 ≤ e n) ∧
-      (∀ᶠ n in atTop, ∀ i,
-        |actualQ1ChainWeight f r n (δ n) t i| ≤ U) ∧
-      (∀ᶠ n in atTop, ∀ i,
-        |actualQ1ChainWeight f r n (δ n) t i -
-          equivalentKernel r
-            (rieszCycleGridPoint (localWeightActiveSet n 1 (δ n) t).card i)|
-          ≤ w n) ∧
-      Tendsto (fun n : ℕ => ((localWeightActiveSet n 1 (δ n) t).card : ℝ) *
-        w n ^ 2) atTop (𝓝 0) ∧
-      Tendsto (fun n : ℕ => ((localWeightActiveSet n 1 (δ n) t).card : ℝ) *
-        e n ^ 2) atTop (𝓝 0) ∧
-      Tendsto (fun n : ℕ => ((localWeightActiveSet n 1 (δ n) t).card : ℝ) *
-        realScaleMeshBandEnergy ((n : ℝ) * δ n) (R n)
-          (actualQ1WeightedActualKernel f hf r n (δ n) t)) atTop (𝓝 0) ∧
-      Tendsto (fun n : ℕ => ((localWeightActiveSet n 1 (δ n) t).card : ℝ) *
-        realScaleMeshBandEnergy ((n : ℝ) * δ n) (R n)
-          (actualQ1WeightedRieszKernel f r n (δ n) t)) atTop (𝓝 0) ∧
-      (∀ᶠ n in atTop, ∀ i j,
-        R n < Nat.dist j.val i.val →
-          |actualQ1WeightedActualKernel f hf r n (δ n) t i j -
-            actualQ1WeightedRieszKernel f r n (δ n) t i j| ≤
-              e n * |actualQ1WeightedRieszKernel f r n (δ n) t i j|) ∧
-      Tendsto (fun n : ℕ => ((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) *
-        ((localWeightActiveSet n 1 (δ n) t).card : ℝ) *
-        (2 * (R n : ℝ) + 1) * ((n : ℝ) * δ n)) atTop (𝓝 0) ∧
-      (∀ᶠ n : ℕ in atTop, realScaleMeshEnergy ((n : ℝ) * δ n)
-        (actualQ1WeightedRieszKernel f r n (δ n) t) ≤ C))
+    (R : ℕ → ℕ) (hR1 : ∀ᶠ n in atTop, 1 ≤ R n)
+    (hRtop : Tendsto (fun n : ℕ => (R n : ℝ)) atTop atTop)
+    (hcut : Tendsto (fun n : ℕ => ((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) *
+      ((localWeightActiveSet n 1 (δ n) t).card : ℝ) * (2 * (R n : ℝ) + 1))
+      atTop (𝓝 0))
+    (hPert : Tendsto (fun n : ℕ =>
+      ((localWeightActiveSet n 1 (δ n) t).card : ℝ) *
+      realScaleMeshEnergy ((n : ℝ) * δ n)
+        (actualQ1WeightedActualKernel f hf r n (δ n) t -
+          actualQ1WeightedRieszKernel f r n (δ n) t)) atTop (𝓝 0))
     (j : ℕ) :
     Tendsto (fun n : ℕ => padRearranged
       (fun i => |(actualQ1Hermitian f hf r n (δ n) t).eigenvalues i|) j)
       atTop (𝓝 (lam j)) := by
-  obtain ⟨R, w, e, U, C, hR1, hRtop, he0, hu, huv, hκw, hκe, hκbandA,
-    hκbandB, hoff, hcutS, hBbound⟩ := hres
   set S : ℕ → ℝ := fun n : ℕ => (n : ℝ) * δ n with hSdef
   set card : ℕ → ℕ :=
     fun n : ℕ => (localWeightActiveSet n 1 (δ n) t).card with hcarddef
   have hcardtop : Tendsto card atTop atTop :=
     localWeightActiveSet_card_tendsto_atTop 1 t ht δ hδpos hδ0 hN
-  have hS1 : ∀ᶠ n in atTop, (1 : ℝ) ≤ S n := hN.eventually_ge_atTop 1
-  -- the ordinary cutoff, from the strengthened one
-  have hcut : Tendsto (fun n : ℕ => (S n) ^ (2 * (2 - 2 * f t) - 2) *
-      (card n : ℝ) * (2 * (R n : ℝ) + 1)) atTop (𝓝 0) := by
-    apply squeeze_zero'
-    · filter_upwards [hS1] with n hSn
-      exact mul_nonneg (mul_nonneg
-        (Real.rpow_nonneg (by linarith : (0 : ℝ) ≤ S n) _)
-        (Nat.cast_nonneg _)) (by positivity)
-    · filter_upwards [hS1] with n hSn
-      calc (S n) ^ (2 * (2 - 2 * f t) - 2) * (card n : ℝ) *
-            (2 * (R n : ℝ) + 1)
-          = ((S n) ^ (2 * (2 - 2 * f t) - 2) * (card n : ℝ) *
-              (2 * (R n : ℝ) + 1)) * 1 := by ring
-        _ ≤ ((S n) ^ (2 * (2 - 2 * f t) - 2) * (card n : ℝ) *
-              (2 * (R n : ℝ) + 1)) * S n :=
-          mul_le_mul_of_nonneg_left hSn (by positivity)
-    · exact hcutS
   -- the ordinary envelope hypothesis, from the free-part rate and R -> ∞
   have henv : ∀ Ccov ≥ 0, ∀ Ctail ≥ 0, ∀ L > 0, Tendsto (fun n : ℕ =>
       q1ActualLongTailEnvelope b Ccov Ctail L M (f t) n (δ n) (S n) (R n))
@@ -537,7 +622,9 @@ theorem actualQ1EigenvaluePowerSums_tendsto_ordinary
           q1TailEnvelopeFreePart b Ccov Ctail L M (f t) n (δ n) (S n) := by
         filter_upwards [hδpos, eventually_ge_atTop 2] with n hδ hn
         unfold q1TailEnvelopeFreePart
-        have hnR1 : ((1 : ℕ) : ℝ) ≤ (n : ℝ) := Nat.one_le_cast.mpr hn
+        have hnR1 : (1 : ℝ) ≤ (n : ℝ) := by
+          have hn1 : (1 : ℕ) ≤ n := by omega
+          exact_mod_cast hn1
         have hlog : 0 ≤ Real.log (n : ℝ) := Real.log_nonneg hnR1
         have hD : 0 ≤ 2 * L * (1 + M) * δ n := by
           refine mul_nonneg (mul_nonneg (mul_nonneg (by norm_num)
@@ -546,15 +633,25 @@ theorem actualQ1EigenvaluePowerSums_tendsto_ordinary
           mul_nonneg hD hlog
         have hexp : 0 ≤ Real.exp ((2 * L * (1 + M) * δ n) * Real.log (n : ℝ)) :=
           Real.exp_nonneg _
-        have hrpow : 0 ≤ (2 * S n) ^ (2 - 2 * f t) :=
-          Real.rpow_nonneg (by linarith : (0 : ℝ) ≤ S n) _
+        have hrpow : 0 ≤ (2 * S n) ^ (2 - 2 * f t) := by
+          have hSnpos : (0 : ℝ) ≤ 2 * ((n : ℝ) * δ n) :=
+            mul_nonneg zero_le_two
+              (mul_nonneg (Nat.cast_nonneg n) (le_of_lt hδ))
+          have hSn0 : (0 : ℝ) ≤ 2 * S n := by
+            rw [hSdef]
+            exact hSnpos
+          exact Real.rpow_nonneg hSn0 _
         have hgrid : 0 ≤ gridCovarianceError b Ccov n := by
           unfold gridCovarianceError
-          positivity
+          have hnR : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+          have h2n : (1 : ℝ) ≤ 2 * (n : ℝ) := by linarith
+          refine mul_nonneg
+            (mul_nonneg hCcov (add_nonneg zero_le_one (Real.log_nonneg h2n)))
+            (add_nonneg (Real.rpow_nonneg (Nat.cast_nonneg n) _)
+              (Real.rpow_nonneg (Nat.cast_nonneg n) _))
         refine add_nonneg (add_nonneg (add_nonneg ?_ ?_) ?_) ?_
         · exact mul_nonneg
-            (mul_nonneg (mul_nonneg (by norm_num)
-              (mul_nonneg (le_of_lt hL) (by linarith))) hD)
+            (mul_nonneg (mul_nonneg (by norm_num) hCtail) hD)
             (add_nonneg zero_le_one (mul_nonneg hexp hE))
         · exact mul_nonneg (mul_nonneg (by norm_num) hexp) hE
         · exact mul_nonneg (by norm_num) hD
@@ -564,35 +661,24 @@ theorem actualQ1EigenvaluePowerSums_tendsto_ordinary
     have hRterm : Tendsto (fun n : ℕ =>
         16 * ((R n + 1 : ℕ) : ℝ)⁻¹) atTop (𝓝 0) := by
       have hRinf : Tendsto (fun n : ℕ => ((R n : ℝ) + 1)) atTop atTop := by
-        rw [tendsto_atTop]
+        rw [Filter.tendsto_atTop_atTop]
         intro β
-        filter_upwards [hRtop.eventually_ge_atTop (β - 1)] with n h
-        calc β ≤ (R n : ℝ) + 1 := by linarith
+        obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp
+          (hRtop.eventually_ge_atTop (β - 1))
+        exact ⟨N, fun a ha => by
+          have hle : β - 1 ≤ (R a : ℝ) := hN a ha
+          linarith⟩
       have hbase : Tendsto (fun n : ℕ => 16 * ((R n : ℝ) + 1)⁻¹) atTop (𝓝 0) := by
         simpa using (tendsto_inv_atTop_zero.comp hRinf).const_mul 16
       refine Tendsto.congr (fun n => ?_) hbase
       push_cast
       ring
-    refine Tendsto.congr (fun n => ?_) (hfree0.add hRterm)
+    have hsum : Tendsto (fun n : ℕ =>
+        q1TailEnvelopeFreePart b Ccov Ctail L M (f t) n (δ n) (S n) +
+          16 * ((R n + 1 : ℕ) : ℝ)⁻¹) atTop (𝓝 0) := by
+      simpa using hfree0.add hRterm
+    refine Tendsto.congr (fun n => ?_) hsum
     rw [q1ActualLongTailEnvelope_eq]
-    ring
-  -- the dimension-weighted rate from kernelEnergy_card_rate
-  have hκ0 : ∀ᶠ n in atTop, 0 ≤ (card n : ℝ) :=
-    Eventually.of_forall fun _ => Nat.cast_nonneg _
-  have hC0 : 0 ≤ max C 0 := le_max_right _ _
-  have hBbound' : ∀ᶠ n in atTop, realScaleMeshEnergy (S n)
-      (actualQ1WeightedRieszKernel f r n (δ n) t) ≤ max C 0 :=
-    hBbound.mono fun n h => le_trans h (le_max_left _ _)
-  have hPert := kernelEnergy_card_rate
-    (m := card) (R := R) (S := S) (κ := fun n : ℕ => (card n : ℝ))
-    (A := fun n : ℕ => actualQ1WeightedActualKernel f hf r n (δ n) t)
-    (B := fun n : ℕ => actualQ1WeightedRieszKernel f r n (δ n) t)
-    (u := fun n : ℕ => fun i : Fin (card n) =>
-      actualQ1ChainWeight f r n (δ n) t i)
-    (v := fun n : ℕ => fun i : Fin (card n) =>
-      equivalentKernel r (rieszCycleGridPoint (card n) i))
-    (U := U) (C := max C 0) (w := w) (e := e) hC0 hκ0 hu huv hκw hκbandA
-    hκbandB hoff he0 hκe hBbound'
   exact actualQ1EigenvaluePowerSums_tendsto p a b M r hp ha hb hab hM f hf
     hF t ht hlong δ hδpos hδ0 hN hm lam hlam hRiesz R hR1 hcut henv hPert
     Bω hBω Cref hCref j
