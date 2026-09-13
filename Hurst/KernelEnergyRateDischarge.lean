@@ -68,6 +68,20 @@ theorem:
   was abandoned.  The ordinary envelope input `henv` is still derived
   inside, from the free-part rate `hEfree` (the item-1+2 balance
   class) combined with `card -> ∞` and `R -> ∞`.
+
+REWIRED (2026-09-12, discharge round 2): this file is the LAST-LAYER
+module; the rewired final theorem lives in
+`Hurst.KernelEnergyRateDischarged`
+(`actualQ1EigenvaluePowerSums_tendsto_discharged`, which imports THIS
+file), where the `hPert` hypothesis is no longer explicit: the cutoff
+is CHOSEN as `R n = floor(S n ^ γ) + 1` (discharging `R`, `hR1`,
+`hRtop`, `hcut` via `R_balance_cutoff`, feasible `1/2 < γ < 4*f t - 3`),
+and `hPert` is produced by `hPert_discharged` from (i) the off-band
+relative comparison, (ii) the balance, and (iii) the two documented
+residuals — the card-weighted band rate `hband` (obstructed at
+`Θ(S^{2ψ} R^{1-2ψ})` for `O(1)` row weights; no `R` discharges it) and
+the quantitative weight-error rate `hκw`.  The envelope's `R`-exponent
+is `θ = 1` (`tailEnvelope_decay_of_R`).
 -/
 
 set_option maxHeartbeats 1000000
