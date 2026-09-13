@@ -556,3 +556,4 @@ import Hurst.ActualQuadratureConfluence
 import Hurst.KernelEnergyRate
 import Hurst.KernelEnergyRateDischarge
 import Hurst.SignedInterfaceFinal
+import Hurst.ActualQuadratureFinal
