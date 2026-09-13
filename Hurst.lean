@@ -552,3 +552,7 @@ import Hurst.TruncatedPairSum
 import Hurst.TwoFactorShiftBound
 import Hurst.VertexTupleTrace
 import Hurst.WeightedMatrixPSD
+import Hurst.ActualQuadratureConfluence
+import Hurst.KernelEnergyRate
+import Hurst.KernelEnergyRateDischarge
+import Hurst.SignedInterfaceFinal
