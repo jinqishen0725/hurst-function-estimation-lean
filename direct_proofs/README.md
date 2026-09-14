@@ -1,5 +1,13 @@
 # 直接数学修正证明：阅读入口
 
+形式化接手总入口：[TRANSITION.md](../TRANSITION.md)。它集中记录当前有效状态、全部主要 reference、工作包与验证命令。
+
+## 最新：2026-09-14 长记忆主线修复与 Lean 交接
+
+阅读顺序：[22 主证明](22_long_memory_repair_lean_handoff.md) → [23 谱与概率支撑](23_spectral_probability_support.md) → [24 端点与验收约束](24_endpoint_and_validation_contracts.md)。文件23、24补齐后续内部引理的书面证明，指定优先复用的有符号谱截断路线，并给出未知尺度的保守充分条件。现共24份书面文件；新增组合仍待 Lean 验证。
+
+[文件22](22_long_memory_repair_lean_handoff.md)重新判断当前完成状态，并给出与现有 Lean 接口对应的 W1–W10 书面证明：可行带宽、最终非空、实际矩阵直接到 Riesz 的迹幂极限、有符号极限谱及律的构造、Hermite 余项和已知尺度估计器的期望中心极限。它移除旧 capstone 的矛盾前提；新组合尚未完成 Lean 验证。下文保留此前阶段记录，不应据其旧完成表述认定当前 Lean 主线已验收。
+
 2026-09-08。按你的要求，本轮先写普通数学证明，暂不扩展Lean代码。这些文档的证明状态独立于已有Lean工程；新书面证明尚未整体形式化。
 
 每份文档包含修正后的假设、结论、逐步证明和适用范围。原始依据为项目中的正文19-AOS1825.pdf及suppdf_1.pdf，均未修改。完整编号映射仍见[总汇总](../summary.md)和[逐项目录](../results/catalog.json)。

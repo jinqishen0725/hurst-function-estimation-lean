@@ -1,8 +1,20 @@
 # Hurst function estimation：核验汇总
 
+另一个 agent 接手请从[当前 TRANSITION](TRANSITION.md)开始：其中集中列出最新审计、文件22–24、Lean 源码 reference、实施顺序及验证命令。
+
 **验收口径更正（用户明确要求）：所有内部引理都必须完成 Lean。仅允许明确标识的外部文献引理保留为假设。因此当前主线仍未完成；第二十八阶段只是接通下游条件推导，不能计为主线验收通过。**
 
-## 终局状态：2026-09-14 —— 一维 q1 长期记忆第二混沌链闭合（见 TRANSITION.md §12–13）
+## 独立复核后的当前状态：2026-09-14
+
+**长记忆主线尚未完成。** 当前 capstone 的全行非空条件与带宽组合分别不可满足；两项矛盾已经通过独立 Lean 证明。构建和公理审计通过不能消除这个问题。详见[独立审计](verification/independent_mainline_audit_2026-09-14.md)。
+
+[修复书面证明与 Lean 交接](direct_proofs/22_long_memory_repair_lean_handoff.md)给出实际矩阵直接到 Riesz 矩阵的替代路线。带宽可改用 `0 < γ < 1` 及 `(1−γ)(2−2h) < 2−2b`，并证明该区间非空；同时补写有符号谱、二阶混沌律、对数余项和已知尺度估计器的期望中心极限。**这些新组合尚待 Lean 验证，不能登记为已完成。**
+
+后续细节已补入[谱与概率支撑证明](direct_proofs/23_spectral_probability_support.md)及[端点与验收约束](direct_proofs/24_endpoint_and_validation_contracts.md)：包含正负谱匹配、Gaussian 级数全序列 a.e. 收敛、矩与特征函数、真值中心和未知尺度的一组保守充分条件。16 个引用 API 已通过独立 `#check`，不代表这些新推导已经形式化。
+
+### 以下为此前收工记录，完成判断已被上述审计撤回
+
+此前记录称一维 q1 长期记忆第二混沌链闭合（TRANSITION.md §12–13）。其具体声明和构建记录保留如下供追溯，不能据此认定当前主线完成。
 
 **CAPSTONE**：`Hurst/ActualSecondChaosComplete.lean` 的
 `actualQ1LongStatistic_tendsto_secondChaos_complete`——实际 q1 长期记忆二次统计量

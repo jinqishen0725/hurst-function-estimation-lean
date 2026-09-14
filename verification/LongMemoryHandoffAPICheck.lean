@@ -1,0 +1,36 @@
+import Hurst.FiniteSpectralArrayConvergence
+import Hurst.SpectralMatchingTail
+import Hurst.SpectralPermutation
+import Hurst.SpectralMatchingSort
+import Hurst.FeatureQuadraticSpectral
+import Hurst.SecondChaosSeriesL2
+import Hurst.FirstScaleLongL1
+import Hurst.FirstScaleEquivariance
+import Mathlib.Analysis.InnerProductSpace.Spectrum
+import Mathlib.Probability.ProductMeasure
+import Mathlib.Probability.Independence.InfinitePi
+import Mathlib.Probability.Martingale.Convergence
+import Mathlib.MeasureTheory.OuterMeasure.BorelCantelli
+
+/-!
+API existence check for written proofs 23 and 24.
+This file proves no new mathematical result and does not certify that the
+proposed new composition or its internal supporting lemmas are complete.
+-/
+
+#check ContinuousLinearMap.orthogonalComplement_iSup_eigenspaces_eq_bot
+#check ContinuousLinearMap.finite_dimensional_eigenspace
+#check MeasureTheory.Measure.infinitePi
+#check MeasureTheory.Measure.infinitePi_map_eval
+#check ProbabilityTheory.iIndepFun_infinitePi
+#check MeasureTheory.Submartingale.exists_ae_tendsto_of_bdd
+#check MeasureTheory.measure_limsup_atTop_eq_zero
+#check Hurst.iid_standardGaussian_centeredSquare_finset_L2
+#check Hurst.decreasingSpectralPerm
+#check Hurst.decreasingSpectralPerm_antitone
+#check Hurst.spectralTailBound_of_padded_coefficient_convergence
+#check Hurst.centeredSpectralSquares_permute_identDistrib
+#check Hurst.centeredSpectralSquares_tendsto_secondChaos_of_padded_l2
+#check Hurst.gaussianLogQuadraticStatistic_identDistrib_eigenvalueSquares
+#check Hurst.hurstHolder_q1_logScale_L1_lt_one
+#check Hurst.q1LogScaleEstimator_scale_integral

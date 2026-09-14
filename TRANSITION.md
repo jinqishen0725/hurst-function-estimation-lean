@@ -1,1062 +1,187 @@
-# Hurst function estimation Lean formalization: transition document
+# Hurst function estimation：当前交接入口
 
-Last updated: 2026-09-09 (America/Los_Angeles)
+更新：2026-09-14（America/Los_Angeles）。项目：`/Users/jinqishen/repo/lean_verification/hurst_function_estimation`。
 
-This document is the handoff point for continuing the formalization of the main one-dimensional results in Shen and Hsing, *Hurst function estimation*. It records what has actually been checked, what is only locally compiled, what is still conditional, and the shortest path to a fresh full audit.
+**长记忆 Lean 主线尚未完成。** 已有源码通过了编译和公理审计，但旧最终定理的两组前提各自不可满足。修复主证明和后续支撑已写成文件22–24，新 Lean 组合尚待实现。本文件取代旧交接中的当前状态判断。
 
-## 1. Acceptance rule
+此前1062行文档已逐字节保存为[历史交接记录](TRANSITION_history_2026-09-14.md)，包括重复内容及已撤回的 §13 “FINAL”。其中“不是 Git 仓库”“谱文件仍无法编译”“只剩 hPert”“主线完成”等表述均不得当作现状。
 
-The user requires every internal supporting lemma to be proved in Lean. A final theorem may retain a premise only when that premise is an exact, cited theorem from the external literature and the Lean interface states all of its hypotheses. A premise that merely restates convergence of the statistic being proved is not acceptable.
+## 1. 接手阅读顺序
 
-Use these status labels consistently:
-
-| Label | Meaning |
-|---|---|
-| **Integrated and audited** | Imported by `Hurst.lean`, full build passed, and the generated axiom audit passed for that snapshot. |
-| **Independently compiled** | The file passed `lake env lean FILE`, but it was added or changed after the last full build. |
-| **Conditional reduction** | Lean proves the reduction, but one or more named internal predicates remain as hypotheses. |
-| **Written proof only** | A direct mathematical proof exists in `direct_proofs/`, but the corresponding internal Lean chain is incomplete. |
-| **Backlog** | Deliberately excluded from the current one-dimensional mainline. |
-
-Do not call the current repository head fully verified. The last integrated build predates several current files and imports.
-
-## 2. Source material and project layout
-
-Primary local sources:
-
-- `19-AOS1825.pdf`: published paper.
-- `suppdf_1.pdf`: 44-page supplement supplied by the user.
-- `source/paper.txt` and `source/supplement.txt`: extracted searchable text.
-- `verification/source_manifest.json`: source hashes and provenance.
-
-Primary external theorem sources:
-
-- Bardet and Surgailis, Theorem 1(2): [official arXiv HTML](https://arxiv.org/html/1104.4732) and [record](https://arxiv.org/abs/1104.4732). Its exact scalar polynomial/Hilbert-space specialization is encoded by `BardetSurgailisTheoremOnePartTwoScalarPolynomialHilbert`.
-- The supplement informally invokes Taqqu, Proposition 6.1; bibliographic metadata is available from [Springer](https://link.springer.com/article/10.1007/BF00532868). That citation is not yet an exact usable interface for the actual long-memory statistic.
-
-Important files:
-
-- `Hurst.lean`: aggregate import and full-build target.
-- `Hurst/`: Lean modules.
-- `direct_proofs/`: repaired ordinary mathematical proofs.
-- `results/`: one file for each numbered paper result.
-- `summary.md`: intended final per-result report; its headline counts are stale at this checkpoint.
-- `backlog.md`: extensions intentionally postponed.
-- `verification/internal_input_inventory.json`: machine-readable internal input status; it still correctly marks `INT-CLT` and `INT-LONG` in progress.
-- `verification/build.log`, `verification/axioms.log`, `verification/audit_result.json`, `verification/coverage.json`: validation artifacts. Their timestamps matter.
-
-This directory is not a Git repository. All subagents share the same filesystem, so they must own disjoint files and must not run overlapping full builds.
-
-## 3. Verified checkpoint and current-head caveat
-
-The most recent full build is:
-
-```text
-2026-09-09 22:43:13 verification/build.log
-Build completed successfully (9041 jobs).
-```
-
-A separate completed axiom audit from 22:33, before the final 22:43 build and before the later edits, reported dependencies limited to mathlib foundations:
-
-```text
-Classical.choice
-Quot.sound
-propext
-```
-
-That earlier audit reported no `sorryAx` and no custom axioms. Because its timestamp differs from the build timestamp, treat it as prior evidence rather than as an audit of the exact 22:43 source snapshot. The old declaration count in `verification/coverage.json` is stale because coverage was last generated at 14:25.
-
-After that full build, `Hurst.lean` and multiple modules were changed. Therefore:
-
-- the 9041-job build is the last known-good aggregate-build checkpoint;
-- current source contains no textual `sorry`, `admit`, or `axiom` declarations;
-- current head has **not** passed a fresh full build, coverage generation, or axiom audit;
-- `FiniteSpectralArrayConvergence.lean` currently fails to compile and is not imported by `Hurst.lean`;
-- `ActualActiveFiniteCLT.lean` and `DistributionVaryingLawTransfer.lean` independently compile, but are not directly imported by `Hurst.lean`.
-
-All three parallel subagents were interrupted for this transition so that no background proof work continues to spend usage or mutate files. Their last file areas were:
-
-- `int_clt_var`: actual q1/q2 active-row CLT instantiation; produced/edited `ActualActiveFiniteCLT.lean`.
-- `int_long_resume`: permutation-aware finite spectral convergence; produced/edited `DistributionVaryingLawTransfer.lean` and `FiniteSpectralArrayConvergence.lean`.
-- `riesz_cycle_bridge`: fixed-cutoff Riesz reindex and cutoff removal; last edited `TruncatedRieszCycleBridge.lean`.
-
-## 4. Current mathematical status
-
-The main one-dimensional minimax lower-bound chain, including the fixed-range `p = 1` repair, is internally formalized. The major unresolved work is concentrated in the asymptotic distribution results, especially the long-memory second-chaos endpoint.
-
-Approximate status for planning, not an audit metric:
-
-| Area | Current assessment | Main remaining work |
-|---|---:|---|
-| One-dimensional minimax lower bound | Complete on the chosen repaired scope | Fresh integration/audit only. |
-| Risk, bias, variance, scale, and inverse-transfer chains | Largely complete | Fresh integration/audit and final report refresh. |
-| Short-memory finite-Hermite CLT infrastructure | About 95% | Instantiate the generic theorem for actual q1/q2 active rows and transfer to the final statistic; joined two-scale pilot CLT remains. |
-| Long-memory finite Gaussian spectral probability layer | Substantially complete | Finish permutation-aware array convergence and derive spectral inputs from the actual matrices. |
-| Discrete-to-continuum Riesz bridge | Partial conditional reduction | Prove fixed-cutoff reindexing and both cutoff-removal estimates. |
-| High-dimensional and model extensions | Backlog | See `backlog.md`; these do not block the one-dimensional mainline. |
-
-The mainline is **not complete**. The short-memory blocker is mostly theorem instantiation and bookkeeping. The long-memory blocker is substantive deterministic analysis: spectral matching/order and singular Riesz quadrature.
-
-## 5. Short-memory CLT chain
-
-The following chain has been built and checked file by file during the latest work:
-
-1. `Hurst/DenseRowOverride.lean`
-2. `Hurst/ExactPaddedRow.lean`
-3. `Hurst/ExactPaddedConditions.lean`
-4. `Hurst/ExactPaddedHitLaw.lean`
-5. `Hurst/ExactPaddedPolynomialProfile.lean`
-6. `Hurst/BardetSurgailisFixedRow.lean`
-7. `Hurst/EventualUniformRows.lean`
-8. `Hurst/ExactPaddedBSCLT.lean`
-9. `Hurst/VariableRowBSCLT.lean`
-10. `Hurst/SafeStandardizedFeatureRow.lean`
-
-The key endpoint is:
-
-```lean
-Hurst.variableRow_gaussianLogTruncation_clt
-```
-
-It proves the internal arbitrary-row reduction:
-
-```text
-every-subsequence criterion
-  -> strictly increasing row-size subsubsequence
-  -> dense predecessor selector
-  -> exact-hit row override
-  -> exact Bardet-Surgailis application
-  -> IdentDistrib transfer
-```
-
-Only the exact external Bardet-Surgailis theorem and ordinary row, tail, profile, variance, and model hypotheses remain as premises. No internal premise restates convergence of the final finite-polynomial statistic.
-
-`Hurst.exactPadded_gaussianLogTruncation_clt` proves the exact-row applicability conditions: unit norms, centering, Hermite rank two, row bound, correlation tail, L2 profile convergence and continuity, and the variance limit. The external interface now includes the missing centered-profile requirement `forall tau, integral (phi tau) = 0`.
-
-Newly checked files after the last integrated build:
-
-| File | Status | Content |
+| 顺序 | Reference | 用途 |
 |---|---|---|
-| `Hurst/DistributionVaryingLawTransfer.lean` | Independently compiled, exit 0 | Transfers convergence in distribution across rowwise `IdentDistrib` when both row spaces vary. |
-| `Hurst/ActualActiveFiniteCLT.lean` | Independently compiled, exit 0 after building `SafeStandardizedFeatureRow` | Defines the actual active B&S coefficient and safe active row; proves its normalized finite-Hermite variance equals the original local-statistic variance under nondegeneracy. It does **not** yet prove the actual q1/q2 CLT. |
+| 1 | [独立主线审计](verification/independent_mainline_audit_2026-09-14.md) | 两个矛盾、未消除输入、验证证据及范围判断 |
+| 2 | [22：修复主证明](direct_proofs/22_long_memory_repair_lean_handoff.md) | W1–W10：带宽、直接迹转移、谱、log 与 H 端点 |
+| 3 | [23：谱与概率支撑](direct_proofs/23_spectral_probability_support.md) | A：谱构造；B：正负谱匹配；C：构造 Q；D：消费现有谱截断；E：矩和特征函数 |
+| 4 | [24：端点与验收约束](direct_proofs/24_endpoint_and_validation_contracts.md) | 最终同律、归一化、四阶余项、真值中心、未知尺度充分条件；末尾有可直接复制的 agent 任务说明 |
+| 5 | [当前汇总](summary.md)、[书面证明索引](direct_proofs/README.md) | 与其他结果的关系；旧完成表述已撤回 |
+| 6 | [API 核对文件](verification/LongMemoryHandoffAPICheck.lean)、[旧前提 Lean 反证](verification/CapstonePremiseAudit.lean) | 可重跑的接口与非空性证据 |
 
-Remaining short-memory tasks:
+**验收规则：所有内部支撑引理必须完成 Lean。** 只有精确引用、完整陈述且已证明适用的外部文献定理可以作为保留前提。文件22–24中的新书面证明不是外部公理，不能作为尚未证明的最终参数。
 
-1. Add an actual-model theorem that instantiates `variableRow_gaussianLogTruncation_clt` using `ActiveBSApplicability`, `ActualFullTruncatedVarianceLimit`, `OptimalActiveRowDensity`, and the safe active row.
-2. Prove the law/equality bridge from that active-row statistic to the actual q1 and q2 optimal-bandwidth statistic.
-3. Handle the finite exceptional rows through `SafeStandardizedFeatureRow` and eventual equality rather than imposing global nondegeneracy at every small sample size.
-4. Transfer the finite-Hermite CLT through the already formalized truncation and inverse-function chains to the final estimator statement.
-5. Formalize the joined two-scale pilot CLT if the final unknown-scale theorem uses its joint limit.
-6. Import the stable new endpoint modules in `Hurst.lean` only after the endpoint theorem exists and direct compilation passes.
+## 2. Git、工具链与当前验证快照
 
-## 6. Long-memory second-chaos chain
+- 分支 `main`；本次检查 HEAD：`9ba36f6fac79853fb6ed036a5c34523cea1e6fcb`。提交标题声称完成，该数学判断已被审计撤回。
+- 早期回滚点：`checkpoint-2026-09-10-mainline-transition` → `c2d858531ad13b8819fda844cc0d71821842c9db`。正常接手不需要回滚，应保留之后可复用的成果。
+- 工具链：[lean-toolchain](lean-toolchain)、[lakefile.toml](lakefile.toml)、[lake-manifest.json](lake-manifest.json)，Lean/mathlib 固定 v4.31.0；使用 `/Users/jinqishen/.elan/bin/lake`。
+- 聚合入口：[Hurst.lean](Hurst.lean)。单文件编译不代替最终集成。
+- 最新交接材料仍在工作区，尚未提交：文件22–24、独立审计、两份检查 Lean、更新的 TRANSITION/归档、summary 和证明索引。先执行 `git status --short` 核对实时状态，不要清理这些未跟踪文件。本轮未修改 `Hurst/*.lean`，未创建 Git 提交。
 
-### 6.1 Independently compiled finite-dimensional layer
+| 验证 | 已有证据 | 不代表什么 |
+|---|---|---|
+| HEAD 聚合构建 | 独立审计通过，9126 jobs | 不证明定理前提可满足 |
+| HEAD 公理审计 | 2243个登记声明，未见 `sorryAx` 或自定义公理 | 不证明内部条件已消除；数量不是论文完成率 |
+| 旧前提反证 | `CapstonePremiseAudit.lean` 独立编译通过 | 不证明新的替代端点已完成 |
+| 新交接 API | `LongMemoryHandoffAPICheck.lean` 的16个 `#check` 通过 | 只确认接口存在，未验证新组合 |
+| 文件22–24 | 书面证明及接口设计已完成 | 新谱构造、匹配桥、实际端点仍待 Lean |
 
-- `Hurst/FiniteGaussianSpectral.lean`: exact diagonalization law for a finite Hermitian Gaussian quadratic form, second moment `2 * sum lambda_i^2`, and trace/entry identities.
-- `Hurst/FiniteHermitianTracePowers.lean`: `trace (A^k) = sum lambda_i^k` and cyclic coordinate expansions.
-- `Hurst/MatrixFrobeniusTrace.lean`: trace-product bound and fixed-dimensional Frobenius-to-power-trace convergence.
-- `Hurst/FeatureQuadraticSpectral.lean`: represents the actual feature quadratic statistic by finite eigenvalue-weighted centered squares; proves the exact signed weighted Hilbert-Schmidt energy identity.
-- `Hurst/StandardGaussianPrefix.lean`: canonical Gaussian prefix is measure preserving.
-- `Hurst/FiniteGaussianSpectralTruncation.lean`: exact finite spectral prefix law and exact L2 tail.
-- `Hurst/FiniteIidGaussianVector.lean`: iid Gaussian prefixes have the canonical finite Gaussian law.
-- `Hurst/FiniteGaussianSpectralConvergence.lean`: finite spectral convergence infrastructure.
-- `Hurst/FeatureQuadraticSpectralConvergence.lean`: actual feature-Gaussian quadratic convergence from padded eigenvalue convergence and a uniform spectral-tail bound. Its endpoint is `gaussianLogQuadraticStatistic_tendsto_secondChaos_of_spectral_data`.
-- `Hurst/SpectralPermutation.lean`: Gaussian coordinate permutations preserve measure and centered spectral-square laws.
+独立日志：`/tmp/hurst-audit-build-2026-09-14.log`、`/tmp/hurst-audit-axioms-2026-09-14.log`、`/tmp/hurst-long-memory-handoff-api-check.log`。临时日志可能被系统清理，以下可重跑命令比路径本身更重要。
 
-The permutation module is necessary because mathlib's Hermitian `eigenvalues : Fin m -> Real` enumeration is not documented as sorted. Coordinatewise eigenvalue convergence and tail bounds cannot be inferred from trace/Hilbert-Schmidt information without choosing rowwise permutations or providing an explicit ordering theorem.
+[internal_input_inventory.json](verification/internal_input_inventory.json) 仍保留旧 `mainline_complete: true` 与 INT-LONG discharged 标记，**与审计冲突，不能用作完成证据**。[check_internal_inputs.py](scripts/check_internal_inputs.py) 只检查登记一致性，不检查前提可满足性。开始修复时应按实际范围同步状态；正式验收前不得再次宣告完成。
 
-### 6.2 Current compile failure
+## 3. 已确认的问题与选定路线
 
-`Hurst/FiniteSpectralArrayConvergence.lean` is the active unfinished file. Its intended endpoint is:
+旧端点在 [ActualSecondChaosComplete.lean](Hurst/ActualSecondChaosComplete.lean)：`actualQ1LongStatistic_tendsto_secondChaos_complete`。
 
-```lean
-centeredMatrixQuadratic_tendsto_secondChaos_of_permuted_spectral_data
-```
+1. `hcard : ∀ n, 0 < activeCard n` 不可能成立，n=0、n=1 时活动集为空。改成由 nδ→∞ 推出的最终非空，特征非退化也只需最终成立。
+2. `γ < 4h−3` 与 `4b+1−4h < γ(5−4h)` 在 h≤b<1 下矛盾。必须更换分析路径，不能只删前提后继续调用旧定理。
+3. `hRiesz`、`hQ` 是需构造的谱和律，不是普通模型数据；`hwnn` 只覆盖非负权重特例。
+4. 二次统计量极限不自动等于最终 H、真值中心、未知尺度或联合 pilot 的结论。
 
-The first current error is at line 96 in `centeredSpectralSquares_sub_prefix_L2`. Lean cannot rewrite `hpoint` under the squared integrand:
+文件22的直接路线：
 
 ```text
-Tactic `rewrite` failed: Did not find an occurrence of the pattern
-fun x => centeredSpectralSquares lambda x - centeredSpectralPrefix lambda K x
+普通模型 + 可行带宽
+ → 最终几何、非退化、截断和尾包络
+ → ‖实际矩阵 − Riesz矩阵‖F → 0 + 两侧范数有界
+ → 每个 k≥2 的迹差 → 0（无矩阵维数损失）
+ → 实际全部谱幂和 → Riesz循环积分
+ → 构造的有符号谱 + Gaussian级数律
+ → 实际二阶项 → log统计量 → H估计器
 ```
 
-Suggested repair: keep the first `MemLp` branch, which already elaborates, and replace the failing integral rewrite with an explicit equality between the squared integrand functions:
+设 h=f(t)>3/4、ψ=2−2h，δ=n^(−γ)。基本带宽条件为 `0 < γ < 1`、`(1−γ)ψ < 2−2b`，对任意 h≤b<1 区间非空。截断指数另取 `θ=(1−2ψ)/2`，不要混淆 θ 与 γ。无需旧 `hPert`、`hFrozenPert`、`hγcut`、`hγdec`。
 
-```lean
-  · rwa [hpoint]
-  · have hsquare :
-        (fun x => (centeredSpectralSquares lambda x -
-          centeredSpectralPrefix lambda K x) ^ 2) =
-        (fun x => centeredSpectralSquares tail x ^ 2) := by
-      funext x
-      rw [congrFun hpoint x]
-    rw [hsquare, centeredSpectralSquares_secondMoment]
-    -- continue with the existing finite-sum calculation
-```
+关键估计已存在：`|tr(A^k)−tr(T^k)| ≤ k C^(k−1) ‖A−T‖F`，k≥2。优先直接组合它，不继续投入冻结矩阵路线更强的维数加权误差。
 
-After fixing the first error, compile again. Later lines use `tendstoInDistribution_of_identDistrib_rows_varying`, now available from the imported and independently compiled `DistributionVaryingLawTransfer` module, so the earlier “unknown constant” report may disappear.
+## 4. Lean 源码 reference 地图
 
-### 6.3 Riesz-cycle bridge
+每行配合文件22–24中的具体证明阅读；存在接口不等于适配已经完成。
 
-`Hurst/DiscreteRieszCycleBridge.lean` independently compiles and proves:
+| 层 | 源码 | 重点 |
+|---|---|---|
+| 带宽、截断 | [ActualSecondChaosComplete](Hurst/ActualSecondChaosComplete.lean) | 只复用独立标量引理：`poly_cutoff_satisfiable`、`secondChaosTailFreePart_tendsto_zero_powBandwidth` |
+| 活动窗 | [ActiveWindowGeometry](Hurst/ActiveWindowGeometry.lean)、[LocalWeightSupport](Hurst/LocalWeightSupport.lean) | 最终 card>0、card/S→2、活动下标 |
+| 权重 | [ActiveWeightProfile](Hurst/ActiveWeightProfile.lean)、[EquivalentKernel](Hurst/EquivalentKernel.lean) | u=S·w→ω、界、连续性、常数再现 |
+| 非退化 | [FirstStrideGrid](Hurst/FirstStrideGrid.lean)、[FirstStrideLongRows](Hurst/FirstStrideLongRows.lean) | 实际协方差和冻结单位方差给范数下界 |
+| 尾误差 | [ActualFirstLongHilbertSchmidt](Hurst/ActualFirstLongHilbertSchmidt.lean) | `hurstHolder_q1_active_scaled_actual_tail_error_le_envelope` |
+| 无权能量 | [ActualFirstLongHilbertSchmidtClosed](Hurst/ActualFirstLongHilbertSchmidtClosed.lean) | `hurstHolder_q1_actual_kernel_hilbertSchmidt_to_riesz_closed` |
+| 带权能量 | [ActualFirstLongWeightedKernel](Hurst/ActualFirstLongWeightedKernel.lean) | 实际有符号权重核的能量收敛 |
+| Frobenius | [ActualQuadratureConfluence](Hurst/ActualQuadratureConfluence.lean) | `actualQ1_meshEnergy_tendsto_zero`、`actualQ1_frobenius_norm_tendsto_zero`、`actualQ1UniformFrobeniusBound_of_bounded` |
+| Riesz 能量 | [FirstLongRieszEnergy](Hurst/FirstLongRieszEnergy.lean) | `rankRieszKernel_energy_le_const` |
+| 尖锐迹界 | [FarWordAssembly](Hurst/FarWordAssembly.lean) | `Hurst.abs_trace_pow_sub_le_frob`；非对称矩阵也适用 |
+| 循环求积 | [RieszQuadratureInstance](Hurst/RieszQuadratureInstance.lean)、[DiscreteRieszCycleBridge](Hurst/DiscreteRieszCycleBridge.lean) | 求积实例、`weightedRieszDiscrete_trace_pow_tendsto` |
+| 实际有限谱 | [FiniteHermitianTracePowers](Hurst/FiniteHermitianTracePowers.lean)、[FeatureQuadraticSpectral](Hurst/FeatureQuadraticSpectral.lean) | 迹/谱幂和、实际二次型同律 |
+| 谱和律定义 | [ExternalSecondChaosLimit](Hurst/ExternalSecondChaosLimit.lean) | `IsWeightedRieszSpectrum`、`IsSecondChaosSeriesLaw`；文件名不赋予外部假设资格 |
+| 正负排序 | [SpectralMatchingSort](Hurst/SpectralMatchingSort.lean) | 对正、负部分分别使用 `decreasingSpectralPerm` |
+| 平方和尾界 | [SpectralMatchingTail](Hurst/SpectralMatchingTail.lean) | `spectralTailBound_of_padded_coefficient_convergence` |
+| 有限谱排列 | [SpectralPermutation](Hurst/SpectralPermutation.lean) | 排列同律；补零另补 |
+| Gaussian L² | [SecondChaosSeriesL2](Hurst/SecondChaosSeriesL2.lean) | 独立中心化平方的有限和等距公式 |
+| 概率消费主接口 | [FiniteSpectralArrayConvergence](Hurst/FiniteSpectralArrayConvergence.lean) | `centeredSpectralSquares_tendsto_secondChaos_of_padded_l2` 允许有符号系数 |
+| 变化样本空间 | [DistributionVaryingLawTransfer](Hurst/DistributionVaryingLawTransfer.lean)、[EventualNondegenerate](Hurst/EventualNondegenerate.lean) | 同律转移、有限坏行处理 |
+| log 余项 | [FeatureQuadraticLimit](Hurst/FeatureQuadraticLimit.lean) | 二阶 Hermite 项和整个四阶起始余项 |
+| 反演 | [InverseRepair](Hurst/InverseRepair.lean)、[NormalizedInverseMeasurability](Hurst/NormalizedInverseMeasurability.lean) | 截断逆、Lipschitz、可测性 |
+| 未知尺度 | [FirstScaleLongL1](Hurst/FirstScaleLongL1.lean)、[FirstScaleLongRates](Hurst/FirstScaleLongRates.lean)、[FirstScaleEquivariance](Hurst/FirstScaleEquivariance.lean) | 文件24 E6–E8；当前粗行界的保守速率 |
 
-- the weighted discrete Riesz matrix;
-- symmetry of the rank-Riesz kernel;
-- cyclic-path expansion of matrix powers and traces;
-- the explicit two-cycle formula;
-- signed near-diagonal band bounds;
-- vanishing of the two-cycle band;
-- transfer from a cycle-quadrature statement to trace and spectrum statements.
+通用 mathlib 支撑的精确名称见文件23 F，[API核对文件](verification/LongMemoryHandoffAPICheck.lean)集中展示 import 与 `#check`。文件23 A3给出主线所需的专用 HS 工具证明，不必先重建完整 Schatten 或迹类算子库。
 
-`Hurst/TruncatedRieszCycleBridge.lean` also independently compiles. It proves the continuous capped kernel, integrability on the cube, the regular unit-lattice Riemann-sum theorem from mathlib, the affine unit-cube/symmetric-cube integral identity, and a three-epsilon reduction.
+## 5. 实施包与交付要求
 
-The following are still internal obligations, expressed as named predicates rather than proved facts:
+| 包 | 书面 reference | 实际 Lean 交付 |
+|---|---|---|
+| P1 | 文件22 W1–W5 | 可满足带宽下实际全部谱幂和→J_k；无维数加权扰动/全行非空假设 |
+| P2 | 文件23 A1–A6 | 构造 λ，平方可和与全部循环积分 HasSum；无预设 hRiesz |
+| P3 | 文件23 B1–B5、D1 | 正负分别排序、交错补零、系数收敛、尾界、补零同律 |
+| P4 | 文件23 C1–C4、D2–D3 | 构造概率空间及完整 hQ，消费谱截断得到实际二阶项极限 |
+| P5 | 文件22 W8–W9、文件24 E1–E5 | 实际 log、已知尺度 H 的期望中心极限；真值中心另核偏差条件 |
+| P6 | 文件23 E1–E3 | 非退化、四阶矩与非 Gaussian、全实轴特征函数及局部级数范围 |
+| P7 | 文件24 E6–E8 | 可选未知尺度端点：实际尺度 L¹ 界及相同归一化下的小量 |
 
-```lean
-HasFixedCutoffMatrixLatticeReindex
-HasUniformDiscreteRieszCutoffRemoval
-HasContinuumRieszCutoffRemoval
-```
+先完成 P1，再补构造与消费。文件24末尾有完整可复制任务说明。建议新建独立模块，保留旧代码供比较；文件22–24中的建议文件/定理名尚未创建，不能当作现有 API。
 
-`hasWeightedRieszCycleQuadrature_of_truncation` is therefore a conditional reduction, not the final internal proof. The most relevant mathlib theorem is `tendsto_tsum_div_pow_atTop_integral` in `Mathlib/Analysis/BoxIntegral/UnitPartition.lean`.
+若当前用户/环境允许并行，可把 P2算子构造、P3确定性匹配、P4 Gaussian级数构造分到不同新文件；先约定接口，不同时修改公共端点或运行多个聚合构建。本文件本身不是启动其他 agent 的授权，也不能从历史 agent 名单推断它们当前仍运行。
 
-### 6.4 Actual-model link
+每包报告：实际定理名、完整剩余前提、单文件编译、集成状态、公理依赖、适用性检查。编译通过和实际模型端点完成分别验收。
 
-Already compiled:
+## 6. 后续范围与其他工作
 
-- `hurstHolder_q1_actual_weighted_kernel_hilbertSchmidt_to_riesz` in `Hurst/ActualFirstLongWeightedKernel.lean` proves actual weighted covariance-kernel convergence to the discrete Riesz kernel in Hilbert-Schmidt energy.
-- The series and triangular L2 approximation layers are in `SecondChaosSeriesL2.lean`, `SecondChaosSeriesConvergence.lean`, and `SecondChaosTriangularSpectral.lean`.
+- 文件22主证明：一维 q1、固定内部点、h>3/4、有符号权重、已知尺度期望中心；H极限为 **−Q**。
+- 真值中心：文件24 E5还需 `(1−γ)ψ < γs`，s来自已证明的偏差率。任意多项式次数不能直接取 s=p，保守可取 s=1。
+- 未知尺度：文件24使用实际 q1尺度估计器、pilot带宽 n^(−1/2)、平均中心数 ceil(sqrt n)，给出充分条件 `1−(1−b)/ψ < γ < 1`。仍待新 Lean 拼接，不是所有带宽版本。
+- 短记忆：[ActualActiveBSCLT](Hurst/ActualActiveBSCLT.lean)、[JoinedPilotActualMarginal](Hurst/JoinedPilotActualMarginal.lean)有实质可复用成果；长记忆旧端点空真不否定这些工作，但边际桥不等于完整联合向量 CLT。
+- 原编号范围和 backlog 分别核对，本轮不扩张到高维、一般差分阶数、完整 minimax 或其他已推迟范围。
 
-Still unresolved:
+## 7. 其他资料与来源
 
-1. Complete `FiniteSpectralArrayConvergence.lean`.
-2. Derive a permutation and padded coefficient convergence from deterministic matrix/operator convergence. Trace-power convergence alone determines the multiset only after a separate compactness/matching argument.
-3. Derive the uniform l2 spectral-tail bound from the actual weighted matrices.
-4. Prove the three Riesz cutoff/reindex predicates above.
-5. Connect the actual weighted kernel convergence to the spectral hypotheses of `gaussianLogQuadraticStatistic_tendsto_secondChaos_of_spectral_data`.
-6. Replace the internal premise `GaussianQuadraticWeightedKernelContinuity` in `ActualFirstLongSecondChaosWeighted.lean` with the completed internal spectral/Riesz chain.
-7. Repeat the joint argument for the pilot statistic only if required by the final theorem scope.
+| 资料 | Reference |
+|---|---|
+| 原文及补充 | [正文PDF](19-AOS1825.pdf)、[补充PDF](suppdf_1.pdf)、[正文文本](source/paper.txt)、[补充文本](source/supplement.txt)、[来源哈希](verification/source_manifest.json) |
+| 旧长记忆构造 | [文件14](direct_proofs/14_q1_long_memory_limit.md)；矩阵拼接及带宽按22–24修订 |
+| 早期相关证明 | [文件08](direct_proofs/08_centering_and_long_memory.md)、[文件12](direct_proofs/12_q1_mbm_covariance_mse.md)、[文件13](direct_proofs/13_q1_short_and_critical_clt.md) |
+| pilot/尺度 | [文件15](direct_proofs/15_two_scale_pilot.md)、[文件16](direct_proofs/16_scale_spatial_average.md)、[文件17](direct_proofs/17_unknown_scale_backfitting.md)、[文件21](direct_proofs/21_unknown_scale_fine_limits.md)；书面范围不等于现成 Lean 端点 |
+| 逐编号结论 | [results/catalog.json](results/catalog.json)、[results目录](results)、[summary.md](summary.md) |
+| 推迟事项 | [backlog.md](backlog.md) |
+| 统计 Lean 复用 | [lean_reuse.md](lean_reuse.md)、[复用清单](verification/lean_reuse_inventory.json)、[本地StatLean](third_party/StatLean)；核对版本、许可证及前提 |
+| 旧协作规范 | [lean_agent_protocol.md](verification/lean_agent_protocol.md)、[parallel_wave_prompts.md](verification/parallel_wave_prompts.md)；旧任务可能过期，按本文件分工 |
+| 旧条件登记 | [conditional_mainline_summary.md](conditional_mainline_summary.md)、[conditional_results.json](verification/conditional_results.json)、[conditional_boundary_audit.json](verification/conditional_boundary_audit.json)；仅作历史边界索引 |
 
-The supplement's sentence near `source/supplement.txt:2294`—roughly “follow Taqqu Proposition 6.1 and modify the matrix/weights”—is too short to discharge these obligations. The repaired ordinary proof is in `direct_proofs/14_q1_long_memory_limit.md`.
+外部来源沿用历史记录：Bardet–Surgailis [arXiv记录](https://arxiv.org/abs/1104.4732)、[全文HTML](https://arxiv.org/html/1104.4732)；补充引用的 Taqqu [出版社页面](https://link.springer.com/article/10.1007/BF00532868)。本轮未重新联网核验这些链接。保留任何外部假设前必须匹配原文定理和全部条件；不能把“follow Proposition 6.1”变成实际统计量收敛黑箱。
 
-## 7. Ordered remaining work
+## 8. 工具与验证命令
 
-Work in this order to minimize rework.
+先读取实时状态，再按需运行检查：
 
-### P0: stabilize the current branch
-
-1. Fix and directly compile `FiniteSpectralArrayConvergence.lean`.
-2. Directly compile every file changed after 22:43 that is intended for the aggregate import.
-3. Decide whether `DistributionVaryingLawTransfer`, `ActualActiveFiniteCLT`, and `FiniteSpectralArrayConvergence` are ready to import in `Hurst.lean`.
-4. Do not regenerate coverage yet if any intended imported module fails.
-
-### P1: close the short-memory actual endpoint
-
-Implement the q1/q2 actual active-row instantiation of the generic B&S theorem. This is the shortest route to a major completed result and should be handled before the harder long-memory analysis.
-
-### P2: close deterministic long-memory inputs
-
-Run two disjoint efforts:
-
-- spectral matching/permutation and l2 tail;
-- fixed-cutoff Riesz reindex plus discrete and continuum cutoff removal.
-
-Then connect both to the actual q1 quadratic statistic and remove `GaussianQuadraticWeightedKernelContinuity`.
-
-### P3: joined pilot endpoints
-
-Complete the two-scale joint CLT/second-chaos statements required by the unknown-scale result. Do this after the one-scale endpoints are stable so the joint proof reuses their lemmas.
-
-### P4: integrate and audit
-
-1. Add only compiled modules to `Hurst.lean`.
-2. Regenerate coverage and the axiom audit input.
-3. Run the full build once.
-4. Run the axiom and internal-input checks.
-5. Update `verification/internal_input_inventory.json`, `summary.md`, the per-result files, and any status JSON from the fresh evidence.
-
-### P5: backlog only after the mainline passes
-
-Keep the items in `backlog.md` postponed: dimensions 2 and 3, high-dimensional minimax, general `q >= 3`, full vector conclusions, extra boundary limits, irregular grids, nonconstant scale, numerical reproduction, and `s = infinity` extensions.
-
-## 8. Validation runbook
-
-Use the project-pinned executable:
-
-```bash
-/Users/jinqishen/.elan/bin/lake
-```
-
-### Inspect before editing
-
-```bash
+```sh
 cd /Users/jinqishen/repo/lean_verification/hurst_function_estimation
-rg -n "theorem_name|definition_name" Hurst
-rg -n "sorry|admit|^\\s*axiom" Hurst Hurst.lean
-rg -n "import Hurst\\." Hurst.lean
+git status --short
+git log -1 --oneline
+rg -n 'actualQ1_meshEnergy_tendsto_zero|abs_trace_pow_sub_le_frob' Hurst
+/Users/jinqishen/.elan/bin/lake env lean verification/LongMemoryHandoffAPICheck.lean
+/Users/jinqishen/.elan/bin/lake env lean verification/CapstonePremiseAudit.lean
 ```
 
-### Check one file
+单模块验证先于聚合。以下为现有模块示例，新模块替换为实际名称：
 
-```bash
+```sh
+/Users/jinqishen/.elan/bin/lake build Hurst.FiniteSpectralArrayConvergence
 /Users/jinqishen/.elan/bin/lake env lean Hurst/FiniteSpectralArrayConvergence.lean
+git diff --check
 ```
 
-If Lean reports a missing `.olean`, build that imported module first, then retry:
+缺 `.olean` 先构建导入模块，不据此判断数学错误。`#check` 看接口、`#print` 看完整陈述、`#print axioms` 看依赖。读取和搜索可批量并行；依赖构建、修改、全套审计顺序执行。使用 `rg` 查声明、`apply_patch` 修改，保留其他 agent 的未提交内容。mathlib先看本地固定版本，外部定理只依据精确原文。
 
-```bash
-/Users/jinqishen/.elan/bin/lake build Hurst.SafeStandardizedFeatureRow
-/Users/jinqishen/.elan/bin/lake env lean Hurst/ActualActiveFiniteCLT.lean
-```
+完成集成且源码稳定后，依次执行：
 
-A missing `.olean` is an environment/build-order problem. It is not evidence that the theorem source is wrong.
-
-### Final validation sequence
-
-Run sequentially, not in parallel:
-
-```bash
+```sh
 python3 scripts/check_coverage.py
-/Users/jinqishen/.elan/bin/lake build Hurst > verification/build.log
-/Users/jinqishen/.elan/bin/lake env lean verification/AxiomAudit.lean > verification/axioms.log
+/Users/jinqishen/.elan/bin/lake build Hurst > verification/build.log 2>&1
+/Users/jinqishen/.elan/bin/lake env lean verification/AxiomAudit.lean > verification/axioms.log 2>&1
 python3 scripts/verify_axioms.py
 python3 scripts/check_internal_inputs.py
+git diff --check
 ```
 
-Expected acceptance:
-
-- every command exits 0;
-- `verification/build.log` ends with `Build completed successfully`;
-- axiom verification reports `sorryAx=false` and `custom_axioms=false`;
-- internal inputs required by the declared completed scope are discharged;
-- `coverage.json` was generated after the final source changes;
-- `summary.md` reports the same status as the machine-readable artifacts.
-
-Do not run `scripts/check_coverage.py` while unfinished files are imported, because it regenerates `verification/AxiomAudit.lean` and `verification/coverage.json` and can make the evidence harder to interpret.
-
-## 9. Project-relevant tool usage illustrations
-
-These examples are operational recipes for the next coordinating agent. They are not proof steps.
-
-### 9.1 File search and inspection
-
-Use `functions.exec` with `rg` for declarations and dependencies:
-
-```text
-exec_command(
-  workdir = "/Users/jinqishen/repo/lean_verification/hurst_function_estimation",
-  cmd = "rg -n 'centeredSpectralSquares_sub_prefix_L2|HasUniformDiscreteRieszCutoffRemoval' Hurst"
-)
-```
-
-Batch independent read-only inspections with `Promise.allSettled`; keep edits, builds, and adaptive retries sequential.
-
-### 9.2 Editing
-
-Use `apply_patch` for changes:
-
-```diff
-*** Begin Patch
-*** Update File: Hurst/FiniteSpectralArrayConvergence.lean
-@@
--  rw [hpoint, centeredSpectralSquares_secondMoment]
-+  ...replacement proof...
-*** End Patch
-```
-
-Re-read the edited theorem and immediately run its single-file Lean check.
-
-### 9.3 Parallel subagent partition
-
-The user explicitly authorized subagents. Assign disjoint files and concrete acceptance criteria. A good three-way split is:
-
-```text
-spawn_agent task_name="short_actual_clt"
-  Own only ActualActiveFiniteCLT.lean and a new actual endpoint file.
-  Instantiate variableRow_gaussianLogTruncation_clt for q1/q2.
-  Return theorem names, exact remaining hypotheses, and direct compile output.
-
-spawn_agent task_name="spectral_matching"
-  Own only FiniteSpectralArrayConvergence.lean and any new spectral-matching file.
-  Fix the current L2 rewrite, prove the permutation-aware finite-array theorem,
-  and identify the exact deterministic matching lemma still needed.
-
-spawn_agent task_name="riesz_cutoff"
-  Own only TruncatedRieszCycleBridge.lean and a new cutoff-estimate file.
-  Prove fixed-cutoff reindexing and as much cutoff removal as possible.
-  Do not replace an internal estimate by an assumption.
-```
-
-Coordination tools:
-
-```text
-list_agents()                         # inspect all active tasks
-send_message(target, message)         # add a constraint without starting a new turn
-followup_task(target, message)         # resume an idle task with concrete follow-up work
-wait_agent(timeout_ms = 180000)        # wait for a useful status/final update
-interrupt_agent(target)                # stop work when usage is tight or files conflict
-```
-
-The coordinator should compile and inspect every subagent's files independently. A subagent's verbal “done” is not validation.
-
-Avoid assigning two agents to the same file. Avoid concurrent `lake build Hurst` runs; they waste time and can obscure which source snapshot a log represents.
-
-### 9.4 External source verification
-
-Use web search/open only for exact primary-source theorem statements and metadata. For technical claims, prefer the paper itself or official publisher/arXiv pages. Record:
-
-- theorem number and source URL;
-- every assumption used by the Lean interface;
-- whether the theorem exactly implies the encoded premise;
-- any specialization argument that remains internal.
-
-Never turn an informal citation such as “follow Proposition 6.1” into an accepted external premise without locating and matching the exact statement.
-
-### 9.5 Progress reporting
-
-Report four separate facts:
-
-1. mathematical proof status;
-2. single-file Lean compile status;
-3. aggregate import/build status;
-4. axiom/coverage audit status.
-
-This prevents a locally valid lemma or a conditional reduction from being mistaken for a complete paper theorem.
-
-## 10. Known pitfalls
-
-- **Stale `.olean` files:** build a missing dependency before diagnosing source code.
-- **Universe mismatch:** the B&S specialization currently uses `.{0}` and `{E : Type}` intentionally; changing it to unconstrained `Type*` previously caused a mismatch.
-- **Eigenvalue order:** do not assume mathlib's Hermitian eigenvalues are sorted. Carry an explicit permutation or prove an ordering construction.
-- **Signed weights:** long-memory matrices and cycle sums use signed local-polynomial weights; absolute-value bounds must preserve the exact normalization and sign-sensitive identities.
-- **Singular diagonal:** continuum Riesz kernels require truncation and diagonal-neighborhood control. Fixed-cutoff Riemann sums alone do not prove the singular limit.
-- **Conditional predicates:** a theorem consuming `HasFixedCutoffMatrixLatticeReindex` or `GaussianQuadraticWeightedKernelContinuity` has not discharged that internal input.
-- **Old status prose:** `summary.md` contains historical counts and statements such as “2/27” that no longer summarize the current internal progress. Update only from a fresh final audit.
-- **No Git safety net:** make small patches and keep agent file ownership disjoint.
-
-## 11. Completion definition
-
-The current one-dimensional mainline is complete only when all of the following hold:
-
-1. q1 and q2 actual short-memory estimator limits are derived from the exact B&S interface with every internal applicability hypothesis proved in Lean;
-2. the q1 long-memory actual quadratic statistic converges to the stated second-chaos law without `GaussianQuadraticWeightedKernelContinuity` or an equivalent internal convergence premise;
-3. every joint pilot limit used by the unknown-scale main theorem is proved;
-4. all intended modules are imported by `Hurst.lean`;
-5. the full build, generated coverage, axiom audit, and internal-input audit all pass on the same source snapshot;
-6. `summary.md` gives a per-major-result verdict, required correction, mathematical scope, Lean status, and remaining external dependency consistent with those artifacts.
-
-Until then, the accurate short description is: **the one-dimensional minimax and deterministic/risk backbone is largely formalized; the generic short-memory CLT is internally reduced to the exact external theorem; the actual short-memory instantiation and the long-memory spectral/Riesz closure remain.**
-
-
----
-
-## 12. Status update: 2026-09-13 (long-memory second-chaos chain closed to one rate hypothesis)
-
-This section supersedes the older status prose above wherever they disagree.
-
-### What is now theorems (all imported, full build 9114 jobs, axiom audit green, 2169 proof declarations)
-
-- **All three Riesz cutoff predicates are theorems** under ordinary hypotheses:
-  `fixedCutoffMatrixLatticeReindex` (Hurst/FixedCutoffReindexAssembly.lean),
-  `hasUniformDiscreteRieszCutoffRemoval` (Hurst/BandRemovalComplete.lean),
-  `hasContinuumRieszCutoffRemoval` (Hurst/ContinuumCutoffNuGlue.lean via the peeling
-  integrability in Hurst/DominatorIntegrability.lean and the uniform shift bounds in
-  Hurst/TwoFactorShiftBound.lean).
-- **`hasWeightedRieszCycleQuadrature_instance`** (Hurst/RieszQuadratureInstance.lean):
-  the three-predicate confluence, ordinary hypotheses only.
-- **The eigenvalue matching chain is complete**: tail extraction (Hurst/TailExtraction.lean),
-  array max extraction (Hurst/MaxExtraction*.lean), residual subtraction
-  (Hurst/PeelingSubtraction.lean), induction assembly (Hurst/PeelingInduction.lean —
-  `paddedRearranged_tendsto`), signed variant (Hurst/EvenPeeling.lean —
-  `paddedAbsRearranged_tendsto`, even power sums only, for signed spectra).
-- **The actual q1 long-memory chain is assembled** through
-  `actualQ1EigenvaluePowerSums_tendsto_ordinary` (Hurst/KernelEnergyRateDischarge.lean):
-  ordinary hypotheses + the kernel-energy rate `hPert` + the cutoff satisfiability
-  (PROVED: `ordinary_cutoff_satisfiable`, R = floor(S^gamma)+1 with 0 < gamma < 4h0−3).
-- **The signed consumption interface is complete**:
-  `gaussianLogQuadraticStatistic_tendsto_secondChaos_of_signedMatching`
-  (Hurst/SignedInterfaceFinal.lean) — Slutsky/L2 transfer from |lambda|-matching plus
-  negative-mass smallness; replaces the hNN-restricted consumption theorem.
-- Short-memory P1 endpoints (Hurst/ActualActiveBSCLT.lean) and the unknown-scale
-  marginal bridge (Hurst/JoinedPilotActualMarginal.lean) are unconditional (only the
-  exact external Bardet–Surgailis theorem + ordinary model assumptions).
-
-### The single remaining analysis item
-
-- **`hPert`**: the dimension-weighted kernel-energy rate
-  `card * realScaleMeshEnergy S (K_A − K_G) → 0`.  The unweighted convergence is a
-  theorem; the rate is the last open item.  The investigation (Hurst/KernelEnergyRate.lean)
-  proved the energy→0 chain fully quantitative and reduced the rate to three strengthened
-  inputs; the band-parameter balance was then shown UNSATISFIABLE in one packaging
-  (`strengthened_cutoff_unsatisfiable`) and the honest packaging now carries `hPert`
-  directly (Hurst/KernelEnergyRateDischarge.lean).  Discharging it requires a quantitative
-  upgrade of the kernel-approximation error (a rate on the mesh-Hilbert-Schmidt
-  convergence; the weight-error upgrade is `localPolynomialWeights_active_rank_uniform_tendsto`
-  made quantitative — its proof is explicit-algebra and believed mechanical).
-- `hNegMass` of the signed interface reduces exactly to `hPert`'s rate
-  (`||A_n − B_n|| = O(m^{-1/2−eta})`), documented in Hurst/SignedInterfaceFinal.lean.
-
-### Negative findings recorded (documented, kept)
-
-- `strengthened_cutoff_unsatisfiable`: the strengthened cutoff (extra S factor) is
-  refuted — the naive hres bundle was vacuous and was replaced by honest hypotheses.
-- Unconditional r=1 weight nonnegativity is FALSE (one-sided windows); weights are
-  signed in general, hence the signed route (EvenPeeling + EigenvaluePerturbation +
-  SignedInterfaceFinal) is the required path; the r=1 pointwise criterion
-  (Hurst/LocalLinearWeightsNonneg.lean) remains available as a simplification.
-
-### Restart guide
-
-Everything is imported and audited.  Remaining work: (1) discharge `hPert`
-(quantitative kernel-approximation rate — see above), then (2) the signed consumption
-theorem chain gives the q1 long-memory endpoint unconditionally, (3) refresh
-summary.md per-result verdicts.  Protocol and playbook:
-verification/lean_agent_protocol.md, verification/parallel_wave_prompts.md.
-# Hurst function estimation Lean formalization: transition document
-
-Last updated: 2026-09-09 (America/Los_Angeles)
-
-This document is the handoff point for continuing the formalization of the main one-dimensional results in Shen and Hsing, *Hurst function estimation*. It records what has actually been checked, what is only locally compiled, what is still conditional, and the shortest path to a fresh full audit.
-
-## 1. Acceptance rule
-
-The user requires every internal supporting lemma to be proved in Lean. A final theorem may retain a premise only when that premise is an exact, cited theorem from the external literature and the Lean interface states all of its hypotheses. A premise that merely restates convergence of the statistic being proved is not acceptable.
-
-Use these status labels consistently:
-
-| Label | Meaning |
-|---|---|
-| **Integrated and audited** | Imported by `Hurst.lean`, full build passed, and the generated axiom audit passed for that snapshot. |
-| **Independently compiled** | The file passed `lake env lean FILE`, but it was added or changed after the last full build. |
-| **Conditional reduction** | Lean proves the reduction, but one or more named internal predicates remain as hypotheses. |
-| **Written proof only** | A direct mathematical proof exists in `direct_proofs/`, but the corresponding internal Lean chain is incomplete. |
-| **Backlog** | Deliberately excluded from the current one-dimensional mainline. |
-
-Do not call the current repository head fully verified. The last integrated build predates several current files and imports.
-
-## 2. Source material and project layout
-
-Primary local sources:
-
-- `19-AOS1825.pdf`: published paper.
-- `suppdf_1.pdf`: 44-page supplement supplied by the user.
-- `source/paper.txt` and `source/supplement.txt`: extracted searchable text.
-- `verification/source_manifest.json`: source hashes and provenance.
-
-Primary external theorem sources:
-
-- Bardet and Surgailis, Theorem 1(2): [official arXiv HTML](https://arxiv.org/html/1104.4732) and [record](https://arxiv.org/abs/1104.4732). Its exact scalar polynomial/Hilbert-space specialization is encoded by `BardetSurgailisTheoremOnePartTwoScalarPolynomialHilbert`.
-- The supplement informally invokes Taqqu, Proposition 6.1; bibliographic metadata is available from [Springer](https://link.springer.com/article/10.1007/BF00532868). That citation is not yet an exact usable interface for the actual long-memory statistic.
-
-Important files:
-
-- `Hurst.lean`: aggregate import and full-build target.
-- `Hurst/`: Lean modules.
-- `direct_proofs/`: repaired ordinary mathematical proofs.
-- `results/`: one file for each numbered paper result.
-- `summary.md`: intended final per-result report; its headline counts are stale at this checkpoint.
-- `backlog.md`: extensions intentionally postponed.
-- `verification/internal_input_inventory.json`: machine-readable internal input status; it still correctly marks `INT-CLT` and `INT-LONG` in progress.
-- `verification/build.log`, `verification/axioms.log`, `verification/audit_result.json`, `verification/coverage.json`: validation artifacts. Their timestamps matter.
-
-This directory is not a Git repository. All subagents share the same filesystem, so they must own disjoint files and must not run overlapping full builds.
-
-## 3. Verified checkpoint and current-head caveat
-
-The most recent full build is:
-
-```text
-2026-09-09 22:43:13 verification/build.log
-Build completed successfully (9041 jobs).
-```
-
-A separate completed axiom audit from 22:33, before the final 22:43 build and before the later edits, reported dependencies limited to mathlib foundations:
-
-```text
-Classical.choice
-Quot.sound
-propext
-```
-
-That earlier audit reported no `sorryAx` and no custom axioms. Because its timestamp differs from the build timestamp, treat it as prior evidence rather than as an audit of the exact 22:43 source snapshot. The old declaration count in `verification/coverage.json` is stale because coverage was last generated at 14:25.
-
-After that full build, `Hurst.lean` and multiple modules were changed. Therefore:
-
-- the 9041-job build is the last known-good aggregate-build checkpoint;
-- current source contains no textual `sorry`, `admit`, or `axiom` declarations;
-- current head has **not** passed a fresh full build, coverage generation, or axiom audit;
-- `FiniteSpectralArrayConvergence.lean` currently fails to compile and is not imported by `Hurst.lean`;
-- `ActualActiveFiniteCLT.lean` and `DistributionVaryingLawTransfer.lean` independently compile, but are not directly imported by `Hurst.lean`.
-
-All three parallel subagents were interrupted for this transition so that no background proof work continues to spend usage or mutate files. Their last file areas were:
-
-- `int_clt_var`: actual q1/q2 active-row CLT instantiation; produced/edited `ActualActiveFiniteCLT.lean`.
-- `int_long_resume`: permutation-aware finite spectral convergence; produced/edited `DistributionVaryingLawTransfer.lean` and `FiniteSpectralArrayConvergence.lean`.
-- `riesz_cycle_bridge`: fixed-cutoff Riesz reindex and cutoff removal; last edited `TruncatedRieszCycleBridge.lean`.
-
-## 4. Current mathematical status
-
-The main one-dimensional minimax lower-bound chain, including the fixed-range `p = 1` repair, is internally formalized. The major unresolved work is concentrated in the asymptotic distribution results, especially the long-memory second-chaos endpoint.
-
-Approximate status for planning, not an audit metric:
-
-| Area | Current assessment | Main remaining work |
-|---|---:|---|
-| One-dimensional minimax lower bound | Complete on the chosen repaired scope | Fresh integration/audit only. |
-| Risk, bias, variance, scale, and inverse-transfer chains | Largely complete | Fresh integration/audit and final report refresh. |
-| Short-memory finite-Hermite CLT infrastructure | About 95% | Instantiate the generic theorem for actual q1/q2 active rows and transfer to the final statistic; joined two-scale pilot CLT remains. |
-| Long-memory finite Gaussian spectral probability layer | Substantially complete | Finish permutation-aware array convergence and derive spectral inputs from the actual matrices. |
-| Discrete-to-continuum Riesz bridge | Partial conditional reduction | Prove fixed-cutoff reindexing and both cutoff-removal estimates. |
-| High-dimensional and model extensions | Backlog | See `backlog.md`; these do not block the one-dimensional mainline. |
-
-The mainline is **not complete**. The short-memory blocker is mostly theorem instantiation and bookkeeping. The long-memory blocker is substantive deterministic analysis: spectral matching/order and singular Riesz quadrature.
-
-## 5. Short-memory CLT chain
-
-The following chain has been built and checked file by file during the latest work:
-
-1. `Hurst/DenseRowOverride.lean`
-2. `Hurst/ExactPaddedRow.lean`
-3. `Hurst/ExactPaddedConditions.lean`
-4. `Hurst/ExactPaddedHitLaw.lean`
-5. `Hurst/ExactPaddedPolynomialProfile.lean`
-6. `Hurst/BardetSurgailisFixedRow.lean`
-7. `Hurst/EventualUniformRows.lean`
-8. `Hurst/ExactPaddedBSCLT.lean`
-9. `Hurst/VariableRowBSCLT.lean`
-10. `Hurst/SafeStandardizedFeatureRow.lean`
-
-The key endpoint is:
-
-```lean
-Hurst.variableRow_gaussianLogTruncation_clt
-```
-
-It proves the internal arbitrary-row reduction:
-
-```text
-every-subsequence criterion
-  -> strictly increasing row-size subsubsequence
-  -> dense predecessor selector
-  -> exact-hit row override
-  -> exact Bardet-Surgailis application
-  -> IdentDistrib transfer
-```
-
-Only the exact external Bardet-Surgailis theorem and ordinary row, tail, profile, variance, and model hypotheses remain as premises. No internal premise restates convergence of the final finite-polynomial statistic.
-
-`Hurst.exactPadded_gaussianLogTruncation_clt` proves the exact-row applicability conditions: unit norms, centering, Hermite rank two, row bound, correlation tail, L2 profile convergence and continuity, and the variance limit. The external interface now includes the missing centered-profile requirement `forall tau, integral (phi tau) = 0`.
-
-Newly checked files after the last integrated build:
-
-| File | Status | Content |
-|---|---|---|
-| `Hurst/DistributionVaryingLawTransfer.lean` | Independently compiled, exit 0 | Transfers convergence in distribution across rowwise `IdentDistrib` when both row spaces vary. |
-| `Hurst/ActualActiveFiniteCLT.lean` | Independently compiled, exit 0 after building `SafeStandardizedFeatureRow` | Defines the actual active B&S coefficient and safe active row; proves its normalized finite-Hermite variance equals the original local-statistic variance under nondegeneracy. It does **not** yet prove the actual q1/q2 CLT. |
-
-Remaining short-memory tasks:
-
-1. Add an actual-model theorem that instantiates `variableRow_gaussianLogTruncation_clt` using `ActiveBSApplicability`, `ActualFullTruncatedVarianceLimit`, `OptimalActiveRowDensity`, and the safe active row.
-2. Prove the law/equality bridge from that active-row statistic to the actual q1 and q2 optimal-bandwidth statistic.
-3. Handle the finite exceptional rows through `SafeStandardizedFeatureRow` and eventual equality rather than imposing global nondegeneracy at every small sample size.
-4. Transfer the finite-Hermite CLT through the already formalized truncation and inverse-function chains to the final estimator statement.
-5. Formalize the joined two-scale pilot CLT if the final unknown-scale theorem uses its joint limit.
-6. Import the stable new endpoint modules in `Hurst.lean` only after the endpoint theorem exists and direct compilation passes.
-
-## 6. Long-memory second-chaos chain
-
-### 6.1 Independently compiled finite-dimensional layer
-
-- `Hurst/FiniteGaussianSpectral.lean`: exact diagonalization law for a finite Hermitian Gaussian quadratic form, second moment `2 * sum lambda_i^2`, and trace/entry identities.
-- `Hurst/FiniteHermitianTracePowers.lean`: `trace (A^k) = sum lambda_i^k` and cyclic coordinate expansions.
-- `Hurst/MatrixFrobeniusTrace.lean`: trace-product bound and fixed-dimensional Frobenius-to-power-trace convergence.
-- `Hurst/FeatureQuadraticSpectral.lean`: represents the actual feature quadratic statistic by finite eigenvalue-weighted centered squares; proves the exact signed weighted Hilbert-Schmidt energy identity.
-- `Hurst/StandardGaussianPrefix.lean`: canonical Gaussian prefix is measure preserving.
-- `Hurst/FiniteGaussianSpectralTruncation.lean`: exact finite spectral prefix law and exact L2 tail.
-- `Hurst/FiniteIidGaussianVector.lean`: iid Gaussian prefixes have the canonical finite Gaussian law.
-- `Hurst/FiniteGaussianSpectralConvergence.lean`: finite spectral convergence infrastructure.
-- `Hurst/FeatureQuadraticSpectralConvergence.lean`: actual feature-Gaussian quadratic convergence from padded eigenvalue convergence and a uniform spectral-tail bound. Its endpoint is `gaussianLogQuadraticStatistic_tendsto_secondChaos_of_spectral_data`.
-- `Hurst/SpectralPermutation.lean`: Gaussian coordinate permutations preserve measure and centered spectral-square laws.
-
-The permutation module is necessary because mathlib's Hermitian `eigenvalues : Fin m -> Real` enumeration is not documented as sorted. Coordinatewise eigenvalue convergence and tail bounds cannot be inferred from trace/Hilbert-Schmidt information without choosing rowwise permutations or providing an explicit ordering theorem.
-
-### 6.2 Current compile failure
-
-`Hurst/FiniteSpectralArrayConvergence.lean` is the active unfinished file. Its intended endpoint is:
-
-```lean
-centeredMatrixQuadratic_tendsto_secondChaos_of_permuted_spectral_data
-```
-
-The first current error is at line 96 in `centeredSpectralSquares_sub_prefix_L2`. Lean cannot rewrite `hpoint` under the squared integrand:
-
-```text
-Tactic `rewrite` failed: Did not find an occurrence of the pattern
-fun x => centeredSpectralSquares lambda x - centeredSpectralPrefix lambda K x
-```
-
-Suggested repair: keep the first `MemLp` branch, which already elaborates, and replace the failing integral rewrite with an explicit equality between the squared integrand functions:
-
-```lean
-  · rwa [hpoint]
-  · have hsquare :
-        (fun x => (centeredSpectralSquares lambda x -
-          centeredSpectralPrefix lambda K x) ^ 2) =
-        (fun x => centeredSpectralSquares tail x ^ 2) := by
-      funext x
-      rw [congrFun hpoint x]
-    rw [hsquare, centeredSpectralSquares_secondMoment]
-    -- continue with the existing finite-sum calculation
-```
-
-After fixing the first error, compile again. Later lines use `tendstoInDistribution_of_identDistrib_rows_varying`, now available from the imported and independently compiled `DistributionVaryingLawTransfer` module, so the earlier “unknown constant” report may disappear.
-
-### 6.3 Riesz-cycle bridge
-
-`Hurst/DiscreteRieszCycleBridge.lean` independently compiles and proves:
-
-- the weighted discrete Riesz matrix;
-- symmetry of the rank-Riesz kernel;
-- cyclic-path expansion of matrix powers and traces;
-- the explicit two-cycle formula;
-- signed near-diagonal band bounds;
-- vanishing of the two-cycle band;
-- transfer from a cycle-quadrature statement to trace and spectrum statements.
-
-`Hurst/TruncatedRieszCycleBridge.lean` also independently compiles. It proves the continuous capped kernel, integrability on the cube, the regular unit-lattice Riemann-sum theorem from mathlib, the affine unit-cube/symmetric-cube integral identity, and a three-epsilon reduction.
-
-The following are still internal obligations, expressed as named predicates rather than proved facts:
-
-```lean
-HasFixedCutoffMatrixLatticeReindex
-HasUniformDiscreteRieszCutoffRemoval
-HasContinuumRieszCutoffRemoval
-```
-
-`hasWeightedRieszCycleQuadrature_of_truncation` is therefore a conditional reduction, not the final internal proof. The most relevant mathlib theorem is `tendsto_tsum_div_pow_atTop_integral` in `Mathlib/Analysis/BoxIntegral/UnitPartition.lean`.
-
-### 6.4 Actual-model link
-
-Already compiled:
-
-- `hurstHolder_q1_actual_weighted_kernel_hilbertSchmidt_to_riesz` in `Hurst/ActualFirstLongWeightedKernel.lean` proves actual weighted covariance-kernel convergence to the discrete Riesz kernel in Hilbert-Schmidt energy.
-- The series and triangular L2 approximation layers are in `SecondChaosSeriesL2.lean`, `SecondChaosSeriesConvergence.lean`, and `SecondChaosTriangularSpectral.lean`.
-
-Still unresolved:
-
-1. Complete `FiniteSpectralArrayConvergence.lean`.
-2. Derive a permutation and padded coefficient convergence from deterministic matrix/operator convergence. Trace-power convergence alone determines the multiset only after a separate compactness/matching argument.
-3. Derive the uniform l2 spectral-tail bound from the actual weighted matrices.
-4. Prove the three Riesz cutoff/reindex predicates above.
-5. Connect the actual weighted kernel convergence to the spectral hypotheses of `gaussianLogQuadraticStatistic_tendsto_secondChaos_of_spectral_data`.
-6. Replace the internal premise `GaussianQuadraticWeightedKernelContinuity` in `ActualFirstLongSecondChaosWeighted.lean` with the completed internal spectral/Riesz chain.
-7. Repeat the joint argument for the pilot statistic only if required by the final theorem scope.
-
-The supplement's sentence near `source/supplement.txt:2294`—roughly “follow Taqqu Proposition 6.1 and modify the matrix/weights”—is too short to discharge these obligations. The repaired ordinary proof is in `direct_proofs/14_q1_long_memory_limit.md`.
-
-## 7. Ordered remaining work
-
-Work in this order to minimize rework.
-
-### P0: stabilize the current branch
-
-1. Fix and directly compile `FiniteSpectralArrayConvergence.lean`.
-2. Directly compile every file changed after 22:43 that is intended for the aggregate import.
-3. Decide whether `DistributionVaryingLawTransfer`, `ActualActiveFiniteCLT`, and `FiniteSpectralArrayConvergence` are ready to import in `Hurst.lean`.
-4. Do not regenerate coverage yet if any intended imported module fails.
-
-### P1: close the short-memory actual endpoint
-
-Implement the q1/q2 actual active-row instantiation of the generic B&S theorem. This is the shortest route to a major completed result and should be handled before the harder long-memory analysis.
-
-### P2: close deterministic long-memory inputs
-
-Run two disjoint efforts:
-
-- spectral matching/permutation and l2 tail;
-- fixed-cutoff Riesz reindex plus discrete and continuum cutoff removal.
-
-Then connect both to the actual q1 quadratic statistic and remove `GaussianQuadraticWeightedKernelContinuity`.
-
-### P3: joined pilot endpoints
-
-Complete the two-scale joint CLT/second-chaos statements required by the unknown-scale result. Do this after the one-scale endpoints are stable so the joint proof reuses their lemmas.
-
-### P4: integrate and audit
-
-1. Add only compiled modules to `Hurst.lean`.
-2. Regenerate coverage and the axiom audit input.
-3. Run the full build once.
-4. Run the axiom and internal-input checks.
-5. Update `verification/internal_input_inventory.json`, `summary.md`, the per-result files, and any status JSON from the fresh evidence.
-
-### P5: backlog only after the mainline passes
-
-Keep the items in `backlog.md` postponed: dimensions 2 and 3, high-dimensional minimax, general `q >= 3`, full vector conclusions, extra boundary limits, irregular grids, nonconstant scale, numerical reproduction, and `s = infinity` extensions.
-
-## 8. Validation runbook
-
-Use the project-pinned executable:
-
-```bash
-/Users/jinqishen/.elan/bin/lake
-```
-
-### Inspect before editing
-
-```bash
-cd /Users/jinqishen/repo/lean_verification/hurst_function_estimation
-rg -n "theorem_name|definition_name" Hurst
-rg -n "sorry|admit|^\\s*axiom" Hurst Hurst.lean
-rg -n "import Hurst\\." Hurst.lean
-```
-
-### Check one file
-
-```bash
-/Users/jinqishen/.elan/bin/lake env lean Hurst/FiniteSpectralArrayConvergence.lean
-```
-
-If Lean reports a missing `.olean`, build that imported module first, then retry:
-
-```bash
-/Users/jinqishen/.elan/bin/lake build Hurst.SafeStandardizedFeatureRow
-/Users/jinqishen/.elan/bin/lake env lean Hurst/ActualActiveFiniteCLT.lean
-```
-
-A missing `.olean` is an environment/build-order problem. It is not evidence that the theorem source is wrong.
-
-### Final validation sequence
-
-Run sequentially, not in parallel:
-
-```bash
-python3 scripts/check_coverage.py
-/Users/jinqishen/.elan/bin/lake build Hurst > verification/build.log
-/Users/jinqishen/.elan/bin/lake env lean verification/AxiomAudit.lean > verification/axioms.log
-python3 scripts/verify_axioms.py
-python3 scripts/check_internal_inputs.py
-```
-
-Expected acceptance:
-
-- every command exits 0;
-- `verification/build.log` ends with `Build completed successfully`;
-- axiom verification reports `sorryAx=false` and `custom_axioms=false`;
-- internal inputs required by the declared completed scope are discharged;
-- `coverage.json` was generated after the final source changes;
-- `summary.md` reports the same status as the machine-readable artifacts.
-
-Do not run `scripts/check_coverage.py` while unfinished files are imported, because it regenerates `verification/AxiomAudit.lean` and `verification/coverage.json` and can make the evidence harder to interpret.
-
-## 9. Project-relevant tool usage illustrations
-
-These examples are operational recipes for the next coordinating agent. They are not proof steps.
-
-### 9.1 File search and inspection
-
-Use `functions.exec` with `rg` for declarations and dependencies:
-
-```text
-exec_command(
-  workdir = "/Users/jinqishen/repo/lean_verification/hurst_function_estimation",
-  cmd = "rg -n 'centeredSpectralSquares_sub_prefix_L2|HasUniformDiscreteRieszCutoffRemoval' Hurst"
-)
-```
-
-Batch independent read-only inspections with `Promise.allSettled`; keep edits, builds, and adaptive retries sequential.
-
-### 9.2 Editing
-
-Use `apply_patch` for changes:
-
-```diff
-*** Begin Patch
-*** Update File: Hurst/FiniteSpectralArrayConvergence.lean
-@@
--  rw [hpoint, centeredSpectralSquares_secondMoment]
-+  ...replacement proof...
-*** End Patch
-```
-
-Re-read the edited theorem and immediately run its single-file Lean check.
-
-### 9.3 Parallel subagent partition
-
-The user explicitly authorized subagents. Assign disjoint files and concrete acceptance criteria. A good three-way split is:
-
-```text
-spawn_agent task_name="short_actual_clt"
-  Own only ActualActiveFiniteCLT.lean and a new actual endpoint file.
-  Instantiate variableRow_gaussianLogTruncation_clt for q1/q2.
-  Return theorem names, exact remaining hypotheses, and direct compile output.
-
-spawn_agent task_name="spectral_matching"
-  Own only FiniteSpectralArrayConvergence.lean and any new spectral-matching file.
-  Fix the current L2 rewrite, prove the permutation-aware finite-array theorem,
-  and identify the exact deterministic matching lemma still needed.
-
-spawn_agent task_name="riesz_cutoff"
-  Own only TruncatedRieszCycleBridge.lean and a new cutoff-estimate file.
-  Prove fixed-cutoff reindexing and as much cutoff removal as possible.
-  Do not replace an internal estimate by an assumption.
-```
-
-Coordination tools:
-
-```text
-list_agents()                         # inspect all active tasks
-send_message(target, message)         # add a constraint without starting a new turn
-followup_task(target, message)         # resume an idle task with concrete follow-up work
-wait_agent(timeout_ms = 180000)        # wait for a useful status/final update
-interrupt_agent(target)                # stop work when usage is tight or files conflict
-```
-
-The coordinator should compile and inspect every subagent's files independently. A subagent's verbal “done” is not validation.
-
-Avoid assigning two agents to the same file. Avoid concurrent `lake build Hurst` runs; they waste time and can obscure which source snapshot a log represents.
-
-### 9.4 External source verification
-
-Use web search/open only for exact primary-source theorem statements and metadata. For technical claims, prefer the paper itself or official publisher/arXiv pages. Record:
-
-- theorem number and source URL;
-- every assumption used by the Lean interface;
-- whether the theorem exactly implies the encoded premise;
-- any specialization argument that remains internal.
-
-Never turn an informal citation such as “follow Proposition 6.1” into an accepted external premise without locating and matching the exact statement.
-
-### 9.5 Progress reporting
-
-Report four separate facts:
-
-1. mathematical proof status;
-2. single-file Lean compile status;
-3. aggregate import/build status;
-4. axiom/coverage audit status.
-
-This prevents a locally valid lemma or a conditional reduction from being mistaken for a complete paper theorem.
-
-## 10. Known pitfalls
-
-- **Stale `.olean` files:** build a missing dependency before diagnosing source code.
-- **Universe mismatch:** the B&S specialization currently uses `.{0}` and `{E : Type}` intentionally; changing it to unconstrained `Type*` previously caused a mismatch.
-- **Eigenvalue order:** do not assume mathlib's Hermitian eigenvalues are sorted. Carry an explicit permutation or prove an ordering construction.
-- **Signed weights:** long-memory matrices and cycle sums use signed local-polynomial weights; absolute-value bounds must preserve the exact normalization and sign-sensitive identities.
-- **Singular diagonal:** continuum Riesz kernels require truncation and diagonal-neighborhood control. Fixed-cutoff Riemann sums alone do not prove the singular limit.
-- **Conditional predicates:** a theorem consuming `HasFixedCutoffMatrixLatticeReindex` or `GaussianQuadraticWeightedKernelContinuity` has not discharged that internal input.
-- **Old status prose:** `summary.md` contains historical counts and statements such as “2/27” that no longer summarize the current internal progress. Update only from a fresh final audit.
-- **No Git safety net:** make small patches and keep agent file ownership disjoint.
-
-## 11. Completion definition
-
-The current one-dimensional mainline is complete only when all of the following hold:
-
-1. q1 and q2 actual short-memory estimator limits are derived from the exact B&S interface with every internal applicability hypothesis proved in Lean;
-2. the q1 long-memory actual quadratic statistic converges to the stated second-chaos law without `GaussianQuadraticWeightedKernelContinuity` or an equivalent internal convergence premise;
-3. every joint pilot limit used by the unknown-scale main theorem is proved;
-4. all intended modules are imported by `Hurst.lean`;
-5. the full build, generated coverage, axiom audit, and internal-input audit all pass on the same source snapshot;
-6. `summary.md` gives a per-major-result verdict, required correction, mathematical scope, Lean status, and remaining external dependency consistent with those artifacts.
-
-Until then, the accurate short description is: **the one-dimensional minimax and deterministic/risk backbone is largely formalized; the generic short-memory CLT is internally reduced to the exact external theorem; the actual short-memory instantiation and the long-memory spectral/Riesz closure remain.**
-
-
----
-
-## 12. Status update: 2026-09-13 (long-memory second-chaos chain closed to one rate hypothesis)
-
-This section supersedes the older status prose above wherever they disagree.
-
-### What is now theorems (all imported, full build 9114 jobs, axiom audit green, 2169 proof declarations)
-
-- **All three Riesz cutoff predicates are theorems** under ordinary hypotheses:
-  `fixedCutoffMatrixLatticeReindex` (Hurst/FixedCutoffReindexAssembly.lean),
-  `hasUniformDiscreteRieszCutoffRemoval` (Hurst/BandRemovalComplete.lean),
-  `hasContinuumRieszCutoffRemoval` (Hurst/ContinuumCutoffNuGlue.lean via the peeling
-  integrability in Hurst/DominatorIntegrability.lean and the uniform shift bounds in
-  Hurst/TwoFactorShiftBound.lean).
-- **`hasWeightedRieszCycleQuadrature_instance`** (Hurst/RieszQuadratureInstance.lean):
-  the three-predicate confluence, ordinary hypotheses only.
-- **The eigenvalue matching chain is complete**: tail extraction (Hurst/TailExtraction.lean),
-  array max extraction (Hurst/MaxExtraction*.lean), residual subtraction
-  (Hurst/PeelingSubtraction.lean), induction assembly (Hurst/PeelingInduction.lean —
-  `paddedRearranged_tendsto`), signed variant (Hurst/EvenPeeling.lean —
-  `paddedAbsRearranged_tendsto`, even power sums only, for signed spectra).
-- **The actual q1 long-memory chain is assembled** through
-  `actualQ1EigenvaluePowerSums_tendsto_ordinary` (Hurst/KernelEnergyRateDischarge.lean):
-  ordinary hypotheses + the kernel-energy rate `hPert` + the cutoff satisfiability
-  (PROVED: `ordinary_cutoff_satisfiable`, R = floor(S^gamma)+1 with 0 < gamma < 4h0−3).
-- **The signed consumption interface is complete**:
-  `gaussianLogQuadraticStatistic_tendsto_secondChaos_of_signedMatching`
-  (Hurst/SignedInterfaceFinal.lean) — Slutsky/L2 transfer from |lambda|-matching plus
-  negative-mass smallness; replaces the hNN-restricted consumption theorem.
-- Short-memory P1 endpoints (Hurst/ActualActiveBSCLT.lean) and the unknown-scale
-  marginal bridge (Hurst/JoinedPilotActualMarginal.lean) are unconditional (only the
-  exact external Bardet–Surgailis theorem + ordinary model assumptions).
-
-### The single remaining analysis item
-
-- **`hPert`**: the dimension-weighted kernel-energy rate
-  `card * realScaleMeshEnergy S (K_A − K_G) → 0`.  The unweighted convergence is a
-  theorem; the rate is the last open item.  The investigation (Hurst/KernelEnergyRate.lean)
-  proved the energy→0 chain fully quantitative and reduced the rate to three strengthened
-  inputs; the band-parameter balance was then shown UNSATISFIABLE in one packaging
-  (`strengthened_cutoff_unsatisfiable`) and the honest packaging now carries `hPert`
-  directly (Hurst/KernelEnergyRateDischarge.lean).  Discharging it requires a quantitative
-  upgrade of the kernel-approximation error (a rate on the mesh-Hilbert-Schmidt
-  convergence; the weight-error upgrade is `localPolynomialWeights_active_rank_uniform_tendsto`
-  made quantitative — its proof is explicit-algebra and believed mechanical).
-- `hNegMass` of the signed interface reduces exactly to `hPert`'s rate
-  (`||A_n − B_n|| = O(m^{-1/2−eta})`), documented in Hurst/SignedInterfaceFinal.lean.
-
-### Negative findings recorded (documented, kept)
-
-- `strengthened_cutoff_unsatisfiable`: the strengthened cutoff (extra S factor) is
-  refuted — the naive hres bundle was vacuous and was replaced by honest hypotheses.
-- Unconditional r=1 weight nonnegativity is FALSE (one-sided windows); weights are
-  signed in general, hence the signed route (EvenPeeling + EigenvaluePerturbation +
-  SignedInterfaceFinal) is the required path; the r=1 pointwise criterion
-  (Hurst/LocalLinearWeightsNonneg.lean) remains available as a simplification.
-
-### Restart guide
-
-Everything is imported and audited.  Remaining work: (1) discharge `hPert`
-(quantitative kernel-approximation rate — see above), then (2) the signed consumption
-theorem chain gives the q1 long-memory endpoint unconditionally, (3) refresh
-summary.md per-result verdicts.  Protocol and playbook:
-verification/lean_agent_protocol.md, verification/parallel_wave_prompts.md.
-
-
----
-
-## 13. FINAL: 2026-09-14 — clause 2 closed, mainline complete
-
-`Hurst/ActualSecondChaosComplete.lean` (capstone,
-`actualQ1LongStatistic_tendsto_secondChaos_complete`) closes §11 item 2:
-the q1 long-memory quadratic statistic converges in distribution to the
-second-chaos law under ordinary model hypotheses + the polynomial bandwidth
-window (δ = n^{−γ} with the explicit triple constraint) + weight nonnegativity
-(balanced degree-one criterion) + nondegeneracy.  The internal premise
-`GaussianQuadraticWeightedKernelContinuity` is superseded — no internal
-convergence premise remains anywhere in the one-dimensional mainline.
-
-Final audit state: build 9126 jobs, 2243 mathematical proof declarations,
-`sorryAx=false`, `custom_axioms=false` (coverage regex now prime-aware —
-fixed in scripts/check_coverage.py).  `internal_input_inventory.json`:
-INT-CLT and INT-LONG discharged.  summary.md carries the final status section.
-
-Honest boundaries (documented, kept):  q2 branches / s ≥ 2 regimes / higher
-dimensions remain in their documented conditional-historical state (outside the
-one-dimensional mainline closure);  the bandwidth window is polynomial-rate
-(δ = n^{−γ}), narrower than adaptive-optimal;  the fully signed weight regime
-beyond the balanced degree-one nonnegativity window needs the rate route
-(FrozenPertEnergyDischarge) or a moment-route restructure — both documented.
-
-§11 checklist:  (1) short-memory q1/q2 endpoints — DONE;  (2) q1 long-memory
-without internal convergence premise — DONE;  (3) joint pilot limits — resolved
-as marginal-only and bridged;  (4) all modules imported — DONE;  (5) full build +
-coverage + axiom audit on one snapshot — DONE;  (6) per-result summary verdicts —
-this section + summary.md final status constitute the refresh.
+生成器会重写覆盖、公理审计和状态文件，构建/审计会覆盖正式日志；只在准备生成新快照时运行，必要时先保留旧证据。逐条检查退出码，不能只看最后一条。若新定理的命名空间/命名形式未被覆盖脚本识别，需补入审计，不能仅依赖登记数。
+
+## 9. 完成条件与不能使用的捷径
+
+1. 新端点能在实际模型上实例化。给出合法常数 H 的例子，并核对 h与b相距较大的可行带宽。
+2. 内部 `hRiesz`、`hQ`、`hwnn`、`hNegMass`、全行 `hcard`/`hane`、`hPert` 等最终输入均已消除；内部已证明的同名局部变量没有问题。
+3. 一般有符号谱使用全部 k≥2 幂和；偶数幂和不能分辨符号，平方和有界不能代替尾质量消失。
+4. Q 的承载概率空间必须真实构造，不能假设任意预设空间可承载无限独立 Gaussian。
+5. L² 收敛不直接给全序列 a.e. 收敛或四阶矩收敛；文件23已分别补证。
+6. log/H、期望/真值中心、已知/未知尺度分别验收；边际不替代联合。
+7. 单文件、聚合、覆盖、公理及逐编号范围使用同一源码快照；summary与机器登记一致。
+8. 保留旧 capstone 反证，不通过删证据、忽略前提或改变模型定义来“修复”空真端点。
+
+本次仅整理交接文档与引用；历史交接原样保留，新主线尚未开始 Lean 实现。
