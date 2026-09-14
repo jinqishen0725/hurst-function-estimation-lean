@@ -13,7 +13,7 @@ for path in sorted((ROOT/'Hurst').glob('*.lean')):
     assert not re.search(r'\b(sorry|admit|axiom|unsafe)\b',text),path
     # Only bare names resolve to Hurst.<name>; dotted names live in other
     # namespaces (e.g. MeasureTheory) and would misindex.
-    for match in re.finditer(r'^theorem\s+(\w+)(?![.\w])',text,re.M):
+    for match in re.finditer(r"^theorem\s+([\w']+)(?![.\w'])",text,re.M):
         prefix='Hurst.Index.' if path.stem=='ResultIndex' else 'Hurst.'
         names[prefix+match[1]]=str(path.relative_to(ROOT))
 for e in entries:

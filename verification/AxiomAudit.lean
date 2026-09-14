@@ -185,7 +185,7 @@ import Hurst
 #print axioms Hurst.hurstHolder_q1_scale_raw_evenMoment
 #print axioms Hurst.hurstHolder_q2_linear_raw_evenMoment
 #print axioms Hurst.hurstHolder_q2_linearScale_variance
-#print axioms Hurst.actualQ1_tendsto_rpow_neg_atTop
+#print axioms Hurst.actualQ1_tendsto_rpow_neg_atTop'
 #print axioms Hurst.q1ActualLongTailEnvelope_eq_free
 #print axioms Hurst.secondChaosTailFreePart_tendsto_zero_powBandwidth
 #print axioms Hurst.poly_cutoff_satisfiable
@@ -213,6 +213,7 @@ import Hurst
 #print axioms Hurst.rowSumOpNorm_nonneg
 #print axioms Hurst.rowSumOpNorm_le_iff
 #print axioms Hurst.norm_rowSumOpNorm_le
+#print axioms Hurst.rowSumOpNorm_eq_sup'
 #print axioms Hurst.mulVec_row_bound
 #print axioms Hurst.rowSumOpNorm_mulVec
 #print axioms Hurst.rowSumOpNorm_eventually_bound
@@ -260,11 +261,13 @@ import Hurst
 #print axioms Hurst.frobenius_truncated_le
 #print axioms Hurst.hasUniformDiscreteRieszCutoffRemoval
 #print axioms Hurst.bernoulli_pow_split
+#print axioms Hurst.bernoulli_pow_split'
 #print axioms Hurst.sum_word_scalars_all_eq
 #print axioms Hurst.sum_word_scalars_erase_eq
 #print axioms Hurst.matWord_const_false
 #print axioms Hurst.abs_trace_rieszMeshDiff_split
 #print axioms Hurst.abs_trace_rieszMeshDiff_split_bernoulli
+#print axioms Hurst.abs_rieszMeshDiffMatrix_le_of_dist'
 #print axioms Hurst.abs_cycleValue_diff_le
 #print axioms Hurst.hasUniformDiscreteRieszCutoffRemoval_of_word_small
 #print axioms Hurst.trace_matWord_bound
@@ -1371,6 +1374,7 @@ import Hurst
 #print axioms Hurst.truncatedMatrix_edge_eq
 #print axioms Hurst.truncatedMatrix_vertexTuple_prod_eq
 #print axioms Hurst.weightedTruncatedRieszDiscreteCycleValue_eq_offsetLatticeSum
+#print axioms Hurst.weightedTruncatedRieszDiscreteCycleValue_eq_offsetLatticeSum'
 #print axioms Hurst.weightedTruncatedRieszDiscreteCycleValue_eq_meshScaled
 #print axioms Hurst.abs_sub_rieszCycleGridPoint_eq
 #print axioms Hurst.offsetLatticePoint_abs_sub
@@ -1421,6 +1425,7 @@ import Hurst
 #print axioms Hurst.localDesignGram_apply_eq
 #print axioms Hurst.localDesignGram_one_moment_zero
 #print axioms Hurst.localDesignGram_one_moment_one
+#print axioms Hurst.localDesignGram_one_moment_one'
 #print axioms Hurst.localDesignGram_one_moment_two
 #print axioms Hurst.localKernel_abs_lt
 #print axioms Hurst.localLinearWindowWeight_nonneg
@@ -1499,6 +1504,7 @@ import Hurst
 #print axioms Hurst.countTrue_add_countFalse
 #print axioms Hurst.bijective_word_snoc
 #print axioms Hurst.matrix_pow_binomial
+#print axioms Hurst.frobenius_matWord_le'
 #print axioms Hurst.frobenius_matWord_le
 #print axioms Hurst.frobenius_smul_matWord_le
 #print axioms Hurst.card_matrix_words
@@ -1537,6 +1543,7 @@ import Hurst
 #print axioms Hurst.abs_rpow_neg_le_mul_of_le_succ
 #print axioms Hurst.abs_rpow_neg_two_le_mul_of_lt_succ
 #print axioms Hurst.sum_Ico_rpow_neg_two_le
+#print axioms Hurst.sum_Ico_rpow_neg_two_le'
 #print axioms Hurst.tendsto_rpow_one_sub_two_psi
 #print axioms Hurst.riesz_edge_factorization
 #print axioms Hurst.tendsto_mesh_correction_rpow
@@ -1756,6 +1763,7 @@ import Hurst
 #print axioms Hurst.powerDifferenceCoeff_four_bound
 #print axioms Hurst.powerForwardDifference_four_bound
 #print axioms Hurst.sum_range_rpow_neg_le
+#print axioms Hurst.sum_range_rpow_neg_le'
 #print axioms Hurst.sum_Ico_rpow_neg_le
 #print axioms Hurst.tendsto_rpow_two_beta_sub_one
 #print axioms Hurst.prod_telescope

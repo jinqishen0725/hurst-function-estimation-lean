@@ -251,7 +251,7 @@
 'Hurst.hurstHolder_q1_scale_raw_evenMoment' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.hurstHolder_q2_linear_raw_evenMoment' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.hurstHolder_q2_linearScale_variance' depends on axioms: [propext, Classical.choice, Quot.sound]
-verification/AxiomAudit.lean:188:14: error(lean.unknownIdentifier): Unknown constant `Hurst.actualQ1_tendsto_rpow_neg_atTop`
+'Hurst.actualQ1_tendsto_rpow_neg_atTop'' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.q1ActualLongTailEnvelope_eq_free' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.secondChaosTailFreePart_tendsto_zero_powBandwidth' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.poly_cutoff_satisfiable' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -285,6 +285,7 @@ verification/AxiomAudit.lean:188:14: error(lean.unknownIdentifier): Unknown cons
 'Hurst.rowSumOpNorm_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.rowSumOpNorm_le_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.norm_rowSumOpNorm_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.rowSumOpNorm_eq_sup'' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.mulVec_row_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.rowSumOpNorm_mulVec' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.rowSumOpNorm_eventually_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -336,11 +337,13 @@ verification/AxiomAudit.lean:188:14: error(lean.unknownIdentifier): Unknown cons
 'Hurst.frobenius_truncated_le' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.hasUniformDiscreteRieszCutoffRemoval' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.bernoulli_pow_split' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.bernoulli_pow_split'' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.sum_word_scalars_all_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.sum_word_scalars_erase_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.matWord_const_false' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.abs_trace_rieszMeshDiff_split' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.abs_trace_rieszMeshDiff_split_bernoulli' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.abs_rieszMeshDiffMatrix_le_of_dist'' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.abs_cycleValue_diff_le' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.hasUniformDiscreteRieszCutoffRemoval_of_word_small' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.trace_matWord_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -1509,6 +1512,9 @@ verification/AxiomAudit.lean:188:14: error(lean.unknownIdentifier): Unknown cons
 'Hurst.weightedTruncatedRieszDiscreteCycleValue_eq_offsetLatticeSum' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'Hurst.weightedTruncatedRieszDiscreteCycleValue_eq_offsetLatticeSum'' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
 'Hurst.weightedTruncatedRieszDiscreteCycleValue_eq_meshScaled' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
@@ -1563,6 +1569,7 @@ verification/AxiomAudit.lean:188:14: error(lean.unknownIdentifier): Unknown cons
 'Hurst.localDesignGram_apply_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.localDesignGram_one_moment_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.localDesignGram_one_moment_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.localDesignGram_one_moment_one'' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.localDesignGram_one_moment_two' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.localKernel_abs_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.localLinearWindowWeight_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -1643,6 +1650,7 @@ verification/AxiomAudit.lean:188:14: error(lean.unknownIdentifier): Unknown cons
 'Hurst.countTrue_add_countFalse' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.bijective_word_snoc' depends on axioms: [propext, Quot.sound]
 'Hurst.matrix_pow_binomial' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.frobenius_matWord_le'' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.frobenius_matWord_le' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.frobenius_smul_matWord_le' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.card_matrix_words' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -1689,6 +1697,7 @@ verification/AxiomAudit.lean:188:14: error(lean.unknownIdentifier): Unknown cons
 'Hurst.abs_rpow_neg_le_mul_of_le_succ' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.abs_rpow_neg_two_le_mul_of_lt_succ' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.sum_Ico_rpow_neg_two_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.sum_Ico_rpow_neg_two_le'' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.tendsto_rpow_one_sub_two_psi' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.riesz_edge_factorization' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.tendsto_mesh_correction_rpow' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -1916,6 +1925,7 @@ verification/AxiomAudit.lean:188:14: error(lean.unknownIdentifier): Unknown cons
 'Hurst.powerDifferenceCoeff_four_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.powerForwardDifference_four_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.sum_range_rpow_neg_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.sum_range_rpow_neg_le'' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.sum_Ico_rpow_neg_le' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.tendsto_rpow_two_beta_sub_one' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.prod_telescope' depends on axioms: [propext, Classical.choice, Quot.sound]
