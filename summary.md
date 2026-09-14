@@ -2,6 +2,31 @@
 
 **验收口径更正（用户明确要求）：所有内部引理都必须完成 Lean。仅允许明确标识的外部文献引理保留为假设。因此当前主线仍未完成；第二十八阶段只是接通下游条件推导，不能计为主线验收通过。**
 
+## 终局状态：2026-09-14 —— 一维 q1 长期记忆第二混沌链闭合（见 TRANSITION.md §12–13）
+
+**CAPSTONE**：`Hurst/ActualSecondChaosComplete.lean` 的
+`actualQ1LongStatistic_tendsto_secondChaos_complete`——实际 q1 长期记忆二次统计量
+依分布收敛到第二混沌律 Q。假设 = 普通模型（Hölder 类、值域、hlong: 3/4 < f t）
++ 多项式带宽窗口（δ = n^{−γ}，γ 需满足显式截断/网格/衰减三条件）
++ 权重非负（balanced 度一设计判据，Hurst/LocalLinearWeightsNonneg.lean）
++ 非退化性。`GaussianQuadraticWeightedKernelContinuity` 内部前提已被定理链取代。
+
+支撑定理（全部已证、入库、审计绿）：
+三 Riesz 截断谓词 + `hasWeightedRieszCycleQuadrature_instance`（合流）、
+幂和剥离匹配链（含带符号偶 k 变体）、`HcoeffBridge`、带符号消费接口
+（`..._of_signedMatching` 与非负权重推论）、短记忆 P1 六端点（唯一外部前提 =
+精确引用的 Bardet–Surgailis 定理）、未知尺度边际桥。
+
+全仓库：**2243** 条数学证明声明（审计绿：`sorryAx=false`、`custom_axioms=false`，
+仅 mathlib 基础公理；聚合构建 9126 jobs）。完整状态与重启指南见 TRANSITION.md §12–13。
+
+**诚实边界**：q2 分支、s ≥ 2 全域矩、高维等仍保持下文历史语境中的条件状态
+（不在一维主线关闭声明范围内）；带宽窗口为多项式速率型（δ = n^{−γ}），
+比论文的自适应最优带宽覆盖窄；带符号一般权重（非平衡设计）需
+FrozenPertEnergyDischarge 路线的速率条件或矩量路线重构（已文档化）。
+
+---
+
 日期：2026-09-09。来源：Shen & Hsing, *The Annals of Statistics* 48(2), 838–862，正文 `19-AOS1825.pdf`（25页），以及你补充的 `suppdf_1.pdf`（44页）。页码以下优先写论文印刷页码；逐项文件同时给出PDF页码。两份原始PDF保持原样，SHA-256见 [来源记录](verification/source_manifest.json)。
 
 ## 当前状态：显式支撑引理前提下的一维 Lean 主线已接通
