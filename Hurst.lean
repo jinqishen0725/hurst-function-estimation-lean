@@ -557,3 +557,15 @@ import Hurst.KernelEnergyRate
 import Hurst.KernelEnergyRateDischarge
 import Hurst.SignedInterfaceFinal
 import Hurst.ActualQuadratureFinal
+
+import Hurst.ActualKernelBandAsymptotics
+import Hurst.ActualSecondChaosComplete
+import Hurst.FarWordAssembly
+import Hurst.FrozenHsmallMirror
+import Hurst.FrozenPertEnergyDischarge
+import Hurst.FrozenQuadClosed
+import Hurst.FrozenQuadratureFinal
+import Hurst.FrozenQuadratureInstance
+import Hurst.FrozenQuadratureRun
+import Hurst.GridErrorRate
+import Hurst.NonnegWeightNegMass
