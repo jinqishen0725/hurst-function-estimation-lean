@@ -192,7 +192,7 @@
     "Hurst.hurstHolder_q1_scale_raw_evenMoment": "Hurst/ActualScaleRawEvenMoment.lean",
     "Hurst.hurstHolder_q2_linear_raw_evenMoment": "Hurst/ActualScaleRawEvenMoment.lean",
     "Hurst.hurstHolder_q2_linearScale_variance": "Hurst/ActualScaleVariance.lean",
-    "Hurst.tendsto_rpow_neg_atTop": "Hurst/ActualSecondChaosComplete.lean",
+    "Hurst.actualQ1_tendsto_rpow_neg_atTop": "Hurst/ActualSecondChaosComplete.lean",
     "Hurst.q1ActualLongTailEnvelope_eq_free": "Hurst/ActualSecondChaosComplete.lean",
     "Hurst.secondChaosTailFreePart_tendsto_zero_powBandwidth": "Hurst/ActualSecondChaosComplete.lean",
     "Hurst.poly_cutoff_satisfiable": "Hurst/ActualSecondChaosComplete.lean",

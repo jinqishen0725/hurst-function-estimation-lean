@@ -185,7 +185,7 @@ import Hurst
 #print axioms Hurst.hurstHolder_q1_scale_raw_evenMoment
 #print axioms Hurst.hurstHolder_q2_linear_raw_evenMoment
 #print axioms Hurst.hurstHolder_q2_linearScale_variance
-#print axioms Hurst.tendsto_rpow_neg_atTop
+#print axioms Hurst.actualQ1_tendsto_rpow_neg_atTop
 #print axioms Hurst.q1ActualLongTailEnvelope_eq_free
 #print axioms Hurst.secondChaosTailFreePart_tendsto_zero_powBandwidth
 #print axioms Hurst.poly_cutoff_satisfiable

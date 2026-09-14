@@ -251,7 +251,7 @@
 'Hurst.hurstHolder_q1_scale_raw_evenMoment' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.hurstHolder_q2_linear_raw_evenMoment' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.hurstHolder_q2_linearScale_variance' depends on axioms: [propext, Classical.choice, Quot.sound]
-verification/AxiomAudit.lean:188:14: error(lean.unknownIdentifier): Unknown constant `Hurst.tendsto_rpow_neg_atTop`
+verification/AxiomAudit.lean:188:14: error(lean.unknownIdentifier): Unknown constant `Hurst.actualQ1_tendsto_rpow_neg_atTop`
 'Hurst.q1ActualLongTailEnvelope_eq_free' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.secondChaosTailFreePart_tendsto_zero_powBandwidth' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.poly_cutoff_satisfiable' depends on axioms: [propext, Classical.choice, Quot.sound]

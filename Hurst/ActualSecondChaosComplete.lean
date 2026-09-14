@@ -79,7 +79,7 @@ namespace Hurst
 
 /-- Negative real powers of a divergent positive sequence tend to zero (local
 reproved copy of the `KernelEnergyRateDischarge` pattern). -/
-theorem tendsto_rpow_neg_atTop' (S : ℕ → ℝ) (e : ℝ) (he : e < 0)
+theorem actualQ1_tendsto_rpow_neg_atTop' (S : ℕ → ℝ) (e : ℝ) (he : e < 0)
     (hS : Tendsto S atTop atTop) :
     Tendsto (fun n : ℕ => S n ^ e) atTop (𝓝 0) := by
   have hpos : ∀ᶠ n in atTop, 0 < S n := hS.eventually_gt_atTop 0
@@ -355,7 +355,7 @@ theorem poly_cutoff_satisfiable
       push_cast
       linarith
     have hexp : 2 * (2 - 2 * h0) - 2 + 1 + γ' = γ' + 3 - 4 * h0 := by ring
-    have hsmall := tendsto_rpow_neg_atTop' S (γ' + 3 - 4 * h0)
+    have hsmall := actualQ1_tendsto_rpow_neg_atTop' S (γ' + 3 - 4 * h0)
       (by linarith) hS
     apply squeeze_zero'
     · filter_upwards [hS1] with n hSn
