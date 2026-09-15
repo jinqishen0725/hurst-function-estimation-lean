@@ -595,3 +595,18 @@ import Hurst.FrozenSpectralEnumeration
 import Hurst.RieszCompactEnumeration
 import Hurst.SpectralEnumeration
 import Hurst.SpectralWeightNonneg  -- trial batch B3
+
+import Hurst.AntitoneResort
+import Hurst.CapstoneV3
+import Hurst.E5BiasEnvelope
+import Hurst.E5FluctuationFinisher
+import Hurst.FullChainEndpoint
+import Hurst.GeneralKHasSum
+import Hurst.GeneralKHasSumComplete
+import Hurst.HSCycleComposition
+import Hurst.HSNormIdentity
+import Hurst.NegMassUI
+import Hurst.P2SpectrumCloseout
+import Hurst.P7RowBound
+import Hurst.RieszSpectralTrace
+import Hurst.SpectralWeightNonneg
