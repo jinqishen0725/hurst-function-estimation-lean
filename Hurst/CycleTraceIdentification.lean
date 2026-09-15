@@ -9,7 +9,7 @@ between the operator-side cycle pairings on the landed `HS` layer and the
 continuum cycle integrals `Hurst.weightedRieszCycleIntegral k psi c omega`
 (the `HasSum` targets of `Hurst.IsWeightedRieszSpectrum`).
 
-## What is landed here (all sorry-free)
+## What is landed here (all proofs complete, no placeholders)
 
 * `weightedRieszCycleIntegral_eq_kernelProd` — **general `k`**: the cycle integral is
   exactly the `volume^k`-integral of the product `∏ i, HS.rieszKernel psi c omega
@@ -112,6 +112,32 @@ private theorem hasSum_finset_mul {ι : Type*} (t : Finset ι) (c : ι → ℝ)
       exact (hasSum_const_mul (h p (Finset.mem_insert_self p t)) (c p)).add
         (ih fun q hq => h q (Finset.mem_insert_of_mem hq))
 
+private theorem hasSum_finset_mul2 {ι κ : Type*} (t : Finset ι) (u : Finset κ)
+    (c : ι → κ → ℝ) (f : ι → κ → ℕ → ℝ) (g : ι → κ → ℝ)
+    (h : ∀ p ∈ t, ∀ q ∈ u, HasSum (f p q) (g p q)) :
+    HasSum (fun j => ∑ p ∈ t, ∑ q ∈ u, c p q * f p q j)
+      (∑ p ∈ t, ∑ q ∈ u, c p q * g p q) := by
+  classical
+  induction t using Finset.induction_on with
+  | empty =>
+      have hzero : ∀ j : ℕ,
+          (∑ p ∈ (∅ : Finset ι), ∑ q ∈ u, c p q * f p q j) = 0 := fun j => Finset.sum_empty
+      refine hasSum_congr hzero ?_
+      exact hasSum_zero
+  | insert p t hp ih =>
+      have hfun : ∀ j : ℕ,
+          (∑ r ∈ insert p t, ∑ q ∈ u, c r q * f r q j)
+            = (∑ q ∈ u, c p q * f p q j) + ∑ r ∈ t, ∑ q ∈ u, c r q * f r q j :=
+        fun j => Finset.sum_insert hp
+      have hval : (∑ r ∈ insert p t, ∑ q ∈ u, c r q * g r q)
+          = (∑ q ∈ u, c p q * g p q) + ∑ r ∈ t, ∑ q ∈ u, c r q * g r q :=
+        Finset.sum_insert hp
+      rw [hval]
+      refine hasSum_congr (fun j => (hfun j).symm) ?_
+      exact (hasSum_finset_mul u (c p) (f p) (g p)
+          (fun q hq => h p (Finset.mem_insert_self p t) q hq)).add
+        (ih fun r hr q hq => h r (Finset.mem_insert_of_mem hr) q hq)
+
 /-! ### The cyclic product form of the Riesz kernel -/
 
 /-- The cyclic integrand of `weightedRieszCycleIntegral` is exactly the product of
@@ -161,7 +187,8 @@ private theorem integral_pi_vol_eq_pi_volume (F : (Fin 2 → ℝ) → ℝ)
       = ∫ z in cube2, F z ∂(Measure.pi (fun _ : Fin 2 => vol)) := integral_eq_cube2 F hF
   have hint2 : ∫ z, F z ∂(volume : Measure (Fin 2 → ℝ))
       = ∫ z in cube2, F z ∂(volume : Measure (Fin 2 → ℝ)) := integral_eq_cube2 F hF
-  rw [hint1, hint2, hmeq2]
+  rw [hint1, hint2]
+  exact hmeq2.symm
 
 private theorem finCyclicSucc_two_zero : Hurst.finCyclicSucc (0 : Fin 2) = 1 := rfl
 
@@ -236,24 +263,25 @@ theorem tracePair_kpair_tsum {K : ℝ × ℝ → ℝ} (hK : HSKernel K)
     (S : L2 →L[ℝ] L2) (e : HilbertBasis ℕ ℝ L2) :
     (∑' j : ℕ, inner ℝ (TOp K hK (S (e j))) (e j))
       = ∑' j : ℕ, kpair K (S (e j)) (e j) :=
-  tsum_congr fun j => inner_TOp hK _ _
+  tsum_congr fun _j => inner_TOp hK _ _
 
 /-! ### The `k = 2` trace identification over a Hilbert basis (degenerate kernels) -/
 
 private theorem inner_degenerate_pair {ι : Type*} (s : Finset ι) (a b : ι → ℝ → ℝ)
     (ha : ∀ i, MemLp (a i) 2 vol) (hb : ∀ i, MemLp (b i) 2 vol)
-    (c d : ι → ℝ) (e : L2) :
+    (c d : ι → ℝ) :
     inner ℝ (∑ i ∈ s, c i • MemLp.toLp (a i) (ha i))
         (∑ i ∈ s, d i • MemLp.toLp (b i) (hb i))
       = ∑ i' ∈ s, (∑ i ∈ s, c i * (∫ x, a i x * b i' x ∂vol)) * d i' := by
   rw [inner_sum]
   refine Finset.sum_congr rfl fun i' _ => ?_
-  rw [real_inner_smul_right, sum_inner]
+  rw [real_inner_smul_right, sum_inner, Finset.mul_sum, Finset.sum_mul]
   refine Finset.sum_congr rfl fun i _ => ?_
   have hcoe : (fun x : ℝ => a i x * ⇑(MemLp.toLp (b i') (hb i')) x) =ᵐ[vol]
       (fun x : ℝ => a i x * b i' x) :=
     Filter.EventuallyEq.mul Filter.EventuallyEq.rfl (MemLp.coeFn_toLp (hb i'))
   rw [real_inner_smul_left, inner_toLp (ha i), integral_congr_ae hcoe]
+  ring
 
 private theorem hasSum_pair_term (e : HilbertBasis ℕ ℝ L2) {u v : ℝ → ℝ}
     (hu : MemLp u 2 vol) (hv : MemLp v 2 vol) (C : ℝ) :
@@ -273,7 +301,8 @@ private theorem hasSum_pair_term (e : HilbertBasis ℕ ℝ L2) {u v : ℝ → �
         (fun x : ℝ => u x * v x) :=
       Filter.EventuallyEq.mul Filter.EventuallyEq.rfl (MemLp.coeFn_toLp hv)
     rw [inner_toLp hu, integral_congr_ae hcoe]
-  have hfin := hasSum_congr hcongr (hasSum_const_mul (e.hasSum_inner_mul_inner _ _) C)
+  have hfin := hasSum_const_mul
+    (hasSum_congr hcongr (e.hasSum_inner_mul_inner (MemLp.toLp u hu) (MemLp.toLp v hv))) C
   rw [hval] at hfin
   exact hfin
 
@@ -296,57 +325,67 @@ theorem tracePair_hasSum_degenerate {ι : Type*} (s : Finset ι) (a b : ι → �
       inner ℝ
         (TOp (fun p => ∑ i ∈ s, a i p.1 * b i p.2) (hsKernel_degenerate s a b ha hb) (e j))
         (TOp (fun p => ∑ i ∈ s, b i p.1 * a i p.2) (hsKernel_degenerate s b a hb ha) (e j))
-      = ∑ p ∈ s.product s, (∫ x, a p.1 x * b p.2 x ∂vol)
-          * ((∫ y, b p.1 y * ⇑(e j) y ∂vol) * (∫ y, ⇑(e j) y * a p.2 y ∂vol)) := by
+      = ∑ p ∈ s, ∑ q ∈ s, (∫ x, a p x * b q x ∂vol)
+          * ((∫ y, b p y * ⇑(e j) y ∂vol) * (∫ y, ⇑(e j) y * a q y ∂vol)) := by
     intro j
     rw [TOp_apply, TOp_apply, TOpFun_degenerate s a b ha hb (e j),
-      TOpFun_degenerate s b a hb ha (e j), inner_degenerate_pair s a b ha hb,
-      Finset.sum_mul, Finset.sum_comm, ← Finset.sum_product]
+      TOpFun_degenerate s b a hb ha (e j), inner_degenerate_pair s a b ha hb]
+    simp only [Finset.sum_mul]
+    rw [Finset.sum_comm]
     refine Finset.sum_congr rfl fun p _ => ?_
-    rw [integral_congr_ae (Filter.Eventually.of_forall fun y => mul_comm (⇑(e j) y) (a p.2 y))]
+    refine Finset.sum_congr rfl fun q _ => ?_
+    rw [integral_congr_ae (Filter.Eventually.of_forall fun y => mul_comm (⇑(e j) y) (a q y))]
     ring
   -- the `cycle2` value as the same double sum
   have hcycle2 : cycle2 (fun p => ∑ i ∈ s, a i p.1 * b i p.2)
         (fun p => ∑ i ∈ s, a i p.1 * b i p.2)
-      = ∑ p ∈ s.product s, (∫ x, a p.1 x * b p.2 x ∂vol)
-          * (∫ y, b p.1 y * a p.2 y ∂vol) := by
-    have hint1 : ∀ i ∈ s, Integrable (fun q : ℝ × ℝ =>
-        a i q.1 * b i q.2 * ∑ i' ∈ s, b i' q.1 * a i' q.2) vol2 := by
+      = ∑ p ∈ s, ∑ q ∈ s, (∫ x, a p x * b q x ∂vol)
+          * (∫ y, b p y * a q y ∂vol) := by
+    have hint1 : ∀ i ∈ s, Integrable (fun r : ℝ × ℝ =>
+        a i r.1 * b i r.2 * ∑ i' ∈ s, b i' r.1 * a i' r.2) vol2 := by
       intro i _
-      have hS : MemLp (fun q : ℝ × ℝ => ∑ i' ∈ s, b i' q.1 * a i' q.2) 2 vol2 :=
-        memLp_sum_finset s (fun i' q => b i' q.1 * a i' q.2)
+      have hS : MemLp (fun r : ℝ × ℝ => ∑ i' ∈ s, b i' r.1 * a i' r.2) 2 vol2 :=
+        memLp_sum_finset s (fun i' r => b i' r.1 * a i' r.2)
           fun i' _ => memLp2_prod_fst_snd (hb i') (ha i')
       exact memLp_one_iff_integrable.mp
         (MemLp.mul hS (memLp2_prod_fst_snd (ha i) (hb i)))
     have hint2 : ∀ i ∈ s, ∀ i' ∈ s,
-        Integrable (fun q : ℝ × ℝ =>
-          a i q.1 * b i q.2 * (b i' q.1 * a i' q.2)) vol2 := by
+        Integrable (fun r : ℝ × ℝ =>
+          a i r.1 * b i r.2 * (b i' r.1 * a i' r.2)) vol2 := by
       intro i _ i' _
       exact memLp_one_iff_integrable.mp
         (MemLp.mul (memLp2_prod_fst_snd (hb i') (ha i'))
           (memLp2_prod_fst_snd (ha i) (hb i)))
     have e0 : cycle2 (fun p => ∑ i ∈ s, a i p.1 * b i p.2)
         (fun p => ∑ i ∈ s, a i p.1 * b i p.2)
-        = ∫ q : ℝ × ℝ, (∑ i ∈ s, a i q.1 * b i q.2)
-            * (∑ i ∈ s, b i q.1 * a i q.2) ∂vol2 := rfl
-    rw [e0, integral_congr_ae (Filter.Eventually.of_forall fun q => Finset.sum_mul _ _ _),
+        = ∫ r : ℝ × ℝ, (∑ i ∈ s, a i r.1 * b i r.2)
+            * (∑ i ∈ s, a i r.2 * b i r.1) ∂vol2 := rfl
+    have hab : ∀ r : ℝ × ℝ, (∑ i ∈ s, a i r.2 * b i r.1)
+        = ∑ i ∈ s, b i r.1 * a i r.2 :=
+      fun r => Finset.sum_congr rfl fun i _ => mul_comm (a i r.2) (b i r.1)
+    rw [e0, integral_congr_ae (Filter.Eventually.of_forall fun r =>
+        congrArg (fun S : ℝ => (∑ i ∈ s, a i r.1 * b i r.2) * S) (hab r)),
+      integral_congr_ae (Filter.Eventually.of_forall fun r => Finset.sum_mul _ _ _),
       integral_finsetSum s hint1]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    rw [integral_congr_ae (Filter.Eventually.of_forall fun q => Finset.sum_mul _ _ _),
-      integral_finsetSum s (hint2 i), ← Finset.sum_product]
-    refine Finset.sum_congr rfl fun p _ => ?_
-    rw [show (∫ q : ℝ × ℝ, a p.1 q.1 * b p.1 q.2 * (b p.2 q.1 * a p.2 q.2) ∂vol2)
-        = ∫ q : ℝ × ℝ, (a p.1 q.1 * b p.2 q.1) * (b p.1 q.2 * a p.2 q.2) ∂vol2 from
-      integral_congr_ae (Filter.Eventually.of_forall fun _q => by ring),
+    refine Finset.sum_congr rfl fun i hi => ?_
+    rw [integral_congr_ae (Filter.Eventually.of_forall fun r => Finset.mul_sum _ _ _),
+      integral_finsetSum s (hint2 i hi)]
+    refine Finset.sum_congr rfl fun i' _ => ?_
+    rw [show (∫ r : ℝ × ℝ, a i r.1 * b i r.2 * (b i' r.1 * a i' r.2) ∂vol2)
+        = ∫ r : ℝ × ℝ, (a i r.1 * b i' r.1) * (b i r.2 * a i' r.2) ∂vol2 from
+      integral_congr_ae (Filter.Eventually.of_forall fun _r => by ring),
       integral_prod_mul (μ := vol) (ν := vol)
-        (f := fun x => a p.1 x * b p.2 x) (g := fun y => b p.1 y * a p.2 y)]
+        (f := fun x => a i x * b i' x) (g := fun y => b i y * a i' y)]
   rw [hcycle2]
   exact hasSum_congr (fun j => (hstep j).symm)
-    (hasSum_finset_mul s.product s
-      (fun p => ∫ x, a p.1 x * b p.2 x ∂vol)
-      (fun p j => (∫ y, b p.1 y * ⇑(e j) y ∂vol) * (∫ y, ⇑(e j) y * a p.2 y ∂vol))
-      (fun p => ∫ y, b p.1 y * a p.2 y ∂vol)
-      (fun p _ => hasSum_pair_term e (hb p.1) (ha p.2) _))
+    (hasSum_finset_mul2 s s
+      (fun p q => ∫ x, a p x * b q x ∂vol)
+      (fun p q j => (∫ y, b p y * ⇑(e j) y ∂vol) * (∫ y, ⇑(e j) y * a q y ∂vol))
+      (fun p q => ∫ y, b p y * a q y ∂vol)
+      (fun p _ q _ => by
+        have h1 := hasSum_pair_term e (hb p) (ha q) 1
+        simp only [one_mul] at h1
+        exact h1))
 
 /-- **The `k = 2` trace-power identification over a Hilbert basis** (degenerate
 kernels): the diagonal terms of the squared operator have sum exactly
@@ -365,15 +404,23 @@ theorem tracePower2_hasSum_degenerate {ι : Type*} (s : Finset ι) (a b : ι →
       (cycle2 (fun p => ∑ i ∈ s, a i p.1 * b i p.2)
         (fun p => ∑ i ∈ s, a i p.1 * b i p.2)) := by
   classical
-  have hKTpt : ∀ p : ℝ × ℝ,
-      (fun p => ∑ i ∈ s, a i p.1 * b i p.2) p.swap
-        = (∑ i ∈ s, b i p.1 * a i p.2 : ℝ × ℝ → ℝ) := by
+  have hKpt : ∀ p : ℝ × ℝ,
+      ktranspose (fun p => ∑ i ∈ s, a i p.1 * b i p.2) p
+        = (fun p => ∑ i ∈ s, b i p.1 * a i p.2) p := by
     intro p
     show (∑ i ∈ s, a i p.2 * b i p.1) = _
-    rw [Finset.sum_congr rfl fun i _ => mul_comm (a i p.2) (b i p.1)]
+    exact Finset.sum_congr rfl fun i _ => mul_comm (a i p.2) (b i p.1)
+  have hadj : (TOp (fun p => ∑ i ∈ s, a i p.1 * b i p.2)
+        (hsKernel_degenerate s a b ha hb)).adjoint
+      = TOp (fun p => ∑ i ∈ s, b i p.1 * a i p.2) (hsKernel_degenerate s b a hb ha) :=
+    (TOp_adjoint (hsKernel_degenerate s a b ha hb)).trans
+      (TOp_congr hKpt (hsKernel_transpose (hsKernel_degenerate s a b ha hb))
+        (hsKernel_degenerate s b a hb ha))
   refine hasSum_congr (fun j => ?_) (tracePair_hasSum_degenerate s a b ha hb e)
-  rw [inner_TOp (hsKernel_degenerate s a b ha hb), inner_TOp (hsKernel_degenerate s b a hb ha),
-    ← funext hKTpt, kpair_transpose (hsKernel_degenerate s a b ha hb)]
+  rw [← ContinuousLinearMap.adjoint_inner_right
+    (TOp (fun p => ∑ i ∈ s, a i p.1 * b i p.2) (hsKernel_degenerate s a b ha hb))
+    (TOp (fun p => ∑ i ∈ s, a i p.1 * b i p.2) (hsKernel_degenerate s a b ha hb) (e j)) (e j),
+    hadj]
 
 end HS
 
