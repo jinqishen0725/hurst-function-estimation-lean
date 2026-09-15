@@ -59,19 +59,28 @@ frozen-vs-Riesz difference) and the explicit residual `eps` sequence.
 
 ## Honest gap note (the exact residual statement)
 
-The residual input of deliverable 2 is the far-band CLASS precision `eps` in
-the relative envelope: the per-fixed-distance class convergence
+The full n-dependent assembly IS landed here: `frozenWord_frobenius_sq_tendsto_zero`
+elaborates the three-beat stratified decay of
+`frozenWord_frobenius_sq_le_explicit` (near-band beat → 0 via the cutoff
+`hcut`; residual beat via `m ≤ 3 * S` from `localWeightActiveSet_card` and
+`heps : S^{2ψ} * eps² → 0`; far-tail beat `S^{2ψ-1} → 0` for `2ψ < 1`, `R ≥ 1`,
+NO growth condition on `R`), and `frozenWord_trace_diff_of_cutoff` composes it
+with `farWord_of_frobeniusSmall` into the trace-difference smallness
+`|tr(F_n ^ k) - tr(T_n ^ k)| → 0` — closing the `hFarWord` input of
+`Hurst.frozenQuad_hFquad_of_farWord`.
+
+The residual ANALYTIC input is the far-band CLASS precision `eps` in the
+relative envelope: the per-fixed-distance class convergence
 (`frozenQ1_kernel_class_converges`) and the row-profile bridge
 (`frozenQuadRowProfile_tendsto`) give `eps_pair → 0` at each FIXED distance,
 but a UNIFORM-in-`d` version (or the word-level relative machinery) is needed
 to make the sequence `eps n` decay like `o(S^{-ψ})` — with `card * (S^{ψ-1})²
-~ S^{2ψ}`, a fixed `eps > 0` does NOT vanish.  This is exactly the anticipated
-band/`eps` obstruction: the cutoff hypothesis `hcut` closes the `R`-band part
-(uniformly bounded entries, `S^{2ψ-2} * m * (2R+1) → 0`), the `16 * d^{-(1+ψ)}`
-beat closes the far tail unconditionally (`S^{2ψ-1} * R^{-(1+2ψ)} → 0` for
-`2ψ < 1`, `R ≥ 1` — no growth condition on `R` beyond `≥ 1` is needed), and
-only the class/profile residual `eps n = o(S^{-ψ})` is carried as the explicit
-hypothesis `heps`.
+~ S^{2ψ}`, a fixed `eps > 0` does NOT vanish.  Accordingly `heps` (plus the
+nonnegativity `hε0`) is carried as an explicit hypothesis of the assembly,
+while the cutoff hypothesis `hcut` closes the `R`-band part (uniformly bounded
+entries, `S^{2ψ-2} * m * (2R+1) → 0`) and the `16 * d^{-(1+ψ)}` beat closes
+the far tail unconditionally (`S^{2ψ-1} * R^{-(1+2ψ)} → 0` for `2ψ < 1`,
+`R ≥ 1` — no growth condition on `R` beyond `≥ 1` is needed).
 -/
 
 set_option maxHeartbeats 1000000
@@ -716,11 +725,344 @@ theorem frozenWord_frobenius_sq_le_explicit
       rw [hsplit] at h
       exact h)
 
-/- The full n-dependent assembly `Tendsto ‖F_n - T_n‖ → 0` from the band
-predicate + far envelope is straightforward from
-`frozenWord_frobenius_sq_le_explicit` (apply `squeeze_zero'` termwise with
-`hcut`, `eps = o(S^{-ψ})` and `m ≤ 3 * S` from
-`localWeightActiveSet_card`); its remaining elaboration is tracked in the
-accompanying report. -/
+/-! ### (D2, assembly) the n-dependent Frobenius smallness — LANDED -/
+
+/-- rpow/pow bridge: `(x ^ a * c) ^ 2 = x ^ b * c ^ 2` whenever `2 * a = b`
+and `0 ≤ x` — normalizes the squared envelope terms of the stratified bound. -/
+private theorem sq_rpow_mul_const {x : ℝ} (c : ℝ) (hx : 0 ≤ x) (a b : ℝ)
+    (hab : 2 * a = b) : (x ^ a * c) ^ 2 = x ^ b * c ^ 2 := by
+  have key : (x ^ a) ^ 2 = x ^ b := by
+    rw [← Real.rpow_natCast, ← Real.rpow_mul hx]
+    have hex : (a * 2 : ℝ) = b := by rw [mul_comm a 2]; exact hab
+    have hcast : (a * ((2 : ℕ) : ℝ)) = a * 2 := by norm_num
+    rw [hcast, hex]
+  rw [mul_pow, key]
+
+/-- **(D2, assembly) the n-dependent Frobenius smallness (the documented
+remaining step, LANDED).**  Under (i) the band-predicate cutoff `hcut` (the
+EXACT hypothesis of `actual_q1_kernel_band_predicate_tendsto_zero`), (ii) the
+near-band uniform entry bound with constant `B_band`
+(`frozenWord_deltaEntry_uniform_le`), (iii) the far-band two-constant envelope
+with residual sequence `eps` (`frozenWord_deltaEntry_far_le`), and (iv) the
+residual decay `S^{2ψ} * eps² → 0` (i.e. `eps = o(S^{-ψ})`), the squared
+Frobenius norm of the frozen-vs-Riesz difference tends to `0`.  The three
+beats are exactly the stratified decay of
+`frozenWord_frobenius_sq_le_explicit`: the near-band beat is
+`2 * B_band² * S^{2ψ-2} * m * (2R+1) → 0` by `hcut`; the residual beat is
+`2 * m² * S^{2ψ-2} * eps² ≤ 18 * S^{2ψ} * eps² → 0` by `heps` (using
+`m ≤ 3 * S` from `localWeightActiveSet_card`); and the far-tail beat is
+`12 * B_far² * S^{2ψ-1} → 0` for `2ψ < 1` (i.e. `3/4 < f t`) and `R ≥ 1`,
+with NO growth condition on `R` (again using `m ≤ 3 * S`). -/
+theorem frozenWord_frobenius_sq_tendsto_zero
+    (p a b M : ℝ) (r : ℕ) (hp : 1 ≤ p) (ha : 0 < a) (hb : b < 1) (hab : a ≤ b)
+    (hM : 0 ≤ M) (f : ℝ → ℝ) (hf : f ∈ hurstHolderClass p M)
+    (hF : MapsTo f (Ioo (0 : ℝ) 1) (Icc a b))
+    (t : ℝ) (ht : t ∈ Ioo (0 : ℝ) 1) (hlong : 3 / 4 < f t)
+    (δ : ℕ → ℝ) (hδpos : ∀ᶠ n in atTop, 0 < δ n)
+    (hN : Tendsto (fun n : ℕ => (n : ℝ) * δ n) atTop atTop)
+    (R : ℕ → ℕ) (hR : ∀ᶠ n in atTop, 1 ≤ R n)
+    (B_band B_far : ℝ) (hBband : 0 ≤ B_band) (hBfar : 0 ≤ B_far)
+    (eps : ℕ → ℝ)
+    (hband : ∀ᶠ n in atTop, ∀ i j : Fin (localWeightActiveSet n 1 (δ n) t).card,
+      Nat.dist i.val j.val ≤ R n →
+        |actualQ1NormalizedFrozenMatrix f hf r n (δ n) t i j -
+            actualQ1RieszMatrix f r n (δ n) t i j|
+          ≤ ((n : ℝ) * δ n) ^ (2 - 2 * f t - 1) * B_band)
+    (hfar : ∀ᶠ n in atTop, ∀ i j : Fin (localWeightActiveSet n 1 (δ n) t).card,
+      R n < Nat.dist i.val j.val →
+        |actualQ1NormalizedFrozenMatrix f hf r n (δ n) t i j -
+            actualQ1RieszMatrix f r n (δ n) t i j|
+          ≤ ((n : ℝ) * δ n) ^ (2 - 2 * f t - 1) *
+            (eps n + B_far * ((Nat.dist i.val j.val : ℝ) ^ (-(1 + (2 - 2 * f t))))))
+    (hcut : Tendsto (fun n : ℕ =>
+      ((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) *
+        ((localWeightActiveSet n 1 (δ n) t).card : ℝ) *
+        (2 * (R n : ℝ) + 1)) atTop (𝓝 0))
+    (heps : Tendsto (fun n : ℕ =>
+      ((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t)) * (eps n) ^ 2) atTop (𝓝 0))
+    (hε0 : ∀ᶠ n in atTop, 0 ≤ eps n) :
+    Tendsto (fun n : ℕ =>
+      ‖actualQ1NormalizedFrozenMatrix f hf r n (δ n) t -
+          actualQ1RieszMatrix f r n (δ n) t‖ ^ 2) atTop (𝓝 0) := by
+  classical
+  have hftbox : f t ∈ Icc a b := hF ht
+  -- `S^{2ψ-1} → 0` since `2ψ - 1 = 3 - 4 * f t < 0` under `3/4 < f t`
+  have hS21 : Tendsto (fun n : ℕ =>
+      ((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 1)) atTop (𝓝 0) := by
+    have hneg : (2 * (2 - 2 * f t) - 1 : ℝ) < 0 := by linarith
+    have hpos : (0 : ℝ) < -(2 * (2 - 2 * f t) - 1) := by linarith
+    have hgrow : Tendsto (fun n : ℕ =>
+        ((n : ℝ) * δ n) ^ (-(2 * (2 - 2 * f t) - 1))) atTop atTop :=
+      (tendsto_rpow_atTop hpos).comp hN
+    have hinv : Tendsto (fun n : ℕ =>
+        (((n : ℝ) * δ n) ^ (-(2 * (2 - 2 * f t) - 1)))⁻¹) atTop (𝓝 0) :=
+      tendsto_inv_atTop_zero.comp hgrow
+    have hcongr : (fun n : ℕ =>
+          (((n : ℝ) * δ n) ^ (-(2 * (2 - 2 * f t) - 1)))⁻¹)
+        =ᶠ[atTop] (fun n : ℕ => ((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 1)) := by
+      filter_upwards [hδpos, eventually_gt_atTop 0] with n hδ hn
+      have hSn : 0 < (n : ℝ) * δ n := mul_pos (by exact_mod_cast hn) hδ
+      have hkey := Real.rpow_neg hSn.le (-(2 * (2 - 2 * f t) - 1))
+      rw [neg_neg] at hkey
+      exact hkey.symm
+    exact Tendsto.congr' hcongr hinv
+  -- the three-beat eventual bound
+  have hnEv : ∀ᶠ n : ℕ in atTop, 0 < n := eventually_gt_atTop 0
+  have hS1ev : ∀ᶠ n : ℕ in atTop, 1 ≤ (n : ℝ) * δ n := hN.eventually_ge_atTop 1
+  have hbnd : ∀ᶠ n in atTop,
+      ‖actualQ1NormalizedFrozenMatrix f hf r n (δ n) t -
+          actualQ1RieszMatrix f r n (δ n) t‖ ^ 2
+        ≤ (2 : ℝ) * B_band ^ 2 * (((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) *
+              ((localWeightActiveSet n 1 (δ n) t).card : ℝ) * (2 * (R n : ℝ) + 1))
+          + ((18 : ℝ) * (((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t)) * (eps n) ^ 2)
+          + (12 : ℝ) * B_far ^ 2 *
+              ((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 1)) := by
+    filter_upwards [hδpos, hnEv, hS1ev, hR, hband, hfar, hε0] with n hδ hn hS1 hRn hband hfar hε0
+    have hS0 : 0 < (n : ℝ) * δ n := mul_pos (by exact_mod_cast hn) hδ
+    have hcard := localWeightActiveSet_card n 1 hn (δ n) t hδ hS1
+    -- the stratified bound with the squared envelope terms normalized
+    have hkey := frozenWord_frobenius_sq_le_explicit p a b M r hp ha hb hab hM f hf hF t
+      ht hlong n hn (δ n) hδ 0 (R n) hRn B_band hBband hband B_far hBfar (eps n)
+      hε0 hfar
+    rw [sq_rpow_mul_const B_band hS0.le (2 - 2 * f t - 1)
+          (2 * (2 - 2 * f t) - 2) (by ring),
+      sq_rpow_mul_const (eps n) hS0.le (2 - 2 * f t - 1)
+        (2 * (2 - 2 * f t) - 2) (by ring),
+      sq_rpow_mul_const B_far hS0.le (2 - 2 * f t - 1)
+        (2 * (2 - 2 * f t) - 2) (by ring)] at hkey
+    -- the shared nonnegativity facts
+    have hP : (0 : ℝ) ≤ ((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) :=
+      Real.rpow_nonneg hS0.le _
+    have hm : (0 : ℝ) ≤ ((localWeightActiveSet n 1 (δ n) t).card : ℝ) :=
+      Nat.cast_nonneg _
+    have hE2 : (0 : ℝ) ≤ (eps n) ^ 2 := sq_nonneg (eps n)
+    have hB2 : (0 : ℝ) ≤ B_band ^ 2 := pow_nonneg hBband 2
+    have hB2f : (0 : ℝ) ≤ B_far ^ 2 := pow_nonneg hBfar 2
+    -- beat 1: near band, closed by the cutoff
+    have hT1 : ((2 : ℝ) * ((R n + 1 : ℕ) : ℝ) *
+            ((localWeightActiveSet n 1 (δ n) t).card : ℝ)) *
+          (((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) * B_band ^ 2)
+        ≤ (2 : ℝ) * B_band ^ 2 * (((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) *
+            ((localWeightActiveSet n 1 (δ n) t).card : ℝ) * (2 * (R n : ℝ) + 1)) := by
+      have hRle : ((R n + 1 : ℕ) : ℝ) ≤ 2 * (R n : ℝ) + 1 := by
+        have he : ((R n + 1 : ℕ) : ℝ) = (R n : ℝ) + 1 := by push_cast; ring
+        rw [he]
+        linarith
+      have hPm : (0 : ℝ) ≤ ((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) *
+          ((localWeightActiveSet n 1 (δ n) t).card : ℝ) := mul_nonneg hP hm
+      have hc : (0 : ℝ) ≤ (2 : ℝ) * B_band ^ 2 * (((n : ℝ) * δ n) ^
+            (2 * (2 - 2 * f t) - 2) *
+          ((localWeightActiveSet n 1 (δ n) t).card : ℝ)) :=
+        mul_nonneg (mul_nonneg (by norm_num) hB2) hPm
+      calc ((2 : ℝ) * ((R n + 1 : ℕ) : ℝ) *
+              ((localWeightActiveSet n 1 (δ n) t).card : ℝ)) *
+            (((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) * B_band ^ 2)
+          = (2 : ℝ) * B_band ^ 2 * (((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) *
+              ((localWeightActiveSet n 1 (δ n) t).card : ℝ)) *
+              ((R n + 1 : ℕ) : ℝ) := by ring
+        _ ≤ (2 : ℝ) * B_band ^ 2 * (((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) *
+              ((localWeightActiveSet n 1 (δ n) t).card : ℝ)) *
+              (2 * (R n : ℝ) + 1) := mul_le_mul_of_nonneg_left hRle hc
+        _ = (2 : ℝ) * B_band ^ 2 * (((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) *
+              ((localWeightActiveSet n 1 (δ n) t).card : ℝ) *
+              (2 * (R n : ℝ) + 1)) := by ring
+    -- beat 2: the residual `eps` sequence, closed by `heps` via `m ≤ 3 * S`
+    have hS2 : ((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t))
+        = ((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) *
+            ((n : ℝ) * δ n) ^ ((2 : ℝ)) := by
+      rw [← Real.rpow_add hS0 (2 * (2 - 2 * f t) - 2) 2]
+      congr 1
+      ring
+    have hSnat : ((n : ℝ) * δ n) ^ ((2 : ℝ)) = ((n : ℝ) * δ n) ^ 2 :=
+      Real.rpow_natCast ((n : ℝ) * δ n) 2
+    have hT2 : ((2 : ℝ) * ((localWeightActiveSet n 1 (δ n) t).card : ℝ) ^ 2) *
+          (((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) * (eps n) ^ 2)
+        ≤ (18 : ℝ) * (((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t)) * (eps n) ^ 2) := by
+      have hm2 : ((localWeightActiveSet n 1 (δ n) t).card : ℝ) ^ 2
+          ≤ (3 * ((n : ℝ) * δ n)) ^ 2 := pow_le_pow_left₀ hm hcard 2
+      have hPeps : (0 : ℝ) ≤ (2 : ℝ) * (((n : ℝ) * δ n) ^
+            (2 * (2 - 2 * f t) - 2) * (eps n) ^ 2) :=
+        mul_nonneg (by norm_num) (mul_nonneg hP hE2)
+      calc ((2 : ℝ) * ((localWeightActiveSet n 1 (δ n) t).card : ℝ) ^ 2) *
+            (((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) * (eps n) ^ 2)
+          = (2 : ℝ) * (((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) * (eps n) ^ 2) *
+              ((localWeightActiveSet n 1 (δ n) t).card : ℝ) ^ 2 := by ring
+        _ ≤ (2 : ℝ) * (((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) * (eps n) ^ 2) *
+              (3 * ((n : ℝ) * δ n)) ^ 2 := mul_le_mul_of_nonneg_left hm2 hPeps
+        _ = (18 : ℝ) * (((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) *
+              ((n : ℝ) * δ n) ^ 2 * (eps n) ^ 2) := by ring
+        _ = (18 : ℝ) * (((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) *
+              ((n : ℝ) * δ n) ^ ((2 : ℝ)) * (eps n) ^ 2) := by rw [hSnat]
+        _ = (18 : ℝ) * (((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t)) * (eps n) ^ 2) := by
+            rw [hS2]
+    -- beat 3: the far tail, closed for `2ψ < 1` and `R ≥ 1` (no growth on `R`)
+    have hRinv0 : (0 : ℝ) ≤ (R n : ℝ) ^ (-(1 + 2 * (2 - 2 * f t))) :=
+      Real.rpow_nonneg (Nat.cast_nonneg (R n)) _
+    have hRinv : (R n : ℝ) ^ (-(1 + 2 * (2 - 2 * f t))) ≤ 1 := by
+      have h1 : (1 : ℝ) ≤ (R n : ℝ) ^ (1 + 2 * (2 - 2 * f t)) :=
+        Real.one_le_rpow (by exact_mod_cast hRn) (by linarith [hftbox.2])
+      rw [Real.rpow_neg (Nat.cast_nonneg (R n)) (1 + 2 * (2 - 2 * f t))]
+      exact inv_le_one_iff₀.2 (Or.inr h1)
+    have hS1p : ((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 1)
+        = ((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) * ((n : ℝ) * δ n) := by
+      rw [← Real.rpow_add_one hS0.ne' (2 * (2 - 2 * f t) - 2)]
+      congr 1
+      ring
+    have hT3 : (((4 : ℝ) * ((localWeightActiveSet n 1 (δ n) t).card : ℝ)) *
+            (((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) * B_far ^ 2) *
+            ((R n : ℝ) ^ (-(1 + 2 * (2 - 2 * f t)))))
+        ≤ (12 : ℝ) * B_far ^ 2 * ((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 1) := by
+      have h4 : (0 : ℝ) ≤ (4 : ℝ) * B_far ^ 2 * ((n : ℝ) * δ n) ^
+            (2 * (2 - 2 * f t) - 2) :=
+        mul_nonneg (mul_nonneg (by norm_num) hB2f) hP
+      have h1 : ((localWeightActiveSet n 1 (δ n) t).card : ℝ) *
+          ((R n : ℝ) ^ (-(1 + 2 * (2 - 2 * f t)))) ≤ 3 * ((n : ℝ) * δ n) := by
+        calc ((localWeightActiveSet n 1 (δ n) t).card : ℝ) *
+              ((R n : ℝ) ^ (-(1 + 2 * (2 - 2 * f t))))
+            ≤ 3 * ((n : ℝ) * δ n) * ((R n : ℝ) ^ (-(1 + 2 * (2 - 2 * f t)))) :=
+              mul_le_mul_of_nonneg_right hcard hRinv0
+          _ ≤ 3 * ((n : ℝ) * δ n) * 1 :=
+              mul_le_mul_of_nonneg_left hRinv (by linarith)
+          _ = 3 * ((n : ℝ) * δ n) := by ring
+      calc (((4 : ℝ) * ((localWeightActiveSet n 1 (δ n) t).card : ℝ)) *
+              (((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) * B_far ^ 2) *
+              ((R n : ℝ) ^ (-(1 + 2 * (2 - 2 * f t)))))
+          = (4 : ℝ) * B_far ^ 2 * ((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) *
+              (((localWeightActiveSet n 1 (δ n) t).card : ℝ) *
+                ((R n : ℝ) ^ (-(1 + 2 * (2 - 2 * f t))))) := by ring
+        _ ≤ (4 : ℝ) * B_far ^ 2 * ((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) *
+              (3 * ((n : ℝ) * δ n)) := mul_le_mul_of_nonneg_left h1 h4
+        _ = (12 : ℝ) * B_far ^ 2 * (((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) *
+              ((n : ℝ) * δ n)) := by ring
+        _ = (12 : ℝ) * B_far ^ 2 * ((n : ℝ) * δ n) ^
+              (2 * (2 - 2 * f t) - 1) := by rw [hS1p]
+    linarith [hT1, hT2, hT3]
+  -- squeeze against the vanishing three-beat bound
+  have hzero : Tendsto (fun n : ℕ =>
+      (2 : ℝ) * B_band ^ 2 * (((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) *
+            ((localWeightActiveSet n 1 (δ n) t).card : ℝ) * (2 * (R n : ℝ) + 1))
+        + ((18 : ℝ) * (((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t)) * (eps n) ^ 2)
+        + (12 : ℝ) * B_far ^ 2 *
+            ((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 1))) atTop (𝓝 0) := by
+    have h1 := hcut.const_mul ((2 : ℝ) * B_band ^ 2)
+    have h2 := heps.const_mul ((18 : ℝ))
+    have h3 := hS21.const_mul ((12 : ℝ) * B_far ^ 2)
+    simpa only [mul_zero, add_zero] using h1.add (h2.add h3)
+  exact squeeze_zero'
+    (Eventually.of_forall fun n => sq_nonneg
+      (‖actualQ1NormalizedFrozenMatrix f hf r n (δ n) t -
+          actualQ1RieszMatrix f r n (δ n) t‖)) hbnd hzero
+
+/-- **(D2, assembly) Frobenius (unsquared) smallness.**  The norm form of
+`frozenWord_frobenius_sq_tendsto_zero`, obtained by the square root (the norm
+is nonnegative). -/
+theorem frozenWord_frobenius_tendsto_zero
+    (p a b M : ℝ) (r : ℕ) (hp : 1 ≤ p) (ha : 0 < a) (hb : b < 1) (hab : a ≤ b)
+    (hM : 0 ≤ M) (f : ℝ → ℝ) (hf : f ∈ hurstHolderClass p M)
+    (hF : MapsTo f (Ioo (0 : ℝ) 1) (Icc a b))
+    (t : ℝ) (ht : t ∈ Ioo (0 : ℝ) 1) (hlong : 3 / 4 < f t)
+    (δ : ℕ → ℝ) (hδpos : ∀ᶠ n in atTop, 0 < δ n)
+    (hN : Tendsto (fun n : ℕ => (n : ℝ) * δ n) atTop atTop)
+    (R : ℕ → ℕ) (hR : ∀ᶠ n in atTop, 1 ≤ R n)
+    (B_band B_far : ℝ) (hBband : 0 ≤ B_band) (hBfar : 0 ≤ B_far)
+    (eps : ℕ → ℝ)
+    (hband : ∀ᶠ n in atTop, ∀ i j : Fin (localWeightActiveSet n 1 (δ n) t).card,
+      Nat.dist i.val j.val ≤ R n →
+        |actualQ1NormalizedFrozenMatrix f hf r n (δ n) t i j -
+            actualQ1RieszMatrix f r n (δ n) t i j|
+          ≤ ((n : ℝ) * δ n) ^ (2 - 2 * f t - 1) * B_band)
+    (hfar : ∀ᶠ n in atTop, ∀ i j : Fin (localWeightActiveSet n 1 (δ n) t).card,
+      R n < Nat.dist i.val j.val →
+        |actualQ1NormalizedFrozenMatrix f hf r n (δ n) t i j -
+            actualQ1RieszMatrix f r n (δ n) t i j|
+          ≤ ((n : ℝ) * δ n) ^ (2 - 2 * f t - 1) *
+            (eps n + B_far * ((Nat.dist i.val j.val : ℝ) ^ (-(1 + (2 - 2 * f t))))))
+    (hcut : Tendsto (fun n : ℕ =>
+      ((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) *
+        ((localWeightActiveSet n 1 (δ n) t).card : ℝ) *
+        (2 * (R n : ℝ) + 1)) atTop (𝓝 0))
+    (heps : Tendsto (fun n : ℕ =>
+      ((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t)) * (eps n) ^ 2) atTop (𝓝 0))
+    (hε0 : ∀ᶠ n in atTop, 0 ≤ eps n) :
+    Tendsto (fun n : ℕ =>
+      ‖actualQ1NormalizedFrozenMatrix f hf r n (δ n) t -
+          actualQ1RieszMatrix f r n (δ n) t‖) atTop (𝓝 0) := by
+  have hsq := frozenWord_frobenius_sq_tendsto_zero p a b M r hp ha hb hab hM f hf hF t
+    ht hlong δ hδpos hN R hR B_band B_far hBband hBfar eps hband hfar hcut heps hε0
+  have h1 := hsq.sqrt
+  rw [Real.sqrt_zero] at h1
+  have h2 : (fun n : ℕ => ‖actualQ1NormalizedFrozenMatrix f hf r n (δ n) t -
+        actualQ1RieszMatrix f r n (δ n) t‖)
+      = (fun n : ℕ => Real.sqrt (‖actualQ1NormalizedFrozenMatrix f hf r n (δ n) t -
+          actualQ1RieszMatrix f r n (δ n) t‖ ^ 2)) := by
+    funext n
+    exact ((Real.sqrt_sq_eq_abs
+      (‖actualQ1NormalizedFrozenMatrix f hf r n (δ n) t -
+          actualQ1RieszMatrix f r n (δ n) t‖)).trans
+        (abs_of_nonneg (norm_nonneg _))).symm
+  rw [h2]
+  exact h1
+
+/-! ### (D2) the frozen-vs-Riesz trace-difference theorem, full assembly -/
+
+/-- **(D2) The frozen-vs-Riesz trace-difference theorem (full assembly).**
+This CLOSES the word assembly of this file: under the ordinary model +
+bandwidth hypotheses (Holder class, box image, `δ → 0` with `S = n * δ → ∞`,
+`3/4 < f t` so that `2ψ < 1`), the eventual uniform Frobenius bounds on the
+two normalized matrices, and the three analytic inputs
+
+* `hcut` — the band-predicate cutoff `S^{2ψ-2} * m * (2R+1) → 0` (the EXACT
+  hypothesis of `actual_q1_kernel_band_predicate_tendsto_zero`),
+* `hband`/`hfar` — the near-band uniform entry bound
+  (`frozenWord_deltaEntry_uniform_le`, `B_band := U + B_omega * |c|`) and the
+  far-band two-constant envelope (`frozenWord_deltaEntry_far_le`,
+  `B_far := 16 * B_omega`),
+* `heps` — the explicit residual decay `S^{2ψ} * eps² → 0` (i.e.
+  `eps = o(S^{-ψ})`; the uniform-in-`d` class/profile precision, the one
+  genuinely remaining analytic input documented in the gap note),
+
+the trace-difference smallness holds:
+`∀ eps' > 0, ∀ᶠ n in atTop, |tr(F_n ^ k) - tr(T_n ^ k)| < eps'` — the
+`hFarWord` input of `Hurst.frozenQuad_hFquad_of_farWord`, via
+`farWord_of_frobeniusSmall` (sharp telescope `abs_trace_pow_sub_le_frob`). -/
+theorem frozenWord_trace_diff_of_cutoff
+    (p a b M : ℝ) (r : ℕ) (hp : 1 ≤ p) (ha : 0 < a) (hb : b < 1) (hab : a ≤ b)
+    (hM : 0 ≤ M) (f : ℝ → ℝ) (hf : f ∈ hurstHolderClass p M)
+    (hF : MapsTo f (Ioo (0 : ℝ) 1) (Icc a b))
+    (t : ℝ) (ht : t ∈ Ioo (0 : ℝ) 1) (hlong : 3 / 4 < f t)
+    (δ : ℕ → ℝ) (hδpos : ∀ᶠ n in atTop, 0 < δ n)
+    (hδ0 : Tendsto δ atTop (𝓝 0))
+    (hN : Tendsto (fun n : ℕ => (n : ℝ) * δ n) atTop atTop)
+    (k : ℕ) (hk : 2 ≤ k) (B : ℝ)
+    (hFb : ∀ᶠ n in atTop,
+      ‖actualQ1NormalizedFrozenMatrix f hf r n (δ n) t‖ ≤ B)
+    (hTb : ∀ᶠ n in atTop, ‖actualQ1RieszMatrix f r n (δ n) t‖ ≤ B)
+    (R : ℕ → ℕ) (hR : ∀ᶠ n in atTop, 1 ≤ R n)
+    (B_band B_far : ℝ) (hBband : 0 ≤ B_band) (hBfar : 0 ≤ B_far)
+    (eps : ℕ → ℝ)
+    (hband : ∀ᶠ n in atTop, ∀ i j : Fin (localWeightActiveSet n 1 (δ n) t).card,
+      Nat.dist i.val j.val ≤ R n →
+        |actualQ1NormalizedFrozenMatrix f hf r n (δ n) t i j -
+            actualQ1RieszMatrix f r n (δ n) t i j|
+          ≤ ((n : ℝ) * δ n) ^ (2 - 2 * f t - 1) * B_band)
+    (hfar : ∀ᶠ n in atTop, ∀ i j : Fin (localWeightActiveSet n 1 (δ n) t).card,
+      R n < Nat.dist i.val j.val →
+        |actualQ1NormalizedFrozenMatrix f hf r n (δ n) t i j -
+            actualQ1RieszMatrix f r n (δ n) t i j|
+          ≤ ((n : ℝ) * δ n) ^ (2 - 2 * f t - 1) *
+            (eps n + B_far * ((Nat.dist i.val j.val : ℝ) ^ (-(1 + (2 - 2 * f t))))))
+    (hcut : Tendsto (fun n : ℕ =>
+      ((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t) - 2) *
+        ((localWeightActiveSet n 1 (δ n) t).card : ℝ) *
+        (2 * (R n : ℝ) + 1)) atTop (𝓝 0))
+    (heps : Tendsto (fun n : ℕ =>
+      ((n : ℝ) * δ n) ^ (2 * (2 - 2 * f t)) * (eps n) ^ 2) atTop (𝓝 0))
+    (hε0 : ∀ᶠ n in atTop, 0 ≤ eps n) :
+    ∀ eps' > 0, ∀ᶠ n in atTop,
+      |Matrix.trace ((actualQ1NormalizedFrozenMatrix f hf r n (δ n) t) ^ k)
+        - Matrix.trace ((actualQ1RieszMatrix f r n (δ n) t) ^ k)| < eps' := by
+  refine farWord_of_frobeniusSmall p M f hf r δ t k hk B hFb hTb ?_
+  exact frozenWord_frobenius_tendsto_zero p a b M r hp ha hb hab hM f hf hF t ht
+    hlong δ hδpos hN R hR B_band B_far hBband hBfar eps hband hfar hcut heps hε0
 
 end Hurst
