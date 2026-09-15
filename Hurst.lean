@@ -569,3 +569,29 @@ import Hurst.FrozenQuadratureInstance
 import Hurst.FrozenQuadratureRun
 import Hurst.GridErrorRate
 import Hurst.NonnegWeightNegMass
+
+import Hurst.HSOperatorFoundation
+import Hurst.HSOperatorLayer2
+import Hurst.HSOperatorLayer3
+import Hurst.HSOperatorLayer4
+import Hurst.HSKernelMeshApprox  -- trial batch B1
+
+import Hurst.P1ActualPowerSums
+import Hurst.P2SpectrumConstruction
+import Hurst.P3SignedMatching
+import Hurst.P4GaussianSeriesLaw
+import Hurst.P5LogHLayers
+import Hurst.P5L1Joining
+import Hurst.P5SeamClosed
+import Hurst.P5TruthCenter
+import Hurst.P5JoinInstantiation
+import Hurst.P6LawIdentification
+import Hurst.P7UnknownScale  -- trial batch B2
+
+import Hurst.CapstoneV2
+import Hurst.FourthMomentAssembly
+import Hurst.FrozenSpectralCount
+import Hurst.FrozenSpectralEnumeration
+import Hurst.RieszCompactEnumeration
+import Hurst.SpectralEnumeration
+import Hurst.SpectralWeightNonneg  -- trial batch B3
