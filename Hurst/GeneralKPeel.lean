@@ -367,31 +367,410 @@ theorem measurable_contract {n : ℕ} {W : Fin (n+2) → ℝ × ℝ → ℝ} (hW
   · rw [contract_apply_succ W hj]
     exact hWm _
 
+/-! ### Fin-product algebra of the peel -/
+
+theorem cycleSucc_zero {k : ℕ} : cycleSucc (0 : Fin (k + 2)) = 1 := by
+  rw [cycleSucc, dif_pos (show (0 : Fin (k + 2)).val + 1 < k + 2 by
+    simp only [Fin.val_zero]; omega)]
+  rfl
+
+/-- Unconditional wrap of the cyclic successor at the last index. -/
+theorem cycleSucc_last' {k : ℕ} : cycleSucc (Fin.last k) = 0 := by
+  rw [cycleSucc, dif_neg (show ¬((Fin.last k).val + 1 < k + 1) by
+    rw [Fin.val_last]; omega)]
+  rfl
+
+/-- No wrap on `castSucc`: the cyclic successor of `i.castSucc` in `Fin (n+1)` is `i.succ`. -/
+theorem cycleSucc_castSucc {n : ℕ} (i : Fin n) :
+    cycleSucc (Fin.castSucc i) = Fin.succ i := by
+  rw [cycleSucc, dif_pos (show (Fin.castSucc i).val + 1 < n + 1 by
+    simp only [Fin.val_castSucc]; have hi := i.isLt; omega)]
+  rfl
+
+/-- The cyclic successor of `(castSucc j).succ` in `Fin (n+2)` is the double successor. -/
+theorem cycleSucc_castSucc_succ {n : ℕ} (j : Fin n) :
+    cycleSucc ((Fin.castSucc j).succ) = Fin.succ (Fin.succ j) := by
+  rw [cycleSucc, dif_pos (show ((Fin.castSucc j).succ : Fin (n + 2)).val + 1 < n + 2 by
+    simp only [Fin.val_succ, Fin.val_castSucc]; have hj := j.isLt; omega)]
+  rfl
+
+/-- **Cons factorization of the chain product**: evaluating the `(n+2)`-chain product at
+`Fin.cons a w` splits off the `0`-factor (edge `a ↦ w 0` at kernel `W 0`), the wrap
+factor `w (last n) ↦ a` at kernel `W (last (n+1))`, and the interior product along `w`
+(the peel reassembly form). -/
+theorem chainProd_cons (n : ℕ) (W : Fin (n + 2) → ℝ × ℝ → ℝ) (a : ℝ) (w : Fin (n + 1) → ℝ) :
+    chainProd (n + 2) W (Fin.cons a w)
+      = W 0 (a, w 0) * ((∏ j : Fin n, W ((Fin.castSucc j).succ)
+            (w (Fin.castSucc j), w (Fin.succ j)))
+          * W (Fin.last (n + 1)) (w (Fin.last n), a)) := by
+  have hlast : (Fin.last n).succ = Fin.last (n + 1) := Fin.succ_last n
+  have hint : ∀ j : Fin n, W ((Fin.castSucc j).succ)
+      ((Fin.cons a w : Fin (n + 2) → ℝ) (Fin.castSucc j).succ,
+        (Fin.cons a w : Fin (n + 2) → ℝ) (cycleSucc (Fin.castSucc j).succ))
+      = W ((Fin.castSucc j).succ) (w (Fin.castSucc j), w (Fin.succ j)) := fun j => by
+    rw [Fin.cons_succ, cycleSucc_castSucc_succ, Fin.cons_succ]
+  calc chainProd (n + 2) W (Fin.cons a w)
+      = ∏ i : Fin (n + 2), W i ((Fin.cons a w : Fin (n + 2) → ℝ) i,
+          (Fin.cons a w : Fin (n + 2) → ℝ) (cycleSucc i)) := rfl
+    _ = W 0 ((Fin.cons a w : Fin (n + 2) → ℝ) 0,
+            (Fin.cons a w : Fin (n + 2) → ℝ) (cycleSucc (0 : Fin (n + 2))))
+          * ∏ i : Fin (n + 1), W (i.succ)
+              ((Fin.cons a w : Fin (n + 2) → ℝ) (i.succ),
+                (Fin.cons a w : Fin (n + 2) → ℝ) (cycleSucc i.succ)) :=
+        Fin.prod_univ_succ (fun i : Fin (n + 2) => W i
+          ((Fin.cons a w : Fin (n + 2) → ℝ) i,
+            (Fin.cons a w : Fin (n + 2) → ℝ) (cycleSucc i)))
+    _ = W 0 (a, w 0) * ∏ i : Fin (n + 1), W (i.succ)
+            ((Fin.cons a w : Fin (n + 2) → ℝ) (i.succ),
+              (Fin.cons a w : Fin (n + 2) → ℝ) (cycleSucc i.succ)) := by
+        rw [Fin.cons_zero, cycleSucc_zero, Fin.cons_one]
+    _ = W 0 (a, w 0) * ((∏ j : Fin n, W ((Fin.castSucc j).succ)
+              ((Fin.cons a w : Fin (n + 2) → ℝ) (Fin.castSucc j).succ,
+                (Fin.cons a w : Fin (n + 2) → ℝ) (cycleSucc (Fin.castSucc j).succ)))
+            * W (Fin.succ (Fin.last n))
+                ((Fin.cons a w : Fin (n + 2) → ℝ) (Fin.succ (Fin.last n)),
+                  (Fin.cons a w : Fin (n + 2) → ℝ) (cycleSucc (Fin.succ (Fin.last n))))) :=
+        congrArg (W 0 (a, w 0) * ·) (Fin.prod_univ_castSucc
+          (fun i : Fin (n + 1) => W (i.succ)
+            ((Fin.cons a w : Fin (n + 2) → ℝ) (i.succ),
+              (Fin.cons a w : Fin (n + 2) → ℝ) (cycleSucc i.succ))))
+    _ = W 0 (a, w 0) * ((∏ j : Fin n, W ((Fin.castSucc j).succ)
+              (w (Fin.castSucc j), w (Fin.succ j)))
+            * W (Fin.last (n + 1)) (w (Fin.last n), a)) := by
+        rw [hlast, Fin.cons_last, cycleSucc_last', Fin.cons_zero]
+        refine congrArg (W 0 (a, w 0) * ·) ?_
+        exact congrArg (· * W (Fin.last (n + 1)) (w (Fin.last n), a))
+          (Finset.prod_congr rfl (fun j (_ : j ∈ (Finset.univ : Finset (Fin n))) => hint j))
+
+/-- **Contract-product reassembly**: the `(n+1)`-chain product of `contract W` at `w`
+equals the interior product of `chainProd_cons` times the composed-kernel factor at
+`(w (last n), w 0)`. -/
+theorem chainProd_contract (n : ℕ) (W : Fin (n + 2) → ℝ × ℝ → ℝ) (w : Fin (n + 1) → ℝ) :
+    chainProd (n + 1) (contract W) w
+      = (∏ j : Fin n, W ((Fin.castSucc j).succ) (w (Fin.castSucc j), w (Fin.succ j)))
+          * compKernel (W (Fin.last (n + 1))) (W 0) (w (Fin.last n), w 0) := by
+  calc chainProd (n + 1) (contract W) w
+      = ∏ i : Fin (n + 1), contract W i (w i, w (cycleSucc i)) := rfl
+    _ = (∏ i : Fin n, contract W (Fin.castSucc i)
+              (w (Fin.castSucc i), w (cycleSucc (Fin.castSucc i))))
+          * contract W (Fin.last n) (w (Fin.last n), w (cycleSucc (Fin.last n))) :=
+        Fin.prod_univ_castSucc (fun i : Fin (n + 1) => contract W i (w i, w (cycleSucc i)))
+    _ = (∏ i : Fin n, contract W (Fin.castSucc i)
+              (w (Fin.castSucc i), w (cycleSucc (Fin.castSucc i))))
+          * compKernel (W (Fin.last (n + 1))) (W 0) (w (Fin.last n), w 0) := by
+        rw [cycleSucc_last', contract_apply_last W]
+    _ = (∏ i : Fin n, W ((Fin.castSucc i).succ)
+              (w (Fin.castSucc i), w (Fin.succ i)))
+          * compKernel (W (Fin.last (n + 1))) (W 0) (w (Fin.last n), w 0) :=
+        congrArg (· * compKernel (W (Fin.last (n + 1))) (W 0) (w (Fin.last n), w 0))
+          (Finset.prod_congr rfl (fun i (_ : i ∈ (Finset.univ : Finset (Fin n))) => by
+            rw [contract_apply_succ W (Fin.castSucc_lt_last i).ne, cycleSucc_castSucc]))
+
+/-! ### The Fubini peel step -/
+
+/-- The `piFinSuccAbove 0` relabeling sends the head–tail pair to the cons tuple. -/
+theorem piFinSuccAbove_symm_apply_cons {n : ℕ} (p : ℝ × (Fin (n + 1) → ℝ)) :
+    (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n + 2) => ℝ) (0 : Fin (n + 2))).symm p
+      = Fin.cons p.1 p.2 := by
+  funext i
+  refine Fin.cases ?_ (fun j => ?_) i
+  · simp [MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.insertNthEquiv]
+  · simp [MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.insertNthEquiv]
+
+/-- The chain product is invariant under relabeling the family by `rotBack` and the point
+by the `rotEquiv` coordinate rotation (the transport backing `chainIntegral_rotate`). -/
+theorem chainProd_comp_rotBack {k : ℕ} (W : Fin k → ℝ × ℝ → ℝ) (z : Fin k → ℝ) :
+    chainProd k (fun j => W (rotBack j))
+        (⇑(MeasurableEquiv.piCongrLeft (fun _ : Fin k => ℝ) (rotEquiv k)) z)
+      = chainProd k W z := by
+  have hfac : ∀ i : Fin k, W (rotBack i)
+      ((MeasurableEquiv.piCongrLeft (fun _ : Fin k => ℝ) (rotEquiv k)) z i,
+        (MeasurableEquiv.piCongrLeft (fun _ : Fin k => ℝ) (rotEquiv k)) z (cycleSucc i))
+      = W (rotBack i) (z (rotBack i), z i) := fun i => by
+    rw [piCongrLeft_rot_val z (cycleSucc i), piCongrLeft_rot_val z i, rotBack_cycleSucc]
+  refine Eq.trans (Finset.prod_congr rfl
+    (fun i (_ : i ∈ (Finset.univ : Finset (Fin k))) => hfac i)) ?_
+  exact Finset.prod_equiv (rotEquiv k).symm (fun _ => by simp) (fun i _ => by
+    exact congrArg (fun t : Fin k => W (rotBack i) (z (rotBack i), z t))
+      (cycleSucc_rotBack i).symm)
+
+/-- Chain-integrability transfers through the `rotBack` family relabeling. -/
+theorem integrable_chainProd_comp_rotBack {k : ℕ} (W : Fin k → ℝ × ℝ → ℝ)
+    (hWm : ∀ i, Measurable (W i))
+    (hP : Integrable (chainProd k W) (Measure.pi fun _ : Fin k => vol)) :
+    Integrable (chainProd k (fun j => W (rotBack j))) (Measure.pi fun _ : Fin k => vol) := by
+  have hEq : chainProd k W
+      = (chainProd k (fun j => W (rotBack j)))
+          ∘ ⇑(MeasurableEquiv.piCongrLeft (fun _ : Fin k => ℝ) (rotEquiv k)) := by
+    funext z
+    exact (chainProd_comp_rotBack W z).symm
+  rw [hEq] at hP
+  exact (MeasurePreserving.integrable_comp (measurePreserving_rotBack k)
+    ((measurable_chainProd (fun i => hWm (rotBack i))).aestronglyMeasurable)).mp hP
+
+/-- **The Fubini peel step**: the `(n+2)`-chain integral equals the `n+1`-chain integral
+of the contracted family `contract W`, under the chain-integrability hypothesis `hP`
+(the generalization of the landed `k = 3` anchors' `hA`/`hB` hypotheses). -/
+theorem chainIntegral_peel {n : ℕ} (W : Fin (n + 2) → ℝ × ℝ → ℝ)
+    (hP : Integrable (chainProd (n + 2) W) (Measure.pi fun _ : Fin (n + 2) => vol)) :
+    chainIntegral (n + 2) W = chainIntegral (n + 1) (contract W) := by
+  have hmp := measurePreserving_piFinSuccAbove (fun _ : Fin (n + 2) => vol) (0 : Fin (n + 2))
+  have hsymm : ∀ p : ℝ × (Fin (n + 1) → ℝ), chainProd (n + 2) W
+      ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n + 2) => ℝ) (0 : Fin (n + 2))).symm p)
+      = chainProd (n + 2) W (Fin.cons p.1 p.2) :=
+    fun p => congrArg (chainProd (n + 2) W) (piFinSuccAbove_symm_apply_cons p)
+  -- integrability on the product side
+  have hF : Integrable
+      (fun p : ℝ × (Fin (n + 1) → ℝ) => chainProd (n + 2) W (Fin.cons p.1 p.2))
+      (vol.prod (Measure.pi fun _ : Fin (n + 1) => vol)) := by
+    have h1 := (MeasurePreserving.symm
+      (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n + 2) => ℝ) (0 : Fin (n + 2))) hmp
+        ).integrable_comp_of_integrable hP
+    have h2 : (chainProd (n + 2) W)
+        ∘ ⇑(MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n + 2) => ℝ) (0 : Fin (n + 2))).symm
+        = fun p : ℝ × (Fin (n + 1) → ℝ) => chainProd (n + 2) W (Fin.cons p.1 p.2) := by
+      funext p
+      show chainProd (n + 2) W
+        ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n + 2) => ℝ)
+            (0 : Fin (n + 2))).symm p) = _
+      rw [piFinSuccAbove_symm_apply_cons]
+    rw [h2] at h1
+    exact h1
+  have hinner : ∀ w : Fin (n + 1) → ℝ,
+      ∫ x : ℝ, chainProd (n + 2) W (Fin.cons x w) ∂vol
+        = chainProd (n + 1) (contract W) w := by
+    intro w
+    have hstep : ∀ x : ℝ, chainProd (n + 2) W (Fin.cons x w)
+        = W 0 (x, w 0) * ((∏ j : Fin n, W ((Fin.castSucc j).succ)
+              (w (Fin.castSucc j), w (Fin.succ j)))
+            * W (Fin.last (n + 1)) (w (Fin.last n), x)) :=
+      fun x => chainProd_cons n W x w
+    have key : ∫ x : ℝ, W 0 (x, w 0) * W (Fin.last (n + 1)) (w (Fin.last n), x) ∂vol
+        = compKernel (W (Fin.last (n + 1))) (W 0) (w (Fin.last n), w 0) := by
+      rw [compKernel, integral_congr_ae
+        (Filter.Eventually.of_forall (fun x : ℝ =>
+          mul_comm (W 0 (x, w 0)) (W (Fin.last (n + 1)) (w (Fin.last n), x))))]
+    calc ∫ x : ℝ, chainProd (n + 2) W (Fin.cons x w) ∂vol
+        = ∫ x : ℝ, W 0 (x, w 0) * ((∏ j : Fin n, W ((Fin.castSucc j).succ)
+              (w (Fin.castSucc j), w (Fin.succ j)))
+            * W (Fin.last (n + 1)) (w (Fin.last n), x)) ∂vol :=
+            integral_congr_ae (Filter.Eventually.of_forall hstep)
+      _ = ∫ x : ℝ, (∏ j : Fin n, W ((Fin.castSucc j).succ)
+                (w (Fin.castSucc j), w (Fin.succ j)))
+            * (W 0 (x, w 0) * W (Fin.last (n + 1)) (w (Fin.last n), x)) ∂vol :=
+            integral_congr_ae (Filter.Eventually.of_forall (fun x : ℝ => by ring))
+      _ = (∏ j : Fin n, W ((Fin.castSucc j).succ)
+                (w (Fin.castSucc j), w (Fin.succ j)))
+            * ∫ x : ℝ, W 0 (x, w 0) * W (Fin.last (n + 1)) (w (Fin.last n), x) ∂vol :=
+            integral_const_mul
+              (∏ j : Fin n, W ((Fin.castSucc j).succ)
+                (w (Fin.castSucc j), w (Fin.succ j)))
+              (fun x : ℝ => W 0 (x, w 0) * W (Fin.last (n + 1)) (w (Fin.last n), x))
+      _ = (∏ j : Fin n, W ((Fin.castSucc j).succ)
+                (w (Fin.castSucc j), w (Fin.succ j)))
+            * compKernel (W (Fin.last (n + 1))) (W 0) (w (Fin.last n), w 0) := by
+            rw [key]
+      _ = chainProd (n + 1) (contract W) w := (chainProd_contract n W w).symm
+  calc chainIntegral (n + 2) W
+      = ∫ z : Fin (n + 2) → ℝ, chainProd (n + 2) W z
+          ∂(Measure.pi fun _ : Fin (n + 2) => vol) := rfl
+    _ = ∫ p : ℝ × (Fin (n + 1) → ℝ), chainProd (n + 2) W (Fin.cons p.1 p.2)
+          ∂(vol.prod (Measure.pi fun _ : Fin (n + 1) => vol)) :=
+        (hmp.symm.integral_comp' (chainProd (n + 2) W)).symm.trans
+          (integral_congr_ae (Filter.Eventually.of_forall hsymm))
+    _ = ∫ w : Fin (n + 1) → ℝ, ∫ a : ℝ, chainProd (n + 2) W (Fin.cons a w) ∂vol
+          ∂(Measure.pi fun _ : Fin (n + 1) => vol) :=
+        ((integral_prod_swap
+              (fun p : ℝ × (Fin (n + 1) → ℝ) => chainProd (n + 2) W (Fin.cons p.1 p.2))).symm.trans
+          (integral_prod
+            (fun q : (Fin (n + 1) → ℝ) × ℝ =>
+              (fun p : ℝ × (Fin (n + 1) → ℝ) => chainProd (n + 2) W (Fin.cons p.1 p.2)) q.swap)
+            ((measurePreserving_swap (μ := Measure.pi fun _ : Fin (n + 1) => vol)
+                (ν := vol)).integrable_comp_of_integrable hF)))
+    _ = ∫ w : Fin (n + 1) → ℝ, chainProd (n + 1) (contract W) w
+          ∂(Measure.pi fun _ : Fin (n + 1) => vol) := by
+        simp only [hinner]
+    _ = chainIntegral (n + 1) (contract W) := rfl
+
+/-! ### The general-`k` peel induction -/
+
+/-- Kernel-level trace cyclicity: `cycle2 K L = cycle2 L K` (the swap transport). -/
+theorem cycle2_swap (K L : ℝ × ℝ → ℝ) : cycle2 K L = cycle2 L K := by
+  show (∫ p : ℝ × ℝ, K p * L p.swap ∂(vol.prod vol))
+      = ∫ p : ℝ × ℝ, L p * K p.swap ∂(vol.prod vol)
+  rw [← integral_prod_swap (fun p : ℝ × ℝ => L p * K p.swap)]
+  refine integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)
+  show K p * L p.swap = L p.swap * K p
+  ring
+
+/-- The constant `K₀`-chain with the last kernel replaced by `D`. -/
+def withLast (k : ℕ) (D K₀ : ℝ × ℝ → ℝ) : Fin (k + 1) → ℝ × ℝ → ℝ :=
+  fun j => if j = Fin.last k then D else K₀
+
+theorem rotBack_zero_succ {n : ℕ} : rotBack (0 : Fin (n + 2)) = Fin.last (n + 1) := by
+  apply Fin.ext
+  have hv := rotBack_val (0 : Fin (n + 2))
+  rw [if_pos (show ((0 : Fin (n + 2)) : ℕ) = 0 by rfl)] at hv
+  have h2 : ((Fin.last (n + 1) : Fin (n + 2)) : ℕ) = n + 1 := Fin.val_last _
+  omega
+
+theorem rotBack_last {n : ℕ} : rotBack (Fin.last (n + 1)) = Fin.castSucc (Fin.last n) := by
+  apply Fin.ext
+  have hv := rotBack_val (Fin.last (n + 1))
+  rw [Fin.val_last, if_neg (by omega : ¬(n + 1 = 0))] at hv
+  rw [Fin.val_castSucc, Fin.val_last]
+  omega
+
+theorem rotBack_succ {n : ℕ} (j : Fin (n + 1)) :
+    rotBack (Fin.succ j) = (Fin.castSucc j : Fin (n + 2)) := by
+  apply Fin.ext
+  have hv := rotBack_val (Fin.succ j)
+  have hvv : ((Fin.succ j : Fin (n + 2)) : ℕ) = (j : ℕ) + 1 := by simp
+  rw [hvv, if_neg (by have hj := j.isLt; omega)] at hv
+  rw [hv, Fin.val_castSucc]
+  omega
+
+/-- **The contraction step of the induction**: contracting the `rotBack`-relabeled
+`withLast` family composes `K₀` into `D` on the left, i.e. `D ↦ compKernel K₀ D`
+(left-growing composition = `compPowL'` form). -/
+theorem contract_comp_rotBack_withLast (m : ℕ) (D K₀ : ℝ × ℝ → ℝ) :
+    contract (fun j : Fin (m + 3) => withLast (m + 2) D K₀ (rotBack j))
+      = withLast (m + 1) (compKernel K₀ D) K₀ := by
+  funext j
+  by_cases hj : j = Fin.last (m + 1)
+  · subst hj
+    rw [contract_apply_last]
+    show compKernel
+        (withLast (m + 2) D K₀ (rotBack (Fin.last (m + 2))))
+        (withLast (m + 2) D K₀ (rotBack 0))
+        = withLast (m + 1) (compKernel K₀ D) K₀ (Fin.last (m + 1))
+    have hne : (Fin.castSucc (Fin.last (m + 1)) : Fin (m + 3)) ≠ Fin.last (m + 2) := by
+      intro h
+      have hc : ((Fin.castSucc (Fin.last (m + 1)) : Fin (m + 3)) : ℕ) = m + 1 := by
+        rw [Fin.val_castSucc, Fin.val_last]
+      have h2 : ((Fin.last (m + 2) : Fin (m + 3)) : ℕ) = m + 2 := Fin.val_last _
+      rw [h] at hc
+      omega
+    rw [rotBack_last, rotBack_zero_succ, withLast, if_neg hne, withLast, if_pos rfl,
+      withLast, if_pos rfl]
+  · rw [contract_apply_succ _ hj]
+    show withLast (m + 2) D K₀ (rotBack (Fin.succ j))
+        = withLast (m + 1) (compKernel K₀ D) K₀ j
+    rw [rotBack_succ, withLast, if_neg ((Fin.castSucc_lt_last j).ne), withLast, if_neg hj]
+
+/-- **The general-`k` peel induction**: the chain integral of the `K₀`-chain whose last
+kernel is `D` equals the trace form `cycle2 K₀ (compPowL' m K₀ D)`, conditional on the
+level-wise chain-integrability hypothesis `hP` (the generalization of the landed `k = 3`
+anchors' `hA`/`hB`). -/
+theorem chainIntegral_withLast_ind (m : ℕ) (K₀ : ℝ × ℝ → ℝ) (hK₀m : Measurable K₀)
+    (hP : ∀ (r : ℕ) (D : ℝ × ℝ → ℝ), Measurable D →
+      Integrable (chainProd (r + 2) (withLast (r + 1) D K₀))
+        (Measure.pi fun _ : Fin (r + 2) => vol)) :
+    ∀ D : ℝ × ℝ → ℝ, Measurable D →
+      chainIntegral (m + 2) (withLast (m + 1) D K₀) = cycle2 K₀ (compPowL' m K₀ D) := by
+  induction m with
+  | zero =>
+    intro D hDm
+    have h0 : withLast 1 D K₀ 0 = K₀ := by
+      show (if (0 : Fin 2) = Fin.last 1 then D else K₀) = K₀
+      rw [if_neg (by simp)]
+    have h1 : withLast 1 D K₀ 1 = D := by
+      show (if (1 : Fin 2) = Fin.last 1 then D else K₀) = D
+      rw [if_pos (show ((1 : Fin 2)) = Fin.last 1 from rfl)]
+    calc chainIntegral 2 (withLast 1 D K₀)
+        = cycle2 (withLast 1 D K₀ 0) (withLast 1 D K₀ 1) := chainIntegral_two _
+      _ = cycle2 K₀ (compPowL' 0 K₀ D) := by
+          rw [h0, h1]
+          rfl
+  | succ m ih =>
+    intro D hDm
+    have hrot : chainIntegral (m + 3) (withLast (m + 2) D K₀)
+        = chainIntegral (m + 3)
+            (fun j : Fin (m + 3) => withLast (m + 2) D K₀ (rotBack j)) := by
+      have hr := chainIntegral_rotate (m + 3)
+        (fun j : Fin (m + 3) => withLast (m + 2) D K₀ (rotBack j))
+      refine (hr.trans ?_).symm
+      refine congrArg (chainIntegral (m + 3)) (funext fun j => ?_)
+      show withLast (m + 2) D K₀ (rotBack (cycleSucc j)) = withLast (m + 2) D K₀ j
+      rw [rotBack_cycleSucc]
+    have hPV := integrable_chainProd_comp_rotBack
+      (withLast (m + 2) D K₀)
+      (fun i => by
+        by_cases hi : i = Fin.last (m + 2)
+        · rw [hi, withLast, if_pos rfl]
+          exact hDm
+        · rw [withLast, if_neg hi]
+          exact hK₀m)
+      (hP (m + 1) D hDm)
+    rw [hrot, chainIntegral_peel _ hPV, contract_comp_rotBack_withLast,
+      ih (compKernel K₀ D) ((stronglyMeasurable_compKernel hK₀m hDm).measurable),
+      compPowL'_assoc]
+    rfl
+
+/-- **The general-`k` composition induction**: the `(n+2)`-cycle integral of `K` equals
+the composed-kernel trace form `cycle2 (compPowL n K) K` (kernel-side `C_{n+2}(K)`),
+under the level-wise chain-integrability hypothesis `hP`. -/
+theorem cycleIntegral_comp (n : ℕ) (K : ℝ × ℝ → ℝ) (hKm : Measurable K)
+    (hP : ∀ (r : ℕ) (D : ℝ × ℝ → ℝ), Measurable D →
+      Integrable (chainProd (r + 2) (withLast (r + 1) D K))
+        (Measure.pi fun _ : Fin (r + 2) => vol)) :
+    cycleIntegral (n + 2) K = cycle2 (compPowL n K) K := by
+  have hFam : (fun _ : Fin (n + 2) => K) = withLast (n + 1) K K := by
+    funext j
+    rw [withLast]
+    by_cases hj : j = Fin.last (n + 1)
+    · rw [if_pos hj]
+    · rw [if_neg hj]
+  rw [← chainIntegral_eq_cycleIntegral, hFam,
+    chainIntegral_withLast_ind n K hKm hP K hKm, compPowL_eq, cycle2_swap]
+
+/-- The `k = 3` specialization of the composition induction: `C_3(K) = cycle2 (compKernel K K) K`
+(the composed-kernel trace form of the landed `k = 3` anchor, now reached by the general
+peel induction). -/
+theorem cycleIntegral_three_comp (K : ℝ × ℝ → ℝ) (hKm : Measurable K)
+    (hP : ∀ (r : ℕ) (D : ℝ × ℝ → ℝ), Measurable D →
+      Integrable (chainProd (r + 2) (withLast (r + 1) D K))
+        (Measure.pi fun _ : Fin (r + 2) => vol)) :
+    cycleIntegral 3 K = cycle2 (compKernel K K) K := by
+  have h := cycleIntegral_comp 1 K hKm hP
+  rw [compPowL] at h
+  exact h
+
 /-!
-## Pass-2 gap (documented, not landed; budget)
+## Pass-3 status: the peel induction is landed
 
-The two pure product-algebra lemmas that turn the above contraction into the Fubini
-peel step are *stated and checked by hand* but not landed here:
+The two Fin-product algebra lemmas of the pass-2 gap are landed:
 
-* `chainProd_cons`: `chainProd (n+2) W (Fin.cons a w)
-  = W 0 (a, w 0) * W (Fin.last (n+1)) (w (Fin.last n), a)
-    * ∏ j : Fin (n+1), (if j = Fin.last n then 1 else W j.succ (w j, w (cycleSucc j)))`
-  — proof skeleton: `Fin.prod_univ_succ` (split at `0`), the cons evaluations
-  `Fin.cons_zero`/`Fin.cons_succ`, `cycleSucc 0 = 1`, and the wrap case
-  `cycleSucc j.succ = 0` at `j = Fin.last n` (`cycleSucc_last`); the remaining
-  `∏ j`-splits by `Fin.prod_univ_castSucc` with `cycleSucc (castSucc i) = castSucc i.succ`.
-* `chainProd_contract`: `chainProd (n+1) (contract W) w` = the same pre-product times
-  `compKernel (W (Fin.last (n+1))) (W 0) (w (Fin.last n), w 0)` (by `contract_apply_succ`
-  on the `castSucc` factors and `contract_apply_last` at the wrap).
+* `chainProd_cons` — cons factorization of the chain product (split at `0` by
+  `Fin.prod_univ_succ`, then `Fin.prod_univ_castSucc` with the wrap factor
+  `W (Fin.last (n+1)) (w (Fin.last n), a)`; interior factors via
+  `cycleSucc_castSucc_succ`).
+* `chainProd_contract` — the contract-product reassembly: the chain product of
+  `contract W` is the same interior product times
+  `compKernel (W (Fin.last (n+1))) (W 0) (w (Fin.last n), w 0)`.
 
-With these, the peel step is: transport `π (n+2)` to `vol.prod π (n+1)` via
-`measurePreserving_piFinSuccAbove (fun _ => vol) 0`, Fubini (`integral_prod` under the
-chain-integrability hypothesis `hP`, the generalization of the landed anchors' `hA`/`hB`),
-the inner integral `∫ a, W 0 (a, w 0) * W (Fin.last (n+1)) (w (Fin.last n), a) da =
-compKernel (W (Fin.last (n+1))) (W 0) (w (Fin.last n), w 0)` (definition of `compKernel`),
-and reassembly by `chainProd_cons` + `chainProd_contract`. The `hA`/`hB` chain-integrability
-hypotheses for the Riesz kernel are exactly the general-`k` form of the documented
-section-Cauchy–Schwarz discharge (bounded by `∏ hsNorm` via iterated `hsNorm_comp_le`).
+On top of them the Fubini peel and the general-`k` induction are landed:
+
+* `chainIntegral_peel` — `chainIntegral (n+2) W = chainIntegral (n+1) (contract W)`
+  under the chain-integrability hypothesis `hP` (transport by
+  `measurePreserving_piFinSuccAbove` at `0`, Fubini by `integral_prod` after the
+  swap transport, inner integral = `compKernel` definition, reassembly by
+  `chainProd_cons` + `chainProd_contract`).
+* `chainIntegral_withLast_ind` / `cycleIntegral_comp` — the peel induction: peeling the
+  `rotBack`-relabeled `withLast` family composes on the LEFT (`D ↦ compKernel K₀ D`,
+  `contract_comp_rotBack_withLast`), so the final `k = 2` anchor yields
+  `cycleIntegral (n+2) K = cycle2 (compPowL n K) K` (after `cycle2_swap`), conditional
+  on the level-wise integrability hypothesis `hP` (one instance per peel level; for the
+  truncated Riesz kernel each instance reduces to a Tonelli-finiteness statement).
+
+## Remaining gap (documented, not landed; budget)
+
+The *unconditional* general-`k` chain-integrability discharge (each `hP` instance): for
+signed kernels this is the iterated section-Cauchy–Schwarz argument bounded by the
+`∏ hsNorm` powers (`hsNorm_compPowL_le` keeps the tower square-summable); for nonnegative
+kernels each instance is a Tonelli-finiteness statement. With that discharge in hand,
+`cycleIntegral_comp` gives the general-`k` HasSum boundary `Σ_j κ_j^(n+2) = C_{n+2}(K)`
+via the landed `CycleTraceIdentification` trace-pair machinery.
 -/
 
 end HS
