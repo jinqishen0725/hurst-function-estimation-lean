@@ -16,13 +16,13 @@ boundary on the landed `HS` encoding (`HSKernel K = MemLp K 2 vol2`,
   Cauchy–Schwarz sandwich `∫∫ |M(y,x)| √(secE2 K x) √(secE1 L y) ≤ hsNorm M hsNorm K
   hsNorm L` (a.e. section Cauchy–Schwarz in `x` against `√(secE2 K)`, then
   Cauchy–Schwarz in `y` between `√(secE1 L)` and `√(secE2 M)`; Fubini-free, via
-  `integrable_prod_iff'`) — and its consequences `integrable_chainCycleTriple` /
+  `integrable_prod_iff'`) — and its consequences `K3Integrable_chainCycleTriple` /
   `integrable_chainCycleTripleB`: the triple chain integrands of both parenthesizations
   are integrable over `vol × vol × vol` for measurable HS kernels (Fubini split by
   `integrable_prod_iff`, section integrability by `MemLp.mul'`, section-integral
   domination by the sandwich).
 * **Item (2), the `w ↔ q` splice** (the documented transport of
-  `Hurst.HSCycleComposition`): `cycleIntegral_three_eq_chainCycleTriple` — the kernel-side
+  `Hurst.HSCycleComposition`): `K3CycleIntegral_three_eq_chainCycleTriple` — the kernel-side
   `k = 3` cycle functional `cycleIntegral 3 K` equals the triple chain integral
   `chainCycleTriple K K K`, by the landed `cycleIntegral_three_eq_tripleW` (`Fin 3`
   succAbove-peel transport) composed with the coordinate identification
@@ -54,7 +54,7 @@ variable {K L M : ℝ × ℝ → ℝ}
 
 /-! ### Small bridges (copies of the landed private patterns) -/
 
-private theorem integral_pow_two_vol (u : ℝ → ℝ) :
+private theorem K3Integral_pow_two_vol (u : ℝ → ℝ) :
     ∫ t : ℝ, u t ^ (2 : ℝ) ∂vol = ∫ t : ℝ, u t ^ 2 ∂vol := by
   apply integral_congr_ae
   filter_upwards with t
@@ -100,8 +100,8 @@ private theorem integral_section_cs {K L : ℝ × ℝ → ℝ} (x y : ℝ)
     rw [real_two_ofReal]; exact hy
   have hcs := integral_mul_norm_le_Lp_mul_Lq holderTriple221 hx2 hy2
   simp only [Real.norm_eq_abs] at hcs
-  rw [integral_pow_two_vol (fun t => |K (x, t)|),
-    integral_pow_two_vol (fun t => |L (t, y)|)] at hcs
+  rw [K3Integral_pow_two_vol (fun t => |K (x, t)|),
+    K3Integral_pow_two_vol (fun t => |L (t, y)|)] at hcs
   have h1 : (∫ t : ℝ, |K (x, t)| ^ 2 ∂vol) ^ ((1 : ℝ) / 2) = Real.sqrt (secE2 K x) := by
     rw [← Real.sqrt_eq_rpow]
     refine congrArg Real.sqrt ?_
@@ -196,8 +196,8 @@ theorem integrable_abs_mul_sqrtsecE {A B C : ℝ × ℝ → ℝ}
         refine integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)
         show |Real.sqrt (secE2 B a)| ^ (2 : ℝ) = Real.sqrt (secE2 B a) ^ (2 : ℝ)
         rw [abs_of_nonneg (Real.sqrt_nonneg _)]
-      rw [hcs0, hcs1, integral_pow_two_vol (fun x => |A (y, x)|),
-        integral_pow_two_vol (fun x => Real.sqrt (secE2 B x))] at hcs
+      rw [hcs0, hcs1, K3Integral_pow_two_vol (fun x => |A (y, x)|),
+        K3Integral_pow_two_vol (fun x => Real.sqrt (secE2 B x))] at hcs
       have h1 : (∫ x : ℝ, |A (y, x)| ^ 2 ∂vol) ^ ((1 : ℝ) / 2) = Real.sqrt (secE2 A y) := by
         rw [← Real.sqrt_eq_rpow]
         refine congrArg Real.sqrt ?_
@@ -252,7 +252,7 @@ hypothesis `hA` of `cycle2_compKernel_eq_triple` is automatic).  Route:
 `MemLp.mul'` (a.e. `MemLp` sections, landed in `Hurst.GeneralKPeelInduction`), and the
 section-integral function is dominated a.e. by the sandwich of
 `integrable_abs_mul_sqrtsecE` at `(A, B, C) = (M, K, L)`. -/
-theorem integrable_chainCycleTriple {K L M : ℝ × ℝ → ℝ}
+theorem K3Integrable_chainCycleTriple {K L M : ℝ × ℝ → ℝ}
     (hKm : Measurable K) (hLm : Measurable L) (hMm : Measurable M)
     (hK : HSKernel K) (hL : HSKernel L) (hM : HSKernel M) :
     Integrable (fun q : (ℝ × ℝ) × ℝ =>
@@ -458,7 +458,7 @@ the triple chain integral in the `((x, y), t)`-coordinate encoding:
 with the coordinate identification `MeasurePreserving.prod` of the landed
 `measurePreserving_piFinTwo` with the identity (`MeasurePreserving.integral_comp'`
 needs no integrability). -/
-theorem cycleIntegral_three_eq_chainCycleTriple (K : ℝ × ℝ → ℝ) :
+theorem K3CycleIntegral_three_eq_chainCycleTriple (K : ℝ × ℝ → ℝ) :
     cycleIntegral 3 K = chainCycleTriple K K K := by
   have hpt : ∀ w : (Fin 2 → ℝ) × ℝ,
       (fun q : (ℝ × ℝ) × ℝ => K (q.1.1, q.2) * K (q.2, q.1.2) * K (q.1.2, q.1.1)) (⇑pi2PairE w)
@@ -497,7 +497,7 @@ series `val j ^ 3` `HasSum`s to the triple chain integral `chainCycleTriple K K 
 `∑' j, val j ^ 3 = cycleIntegral 3 K` — the product-basis Parseval gap of
 `Hurst.CycleTraceIdentification` (not landed; the summability side
 `hasSum_general_k_pow` is landed in `Hurst.GeneralKHasSumComplete`, and the kernel-side
-transport `cycleIntegral_three_eq_chainCycleTriple` is landed here, unconditional). -/
+transport `K3CycleIntegral_three_eq_chainCycleTriple` is landed here, unconditional). -/
 theorem hasSum_cubic_chainCycleTriple {K : ℝ × ℝ → ℝ} {hK : HSKernel K}
     (hCompact : IsCompactOperator (TOp K hK))
     (hsym : (↑(TOp K hK) : L2 →ₗ[ℝ] L2).IsSymmetric)
@@ -508,7 +508,7 @@ theorem hasSum_cubic_chainCycleTriple {K : ℝ × ℝ → ℝ} {hK : HSKernel K}
         = Module.finrank ℝ (Module.End.eigenspace (TOpEnd' K hK) μ))
     (hspec : ∑' j, val j ^ 3 = cycleIntegral 3 K) :
     HasSum (fun j => val j ^ 3) (chainCycleTriple K K K) := by
-  rw [← cycleIntegral_three_eq_chainCycleTriple K, ← hspec]
+  rw [← K3CycleIntegral_three_eq_chainCycleTriple K, ← hspec]
   exact hasSum_general_k_pow hCompact hsym hval hmult 3 (by norm_num)
 
 /-! ### Bonus: the `k = 3` chain-integrability instance for the peel induction -/
@@ -541,7 +541,7 @@ set_option maxHeartbeats 1000000 in
 kernels — the `hP` instance that the general-`k` peel induction
 (`Hurst.GeneralKPeelInduction.chainIntegral_kchain_eq`,
 `cycleIntegral_eq_cycle2_pow`) carries, at `k = 3` (where
-`kchain 1 0 K = fun _ => K`).  Transported from `integrable_chainCycleTriple` through
+`kchain 1 0 K = fun _ => K`).  Transported from `K3Integrable_chainCycleTriple` through
 the `Fin 3`-peel equiv and the splice equiv. -/
 theorem integrable_chainProd_three {K : ℝ × ℝ → ℝ} (hKm : Measurable K) (hK : HSKernel K) :
     Integrable (fun (z : Fin 3 → ℝ) => ∏ i : Fin 3, K (z i, z (cycleSucc i)))
@@ -550,7 +550,7 @@ theorem integrable_chainProd_three {K : ℝ × ℝ → ℝ} (hKm : Measurable K)
   have hFq : Integrable (fun q : (ℝ × ℝ) × ℝ =>
       K (q.1.1, q.2) * K (q.2, q.1.2) * K (q.1.2, q.1.1))
       ((vol.prod vol).prod vol) :=
-    integrable_chainCycleTriple hKm hKm hKm hK hK hK
+    K3Integrable_chainCycleTriple hKm hKm hKm hK hK hK
   have hw : Integrable
       (fun w : (Fin 2 → ℝ) × ℝ =>
         (fun q : (ℝ × ℝ) × ℝ => K (q.1.1, q.2) * K (q.2, q.1.2) * K (q.1.2, q.1.1))
