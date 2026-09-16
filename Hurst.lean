@@ -627,3 +627,5 @@ import Hurst.RieszK2Anchor
 import Hurst.E5RateLink
 import Hurst.GeneralKHasSumK3
 import Hurst.ReverseParseval
+import Hurst.KernelEnergyRateFinal
+import Hurst.E5ChainInstantiation

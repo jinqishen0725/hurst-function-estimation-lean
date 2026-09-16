@@ -140,9 +140,11 @@ theorem poly_tailEnvelopeFreePart_tendsto_zero
       2 * L * (1 + M) * (n : ℝ) ^ (-γ) * Real.log (n : ℝ)) atTop (𝓝 0) := by
     refine squeeze_zero' ?_ ?_ hub
     · filter_upwards [hn1] with n hn
-      exact mul_nonneg (mul_nonneg hcL
-        (Real.rpow_nonneg (Nat.cast_nonneg n) _))
-        (Real.log_nonneg (by exact_mod_cast hn))
+      have hrpow : (0 : ℝ) ≤ (n : ℝ) ^ (-γ) :=
+        Real.rpow_nonneg (Nat.cast_nonneg n) _
+      have hlogne : (0 : ℝ) ≤ Real.log (n : ℝ) :=
+        Real.log_nonneg (by exact_mod_cast hn)
+      exact mul_nonneg (mul_nonneg hcL hrpow) hlogne
     · filter_upwards [hn1] with n hn
       have h1 := hlogle n hn
       have hn1' : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
@@ -150,51 +152,45 @@ theorem poly_tailEnvelopeFreePart_tendsto_zero
         have hlog := Real.log_nonneg (show (1 : ℝ) ≤ 2 * (n : ℝ) by linarith)
         linarith
       have hx0 : (0 : ℝ) ≤ 1 + Real.log (2 * (n : ℝ)) := by linarith
+      have hZ0 : (0 : ℝ) ≤ 1 + Real.log (2 * (n : ℝ)) := by linarith
+      have hX0 : (0 : ℝ) ≤ (n : ℝ) ^ (-γ) :=
+        Real.rpow_nonneg (Nat.cast_nonneg n) _
+      have hlog0 : (0 : ℝ) ≤ Real.log (n : ℝ) := Real.log_nonneg (by exact_mod_cast hn)
       have hle1 : Real.log (n : ℝ) ≤ (1 + Real.log (2 * (n : ℝ))) ^ 2 := by
-        calc Real.log (n : ℝ) ≤ 1 + Real.log (2 * (n : ℝ)) := h1
-          _ ≤ (1 + Real.log (2 * (n : ℝ))) * (1 + Real.log (2 * (n : ℝ))) :=
-              le_mul_of_one_le_right hx0 hbase
-          _ = (1 + Real.log (2 * (n : ℝ))) ^ 2 := (pow_two _).symm
-      have hinner : (n : ℝ) ^ (-γ) * Real.log (n : ℝ) ≤
-          (1 + Real.log (2 * (n : ℝ))) ^ 2 * (n : ℝ) ^ (-γ) := by
-        rw [mul_comm ((n : ℝ) ^ (-γ)) (Real.log (n : ℝ))]
-        exact mul_le_mul_of_nonneg_right hle1
-          (Real.rpow_nonneg (Nat.cast_nonneg n) _)
+        refine le_trans (le_mul_of_one_le_right hlog0 hbase) ?_
+        refine le_trans (mul_le_mul_of_nonneg_right h1 hZ0) ?_
+        rw [pow_two]
       have hstep : 2 * L * (1 + M) * (n : ℝ) ^ (-γ) * Real.log (n : ℝ)
-          ≤ 2 * L * (1 + M) *
-              ((1 + Real.log (2 * (n : ℝ))) ^ 2 * (n : ℝ) ^ (-γ)) := by
-        rw [← mul_assoc]
-        exact mul_le_mul_of_nonneg_left hinner hcL
-      calc 2 * L * (1 + M) * (n : ℝ) ^ (-γ) * Real.log (n : ℝ)
-          ≤ 2 * L * (1 + M) *
-              ((1 + Real.log (2 * (n : ℝ))) ^ 2 * (n : ℝ) ^ (-γ)) := hstep
+          ≤ 2 * L * (1 + M) * ((1 + Real.log (2 * (n : ℝ))) ^ 2 * (n : ℝ) ^ (-γ)) := by
+        nlinarith [mul_le_mul_of_nonneg_right hle1 hX0,
+          mul_le_mul_of_nonneg_left hle1 hcL, hcL, hX0]
+      exact hstep
   have hExpE : Tendsto (fun n : ℕ =>
-      Real.exp (2 * L * (1 + M) * (n : ℝ) ^ (-γ) * Real.log (n : ℝ))) atTop (𝓝 1) := by
-    have h' : Tendsto (fun n : ℕ =>
-        Real.exp (2 * L * (1 + M) * (n : ℝ) ^ (-γ) * Real.log (n : ℝ))) atTop
-        (𝓝 (Real.exp 0)) :=
-      (Real.continuous_exp.tendsto 0).comp hE0
-    simp only [Real.exp_zero] at h'
-    exact h'
+      Real.exp (2 * L * (1 + M) * (n : ℝ) ^ (-γ) * Real.log (n : ℝ))) atTop
+      (𝓝 (Real.exp 0)) :=
+    Tendsto.congr (fun _ => rfl) ((Real.continuous_exp.tendsto 0).comp hE0)
   have hExpEE : Tendsto (fun n : ℕ =>
       Real.exp (2 * L * (1 + M) * (n : ℝ) ^ (-γ) * Real.log (n : ℝ)) *
         (2 * L * (1 + M) * (n : ℝ) ^ (-γ) * Real.log (n : ℝ))) atTop (𝓝 0) := by
     simpa [mul_zero] using hExpE.mul hE0
   -- the four terms of the free part
+  have hsrc := hD0.const_mul (18 * Ctail)
   have hDc : Tendsto (fun n : ℕ => 18 * Ctail * (2 * L * (1 + M) * (n : ℝ) ^ (-γ)))
       atTop (𝓝 0) := by
-    simpa [mul_zero] using hD0.const_mul (18 * Ctail)
+    simpa [mul_zero] using hsrc
   have hterm : Tendsto (fun n : ℕ => 18 * Ctail * (2 * L * (1 + M) * (n : ℝ) ^ (-γ)) *
       (Real.exp (2 * L * (1 + M) * (n : ℝ) ^ (-γ) * Real.log (n : ℝ)) *
         (2 * L * (1 + M) * (n : ℝ) ^ (-γ) * Real.log (n : ℝ)))) atTop (𝓝 0) := by
-    simpa [mul_zero, mul_assoc] using hDc.mul hExpEE
+    simpa [mul_zero] using hDc.mul hExpEE
+  have hsrc9 := hExpEE.const_mul 9
   have h9 : Tendsto (fun n : ℕ => 9 * (Real.exp
       (2 * L * (1 + M) * (n : ℝ) ^ (-γ) * Real.log (n : ℝ)) *
       (2 * L * (1 + M) * (n : ℝ) ^ (-γ) * Real.log (n : ℝ)))) atTop (𝓝 0) := by
-    simpa [mul_zero] using hExpEE.const_mul 9
+    simpa [mul_zero] using hsrc9
+  have hsrc15 := hD0.const_mul (3 / 2 : ℝ)
   have h15 : Tendsto (fun n : ℕ => (3 / 2 : ℝ) * (2 * L * (1 + M) * (n : ℝ) ^ (-γ)))
       atTop (𝓝 0) := by
-    simpa [mul_zero] using hD0.const_mul (3 / 2 : ℝ)
+    simpa [mul_zero] using hsrc15
   -- the grid term: `(2S)^ψ · gridCovarianceError` in the exponent window
   have hspl : ∀ n : ℕ, (2 * (n : ℝ) ^ (1 - γ)) ^ (2 - 2 * h0)
       = 2 ^ (2 - 2 * h0) * (n : ℝ) ^ ((1 - γ) * (2 - 2 * h0)) := by
@@ -227,6 +223,12 @@ theorem poly_tailEnvelopeFreePart_tendsto_zero
     refine Tendsto.congr' ?_ hsum4
     filter_upwards [hn1] with n hn
     have hn0 : (0 : ℝ) < n := by exact_mod_cast hn
+    have hshow1 : (n : ℝ) ^ ((1 - γ) * (2 - 2 * h0) + (-1 : ℝ)) =
+        (n : ℝ) ^ ((1 - γ) * (2 - 2 * h0)) * (n : ℝ) ^ ((-1 : ℝ)) :=
+      Real.rpow_add hn0 _ _
+    have hshow2 : (n : ℝ) ^ ((1 - γ) * (2 - 2 * h0) + (2 * b - 2)) =
+        (n : ℝ) ^ ((1 - γ) * (2 - 2 * h0)) * (n : ℝ) ^ (2 * b - 2) :=
+      Real.rpow_add hn0 _ _
     unfold gridCovarianceError
     calc 4 * 2 ^ (2 - 2 * h0) * C₀ * ((1 + Real.log (2 * (n : ℝ))) *
             (n : ℝ) ^ ((1 - γ) * (2 - 2 * h0) + (-1 : ℝ))) +
@@ -234,12 +236,11 @@ theorem poly_tailEnvelopeFreePart_tendsto_zero
           (n : ℝ) ^ ((1 - γ) * (2 - 2 * h0) + (2 * b - 2)))
       _ = 4 * 2 ^ (2 - 2 * h0) * C₀ * ((1 + Real.log (2 * (n : ℝ))) *
             ((n : ℝ) ^ ((1 - γ) * (2 - 2 * h0)) *
-              ((n : ℝ) ^ (-1 : ℝ) + (n : ℝ) ^ (2 * b - 2)))) := by
-          rw [show (n : ℝ) ^ ((1 - γ) * (2 - 2 * h0) + (-1 : ℝ)) = (n : ℝ) ^ ((1 - γ) * (2 - 2 * h0)) * (n : ℝ) ^ ((-1 : ℝ)) from Real.rpow_add hn0 _ _, show (n : ℝ) ^ ((1 - γ) * (2 - 2 * h0) + (2 * b - 2)) = (n : ℝ) ^ ((1 - γ) * (2 - 2 * h0)) * (n : ℝ) ^ (2 * b - 2) from Real.rpow_add hn0 _ _]; ring
+              ((n : ℝ) ^ (-1 : ℝ) + (n : ℝ) ^ (2 * b - 2)))) := by rw [hshow1, hshow2]; ring
       _ = 4 * (2 * (n : ℝ) ^ (1 - γ)) ^ (2 - 2 * h0) *
             (C₀ * (1 + Real.log (2 * (n : ℝ))) *
-              ((n : ℝ) ^ (-1 : ℝ) + (n : ℝ) ^ (2 * b - 2))) := by
-          rw [hspl n]; ring
+              ((n : ℝ) ^ (-1 : ℝ) + (n : ℝ) ^ (2 * b - 2))) := by rw [hspl n]; ring
+  have hpre := ((hDc.add hterm).add h9).add (h15.add h4)
   have htot : Tendsto (fun n : ℕ => 18 * Ctail * (2 * L * (1 + M) * (n : ℝ) ^ (-γ)) +
       18 * Ctail * (2 * L * (1 + M) * (n : ℝ) ^ (-γ)) *
         (Real.exp (2 * L * (1 + M) * (n : ℝ) ^ (-γ) * Real.log (n : ℝ)) *
@@ -249,9 +250,8 @@ theorem poly_tailEnvelopeFreePart_tendsto_zero
       ((3 / 2 : ℝ) * (2 * L * (1 + M) * (n : ℝ) ^ (-γ)) +
         4 * (2 * (n : ℝ) ^ (1 - γ)) ^ (2 - 2 * h0) *
           gridCovarianceError b C₀ n)) atTop (𝓝 0) := by
-    simpa [add_zero] using ((hDc.add hterm).add h9).add (h15.add h4)
-  refine Tendsto.congr' ?_ htot
-  intro n
+    simpa [add_zero] using hpre
+  refine Tendsto.congr' (Eventually.of_forall fun n => ?_) htot
   unfold q1TailEnvelopeFreePart
   ring
 
@@ -376,9 +376,10 @@ theorem card_tailEnvelope_Rterm_sq_tendsto
     (hγ' : 1 / 2 < γ') :
     Tendsto (fun n : ℕ => card n *
       (16 * ((Nat.floor (S n ^ γ') + 1 : ℕ) : ℝ)⁻¹) ^ 2) atTop (𝓝 0) := by
+  have hneg : (-(2 * γ' - 1) : ℝ) < 0 := by linarith
   have hupper : Tendsto (fun n : ℕ => 768 * S n ^ (-(2 * γ' - 1))) atTop (𝓝 0) := by
     simpa using
-      (tendsto_rpow_neg_of_atTop S (-(2 * γ' - 1)) (by linarith) hS).const_mul 768
+      (tendsto_rpow_neg_of_atTop S (-(2 * γ' - 1)) hneg hS).const_mul 768
   apply squeeze_zero'
   · filter_upwards [hcardpos] with n hcardn
     exact mul_nonneg hcardn (sq_nonneg _)
@@ -408,6 +409,7 @@ theorem card_tailEnvelope_Rterm_sq_tendsto
     have hjoin : (S n ^ γ')⁻¹ * (S n ^ γ')⁻¹ = ((S n : ℝ) ^ (2 * γ'))⁻¹ := by
       rw [← mul_inv (S n ^ γ') (S n ^ γ'), ← Real.rpow_add hSn γ' γ',
         show γ' + γ' = (2 : ℝ) * γ' from by ring]
+    have hc3n : (0 : ℝ) ≤ 3 * S n := by linarith
     have hlast : (S n : ℝ) * (S n : ℝ) ^ (-(2 * γ'))
         = (S n : ℝ) ^ (-(2 * γ' - 1)) := by
       have h1 : (S n : ℝ) * (S n : ℝ) ^ (-(2 * γ'))
@@ -419,11 +421,11 @@ theorem card_tailEnvelope_Rterm_sq_tendsto
         ≤ (3 * S n) * (16 * ((Nat.floor (S n ^ γ') + 1 : ℕ) : ℝ)⁻¹) ^ 2 :=
           mul_le_mul_of_nonneg_right hcardn (sq_nonneg _)
       _ ≤ (3 * S n) * (16 * (S n ^ γ')⁻¹) ^ 2 :=
-          mul_le_mul_of_nonneg_right hsq (by linarith)
+          mul_le_mul_of_nonneg_left hsq hc3n
       _ = 768 * (S n * ((S n ^ γ')⁻¹ * (S n ^ γ')⁻¹)) := by rw [hsplit]; ring
       _ = 768 * (S n * ((S n : ℝ) ^ (2 * γ'))⁻¹) := by rw [hjoin]
       _ = 768 * (S n * (S n : ℝ) ^ (-(2 * γ'))) := by
-            exact congrArg (fun x => 768 * (S n * x)) (Real.rpow_neg hSn.le (2 * γ'))
+            exact congrArg (fun x => 768 * (S n * x)) (Real.rpow_neg hSn.le (2 * γ')).symm
       _ = 768 * (S n : ℝ) ^ (-(2 * γ' - 1)) := by rw [hlast]
   · exact hupper
 
