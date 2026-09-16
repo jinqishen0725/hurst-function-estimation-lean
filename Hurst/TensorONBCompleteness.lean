@@ -186,6 +186,7 @@ theorem abs_inner_prodKernel_le (g : MeasureTheory.Lp ℝ 2 vol2) (u f : L2) :
 
 /-! ### C. Discharge of the tensor-ONB completeness clause -/
 
+set_option maxHeartbeats 1000000 in
 /-- **The tensor-ONB completeness (direct form)**: an element of the kernel space
 `L²(vol2)` orthogonal to every section `p ↦ v p.2 ⊗ v p.1` of a complete orthonormal
 family `v` of `L²` vanishes.  (Orthonormality of `v` is not needed — only completeness.) -/
@@ -386,7 +387,6 @@ theorem sections_orthogonal_eq_zero {ι : Type*} {v : ι → L2}
             exact ENNReal.ofReal_eq_zero.mpr (show G p ≤ 0 by linarith))]
       rw [← ofReal_integral_eq_lintegral_ofReal hintP
         (ae_of_all _ fun p => le_max_right _ _)]
-      rfl
     have hIm : ∫⁻ p : ℝ × ℝ in A ×ˢ B, Fm p ∂vol2
         = ENNReal.ofReal (∫ p : ℝ × ℝ in A ×ˢ B, max (-(G p)) 0 ∂vol2) := by
       rw [hFm]
@@ -400,15 +400,14 @@ theorem sections_orthogonal_eq_zero {ι : Type*} {v : ι → L2}
             exact ENNReal.ofReal_eq_zero.mpr (show -(G p) ≤ 0 by linarith))]
       rw [← ofReal_integral_eq_lintegral_ofReal hintM
         (ae_of_all _ fun p => le_max_right _ _)]
-      rfl
     have hsub : ∫ p : ℝ × ℝ in A ×ˢ B, max (G p) 0 ∂vol2
         - ∫ p : ℝ × ℝ in A ×ˢ B, max (-(G p)) 0 ∂vol2 = 0 := by
       have hpoint : (fun p : ℝ × ℝ => max (G p) 0 - max (-(G p)) 0) = G := by
         funext p
         by_cases hp : 0 ≤ G p
         · rw [max_eq_left hp, max_eq_right (by linarith : -(G p) ≤ 0)]; ring
-        · rw [max_eq_right ((show G p ≤ 0 by linarith)),
-            max_eq_left (le_of_lt (by linarith : 0 ≤ -(G p)))]
+        · rw [max_eq_right (show G p ≤ 0 by linarith),
+            max_eq_left (show 0 ≤ -(G p) by linarith)]
           ring
       rw [← integral_sub hintP hintM, hpoint, hboxAB]
     rw [hIp, hIm, sub_eq_zero.mp hsub]
@@ -419,23 +418,31 @@ theorem sections_orthogonal_eq_zero {ι : Type*} {v : ι → L2}
       (generateFrom_prod (α := ℝ) (β := ℝ)).symm isPiSystem_prod
       (fun s hs => by
         obtain ⟨A, hAm, B, hBm, rfl⟩ := hs
-        exact hboxF A B hAm hBm)
+        have hAm' : MeasurableSet A := hAm
+        have hBm' : MeasurableSet B := hBm
+        rw [withDensity_apply Fp (MeasurableSet.prod hAm' hBm'),
+          withDensity_apply Fm (MeasurableSet.prod hAm' hBm')]
+        exact hboxF A B hAm' hBm')
       (by
         have h := hboxF Set.univ Set.univ MeasurableSet.univ MeasurableSet.univ
-        rwa [Set.univ_prod_univ] at h)
+        rw [Set.univ_prod_univ] at h
+        rw [withDensity_apply Fp MeasurableSet.univ, withDensity_apply Fm MeasurableSet.univ]
+        exact h)
   -- Step 6: the positive and negative supports are null
   have hmeasG : Measurable (fun p : ℝ × ℝ => ENNReal.ofReal (G p)) := by measurability
   have hpos : vol2 {p : ℝ × ℝ | 0 < G p} = 0 := by
     have hs : MeasurableSet {p : ℝ × ℝ | 0 < G p} := by measurability
     have hae1 : ∀ᵐ p ∂(vol2.restrict {p : ℝ × ℝ | 0 < G p}), Fp p = ENNReal.ofReal (G p) := by
       filter_upwards [ae_restrict_mem hs] with p hp
-      simp only [Set.mem_setOf_eq] at hp
-      rw [hFp, max_eq_left (le_of_lt hp)]
+      rw [hFp]
     have hae2 : ∀ᵐ p ∂(vol2.restrict {p : ℝ × ℝ | 0 < G p}), Fm p = 0 := by
       filter_upwards [ae_restrict_mem hs] with p hp
-      simp only [Set.mem_setOf_eq] at hp
-      rw [hFm, ENNReal.ofReal_eq_zero.mpr (le_of_lt (by linarith : (0:ℝ) < -(G p)))]
-    have h1 := congrFun heq {p : ℝ × ℝ | 0 < G p}
+      have hp' : (0:ℝ) < G p := hp
+      rw [hFm]
+      show ENNReal.ofReal (-(G p)) = 0
+      exact ENNReal.ofReal_eq_zero.mpr (show -(G p) ≤ 0 by linarith)
+    have h1 : (vol2.withDensity Fp) {p : ℝ × ℝ | 0 < G p}
+        = (vol2.withDensity Fm) {p : ℝ × ℝ | 0 < G p} := by rw [heq]
     rw [withDensity_apply Fp hs, withDensity_apply Fm hs,
       lintegral_congr_ae hae1, lintegral_congr_ae hae2, lintegral_zero] at h1
     have h1' : ∫⁻ p : ℝ × ℝ, ENNReal.ofReal (G p) ∂(vol2.restrict {p : ℝ × ℝ | 0 < G p}) = 0 := h1
@@ -446,7 +453,8 @@ theorem sections_orthogonal_eq_zero {ι : Type*} {v : ι → L2}
       intro hcon
       have hcon' := ENNReal.ofReal_eq_zero.mp hcon
       simp only [Set.mem_setOf_eq] at hp
-      omega
+      linarith
+    refine le_antisymm ?_ (by simp)
     calc vol2 {p : ℝ × ℝ | 0 < G p}
         = (vol2.restrict {p : ℝ × ℝ | 0 < G p}) {p : ℝ × ℝ | 0 < G p} := by
           rw [Measure.restrict_apply hs, Set.inter_self]
@@ -457,43 +465,51 @@ theorem sections_orthogonal_eq_zero {ι : Type*} {v : ι → L2}
     have hs : MeasurableSet {p : ℝ × ℝ | G p < 0} := by measurability
     have hae1 : ∀ᵐ p ∂(vol2.restrict {p : ℝ × ℝ | G p < 0}), Fp p = 0 := by
       filter_upwards [ae_restrict_mem hs] with p hp
-      simp only [Set.mem_setOf_eq] at hp
-      rw [hFp, ENNReal.ofReal_eq_zero.mpr (le_of_lt (by linarith : (0:ℝ) < -(G p)))]
+      have hp' : G p < 0 := hp
+      rw [hFp]
+      show ENNReal.ofReal (G p) = 0
+      exact ENNReal.ofReal_eq_zero.mpr (show G p ≤ 0 by linarith)
     have hae2 : ∀ᵐ p ∂(vol2.restrict {p : ℝ × ℝ | G p < 0}), Fm p = ENNReal.ofReal (-(G p)) := by
       filter_upwards [ae_restrict_mem hs] with p hp
-      simp only [Set.mem_setOf_eq] at hp
-      rw [hFm, max_eq_left (le_of_lt (by linarith : (0:ℝ) < -(G p)))]
-    have h1 := congrFun heq {p : ℝ × ℝ | G p < 0}
+      rw [hFm]
+    have h1 : (vol2.withDensity Fp) {p : ℝ × ℝ | G p < 0}
+        = (vol2.withDensity Fm) {p : ℝ × ℝ | G p < 0} := by rw [heq]
     rw [withDensity_apply Fp hs, withDensity_apply Fm hs,
       lintegral_congr_ae hae1, lintegral_congr_ae hae2, lintegral_zero] at h1
-    have h1' : ∫⁻ p : ℝ × ℝ, ENNReal.ofReal (-(G p)) ∂(vol2.restrict {p : ℝ × ℝ | G p < 0}) = 0 := h1
-    have h2 := (lintegral_eq_zero_iff (by measurability)).mp h1'
+    have h1' : 0 = ∫⁻ p : ℝ × ℝ, ENNReal.ofReal (-(G p)) ∂(vol2.restrict {p : ℝ × ℝ | G p < 0}) := h1
+    have h2 := (lintegral_eq_zero_iff (by measurability)).mp h1'.symm
     have hsub : {p : ℝ × ℝ | G p < 0} ⊆ {p : ℝ × ℝ | ENNReal.ofReal (-(G p)) ≠ 0} := by
       intro p hp
       simp only [Set.mem_setOf_eq, ne_eq]
       intro hcon
       have hcon' := ENNReal.ofReal_eq_zero.mp hcon
       simp only [Set.mem_setOf_eq] at hp
-      omega
+      linarith
+    refine le_antisymm ?_ (by simp)
     calc vol2 {p : ℝ × ℝ | G p < 0}
         = (vol2.restrict {p : ℝ × ℝ | G p < 0}) {p : ℝ × ℝ | G p < 0} := by
           rw [Measure.restrict_apply hs, Set.inter_self]
       _ ≤ (vol2.restrict {p : ℝ × ℝ | G p < 0}) {p : ℝ × ℝ | ENNReal.ofReal (-(G p)) ≠ 0} :=
           measure_mono hsub
       _ = 0 := ae_iff.mp h2
-  have hae : G =ᵐ[vol2] 0 := by
-    rw [ae_iff]
-    have hunion : {p : ℝ × ℝ | G p ≠ 0}
+  have haene : vol2 {p : ℝ × ℝ | ¬(G p = 0)} = 0 := by
+    have hunion : {p : ℝ × ℝ | ¬(G p = 0)}
         = {p : ℝ × ℝ | 0 < G p} ∪ {p : ℝ × ℝ | G p < 0} := by
       ext p
-      simp only [Set.mem_setOf_eq, Set.mem_union, ne_eq]
-      by_cases hp0 : G p = 0
-      · simp [hp0]
-      · by_cases hp1 : 0 < G p
-        · simp [hp1]
-        · simp [hp0, hp1, lt_of_le_of_ne (le_of_not_gt hp1) (fun h => hp0 h.symm)]
+      simp only [Set.mem_setOf_eq, Set.mem_union]
+      constructor
+      · intro hc
+        rcases lt_trichotomy (G p) 0 with h | h | h
+        · exact Or.inr h
+        · exact absurd h hc
+        · exact Or.inl h
+      · rintro (h' | h') hc
+        · linarith
+        · linarith
     rw [hunion, measure_union_null hpos hneg]
-  exact Lp.ext (hGae.trans hae)
+  have hae : G =ᵐ[vol2] 0 := ae_iff.mpr haene
+  exact Lp.ext
+    ((hGae.trans hae).trans (Lp.coeFn_zero (E := ℝ) (p := 2) (μ := vol2)).symm)
 
 /-- **The tensor-ONB completeness (`hsec` discharged)**: for a complete orthonormal family
 `v` of `L²`, the section family `p ↦ prodKernel (v p.2) (v p.1)` has trivial orthogonal
