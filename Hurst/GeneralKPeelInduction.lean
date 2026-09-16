@@ -9,7 +9,7 @@ for kernels `K : ℝ × ℝ → ℝ` (`HSKernel K = MemLp K 2 vol2`), the `(n+2)
 composed-kernel trace form `cycle2 (compPowR n K) K`, closing the general-`k` boundary
 of the HasSum consumption anchored at the landed `k = 2` / `k = 3` cases.
 
-## Main results (all sorry-free)
+## Main results (all placeholder-free)
 
 * (i) `stronglyMeasurable_section_fst/_snd` — the sections of a *measurable* kernel are
   **strongly measurable**: the `Exists`-encoding dialect of `StronglyMeasurable`
