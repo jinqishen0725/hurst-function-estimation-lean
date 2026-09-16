@@ -610,3 +610,11 @@ import Hurst.P2SpectrumCloseout
 import Hurst.P7RowBound
 import Hurst.RieszSpectralTrace
 import Hurst.SpectralWeightNonneg
+
+import Hurst.ChainIntegrabilityDischarge
+import Hurst.CycleTraceIdentification
+import Hurst.FrozenWordAssembly
+import Hurst.GeneralKPeel
+import Hurst.GeneralKPeelInduction
+import Hurst.P2SpectrumV2
+import Hurst.LevelCakeTransfer
