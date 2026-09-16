@@ -623,3 +623,7 @@ import Hurst.E5ChainInstantiation
 import Hurst.GeneralKHasSumClosed
 import Hurst.NegMassDischarge
 import Hurst.RieszK2Anchor
+
+import Hurst.E5RateLink
+import Hurst.GeneralKHasSumK3
+import Hurst.ReverseParseval
