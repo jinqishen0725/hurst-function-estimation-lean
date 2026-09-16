@@ -3,36 +3,22 @@ import Hurst.RieszOperatorPositivity
 
 open MeasureTheory Measure Real Set
 
-#check @MeasureTheory.integral_prod
-#check @MeasureTheory.integral_prod_swap
-#check @MeasureTheory.integral_prod_mul
-#check @MeasureTheory.integral_mul_right
-#check @MeasureTheory.integral_mul_left
-#check @MeasureTheory.integral_indicator
-#check @MeasureTheory.integral_nonneg
-#check @MeasureTheory.setIntegral_nonneg
-#check @MeasureTheory.Integrable.prod_mul
-#check @MeasureTheory.Integrable.mono
-#check @MeasureTheory.Integrable.abs
-#check @MeasureTheory.memLp_one_iff_integrable
-#check @MeasureTheory.MemLp.of_exponent
-#check @MeasureTheory.Lp.memLp
-#check @Real.Gamma_one
-#check @MeasureTheory.integral_rpow_mul_exp_neg_mul_rpow
-#check @Set.indicator_inter_mul
-#check @Set.indicator_mul_indicator
-#check @MeasureTheory.integral_congr_ae
-#check @MeasureTheory.integral_congr
-#check @HS.Lp.memLp
-#check @HS.volIsFin
-example : MeasurableSet (Ici (0:ℝ)) := measurableSet_Ici
-#check @MeasureTheory.setIntegral_add_right_eq
-#check @MeasureTheory.setIntegral_add_left_eq
-#check @MeasureTheory.integral_add_right_eq
-#check @MeasureTheory.integral_add_left_eq_self
-#check @MeasureTheory.Integrable.const_mul
-#check @MeasureTheory.aestronglyMeasurable_comp
-#check @MeasureTheory.Integrable.comp_fst
-#check @MeasureTheory.Integrable.comp_snd
-#check @HS.kpair
-#check @HS.KernelPSD
+#check @MeasureTheory.setIntegral_one
+#check @MeasureTheory.Measure.real_restrict
+#check @Real.volume_real_Iio
+#check @AEStronglyMeasurable.mul
+#check @MeasureTheory.Integrable.aestronglyMeasurable
+#check @MeasureTheory.Measure.prod_prod
+#check @MeasureTheory.MemLp.mul
+#check @MeasureTheory.MemLp.comp_snd
+#check @MeasureTheory.ae_iff
+example : volume (Iio (1:ℝ)) = 1 := by simp
+example (m : ℝ) (hm : 0 < m) (hm1 : m ≤ 1) :
+    (volume.restrict (Iio (1:ℝ))).real (Iio m) = m := by
+  rw [Measure.real_restrict (measurableSet_Iio _) (measurableSet_Iio _)]
+  sorry
+example (u : ℝ) (x v : ℝ) :
+    MeasurableSet {q : (ℝ × ℝ) × ℝ | q.2 < exp (-(2 * u * q.1.1))} := by measurability
+example (u : ℝ) : Measurable (fun q : (ℝ × ℝ) × ℝ => exp (u * q.1.1)) := by measurability
+example (u : ℝ) : Measurable (fun q : (ℝ × ℝ) × ℝ =>
+    (Iio (exp (-(2 * u * q.1.1)))).indicator 1 q.2) := by measurability
