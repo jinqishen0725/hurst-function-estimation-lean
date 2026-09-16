@@ -541,6 +541,8 @@ import Hurst
 #print axioms Hurst.e5_chain_calibrated_fluctuation_tendsto_zero
 #print axioms Hurst.e5_fluctuation_discharged
 #print axioms Hurst.e5_drift_fully_discharged
+#print axioms Hurst.correlationEnergy_rate
+#print axioms Hurst.e5_fluctuation_rate_of_window
 #print axioms Hurst.rpowMeshFactor
 #print axioms Hurst.scaledUnitMeshMaxEq
 #print axioms Hurst.rankRieszKernelEqRhoMulTruncated
@@ -1412,6 +1414,14 @@ import Hurst
 #print axioms Hurst.strengthened_cutoff_unsatisfiable
 #print axioms Hurst.ordinary_cutoff_satisfiable
 #print axioms Hurst.actualQ1EigenvaluePowerSums_tendsto_ordinary
+#print axioms Hurst.natR_mul_rpow_neg
+#print axioms Hurst.natR_mul_rpow_neg_tendsto_atTop
+#print axioms Hurst.poly_tailEnvelopeFreePart_tendsto_zero
+#print axioms Hurst.poly_bandwidth_cut_envelope_balance
+#print axioms Hurst.poly_bandwidth_window_nonempty
+#print axioms Hurst.card_tailEnvelope_Rterm_sq_tendsto
+#print axioms Hurst.poly_bandwidth_strengthened_cutoff_unsatisfiable
+#print axioms Hurst.poly_bandwidth_kernel_energy_tendsto
 #print axioms Hurst.continuousKernelGram_quadratic
 #print axioms Hurst.continuousKernelGram_posDef
 #print axioms Hurst.continuousKernelGram_continuous
