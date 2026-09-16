@@ -447,8 +447,8 @@
 'Hurst.actualQ1LongStatistic_tendsto_secondChaos_v3_degreeOne' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
-verification/AxiomAudit.lean:370:14: error(lean.unknownIdentifier): Unknown constant `Hurst.measurable_exp_log_abs_sub`
-verification/AxiomAudit.lean:371:14: error(lean.unknownIdentifier): Unknown constant `Hurst.aestronglyMeasurable_abs_sub_rpow`
+verification/AxiomAudit.lean:370:14: error(lean.unknownIdentifier): Unknown constant `Hurst.hsMeasurable_exp_log_abs_sub`
+verification/AxiomAudit.lean:371:14: error(lean.unknownIdentifier): Unknown constant `Hurst.hsAestronglyMeasurable_abs_sub_rpow`
 'Hurst.clippedInverse_calibration_excess' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.clippedInverse_linearization' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Hurst.boundedInverse_linearization' depends on axioms: [propext, Classical.choice, Quot.sound]

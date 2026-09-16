@@ -367,8 +367,8 @@ import Hurst
 #print axioms Hurst.actualQ1LongStatistic_tendsto_secondChaos_v2
 #print axioms Hurst.actualQ1LongStatistic_tendsto_secondChaos_v3
 #print axioms Hurst.actualQ1LongStatistic_tendsto_secondChaos_v3_degreeOne
-#print axioms Hurst.measurable_exp_log_abs_sub
-#print axioms Hurst.aestronglyMeasurable_abs_sub_rpow
+#print axioms Hurst.hsMeasurable_exp_log_abs_sub
+#print axioms Hurst.hsAestronglyMeasurable_abs_sub_rpow
 #print axioms Hurst.clippedInverse_calibration_excess
 #print axioms Hurst.clippedInverse_linearization
 #print axioms Hurst.boundedInverse_linearization

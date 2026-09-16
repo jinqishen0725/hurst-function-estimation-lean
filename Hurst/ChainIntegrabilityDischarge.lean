@@ -12,7 +12,7 @@ encoding: `vol = volume.restrict (Icc (-1:ℝ) 1)`, `vol2 = vol.prod vol`,
 
 ## Main results (landed this round)
 
-* `measurable_exp_log_abs_sub` — the measurable representative `p ↦ exp (log |p.1-p.2| * (-β))`.
+* `hsMeasurable_exp_log_abs_sub` — the measurable representative `p ↦ exp (log |p.1-p.2| * (-β))`.
 * `aestronglyMeasurable_abs_sub_rpow` — **(0), the `hpow` discharge**: the distance-power
   factor `p ↦ |p.1 - p.2| ^ (-β)` is a.e.-measurable w.r.t. `vol2` for `β ≠ 0` — this
   discharges the standing a.e.-measurability hypothesis `hpow` carried by
@@ -71,7 +71,7 @@ namespace HS
 
 /-- The measurable representative `p ↦ exp (log |p.1 - p.2| * (-β))` of the
 distance-power factor. -/
-theorem measurable_exp_log_abs_sub (β : ℝ) :
+theorem hsMeasurable_exp_log_abs_sub (β : ℝ) :
     Measurable (fun p : ℝ × ℝ => Real.exp (Real.log |p.1 - p.2| * (-β))) :=
   Real.measurable_exp.comp
     ((Real.measurable_log.comp (measurable_fst.sub measurable_snd).abs).mul measurable_const)
@@ -81,7 +81,7 @@ a.e.-measurable w.r.t. `vol2` for `β ≠ 0` — off the (null) diagonal it agre
 measurable representative above, since for `r > 0`, `r ^ (-β) = exp (log r * (-β))`
 (`Real.rpow_def_of_pos`).  This discharges the standing hypothesis `hpow` of
 `Hurst.HSOperatorLayer2`. -/
-theorem aestronglyMeasurable_abs_sub_rpow {β : ℝ} (hβ : β ≠ 0) :
+theorem hsAestronglyMeasurable_abs_sub_rpow {β : ℝ} (hβ : β ≠ 0) :
     AEStronglyMeasurable (fun p : ℝ × ℝ => |p.1 - p.2| ^ (-β)) vol2 := by
   have hdiag : vol2 {p : ℝ × ℝ | |p.1 - p.2| = 0} = 0 := by
     have hset : {p : ℝ × ℝ | |p.1 - p.2| = 0} = {p : ℝ × ℝ | p.1 = p.2} := by
@@ -111,7 +111,7 @@ theorem aestronglyMeasurable_abs_sub_rpow {β : ℝ} (hβ : β ≠ 0) :
     by_cases hr : |p.1 - p.2| = 0
     · exact hr
     · exact absurd (hform p hr) hp
-  exact (AEMeasurable.congr (measurable_exp_log_abs_sub β |>.aemeasurable) hae.symm).aestronglyMeasurable
+  exact (AEMeasurable.congr (hsMeasurable_exp_log_abs_sub β |>.aemeasurable) hae.symm).aestronglyMeasurable
 
 /-! ### (b) The uniform section bound and the square-integrability core -/
 
