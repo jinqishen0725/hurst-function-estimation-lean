@@ -618,3 +618,8 @@ import Hurst.GeneralKPeel
 import Hurst.GeneralKPeelInduction
 import Hurst.P2SpectrumV2
 import Hurst.LevelCakeTransfer
+
+import Hurst.E5ChainInstantiation
+import Hurst.GeneralKHasSumClosed
+import Hurst.NegMassDischarge
+import Hurst.RieszK2Anchor
