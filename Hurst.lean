@@ -629,3 +629,8 @@ import Hurst.GeneralKHasSumK3
 import Hurst.ReverseParseval
 import Hurst.KernelEnergyRateFinal
 import Hurst.E5ChainInstantiation
+
+import Hurst.EigenFamilySplice
+import Hurst.GeneralKHasSumAssembled
+import Hurst.RieszOperatorPositivity
+import Hurst.TensorONBCompleteness
