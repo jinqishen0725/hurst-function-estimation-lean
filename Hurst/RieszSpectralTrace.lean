@@ -288,7 +288,7 @@ theorem weightedRieszCycleIntegral_two_eq_hsNorm_sq {psi c : ℝ} {omega : ℝ �
 the `weightedRieszCycleIntegral` integrand is exactly the cyclic kernel product
 `∏_i K_R(z_i, z_{succ i})` — the form the iterated-Fubini identification with the
 `⟪(T^k)·,·⟫` trace pairings consumes. -/
-theorem weightedRieszCycleIntegral_eq_kernelProduct (k : ℕ) (psi c : ℝ)
+theorem weightedRieszCycleIntegralEqKernelProduct (k : ℕ) (psi c : ℝ)
     (omega : ℝ → ℝ) :
     Hurst.weightedRieszCycleIntegral k psi c omega
       = ∫ z : Fin k → ℝ, ∏ i : Fin k,

@@ -13,9 +13,28 @@ for path in sorted((ROOT/'Hurst').glob('*.lean')):
     assert not re.search(r'\b(sorry|admit|axiom|unsafe)\b',text),path
     # Only bare names resolve to Hurst.<name>; dotted names live in other
     # namespaces (e.g. MeasureTheory) and would misindex.
-    for match in re.finditer(r"^theorem\s+([\w']+)(?![.\w'])",text,re.M):
-        prefix='Hurst.Index.' if path.stem=='ResultIndex' else 'Hurst.'
-        names[prefix+match[1]]=str(path.relative_to(ROOT))
+    ns_match = re.search(r'^namespace\s+(\w+)',text,re.M)
+    file_ns = ns_match.group(1) if ns_match else None
+    if file_ns and file_ns != 'Hurst':
+        continue  # non-Hurst namespace: audited via #print axioms in its own module, not referenced here
+    cur_ns = None
+    for line in text.split('\n'):
+        mns = re.match(r'^namespace\s+(\w+)',line)
+        if mns:
+            cur_ns = mns.group(1)
+            continue
+        if re.match(r'^end\b',line):
+            cur_ns = None
+            continue
+        if path.stem=='ResultIndex':
+            prefix='Hurst.Index.'
+        elif cur_ns:
+            prefix=cur_ns+'.'
+        else:
+            prefix='Hurst.'
+        mt = re.match(r"^theorem\s+([\w']+)(?![.\w'])",line)
+        if mt:
+            names[prefix+mt.group(1)]=str(path.relative_to(ROOT))
 for e in entries:
     assert (ROOT/f"results/{e['id']}.md").exists()
     if e['full_lean_proof']:
