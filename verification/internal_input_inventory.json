@@ -55,7 +55,7 @@
   {
    "id": "INT-LONG",
    "owner": "int_long_resume and root",
-   "status": "discharged",
+   "status": "substantially-discharged",
    "target": [
     "actual q1 quadratic statistic convergence to the stated second-chaos law",
     "joined pilot long-memory quadratic limit where used"
@@ -63,13 +63,16 @@
    "allowed_external_dependency": "A precisely cited general second-chaos or Gaussian quadratic-form convergence theorem may be retained; actual kernel/operator convergence and theorem applicability are internal.",
    "acceptance": "No premise may assume convergence of the actual q1 quadratic statistic itself.",
    "evidence": [
-    "Three Riesz predicates as theorems: FixedCutoffReindexAssembly / BandRemovalComplete / ContinuumCutoffNuGlue (DominatIntegrability + TwoFactorShiftBound)",
-    "Hurst/RieszQuadratureInstance.lean (confluence)",
-    "Hurst/FrozenQuadClosed.lean + Hurst/ActualSecondChaosComplete.lean (capstone: actualQ1LongStatistic_tendsto_secondChaos_complete)",
-    "GaussianQuadraticWeightedKernelContinuity superseded \u2014 no internal convergence premise remains"
+    "Corrected route (files 22-24) P1-P4 packages landed:",
+    "P1: Hurst/P1ActualPowerSums.lean (feasible-bandwidth spectral power sums -> J_k, no dimension loss)",
+    "P2: Hurst/FrozenSpectralCount.lean + P2SpectrumCloseout.lean + HSNormIdentity.lean + EigenFamilySplice.lean (constructed spectrum: enumeration/countability/multiplicity/Summable/Parseval-equality unconditional)",
+    "P3: Hurst/P3SignedMatching.lean (signed matching packaging)",
+    "P4: Hurst/P4GaussianSeriesLaw.lean + Hurst/NegMassUI.lean + NegMassDischarge.lean (constructed Gaussian-series law)",
+    "CapstoneV3: Hurst/CapstoneV3.lean (the statistic-level endpoint under the honest boundary)"
    ],
-   "notes": "2026-09-14: corrected route (frozen decomposition) after Frobenius-perturbation bridge refuted (diagonal + band O(1) relative mismatch); bandwidth window delta = n^{-gamma} polynomial; weight nonnegativity (balanced degree-one) explicit."
+   "notes": "2026-09-15/16: the corrected route closed the construction; the residual explicit spectral hypotheses are hTwo/hGen (the exact k=2/k>=3 HasSum identifications, gated on the reverse Parseval equality and the operator-side Parseval \u2014 both blocked on the documented mathlib Schatten/Parseval/product-basis gaps, per HSNormIdentity/CycleTraceIdentification/GeneralKHasSumComplete) and hPos (kernel PSD, Fourier route deferred; signed regime covered by EvenPeeling). The nonneg-weights regime closes fully via NonnegWeightNegMass/EigenFamilySplice."
   }
  ],
- "mainline_complete": true
+ "mainline_complete": false,
+ "mainline_note": "2026-09-16: the q1 long-memory corrected route closed with two documented mathlib-gap boundaries (hTwo/hGen HasSum identifications); summary.md final status section updated."
 }

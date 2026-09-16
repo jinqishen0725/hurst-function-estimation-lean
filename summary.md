@@ -467,3 +467,11 @@ g(H,u,1)|u|^{1/2}=\frac38+\frac{3}{128u^2}+O(u^{-4}).
 | 短/临界/长记忆极限 | 部分代数及分析工具 | 相关三角阵列与随机极限证明 |
 
 分项状态以[主线记录](mainline_status.md)、[逐项目录](results/catalog.json)和[实际审计](verification/audit_result.json)为准。较早阶段说明保留历史状态；20份书面证明不等于完整Lean认证。
+
+
+### 2026-09-16 追加:长期记忆第二混沌链的修正路线完成度
+
+构造谱(枚举/可数性/重数/Summable/Parseval 等式无条件)与概率侧(构造空间/级数律/a.s. 字段)已全部落地;
+统计量级端点 `actualQ1LongStatistic_tendsto_secondChaos_v3` 及度一变体已证。
+剩余显式假设:hTwo(反向 Parseval 等式)、hGen(∀k≥3 精确 HasSum)、hPos(核 PSD)、hane/hwnn——
+前两者门控于已文档化的 mathlib Schatten/Parseval/product-basis 缺口(非未做证明),hPos 由非负权重窗口或带符号路线覆盖。
