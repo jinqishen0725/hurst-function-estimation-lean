@@ -160,11 +160,14 @@ theorem poly_tailEnvelopeFreePart_tendsto_zero
         rw [mul_comm ((n : ℝ) ^ (-γ)) (Real.log (n : ℝ))]
         exact mul_le_mul_of_nonneg_right hle1
           (Real.rpow_nonneg (Nat.cast_nonneg n) _)
-      calc 2 * L * (1 + M) * (n : ℝ) ^ (-γ) * Real.log (n : ℝ)
+      have hstep : 2 * L * (1 + M) * (n : ℝ) ^ (-γ) * Real.log (n : ℝ)
           ≤ 2 * L * (1 + M) *
               ((1 + Real.log (2 * (n : ℝ))) ^ 2 * (n : ℝ) ^ (-γ)) := by
-            rw [← mul_assoc]
-            exact mul_le_mul_of_nonneg_left hinner hcL
+        rw [← mul_assoc]
+        exact mul_le_mul_of_nonneg_left hinner hcL
+      calc 2 * L * (1 + M) * (n : ℝ) ^ (-γ) * Real.log (n : ℝ)
+          ≤ 2 * L * (1 + M) *
+              ((1 + Real.log (2 * (n : ℝ))) ^ 2 * (n : ℝ) ^ (-γ)) := hstep
   have hExpE : Tendsto (fun n : ℕ =>
       Real.exp (2 * L * (1 + M) * (n : ℝ) ^ (-γ) * Real.log (n : ℝ))) atTop (𝓝 1) := by
     have h' : Tendsto (fun n : ℕ =>
@@ -232,13 +235,7 @@ theorem poly_tailEnvelopeFreePart_tendsto_zero
       _ = 4 * 2 ^ (2 - 2 * h0) * C₀ * ((1 + Real.log (2 * (n : ℝ))) *
             ((n : ℝ) ^ ((1 - γ) * (2 - 2 * h0)) *
               ((n : ℝ) ^ (-1 : ℝ) + (n : ℝ) ^ (2 * b - 2)))) := by
-          rw [show (n : ℝ) ^ ((1 - γ) * (2 - 2 * h0) + (-1 : ℝ))
-              = (n : ℝ) ^ ((1 - γ) * (2 - 2 * h0)) * (n : ℝ) ^ ((-1 : ℝ)) from
-              Real.rpow_add hn0 _ _,
-            show (n : ℝ) ^ ((1 - γ) * (2 - 2 * h0) + (2 * b - 2))
-              = (n : ℝ) ^ ((1 - γ) * (2 - 2 * h0)) * (n : ℝ) ^ (2 * b - 2) from
-              Real.rpow_add hn0 _ _]
-          ring
+          rw [show (n : ℝ) ^ ((1 - γ) * (2 - 2 * h0) + (-1 : ℝ)) = (n : ℝ) ^ ((1 - γ) * (2 - 2 * h0)) * (n : ℝ) ^ ((-1 : ℝ)) from Real.rpow_add hn0 _ _, show (n : ℝ) ^ ((1 - γ) * (2 - 2 * h0) + (2 * b - 2)) = (n : ℝ) ^ ((1 - γ) * (2 - 2 * h0)) * (n : ℝ) ^ (2 * b - 2) from Real.rpow_add hn0 _ _]; ring
       _ = 4 * (2 * (n : ℝ) ^ (1 - γ)) ^ (2 - 2 * h0) *
             (C₀ * (1 + Real.log (2 * (n : ℝ))) *
               ((n : ℝ) ^ (-1 : ℝ) + (n : ℝ) ^ (2 * b - 2))) := by
