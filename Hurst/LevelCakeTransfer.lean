@@ -55,8 +55,9 @@ private theorem real_pow_level_mem {k : ℕ} (hk : 1 ≤ k) {t : ℝ} (ht : 0 < 
     have h2 := (Real.rpow_lt_rpow_iff hsnn hu hkpos).mpr h
     rwa [← Real.rpow_mul (le_of_lt ht), hkmul, Real.rpow_one] at h2
   · intro h
-    have h2 := (Real.rpow_lt_rpow_iff hsnn hu hkpos).mp h
-    rwa [← Real.rpow_mul (le_of_lt ht), hkmul, Real.rpow_one] at h2
+    have hcpos : (0:ℝ) < (k : ℝ)⁻¹ := by positivity
+    have h2 := (Real.rpow_lt_rpow_iff (le_of_lt ht) (Real.rpow_nonneg hu (k : ℝ)) hcpos).mpr h
+    rwa [← Real.rpow_mul hu, mul_inv_cancel₀ hk0, Real.rpow_one] at h2
 
 /-- The level sets of the `k`-th powers are the level sets of the original sequence at
 the `√`-substituted threshold. -/
@@ -134,20 +135,21 @@ theorem hasSum_pow_of_antitoneResort {val val' : ℕ → ℝ}
     HasSum (fun n => val' n ^ k) (∑' n, val n ^ k) := by
   have hE := tsum_ofReal_pow_eq_of_level_eq hnn hLevel k hk
   have hfin : (∑' n, ENNReal.ofReal (val' n ^ k)) ≠ ∞ := by
-    rw [hE]
+    rw [hE, ← ENNReal.ofReal_tsum_of_nonneg (fun n => pow_nonneg ((hnn n).1) k) hsum]
     exact ENNReal.ofReal_ne_top
   have hH := ENNReal.hasSum_toReal hfin
-  have hterm : ∀ n, (ENNReal.ofReal (val' n ^ k)).toReal = val' n ^ k :=
-    fun n => ENNReal.toReal_ofReal ((hnn n).2)
+  have hterm : ∀ n, val' n ^ k = (ENNReal.ofReal (val' n ^ k)).toReal :=
+    fun n => (ENNReal.toReal_ofReal (pow_nonneg ((hnn n).2) k)).symm
   have htarget : (∑' n, (ENNReal.ofReal (val' n ^ k)).toReal) = (∑' n, val n ^ k) := by
     calc (∑' n, (ENNReal.ofReal (val' n ^ k)).toReal)
         = ((∑' n, ENNReal.ofReal (val' n ^ k))).toReal :=
           (ENNReal.tsum_toReal_eq (fun n => ENNReal.ofReal_ne_top)).symm
-      _ = (ENNReal.ofReal (∑' n, val n ^ k)).toReal := by rw [hE]
+      _ = (ENNReal.ofReal (∑' n, val n ^ k)).toReal := by
+          rw [hE, ← ENNReal.ofReal_tsum_of_nonneg (fun n => pow_nonneg ((hnn n).1) k) hsum]
       _ = (∑' n, val n ^ k) :=
-          ENNReal.toReal_ofReal (tsum_nonneg fun n => pow_nonneg (hnn n).1 k)
+          ENNReal.toReal_ofReal (tsum_nonneg fun n => pow_nonneg ((hnn n).1) k)
   rw [htarget] at hH
-  exact hH.congr hterm
+  exact hH.congr_fun hterm
 
 /-- The resorted sequence's `k`-th power series is summable. -/
 theorem summable_pow_of_antitoneResort {val val' : ℕ → ℝ}
