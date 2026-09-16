@@ -53,10 +53,10 @@ private theorem real_pow_level_mem {k : ℕ} (hk : 1 ≤ k) {t : ℝ} (ht : 0 < 
   constructor
   · intro h
     have h2 := (Real.rpow_lt_rpow_iff hsnn hu hkpos).mpr h
-    rwa [← Real.rpow_mul hsnn, hkmul, Real.rpow_one] at h2
+    rwa [← Real.rpow_mul (le_of_lt ht), hkmul, Real.rpow_one] at h2
   · intro h
     have h2 := (Real.rpow_lt_rpow_iff hsnn hu hkpos).mp h
-    rwa [← Real.rpow_mul hsnn, hkmul, Real.rpow_one] at h2
+    rwa [← Real.rpow_mul (le_of_lt ht), hkmul, Real.rpow_one] at h2
 
 /-- The level sets of the `k`-th powers are the level sets of the original sequence at
 the `√`-substituted threshold. -/
@@ -77,7 +77,7 @@ private theorem tsum_ofReal_eq_lintegral_tail (g : ℕ → ℝ) (hnn : ∀ n, 0 
       = ∫⁻ t in Ioi (0:ℝ), MeasureTheory.Measure.count {n : ℕ | t < g n} := by
   rw [← MeasureTheory.lintegral_count (fun n => ENNReal.ofReal (g n)),
     MeasureTheory.lintegral_eq_lintegral_meas_lt MeasureTheory.Measure.count
-      (Filter.Eventually.of_forall fun _ => zero_le)
+      (Filter.Eventually.of_forall hnn)
       ((measurable_of_countable (fun n => g n)).aemeasurable)]
 
 /-- The counting measure on ℕ of any set is its `encard`. -/
@@ -108,12 +108,12 @@ private theorem tsum_ofReal_pow_eq_of_level_eq {val val' : ℕ → ℝ}
   have hrew2 : MeasureTheory.Measure.count {n : ℕ | val n > t ^ ((k : ℝ)⁻¹)}
       = MeasureTheory.Measure.count {n : ℕ | t < val n ^ k} := by
     rw [level_pow_set_eq val (fun n => (hnn n).1) k hk t ht0]
+  have hlv : MeasureTheory.Measure.count {n : ℕ | val' n > t ^ ((k : ℝ)⁻¹)}
+      = MeasureTheory.Measure.count {n : ℕ | val n > t ^ ((k : ℝ)⁻¹)} := by
+    rw [count_eq_encard, count_eq_encard, hLevel _ hs0]
   calc MeasureTheory.Measure.count {n : ℕ | t < val' n ^ k}
       _ = MeasureTheory.Measure.count {n : ℕ | val' n > t ^ ((k : ℝ)⁻¹)} := hrew1
-      _ = Set.encard {m : ℕ | val' m > t ^ ((k : ℝ)⁻¹)} := count_eq_encard _
-      _ = Set.encard {m : ℕ | val m > t ^ ((k : ℝ)⁻¹)} := hLevel _ hs0
-      _ = MeasureTheory.Measure.count {n : ℕ | val n > t ^ ((k : ℝ)⁻¹)} :=
-        (count_eq_encard _).symm
+      _ = MeasureTheory.Measure.count {n : ℕ | val n > t ^ ((k : ℝ)⁻¹)} := hlv
       _ = MeasureTheory.Measure.count {n : ℕ | t < val n ^ k} := hrew2
 
 /-! ### The HasSum transfer to the resorted sequence -/

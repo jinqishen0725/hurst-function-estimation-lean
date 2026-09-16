@@ -8,7 +8,7 @@ layer (`Hurst.HSOperatorFoundation`, `Hurst.HSOperatorLayer2`), reusing its enco
 exactly: kernels `K : ℝ × ℝ → ℝ`, `HSKernel K = MemLp K 2 vol2`,
 `hsNorm K = (∫∫ K² ∂vol2)^(1/2)`, `TOp K hK : L2 →L[ℝ] L2`.
 
-## Main results (all landed, sorry-free)
+## Main results (all landed, placeholder-free)
 
 * Degenerate (finite-rank) kernels `K = ∑ j ∈ s, a j ⊗ b j` (`s : Finset ι`):
   * `memLp2_prod_fst_snd` — mixed-coordinate products `a ⊗ b` are `L²(vol2)`;

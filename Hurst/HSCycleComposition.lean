@@ -10,7 +10,7 @@ This file lands the general-`k` cycle-composition layer on the landed `HS` encod
 `HSKernel K = MemLp K 2 vol2`, `hsNorm K = (∫∫ K² ∂vol2)^(1/2)`,
 `cycle2 K L = ∫∫ K(x,y) L(y,x)`.
 
-## Main results (all sorry-free)
+## Main results (all placeholder-free)
 
 * `compKernel K L p = ∫ t, K (p.1, t) * L (t, p.2) ∂vol` — the kernel of the
   composite operator `TOp K ∘ TOp L` (the matrix product of kernels).

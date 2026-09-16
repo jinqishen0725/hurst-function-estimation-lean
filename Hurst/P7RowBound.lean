@@ -44,7 +44,7 @@ ordinary long-L1 machinery.
 
    by chaining `p7_unknownScale_scale_L1_rate_of_mesh_bound`.
 
-No `sorry`/`axiom`: the split is proved from the definition of
+No placeholders or postulates: the split is proved from the definition of
 `firstStrideLongRowBound`, and step 4 only composes landed theorems.
 -/
 

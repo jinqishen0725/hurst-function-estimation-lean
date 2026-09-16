@@ -9,7 +9,7 @@ Builds the positivity / spectrum-clause prerequisites on the landed `HS` stack
 `K : ℝ × ℝ → ℝ`, `HSKernel K = MemLp K 2 vol2`, `TOp K hK : L2 →L[ℝ] L2`,
 `kpair K f g = ∫∫ K(x,y) f(y) g(x)`.
 
-## Main results (all sorry-free)
+## Main results (all placeholder-free)
 
 * `KernelPSD` — the quadratic-form positivity predicate `∀ f : L2, 0 ≤ kpair K f f`;
   * `KernelPSD_sq_degenerate` — **the elementary PSD source**: diagonal finite-rank

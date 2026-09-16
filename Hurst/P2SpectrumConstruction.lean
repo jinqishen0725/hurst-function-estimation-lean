@@ -18,7 +18,7 @@ enumeration *with multiplicity* behind the two available spectral-theorem
 lemmas (`ContinuousLinearMap.orthogonalComplement_iSup_eigenspaces_eq_bot`,
 `ContinuousLinearMap.finite_dimensional_eigenspace`), and no trace-power
 `tr(B^k)` API for which the cycle-integral identification A5/A9 could even be
-stated.  Accordingly this file lands, with no `sorry` and no new axioms:
+stated.  Accordingly this file lands, with no placeholders and no new postulates:
 
 * `IsRieszSpectrumSequence` - the complete P2 obligation for one candidate
   sequence as a single predicate, proved equivalent to

@@ -52,7 +52,7 @@ hPos : ∀ f : L2, 0 ≤ inner ℝ (TOp K hK f) f
   (via mathlib's `eigenvalue_nonneg_of_nonneg`, whose `RCLike.re⟪x, Tx⟫` input our `hPos`
   supplies at `𝕜 = ℝ`).
 
-All statements compile sorry-free under the explicit hypotheses.
+All statements compile placeholder-free under the explicit hypotheses.
 -/
 
 open MeasureTheory Measure Real Set
