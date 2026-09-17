@@ -3,6 +3,7 @@ import Hurst.EigenFamilySplice
 import Hurst.GeneralKIntegrabilityClosed
 import Hurst.TensorParsevalTracePair
 import Hurst.CycleTraceIdentification
+import Hurst.RieszSectionBounds
 
 /-!
 # The general-`k` spectral bridge: foundations layer (PARTIALLY LANDED)
@@ -532,77 +533,6 @@ theorem hasSum_weighted_of_gate (K : ℝ × ℝ → ℝ) (psi c : ℝ) (omega : 
     hBridge (hPair k) hE1 hE2 hD1 hEK1 hEK2 hDK1 hdiag hmult
   rw [hW k hk] at hcore
   exact hcore
-
-/-- **The `hGen`-verbatim theorem at the constructed Riesz enumeration** (conditional):
-under the capstone Riesz data, the operator-positivity-free bridge hypotheses, and
-the uniform section bounds of spec §2, the general-`k` spectral bridge holds in
-exactly `Hurst.CapstoneV3.hGen`'s binder form: for every `k ≥ 3`,
-`HasSum (fun j => HS.rieszSpectrumVal … j ^ k) (weightedRieszCycleIntegral k …)`.
-
-Conditional inputs (each discharged by a dedicated module or by spec §2/§3):
-* `hSec*` — the uniform section `L²`/`L¹` bounds (spec §2, `Hurst.RieszSectionBounds`);
-* `hBridge` — the enumeration↔basis trace-pair bridge (spec §3 Step C,
-  `CycleTraceIdentification`'s isolated gap);
-* `hPair` — the operator-power identification `T^k = TOp K ∘ TOp (compPowR (k-2))`
-  (spec §3 Step B, the a.e. section formula / kernel-composition action). -/
-theorem rieszSpectrumVal_hGen_of_bridge
-    (psi c : ℝ) (omega : ℝ → ℝ) (MR : ℝ)
-    (hpow : AEStronglyMeasurable (fun p : ℝ × ℝ => |p.1 - p.2| ^ (-psi)) vol2)
-    (homega : Measurable omega) (hbdd : ∀ x : ℝ, |omega x| ≤ MR)
-    (hg : Integrable (fun p : ℝ × ℝ => |p.1 - p.2| ^ (-2 * psi)) vol2)
-    (hconst : ∀ x y : ℝ, (I : Set ℝ).indicator omega x = (I : Set ℝ).indicator omega y)
-    (hpsi1 : 2 * psi < 1)
-    (hE1 : ∀ (r : ℕ) (y : ℝ),
-      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r (rieszKernel psi c omega) (a, y)| ^ 2 ∂vol
-        ≤ ENNReal.ofReal E)
-    (hE2 : ∀ (r : ℕ) (y : ℝ),
-      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r (rieszKernel psi c omega) (y, a)| ^ 2 ∂vol
-        ≤ ENNReal.ofReal E)
-    (hD1 : ∀ (r : ℕ) (y : ℝ),
-      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r (rieszKernel psi c omega) (a, y)| ∂vol
-        ≤ ENNReal.ofReal D)
-    (hEK1 : ∀ y : ℝ,
-      ∫⁻ a : ℝ, ENNReal.ofReal |rieszKernel psi c omega (a, y)| ^ 2 ∂vol
-        ≤ ENNReal.ofReal E)
-    (hEK2 : ∀ y : ℝ,
-      ∫⁻ a : ℝ, ENNReal.ofReal |rieszKernel psi c omega (y, a)| ^ 2 ∂vol
-        ≤ ENNReal.ofReal E)
-    (hDK1 : ∀ y : ℝ,
-      ∫⁻ a : ℝ, ENNReal.ofReal |rieszKernel psi c omega (a, y)| ∂vol
-        ≤ ENNReal.ofReal D)
-    (e : HilbertBasis ℕ ℝ L2)
-    (hBridge : ∀ j : ℕ, 2 ≤ j → ∀ (e : HilbertBasis ℕ ℝ L2),
-      (∑' i : ℕ, inner ℝ
-          ((TOpEnd' (rieszKernel psi c omega)
-            (hsKernel_rieszKernel hpow homega hbdd hg) ^ j) (e i)) (e i))
-        = ∑' m : ℕ,
-          rieszSpectrumVal psi c omega MR hpow homega hbdd hg hconst m ^ j)
-    (hKmMeas : Measurable (rieszKernel psi c omega))
-    (hKR : HSKernel (rieszKernel psi c omega))
-    (hPair : ∀ (k : ℕ) (x : L2), (TOp (rieszKernel psi c omega)
-          (hsKernel_rieszKernel hpow homega hbdd hg)) ((TOp (compPowR (k - 2)
-          (rieszKernel psi c omega)) (hsKernel_compPowR (k - 2) hKmMeas hKR)) x)
-        = (TOpEnd' (rieszKernel psi c omega)
-            (hsKernel_rieszKernel hpow homega hbdd hg) ^ k) x)
-    (hW : ∀ k : ℕ, 2 ≤ k → cycleIntegral k (rieszKernel psi c omega)
-      = Hurst.weightedRieszCycleIntegral k psi c omega) :
-    ∀ k : ℕ, 3 ≤ k → HasSum
-      (fun j : ℕ => rieszSpectrumVal psi c omega MR hpow homega hbdd hg hconst j ^ k)
-      (Hurst.weightedRieszCycleIntegral k psi c omega) := by
-  intro k hk
-  refine hasSum_weighted_of_gate (rieszKernel psi c omega) psi c omega
-    (measurable_rieszKernel homega)
-    (hsKernel_rieszKernel hpow homega hbdd hg)
-    (isCompactOperator_TOp_riesz hpow homega hbdd hg hconst)
-    (isSymmetric_TOp_rieszKernel hpow homega hbdd hg hconst)
-    hW
-    (fun k => hsKernel_compPowR (k - 2) hKmMeas hKR)
-    e hBridge (fun k x => hPair k x)
-    (fun r y => hE1 r y) (fun r y => hE2 r y) (fun r y => hD1 r y)
-    hEK1 hEK2 hDK1
-    (isDiagEnum_of_entry (rieszSpectrum_entry psi c omega MR hpow homega hbdd hg hconst))
-    (fun μ hμ hμ0 => rieszSpectrum_multiplicity psi c omega MR hpow homega hbdd hg hconst hμ hμ0)
-    k (le_trans (by norm_num : (2 : ℕ) ≤ 3) hk)
 
 end HS
 
