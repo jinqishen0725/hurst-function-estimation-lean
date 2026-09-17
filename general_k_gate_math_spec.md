@@ -241,3 +241,101 @@ material) to formalize §3 and §4, delivering:
 (i) the gate `∑' j, val j ^ k = cycle2 (compPowR (k-2) K) K` (all `k ≥ 2`) at the
 constructed enumeration; (ii) `HasSum (fun j => val j ^ k) (weightedRieszCycleIntegral
 k …)` (all `k ≥ 2`); (iii) `hGen` verbatim in `Hurst.CapstoneV3`'s binder form.
+
+## 6. hPair — the operator-power identification (AGENT-G)
+
+**Claim (general composition form).** For measurable kernels `A, B` with
+`HSKernel A`, `HSKernel B`:
+`TOp (compKernel A B) hAB x = TOp A hA (TOp B hB x)` for all `x : L2`.
+Specialized along the landed tower (check the fold orientation of the definition
+`compPowR` in `Hurst/GeneralKPeelInduction.lean` and match it by induction), with
+the CLM↔End compatibility of `TOpEnd'` (landed in the HSOperatorFoundation layer):
+`TOp K ∘ TOp (compPowR (k-2) K) = (TOpEnd' K hK)^k` for every `k ≥ 2`.
+
+**Proof.**
+*Step 1 (a.e. section formula).* For `hK : HSKernel K` and `f : L2`, the Riesz
+representer satisfies `TOp K hK f (x) = ∫ K(x,y) · f(y) ∂vol` for a.e. x.
+Indeed the defining pairing of `TOp` (landed: `inner_TOp` in
+`Hurst/CycleTraceIdentification.lean` and the `TOp`/`TOpFun` definition layer in
+`Hurst/HSOperatorFoundation.lean` — locate the exact landed pairing lemma) reads
+`⟪TOp K f, g⟫ = ∫∫ K(x,y) f(y) g(x) ∂vol2`. Define `F(x) := ∫ K(x,y) f(y) dy`:
+it is a.e.-defined with `|F(x)| ≤ ‖K(x,·)‖₂ · ‖f‖₂` by section Cauchy–Schwarz, and
+`∫_x ‖K(x,·)‖₂² = ‖K‖²_{L²(vol2)} < ∞` gives `F ∈ L²`, `‖F‖₂ ≤ ‖K‖‖f‖`. Fubini is
+justified by `∫∫ |K·f∘proj₂·g∘proj₁| ≤ ‖K‖_{L²(vol2)}·‖f‖·‖g‖` (CS in `L²(vol²)`,
+using `‖f(y)g(x)‖_{L²(vol2)} = ‖f‖‖g‖`). Hence `⟪TOp K f, g⟫ = ∫ g·F` for all
+`g : L2`, and two L² elements with equal pairing against all `g` are equal a.e.
+(`‖u-v‖² = ⟪u-v, u-v⟫ = 0`). ✔
+
+*Step 2 (composition).* With `compKernel A B (x,z) = ∫ A(x,y) B(y,z) dy` (check the
+landed def in `Hurst/HSCycleComposition.lean`) and `v : L2`, apply Step 1 twice with
+the same CS/Fubini justification (each application consumes one HS-kernel factor and
+one L² slot):
+`TOpFun (compKernel A B) v (x) = ∫∫ A(x,y) B(y,z) v(z) dz dy
+  = ∫ A(x,y) (∫ B(y,z) v(z) dz) dy = TOpFun A (TOpFun B v) (x)` (a.e.),
+and since `TOp B v = TOpFun B v` a.e. and `TOpFun A` only sees the L²-class of its
+input (equal-a.e. inputs give equal representers — by the uniqueness clause of Step 1),
+`TOp (compKernel A B) v = TOpFun (compKernel A B) v = TOpFun A (TOp B v)
+  = TOp A (TOp B v)`. ∎
+
+*(Downstream note: in D's packaged shape this is consumed as
+`∀ x, TOp K hK (TOp (compPowR (k-2) K) hKL x) = (TOpEnd' K hK ^ k) x` — the induction
+over the tower plus the CLM/End transport are part of the deliverable.)*
+
+## 7. hW — the cycle-encoding bridge (AGENT-D, mechanical)
+
+`cycleIntegral k K` (HS definition — unfold it) vs
+`weightedRieszCycleIntegral k psi c omega`: both integrate a cyclic kernel product
+over `(Fin k → ℝ)` with `vol^k`. Landed: `rieszCycleIntegrand_eq` and
+`weightedRieszCycleIntegral_eq_kernelProd` (general k) identify the weighted integrand
+with `∏ i, rieszKernel psi c omega (z i, z (finCyclicSucc i))`. Unfold
+`cycleIntegral`, match integrands (a.e.-congruence; cube/indicator transport via
+`restrict_congr_set`/`Measure.restrict_pi_pi`-style lemmas if the encodings differ),
+`k = 2` anchor landed (`cycle2_rieszKernel_eq_weighted`). Mechanical.
+
+## 8. hBridge — trace-class diagonal invariance + eigen evaluation (AGENT-H)
+
+**Claim (D's packaged shape).** `T := TOpEnd' K hK` with `hK : HSKernel K` (T compact
+self-adjoint — landed), `(val, vec)` a diagonal enumeration with `IsDiagEnum` +
+multiplicity clause `hmult` (landed shapes), `j ≥ 2`, and `e` ANY Hilbert basis of
+`L2`. Then `∑' i, ⟪T^j (e i), e i⟫ = ∑' m, val m ^ j`.
+
+**Proof.**
+*(a) Absolute summability, both sides, basis-uniform.* Basis side: for
+`A := T^j = T^{j-r} · T^r` (self-adjoint powers commute), Cauchy–Schwarz gives
+`|⟪A x, x⟫| = |⟪T^{j-r} x, T^r x⟫| ≤ (‖T^{j-r} x‖² + ‖T^r x‖²)/2`, and
+`∑_i ‖T^r e_i‖² = ‖T^r‖²_{HS}` (Parseval) with `‖T^r‖_{HS} ≤ ‖T‖^{r-1}_{op}‖T‖_{HS} < ∞`
+for every `r ≥ 1` (induction: `‖X∘Y‖_{HS} ≤ ‖X‖_{op}‖Y‖_{HS}`; `T` is HS since
+`HSKernel`). Enumeration side: every eigenvalue μ of the self-adjoint T satisfies
+`|μ| ≤ ‖T‖_{op}` (unit eigenvector), so `|val m|^j ≤ ‖T‖^{j-2}·val m²`, and
+`∑' val² < ∞` (landed — for the constructed enumeration this is capstone
+conclusion (ii); in general via the diag machinery of
+`GeneralKHasSumAssembled.hasSum_diag_inner_pow`). ✔
+
+*(b) Basis-invariance.* For any two Hilbert bases `e, f` and `A := T^j`:
+`∑_i ⟪A e_i, e_i⟫ = ∑_i ⟪A e_i, ∑_l ⟪e_i, f_l⟫ f_l⟫ = ∑_{i,l} ⟪A e_i, f_l⟫⟪e_i, f_l⟫`
+(Parseval expansion of `e_i` in `f`; ℝ-bilinear), and symmetrically
+`∑_l ⟪A f_l, f_l⟫ = ∑_{i,l} ⟪A f_l, e_i⟫⟪f_l, e_i⟫ = ∑_{i,l} ⟪A e_i, f_l⟫⟪e_i, f_l⟫`
+using REAL symmetry of the inner product and SELF-ADJOINTNESS of `A = T^j` (landed:
+powers of a self-adjoint CLM are self-adjoint). Both double series converge absolutely:
+`∑_{i,l} |⟪A e_i, f_l⟫|² = ‖A‖²_{HS}` (Parseval over `e`, then over `f`) and
+`∑_{i,l} |⟪e_i, f_l⟫|² = 1`, so Cauchy–Schwarz bounds the mixed sum. Absolute
+convergence legitimizes the reassociation/order swap (Mathlib `tsum` commutativity for
+absolutely summable double series). Hence the diagonal sum takes the same value for
+every basis. ✔
+
+*(c) Evaluation at the adapted basis.* Take `e*` := the complete ON eigenfamily of
+`EigenFamilySplice` (eigenvectors of the nonzero spectrum + an ONB of `ker T`; the
+orthocomplement decomposition is landed) as a HilbertBasis. Kernel directions
+contribute 0 (`T^j x = 0`); an eigenvector with eigenvalue μ contributes
+`⟪T^j x, x⟫ = μ^j`. Grouping directions by eigenvalue — each fiber has cardinality
+`finrank (eigenspace μ)` by orthonormality-within-eigenspace + completeness (the landed
+`natCard_kappaFiber_eq_finrank` in `Hurst.CapstoneV3Closed.lean`; POWER-AGNOSTIC) —
+turns the sum into `∑_μ finrank(μ) · μ^j` over the nonzero spectrum, which by the
+multiplicity clause `hmult` equals `∑'_m val m ^ j` (fiber-cardinality matching;
+absolute summability from (a) makes the reassociation legitimate). ∎
+
+*(Formalization shortcuts: (c) is literally `HS.tsum_kappaSq_eq_tsum_valSq`
+(CapstoneV3Closed) with `^2 → ^j`; its fiber-cardinality and disjointness machinery
+reuses verbatim. For (b)'s double-series bookkeeping, E's file
+(`Hurst.TensorParsevalTracePair.lean`) already handles the same absolute-summability
+pattern (`tracePair_comp_summable`, AM–GM domination, `Summable.tsum_prod'`) — reuse.)*
