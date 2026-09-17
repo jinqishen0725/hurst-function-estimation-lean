@@ -634,3 +634,7 @@ import Hurst.EigenFamilySplice
 import Hurst.GeneralKHasSumAssembled
 import Hurst.RieszOperatorPositivity
 import Hurst.TensorONBCompleteness
+
+import Hurst.CauchyKernelPSD
+import Hurst.GeneralKIntegrabilityClosed
+import Hurst.CapstoneV3Closed
