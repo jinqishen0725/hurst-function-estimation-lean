@@ -2,6 +2,21 @@
 
 更新:2026-09-18(独立 validation 轮启动)。
 
+## 各路检查点(2026-09-18 13:02 协调短查后更新;快照诊断已分发)
+
+三路文件均已落盘且活跃(A 16KB/B 16KB/C 33KB,13:06-13:07 仍在编辑)。协调 agent 的
+/tmp 快照诊断已逐条分发给各路(附"快照可能滞后,先重编译对照"提醒):
+
+| 路 | 快照诊断 | 当前状态 | 剩余 M1 对象 |
+|---|---|---|---|
+| M1-A | 18 项:重点 = 可测性引理的局部路线错误(`eq_or_lt_of_le` 推不出 0≤s;可测性对任意 s 成立,应复用已落地 `HS.measurable_abs_sub_rpow` 或走 Measurable 组合);另有补集析取/`volume_singleton` 隐参/`rpow_nonneg` 缺指数参等 API 项 | 正性/eigenfamily(**hc 版**)尚未交付 | `inner_TOp_unweightedRiesz_nonneg` + `exists_nonneg_eigenfamily` + 紧性 |
+| M1-B | 11 项:mpair 系列 `omega` 隐参误作首显参(改 `(omega := omega)`);`inner_mulOperator'` 非 definitional 不能 rfl(由 `inner_mulOperator` + mpair def 推) | hm+hess 双前提 ✔(协调已确认);正平方根与真实 B=S∘M∘S 尚未交付 | `exists_positive_sqrt` + B(定义等式绑定)+ A7 界 |
+| M1-C(优先) | 仅 4 项:553/556 `real_inner_comm` 方向反;591 `tsum_le_tsum` 未知名(mathlib v4.31 改名);594 Finset 双和→subtype tsum 重写形状(先显式证明 `Finset.sum = subtype tsum`) | 33KB,该区域正在重写中 | 最终公开 `hBridge_clm`(含 hTHS + `Summable val²` 结论) |
+
+主 agent 行动:①三份诊断已带"快照滞后"提醒分发;②C 为优先收敛路,已承诺:若
+`real_inner_comm` 方向反复超过 ~2 次,agent 上报 `trace_state` 目标原文,主 agent 直接
+给修正项;③不重跑全库;④M1 验收口径不变(不得以文件长度或去 sorry 计完成)。
+
 ## 各路检查点(2026-09-18 12:31 协调短查后采集)
 
 | 路 | 文件路径 | 状态 | 最小编译检查点 | 当前 blocker |
