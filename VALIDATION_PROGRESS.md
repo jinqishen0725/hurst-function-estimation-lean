@@ -2,6 +2,22 @@
 
 更新:2026-09-18(独立 validation 轮启动)。
 
+## 契约修正记录(2026-09-18 协调检查轮)
+
+协调 agent 复核发现 M1 契约 5 处错误,已全部处理:
+1. §2 非负性签名补 `hc : 0 ≤ c`(c<0 时为假;实际模型 c = h(2h−1) > 0)→ 已通知 M1-A
+   (M1-A 回复:开工前已独立发现同一问题,两签名带 hc,正性路线改用已落地的
+   `RieszOperatorPositivity.laplace_rpow_neg`,剩余缺口 = Schur 三重可积性,自证中)。
+2. §3 删除 `exists_positive_sqrt` 的假合取(反例 T=4·Id)→ 已通知 M1-B;
+   正确结论:S v_i = √κ_i•v_i、S²=T、自伴、S 非负;各 ∀ 显式包住合取。
+3. §3 `mulOperator` 改本质有界 + a.e. 作用引理;`exists_B` 绑定 B = S∘M_ω∘S(同一 S,
+   S²=T),矩阵公式为命名合取 → 已通知 M1-B。
+4. §4 `hBridge_clm` 加基一致 HS 型假设(紧性不推出谱平方可和,反例 κ_n=1/√(n+1)),
+   `Summable (val²)` 升为结论,对角和以 HasSum 陈述 → 已通知 M1-C。
+5. §5 降级为草案(非冻结签名);M1-D 派发前先写可检查最小接口。
+   Hilbert 基存在改标"内部待证"。
+规范已回写(`milestone1_hconst_elimination_math_spec.md` 更正记录 + §2/§3/§4/§5)。
+
 ## 当前里程碑
 
 **M1:消除 `hconst` —— 真实等价核谱对象(`B = K^(1/2) W K^(1/2)`,W6/23:A4–A6)与循环积分桥。**

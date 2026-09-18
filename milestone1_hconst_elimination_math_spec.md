@@ -4,6 +4,29 @@
 hconst 不可满足)、书面方案 22:W6 与 23:A4–A6。本契约冻结定理签名;任何偏差必须
 声明式回写本文件与 `VALIDATION_PROGRESS.md`。
 
+## ⚠️ 契约更正记录(2026-09-18 协调检查,已传达给全部执行 agent)
+
+1. **§2 非负性遗漏 `hc : 0 ≤ c`**:c < 0 时非负结论为假(eigenvalues/二次型按 c 缩放)。
+   已把 `hc` 纳入两个非负性签名;对称/HS/紧性不需要它。实际模型 c = h(2h−1) > 0(h > 1/2)。
+2. **§3 `exists_positive_sqrt` 的合取 `∀ i, ‖S v_i‖ = 1 ∨ S v_i = 0` 为假**
+   (反例 T = 4·Id:‖S v‖ = 2),已删除。正确结论集:S v_i = √κ_i•v_i(范数 √κ_i)、
+   S² = T、自伴、S 非负(⟪x,Sx⟫ ≥ 0)。每个 ∀ 明确包住各自合取,防作用域滑落。
+3. **§3 `mulOperator` 需本质有界**:仅可测的 ω 不能在全体 L2 上定义有界乘法算子。
+   签名改为 `Measurable omega` + 本质界(`∀ᵐ x ∂vol, |omega x| ≤ MR`;或逐点界),
+   并新增作用引理 `⇑(M_ω) f = ω • f`(a.e./Lp 余积意义)。
+   **`exists_B_selfAdjoint_hs` 必须把 B 绑定为 `S ∘ M_ω ∘ S`**(S 为同一 T 的正平方根,
+   S² = T),矩阵公式 ⟪v_i, B v_j⟫ = √(κ_iκ_j)⟪v_i, W v_j⟫ 作为命名合取——裸
+   "存在自伴 HS 的 B"被零算子平凡满足,不接受。
+4. **§4 `hBridge_clm` 需 HS 型条件**:紧性不推出谱平方可和(反例 κ_n = 1/√(n+1)),
+   且非可和 tsum 有 Lean 默认值(不可当存在性)。已加:基一致 HS 型假设
+   (T 的矩阵平方和可和且有界;下游由 M1-B 的 A7 交付,不是新最终模型假设),
+   并把 `Summable (val ^ 2)` 作为**结论**同时证明;对角和以 HasSum + 已证可和性陈述。
+5. **§5 降级为草案**:仍含 hconst'/省略号占位,非冻结签名。A/B/C 落地后先写可检查的
+   最小接口(构造 B、真实谱枚举、k=2 与所有 k≥3、可满足实例),再派发。
+   阶段性缺口记录在案但**不算 M1 验收通过**。
+6. **Hilbert 基存在是内部待证事项**,不是已完成的环境数据(见 §1 表格更正:
+   状态从"✅ 环境数据"改为"⏳ 内部待证(唯一残余,见 §5)")。
+
 ## 0. 根因与修复原则
 
 现线路的算子是 `TOp (rieszKernel psi c omega)`,核为 `ω(x)·c·|x−y|^{−ψ}`(W 作用于行)。
@@ -28,10 +51,10 @@ B 构造性自伴;其谱 `(μ_j)` 平方可和,且 `∑' μ_j^k = tr(B^k) = tr((
 | `hpsi2 : 2 * psi < 1` | capstone 可行带宽(f t > 3/4;已有 hg 同款) | ✅ 数据前提 |
 | `hpsi0 : 0 < psi` | f t < 1 ⇒ ψ = 2−2f t > 0 | ✅ 数据前提 |
 | unweighted K 的 HS 性 | `fract_section_bound`(RieszSectionBounds,ω≡1 情形直接可用):uniform section L² 界 ⇒ ∫∫ K² < ∞ | ✅ 工具已落地 |
-| W 有界自伴 | 新小引理:`ω` 可测有界 ⇒ `M_ω : L2 →L[ℝ] L2`、`IsSymmetric`、`‖M_ω‖ ≤ MR` | 🆕 M1-B(机械) |
-| K 非负(κ_i ≥ 0) | A5 Laplace/Γ 表示 + **已落地** `HS.kernelPSD_exp_dist`(e^{-u\|x−y\|} PSD,u>0)的混合 | 🆕 M1-A(核心难点) |
+| W 有界自伴 | 新小引理:`ω` 可测 + 本质有界 ⇒ `M_ω : L2 →L[ℝ] L2`、`IsSymmetric`、`‖M_ω‖ ≤ MR`、作用 a.e. 引理(§3 修正 3) | 🆕 M1-B(机械) |
+| K 非负(κ_i ≥ 0) | A5 Laplace/Γ 表示(**已落地** `RieszOperatorPositivity.laplace_rpow_neg` 供给 Γ–Laplace)+ **已落地** `HS.kernelPSD_exp_dist`(e^{-u\|x−y\|} PSD,u>0)的混合;需 `hc : 0 ≤ c` | 🆕 M1-A(核心难点) |
 | K 紧 | HS 核算子紧性:沿用 `isCompactOperator_TOp_riesz`(RieszCompactEnumeration:95)的证明骨架(该证明不依赖 ω/常数性) | 🆕 M1-A(骨架复用) |
-| Hilbert 基 `e`(环境数据) | 现有 idiom(与 hBridge/tracePair_comp_tsum 相同);结论与 e 无关 | ✅ 环境数据 |
+| Hilbert 基 `e` | **内部待证事项**(非已完成环境数据):需构造 `HilbertBasis ℕ ℝ L2`(可分性 + Gram–Schmidt,mathlib v4.31 无现成 API;或由 EigenFamilySplice 可数特征族转换)。整个 HS 层以其为环境参数,结论与 e 无关 | ⏳ 唯一记录在案残余 |
 
 **没有**任何"普通假设"打包内部待证条件:每个新定理的前提要么是上表已证明的模型事实,
 要么是冻结接口的输出。
@@ -59,14 +82,16 @@ theorem isCompactOperator_TOp_unweightedRiesz {psi c : ℝ} (hpsi0 : 0 ≤ psi)
     IsCompactOperator (TOp (unweightedRieszKernel psi c)
       (hsKernel_unweightedRieszKernel hpsi0 hpsi2))
 
-/-- A5:无权 Riesz 算子非负(Laplace/Γ 表示 + exp-核 PSD 混合)。 -/
+/-- A5:无权 Riesz 算子非负(Laplace/Γ 表示 + exp-核 PSD 混合)。c 的符号必须追踪。 -/
 theorem inner_TOp_unweightedRiesz_nonneg {psi c : ℝ} (hpsi0 : 0 < psi) (hpsi2 : 2 * psi < 1)
+    (hc : 0 ≤ c)
     (f : L2) :
     0 ≤ inner ℝ (TOp (unweightedRieszKernel psi c)
       (hsKernel_unweightedRieszKernel (le_of_lt hpsi0) hpsi2) f) f
 
-/-- 完备非负特征族(K 的;κ ≥ 0 由非负性 + 特征方程)。 -/
-theorem exists_nonneg_eigenfamily {psi c : ℝ} (hpsi0 : 0 < psi) (hpsi2 : 2 * psi < 1) :
+/-- 完备非负特征族(K 的;κ ≥ 0 由非负性 + 特征方程)。c 符号追踪同上。 -/
+theorem exists_nonneg_eigenfamily {psi c : ℝ} (hpsi0 : 0 < psi) (hpsi2 : 2 * psi < 1)
+    (hc : 0 ≤ c) :
     ∃ (ι : Type) (v : ι → L2) (κ : ι → ℝ), Orthonormal ℝ v
       ∧ (∀ i, TOp (unweightedRieszKernel psi c)
           (hsKernel_unweightedRieszKernel (le_of_lt hpsi0) hpsi2) (v i) = κ i • v i)
@@ -84,14 +109,18 @@ theorem exists_nonneg_eigenfamily {psi c : ℝ} (hpsi0 : 0 < psi) (hpsi2 : 2 * p
 模块 `Hurst/PositiveSquareRoot.lean`(namespace HS):
 
 ```lean
-/-- 有界可测乘法算子。 -/
-def mulOperator (omega : ℝ → ℝ) : L2 →L[ℝ] L2   -- 构造方式不限(简单函数稠密/直接定义)
-theorem mulOperator_symm {omega : ℝ → ℝ} (hm : Measurable omega) :
-    (↑(mulOperator omega) : L2 →ₗ[ℝ] L2).IsSymmetric
-theorem norm_mulOperator_le {omega : ℝ → ℝ} (hm : Measurable omega) {MR : ℝ}
-    (hbdd : ∀ x, |omega x| ≤ MR) : ‖mulOperator omega‖ ≤ MR
+/-- 有界(本质有界)可测乘法算子:仅可测不足以在全体 L2 上有界。 -/
+def mulOperator (omega : ℝ → ℝ) (hess : ∀ᵐ x ∂vol, |omega x| ≤ MR) : L2 →L[ℝ] L2
+theorem mulOperator_action {omega : ℝ → ℝ} {MR : ℝ} (hess : ∀ᵐ x ∂vol, |omega x| ≤ MR)
+    (f : L2) : ⇑(mulOperator omega hess) f =ᵐ[vol] (fun x => omega x * ⇑f x)
+theorem mulOperator_symm {omega : ℝ → ℝ} {MR : ℝ} (hess : ∀ᵐ x ∂vol, |omega x| ≤ MR) :
+    (↑(mulOperator omega hess) : L2 →ₗ[ℝ] L2).IsSymmetric
+theorem norm_mulOperator_le {omega : ℝ → ℝ} {MR : ℝ} (hess : ∀ᵐ x ∂vol, |omega x| ≤ MR) :
+    ‖mulOperator omega hess‖ ≤ MR
 
-/-- 正自伴紧算子在完备非负特征族上的正平方根(定义在特征族上,Parseval 收敛)。 -/
+/-- 正平方根(定义在完备非负特征族上,Parseval 收敛)。
+    结论:S v_i = √κ_i•v_i(范数 √κ_i)、S² = T、自伴、S 非负。
+    注意:不存在"‖S v_i‖ = 1 ∨ S v_i = 0"这类合取(假:反例 T = 4·Id)。 -/
 theorem exists_positive_sqrt {T : L2 →L[ℝ] L2}
     {ι : Type} {v : ι → L2} {κ : ι → ℝ}
     (hTsym : (↑T : L2 →ₗ[ℝ] L2).IsSymmetric)
@@ -99,23 +128,30 @@ theorem exists_positive_sqrt {T : L2 →L[ℝ] L2}
     (hcomp : (span ℝ (Set.range v))ᗮ = ⊥) (hκ0 : ∀ i, 0 ≤ κ i) :
     ∃ S : L2 →L[ℝ] L2, (↑S : L2 →ₗ[ℝ] L2).IsSymmetric
       ∧ (∀ i, S (v i) = Real.sqrt (κ i) • v i)
-      ∧ ∀ x, S (S x) = T x
-      ∧ ∀ i, ‖S (v i)‖ = 1 ∨ S (v i) = 0   -- 由 √κ 定义直接成立(可省)
+      ∧ (∀ x, S (S x) = T x)
+      ∧ (∀ x, 0 ≤ inner ℝ x (S x))
 
-/-- A7:B = S ∘ M_ω ∘ S 自伴且 HS 型矩阵界(给 M1-D 的绝对可和性输入)。 -/
-theorem exists_B_selfAdjoint_hs {omega : ℝ → ℝ} (hm : Measurable omega) {MR : ℝ}
-    (hbdd : ∀ x, |omega x| ≤ MR)
-    {ι : Type} {v : ι → L2} {κ : ι → ℝ}
-    (hv : Orthonormal ℝ v) (he : ∀ i, TOp (unweightedRieszKernel psi c) hK (v i) = κ i • v i)
+/-- A7:B **绑定**为 B = S ∘ M_ω ∘ S(S 为同一 T 的正平方根,S² = T——裸"存在自伴
+    HS 的 B"被零算子平凡满足,不接受)+ 矩阵公式 + 基一致双平方和界。 -/
+theorem exists_B_selfAdjoint_hs {omega : ℝ → ℝ} {MR : ℝ}
+    (hess : ∀ᵐ x ∂vol, |omega x| ≤ MR)
+    {T : L2 →L[ℝ] L2} {ι : Type} {v : ι → L2} {κ : ι → ℝ}
+    (hTsym : (↑T : L2 →ₗ[ℝ] L2).IsSymmetric)
+    (hv : Orthonormal ℝ v) (he : ∀ i, T (v i) = κ i • v i)
     (hcomp : (span ℝ (Set.range v))ᗮ = ⊥) (hκ0 : ∀ i, 0 ≤ κ i)
     (hκ : Summable (fun i => κ i ^ 2)) :
-    ∃ B : L2 →L[ℝ] L2, (↑B : L2 →ₗ[ℝ] L2).IsSymmetric
-      ∧ ∃ C : ℝ, (∀ i j, |inner ℝ (e i) (B (e j))| 的平方双重和 ≤ C)  -- A7:对任意 ON 基 e
+    ∃ B : L2 →L[ℝ] L2,
+      B = (exists_positive_sqrt …).choose ∘ mulOperator omega hess ∘ (…).choose
+      ∧ (↑B : L2 →ₗ[ℝ] L2).IsSymmetric
+      ∧ (∀ i j, inner ℝ (v i) (B (v j))
+          = Real.sqrt (κ i * κ j) * inner ℝ (v i) ((mulOperator omega hess) (v j)))
+      ∧ (A7 界:任意 HilbertBasis e 上 ∑' p, (⟪e p.1, B (e p.2)⟫)² ≤ MR ^ 2 * ∑' i, κ i ^ 2,
+         且该二重级数 Summable)
 ```
 
-(签名细化权在 M1-B 执行者,但:①B 的对称性、②A7 双平方和界 `≤ ‖ω‖∞²·∑κ²`、
-③`B (v i)` 的 `√(κ_iκ_j)`-矩阵结构(⟪v_i, B v_j⟫ = √(κ_iκ_j)·⟪v_i, W v_j⟫)必须作为
-命名定理可独立消费——M1-D 依赖这三件。)
+(签名细化权在 M1-B 执行者,但:①B 以定义等式绑定到 `S∘M_ω∘S`;②A7 双平方和界
+`≤ ‖ω‖∞²·∑κ²`、可和性;③`B (v i)` 的 `√(κ_iκ_j)`-矩阵结构必须作为命名定理可独立
+消费——M1-D 依赖这三件。签名细化后**必须回写本文件**。)
 
 ## 4. 冻结接口(M1-C → M1-D)
 
@@ -125,19 +161,32 @@ theorem exists_B_selfAdjoint_hs {omega : ℝ → ℝ} (hm : Measurable omega) {M
 ```lean
 theorem hBridge_clm {T : L2 →L[ℝ] L2}
     (hTsym : (↑T : L2 →ₗ[ℝ] L2).IsSymmetric) (hTcompact : IsCompactOperator T)
+    -- 紧性不推出谱平方可和(反例 κ_n = 1/√(n+1)),必须显式加 HS 型条件;
+    -- 该条件由 M1-B 的 A7 交付,不是新的最终模型假设:
+    (hTHS : ∃ C : ℝ, 0 ≤ C ∧ ∀ e : HilbertBasis ℕ ℝ L2,
+      Summable (fun p : ℕ × ℕ => (inner ℝ (e p.1) (T (e p.2))) ^ 2)
+      ∧ (∑' p : ℕ × ℕ, (inner ℝ (e p.1) (T (e p.2)) ^ 2)) ≤ C)
     {val : ℕ → ℝ} {vec : ℕ → L2}
     (hdiag : IsDiagEnum (T.toLin') val vec)      -- 与既有 IsDiagEnum 的 End/CLM 对齐
     (hmult : ∀ μ : ℝ, Module.End.HasEigenvalue (T.toLin') μ → μ ≠ 0 →
       Nat.card {m : ℕ // val m = μ} = Module.finrank ℝ (Module.End.eigenspace (T.toLin') μ))
     (j : ℕ) (hj : 2 ≤ j) (e : HilbertBasis ℕ ℝ L2) :
-    (∑' i : ℕ, inner ℝ ((T ^ j) (e i)) (e i)) = ∑' m : ℕ, val m ^ j
+    Summable (fun m => val m ^ 2)                              -- 新增结论:不得依赖 junk tsum
+      ∧ HasSum (fun i : ℕ, inner ℝ ((T ^ j) (e i)) (e i)) (∑' m : ℕ, val m ^ j)
+      ∧ ((∑' i : ℕ, inner ℝ ((T ^ j) (e i)) (e i)) = ∑' m : ℕ, val m ^ j)
 ```
 
-并给出:对**任意**紧自伴 T(含 B),完备特征族 + `exists_multiplicity_enumeration`
+并给出:对**任意**紧自伴 + HS 型 T(含 B),完备特征族 + `exists_multiplicity_enumeration`
 (FrozenSpectralCount,仅需紧性)⇒ 满足上述 hdiag/hmult 的 (val, vec) 存在
-——M1-D 消费这条组合。
+——M1-D 消费这条组合。对角和一律以 `HasSum` + 已证可和性陈述,**不得**把非可和
+tsum 的 Lean 默认值当作结论。
 
-## 5. M1-D(本里程碑的收口,契约先行;A/B/C 落地后派发)
+## 5. M1-D(收口路线,**草案——非冻结签名**;A/B/C 落地后先写可检查的最小接口再派发)
+
+> ⚠️ 本节当前是路线描述,含伪代码占位(如 hconst'、省略号),**不是**冻结 Lean 签名。
+> M1-D 派发前必须产出:构造 B 的显式接口、真实谱枚举、k=2 与所有 k≥3 的分离定理、
+> 可满足实例(ω = equivalentKernel r 固定 r)。阶段性缺口记录在案但不算 M1 验收通过。
+> Hilbert 基存在也是内部待证事项(见 §1 表格)。
 
 目标定理(模块 `Hurst/EquivalentKernelSpectrum.lean`):
 
