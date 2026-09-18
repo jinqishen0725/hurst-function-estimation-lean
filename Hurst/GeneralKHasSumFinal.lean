@@ -4,6 +4,8 @@ import Hurst.GeneralKIntegrabilityClosed
 import Hurst.TensorParsevalTracePair
 import Hurst.CycleTraceIdentification
 import Hurst.RieszSectionBounds
+import Hurst.TOpComposition
+import Hurst.EigenTraceBridge
 
 /-!
 # The general-`k` spectral bridge: foundations + section bounds + cycle bridge
@@ -533,13 +535,13 @@ theorem hasSum_weighted_of_gate (K : ℝ × ℝ → ℝ) (psi c : ℝ) (omega : 
     {val : ℕ → ℝ} {vec : ℕ → L2}
     (hW : ∀ k : ℕ, 2 ≤ k → cycleIntegral k K
       = Hurst.weightedRieszCycleIntegral k psi c omega)
-    (hKL : ∀ k : ℕ, HSKernel (compPowR (k - 2) K))
+    (hKL : ∀ r : ℕ, HSKernel (compPowR r K))
     (e : HilbertBasis ℕ ℝ L2)
     (hBridge : ∀ j : ℕ, 2 ≤ j → ∀ (e : HilbertBasis ℕ ℝ L2),
       (∑' i : ℕ, inner ℝ ((TOpEnd' K hK ^ j) (e i)) (e i))
         = ∑' m : ℕ, val m ^ j)
-    (hPair : ∀ (k : ℕ) (x : L2), (TOp K hK) ((TOp (compPowR (k - 2) K) (hKL k)) x)
-        = (TOpEnd' K hK ^ k) x)
+    (hPair : ∀ (r : ℕ) (x : L2), (TOp K hK) ((TOp (compPowR r K) (hKL r)) x)
+        = (TOpEnd' K hK ^ (r + 2)) x)
     (hE1 : ∀ (r : ℕ) (y : ℝ),
       ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (a, y)| ^ 2 ∂vol
         ≤ ENNReal.ofReal (E * max 1 ((hsNorm K ^ 2) ^ r)))
@@ -559,8 +561,10 @@ theorem hasSum_weighted_of_gate (K : ℝ × ℝ → ℝ) (psi c : ℝ) (omega : 
     (k : ℕ) (hk : 2 ≤ k) :
     HasSum (fun j : ℕ => val j ^ k)
       (Hurst.weightedRieszCycleIntegral k psi c omega) := by
-  have hcore := hasSum_general_k_of_gate hKm hK hCompact hsym (vec := vec) hk (hKL k) e
-    hBridge (hPair k) hE1 hE2 hD1 hEK1 hEK2 hDK1 hdiag hmult
+  have hk2 : k - 2 + 2 = k := Nat.sub_add_cancel hk
+  have hcore := hasSum_general_k_of_gate hKm hK hCompact hsym (vec := vec) hk (hKL (k - 2)) e
+    hBridge (fun x => (hPair (k - 2) x).trans (congrArg (fun n => (TOpEnd' K hK ^ n) x) hk2))
+    hE1 hE2 hD1 hEK1 hEK2 hDK1 hdiag hmult
   rw [hW k hk] at hcore
   exact hcore
 
@@ -1004,13 +1008,13 @@ theorem rieszSpectrumVal_hasSum_of_bridge
           (e' i)) (e' i))
         = ∑' m : ℕ,
           rieszSpectrumVal psi c omega MR hpow homega hbdd hg hconst m ^ j)
-    (hPair : ∀ (k : ℕ) (x : L2),
+    (hPair : ∀ (r : ℕ) (x : L2),
       (TOp (rieszKernel psi c omega) (hsKernel_rieszKernel hpow homega hbdd hg))
-        ((TOp (compPowR (k - 2) (rieszKernel psi c omega))
-          (hsKernel_compPowR (k - 2) (measurable_rieszKernel homega)
+        ((TOp (compPowR r (rieszKernel psi c omega))
+          (hsKernel_compPowR r (measurable_rieszKernel homega)
             (hsKernel_rieszKernel hpow homega hbdd hg))) x)
         = (TOpEnd' (rieszKernel psi c omega)
-            (hsKernel_rieszKernel hpow homega hbdd hg) ^ k) x)
+            (hsKernel_rieszKernel hpow homega hbdd hg) ^ (r + 2)) x)
     (k : ℕ) (hk : 2 ≤ k) :
     HasSum (fun j : ℕ => rieszSpectrumVal psi c omega MR hpow homega hbdd hg hconst j ^ k)
       (Hurst.weightedRieszCycleIntegral k psi c omega) := by
@@ -1021,7 +1025,7 @@ theorem rieszSpectrumVal_hasSum_of_bridge
     (isCompactOperator_TOp_riesz hpow homega hbdd hg hconst)
     (isSymmetric_TOp_rieszKernel hpow homega hbdd hg hconst)
     (fun k (_ : 2 ≤ k) => hW_bridge psi c omega k)
-    (fun k => hsKernel_compPowR (k - 2) (measurable_rieszKernel homega)
+    (fun r => hsKernel_compPowR r (measurable_rieszKernel homega)
       (hsKernel_rieszKernel hpow homega hbdd hg))
     e hBridge hPair hE1 hE2 hD1 hEK1 hEK2 hDK1
     (isDiagEnum_of_entry
@@ -1046,18 +1050,51 @@ theorem rieszSpectrumVal_hGen_of_bridge
           (e' i)) (e' i))
         = ∑' m : ℕ,
           rieszSpectrumVal psi c omega MR hpow homega hbdd hg hconst m ^ j)
-    (hPair : ∀ (k : ℕ) (x : L2),
+    (hPair : ∀ (r : ℕ) (x : L2),
       (TOp (rieszKernel psi c omega) (hsKernel_rieszKernel hpow homega hbdd hg))
-        ((TOp (compPowR (k - 2) (rieszKernel psi c omega))
-          (hsKernel_compPowR (k - 2) (measurable_rieszKernel homega)
+        ((TOp (compPowR r (rieszKernel psi c omega))
+          (hsKernel_compPowR r (measurable_rieszKernel homega)
             (hsKernel_rieszKernel hpow homega hbdd hg))) x)
         = (TOpEnd' (rieszKernel psi c omega)
-            (hsKernel_rieszKernel hpow homega hbdd hg) ^ k) x)
+            (hsKernel_rieszKernel hpow homega hbdd hg) ^ (r + 2)) x)
     (k : ℕ) (hk : 3 ≤ k) :
     HasSum (fun j : ℕ => rieszSpectrumVal psi c omega MR hpow homega hbdd hg hconst j ^ k)
       (Hurst.weightedRieszCycleIntegral k psi c omega) :=
   rieszSpectrumVal_hasSum_of_bridge psi c omega MR hpow homega hbdd hg hconst hpsi2 hpsi0
     e hBridge hPair k (le_trans (by norm_num : (2 : ℕ) ≤ 3) hk)
+
+/-- **THE FINAL DISCHARGE — `hGen` unconditional**: the general-`k` spectral bridge at
+the constructed Riesz enumeration, under the capstone Riesz data and the feasibility
+window (`2 * psi < 1`, `0 ≤ psi`) alone.  The only remaining input beyond the data is
+the ambient Hilbert basis `e` of `L2` — the same ambient datum consumed by the whole
+HS-operator layer (`tracePair_comp_tsum`, `hBridge`) — and the conclusion is
+INDEPENDENT of it, since `hBridge` holds for every basis.  This is verbatim the
+conclusion of `Hurst.CapstoneV3`'s `hGen` clause: with `hTwo` already discharged
+(`Hurst.CapstoneV3Closed`) and `hAnti` discharged by construction
+(`Hurst.AntitoneResort`), Capstone v3 is closed up to the conditional `hPos` clause. -/
+theorem rieszSpectrumVal_hGen (psi c : ℝ) (omega : ℝ → ℝ) (MR : ℝ)
+    (hpow : AEStronglyMeasurable (fun p : ℝ × ℝ => |p.1 - p.2| ^ (-psi)) vol2)
+    (homega : Measurable omega) (hbdd : ∀ x : ℝ, |omega x| ≤ MR)
+    (hg : Integrable (fun p : ℝ × ℝ => |p.1 - p.2| ^ (-2 * psi)) vol2)
+    (hconst : ∀ x y : ℝ, (I : Set ℝ).indicator omega x = (I : Set ℝ).indicator omega y)
+    (hpsi2 : 2 * psi < 1) (hpsi0 : 0 ≤ psi)
+    (e : HilbertBasis ℕ ℝ L2)
+    (k : ℕ) (hk : 3 ≤ k) :
+    HasSum (fun j : ℕ => rieszSpectrumVal psi c omega MR hpow homega hbdd hg hconst j ^ k)
+      (Hurst.weightedRieszCycleIntegral k psi c omega) := by
+  refine rieszSpectrumVal_hGen_of_bridge psi c omega MR hpow homega hbdd hg hconst hpsi2
+    hpsi0 e ?_ ?_ k hk
+  · intro j hj e'
+    exact hBridge (hsKernel_rieszKernel hpow homega hbdd hg)
+      (isCompactOperator_TOp_riesz hpow homega hbdd hg hconst)
+      (isSymmetric_TOp_rieszKernel hpow homega hbdd hg hconst)
+      (isDiagEnum_of_entry
+        (rieszSpectrum_pack psi c omega MR hpow homega hbdd hg hconst).1)
+      (fun μ hμ hμ0 =>
+        (rieszSpectrum_pack psi c omega MR hpow homega hbdd hg hconst).2.1 μ hμ hμ0)
+      j hj e'
+  · exact fun r x => hPair_riesz (measurable_rieszKernel homega)
+      (hsKernel_rieszKernel hpow homega hbdd hg) (r + 2) (by omega) x
 
 end HS
 
