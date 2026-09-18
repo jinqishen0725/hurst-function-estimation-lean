@@ -2,6 +2,25 @@
 
 更新:2026-09-18(独立 validation 轮启动)。
 
+## 13:38 定时短查执行记录
+
+- 三路诊断已分发(附"先重编译对照快照"提醒):
+  - A:正性块三处(595 全函数传递而非逐点、608 `Submodule.span` 显式命名、Tonelli/ENNReal 逐块);基础层(含 `integrable_abs_sub_rpow_vol2`)确认绿。
+  - B:级数块四项(451 Bessel≠Summable,应传 `summable_inner_sq_orth` 系;424 `mul_le_mul_of_nonneg_right`;rpow(1/2) 先转 sqrt;464 `mul_assoc`);乘法算子块先验收。
+  - C:770 heartbeat **拆解慢项,不许全文件放大预算**;1171 纤维求和、1245 括号+|μ|^j 匹配。
+- **编译证据纪律(全员,C 点名)**:`… | head -30` 的 `$?` 是 head 的退出码且截断日志;
+  验收必须全量重定向 + 真实退出码。管道 exit-0 不计编译绿。
+- **用语更正**:`hg`(= `integrable_abs_sub_rpow_vol2`)是 0≤s<1 内**可消解的内部可积性
+  前提**,已消解;与 hconst 的"不可能性"是两类陈述,不得混用。
+- **M1-D 精确接口已由主 agent 写入规范 §5**(依赖通过后接入):
+  关键路线简化 = 循环性把 B^k 对角和移到 (W∘T)^k,而 W∘T = TOp(rieszKernel)(左乘 ω
+  即核运算),识别链全部落在已落地工具(TOp_compPowR / tracePair_comp_tsum /
+  weightedRieszCycleIntegral_eq_kernelProd)。
+  分工:M1-D1(tracePair_cyclic,抽象,不依赖 A/B/C,可立即派发);
+  M1-D2(diagSum_B_eq_weightedCycle + exists_weightedRieszSpectrum_min,依赖 A/B/C)。
+  已登记缺口:step1 归纳、step2 的 A7→任意基转写、Summable(val²) 推导、
+  equivalentKernel 实例化——完成前不算 M1 验收通过。
+
 ## 各路检查点(2026-09-18 13:02 协调短查后更新;快照诊断已分发)
 
 三路文件均已落盘且活跃(A 16KB/B 16KB/C 33KB,13:06-13:07 仍在编辑)。协调 agent 的

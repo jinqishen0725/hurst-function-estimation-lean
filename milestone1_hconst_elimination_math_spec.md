@@ -187,47 +187,74 @@ theorem hBridge_clm {T : L2 →L[ℝ] L2}
 ——M1-D 消费这条组合。对角和一律以 `HasSum` + 已证可和性陈述,**不得**把非可和
 tsum 的 Lean 默认值当作结论。
 
-## 5. M1-D(收口路线,**草案——非冻结签名**;A/B/C 落地后先写可检查的最小接口再派发)
+## 5. M1-D 最小接口(主 agent 已准备;依赖 A/B/C 通过后接入执行)
 
-> ⚠️ 本节当前是路线描述,含伪代码占位(如 hconst'、省略号),**不是**冻结 Lean 签名。
-> M1-D 派发前必须产出:构造 B 的显式接口、真实谱枚举、k=2 与所有 k≥3 的分离定理、
-> 可满足实例(ω = equivalentKernel r 固定 r)。阶段性缺口记录在案但不算 M1 验收通过。
-> Hilbert 基存在也是内部待证事项(见 §1 表格)。
+关键路线简化(比 23:A8/A9 的通用 k-Fubini 更省):**B^k 的对角和经"配对循环性"移到
+`(W∘T)^k` 的对角和,而 `W∘T = TOp(rieszKernel psi c omega)`(左乘 ω(x) 是核运算!)**,
+于是识别链全部落在已落地工具上:`TOp_compPowR`(核算子幂=复合核,TOpComposition)、
+`tracePair_comp_tsum`(2 因子对角和=cycle2,TensorParsevalTracePair)、
+`weightedRieszCycleIntegral_eq_kernelProd`(加权循环积分认同)。
 
-目标定理(模块 `Hurst/EquivalentKernelSpectrum.lean`):
+### M1-D1(模块 `Hurst/TracePairCycle.lean`,抽象层,无核依赖)
 
 ```lean
-/-- W6(19)/A6(A10)的最终形态:B 的谱是实际带权 Riesz 谱。 -/
-theorem exists_weightedRieszSpectrum (r : ℕ) (psi c : ℝ)
-    (hpow : AEStronglyMeasurable (fun p : ℝ × ℝ => |p.1 - p.2| ^ (-psi)) vol2)
-    (homega : Measurable (equivalentKernel r))
-    (hbdd : ∀ x, |equivalentKernel r x| ≤ MR)  -- 由 equivalentKernel_bounded 具体化
-    (hg : Integrable (fun p : ℝ × ℝ => |p.1 - p.2| ^ (-2 * psi)) vol2)
-    (hconst' : ∀ x y : ℝ, …)  -- 不再需要!
-    (hpsi0 : 0 < psi) (hpsi2 : 2 * psi < 1) :
-    ∃ (val : ℕ → ℝ) (vec : ℕ → L2),
-      IsDiagEnum … ∧ (多重性子句) ∧ Summable (fun j => val j ^ 2)
-      ∧ ∀ k : ℕ, 2 ≤ k → HasSum (fun j => val j ^ k)
-          (Hurst.weightedRieszCycleIntegral k psi c (equivalentKernel r))
+/-- 配对循环性:HS 型复合的对角和可交换(基不变框架;证明走 Parseval 双展开 +
+    绝对可和,复用 EigenTraceBridge/TensorParsevalTracePair 的可和性模式)。 -/
+theorem tracePair_cyclic {U V : L2 →L[ℝ] L2} (e : HilbertBasis ℕ ℝ L2)
+    (hU : HS 型条件:∀ e', Summable (fun p => ⟪e' p.1, U (e' p.2)⟫²) 且有一致界)
+    (hV : 同上) (hUV : U∘V 与 V∘U 的同款条件) :
+    (∑' i, inner ℝ (e i) (U (V (e i)))) = (∑' i, inner ℝ (e i) (V (U (e i))))
 ```
 
-路线(全部已在既有工具上有先例):
-1. M1-B 的 B(自伴紧,以 A7 界保证谱平方可和);M1-C 的组合给出 (val, vec) +
-   `∀ j ≥ 2 ∀ 基,∑⟪B^j e,e⟫ = ∑' val^j`(基不变)。
-2. **在 K-特征基处求值**(基不变 ⇒ 可选最方便的基):
-   `∑_{i₁..i_k} ∏_j κ_{i_j}·⟪v_{i_j}, W v_{i_{j+1}}⟫ = J_k^ω`
-   ——核展开 `K = ∑ κ v⊗v`(L² 收敛,`kernel_inner_eq_tsum_prodKernel` 已落地)+
-   k-Fubini(绝对收敛由 A7 的 AM–GM 支配,E/H 的可和性模式)。
-3. `tr(B^k) = tr((WK)^k)` 循环移位:A8 的矩阵幂对角恒等式
-   (B 的矩阵 `b_ij = √(κ_iκ_j)⟪v_i, W v_j⟫`;循环乘积 ∏√(κκ) = ∏κ)。
-4. `J_k^ω = weightedRieszCycleIntegral k psi (equivalentKernel r)`:
-   现有 `weightedRieszCycleIntegral_eq_kernelProd` + `rieszCycleIntegrand_eq`(已落地)。
-5. k=2 锚:`∑' μ² = ‖B‖²_HS` 型(基无关对角和)+ 与 hTwo 型 Parseval 对齐(若 B 侧
-   无法直接对齐 J_2,允许 M1-D 首版先交付 k ≥ 3 并把 k=2 列为缺口——**须显式声明**)。
+### M1-D2(模块 `Hurst/EquivalentKernelSpectrum.lean`)
 
-**列清仍缺什么(预期)**:k-重张量 Parseval 的 Fubini 支配(E 的 2-重 → k-重的推广,
-或经 `kernel_inner_eq_tsum_prodKernel` 的迭代);矩阵幂对角恒等式的无限维版本
-(有限秩逼近 + A4 型望远镜估计);若 Γ 表示在 mathlib 缺名,M1-A 内自证。
+```lean
+/-- 左乘即核运算:M_ω ∘ TOp K = TOp (fun p => omega p.1 * K p)。 -/
+theorem mulOperator_comp_TOp {omega : ℝ → ℝ} (hm : Measurable omega) {MR : ℝ}
+    (hess : ∀ᵐ x ∂vol, |omega x| ≤ MR) {K : ℝ × ℝ → ℝ} (hKm : Measurable K)
+    (hK : HSKernel K) (hK' : HSKernel (fun p => omega p.1 * K p)) :
+    (mulOperator omega hm hess).comp (TOp K hK) = TOp (fun p => omega p.1 * K p) hK'
+
+/-- 主桥:B 的谱幂对角和 = 加权循环积分(k ≥ 2;基不变由 M1-C,hc/hpsi 系 capstone 数据)。 -/
+theorem diagSum_B_eq_weightedCycle (psi c : ℝ) (hc : 0 < c) (hpsi0 : 0 < psi)
+    (hpsi2 : 2 * psi < 1) (omega : ℝ → ℝ) (hm : Measurable omega) {MR : ℝ}
+    (hess : ∀ᵐ x ∂vol, |omega x| ≤ MR) (k : ℕ) (hk : 2 ≤ k) (e : HilbertBasis ℕ ℝ L2) :
+    (∑' i : ℕ, inner ℝ e i ((B psi c omega hpsi0 hpsi2 hc) ^ k) (e i))
+      = Hurst.weightedRieszCycleIntegral k psi c omega
+-- 路线:
+-- step1(算子恒等式): B^k = S ∘ (W∘T)^{k-1} ∘ W ∘ S   [B = S∘W∘S, S² = T,归纳]
+-- step2(循环性): Diag(B^k) = Diag((W∘T)^k)            [tracePair_cyclic × k;两个 S 移位;
+--        S 的 HS 型条件由 A7 的矩阵界 + ∑κ² 供给]
+-- step3(核化):   W∘T = TOp (rieszKernel psi c omega)   [mulOperator_comp_TOp;
+--        rieszKernel psi c omega 的 HSKernel 已落地]
+-- step4(k 步迭代): Diag((TOp C)^k) = cycle2 C (compPowR (k-2) C)
+--        [tracePair_comp_tsum × (k-2) 迭代 + TOp_compPowR / compKernel 结合,已落地]
+-- step5(认同):     = weightedRieszCycleIntegral k psi c omega
+--        [weightedRieszCycleIntegral_eq_kernelProd + rieszCycleIntegrand_eq,已落地;
+--         k=2 锚:cycle2_rieszKernel_eq_weighted]
+
+/-- 最终组装:B 的谱枚举即实际带权 Riesz 谱(审查阻断 1 的直接消除)。 -/
+theorem exists_weightedRieszSpectrum_min (psi c : ℝ) (hc : 0 < c) (hpsi0 : 0 < psi)
+    (hpsi2 : 2 * psi < 1) (omega : ℝ → ℝ) (hm : Measurable omega) {MR : ℝ}
+    (hess : ∀ᵐ x ∂vol, |omega x| ≤ MR) :
+    ∃ (val : ℕ → ℝ) (vec : ℕ → L2),
+      IsDiagEnum (B …).toLin' val vec ∧ (多重性子句,exists_diag_enumeration_clm 形态)
+      ∧ Summable (fun j => val j ^ 2)
+      ∧ ∀ k : ℕ, 2 ≤ k → HasSum (fun j => val j ^ k)
+          (Hurst.weightedRieszCycleIntegral k psi c omega)
+-- 路线:C 的 exists_diag_enumeration_clm(作用于 B,HS 条件由 A7 供给)+
+--       hBridge_clm(基不变)+ diagSum_B_eq_weightedCycle 合成。
+-- omega := equivalentKernel r 实例:hm/hess 由 continuous/bounded 落地定理消解。
+```
+
+### 分工与缺口登记
+
+- M1-D1(tracePair_cyclic):新分析,复用 H/E 可和性模式;先行派发(不依赖 A/B/C)。
+- M1-D2:依赖 A(正性+特征族)、B(S 与 B 的绑定 + A7)、C(hBridge_clm + 枚举存在)。
+- **已登记缺口**(完成前不算 M1 验收):step1 的归纳细节;step2 中 S 的 HS 型条件从
+  A7 矩阵界到"任意基"的转写;`Summable (val²)` 从 A7 的显式推导;
+  `exists_weightedRieszSpectrum_min` 的 equivalentKernel 实例化。
+- Hilbert 基 `e` 仍是环境参数(内部待证事项,见 §1)。
 
 ## 6. 验收标准(M1)
 
