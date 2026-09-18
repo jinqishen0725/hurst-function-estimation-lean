@@ -48,6 +48,30 @@
 实际 equivalentKernel 上消解;规范 §3 已同步);②A/B 收到"先落小块、报最小编译检查点、
 长期卡住要报错误原文"的流程指令;③不重跑全库构建。
 
+## 验收级编译检查点(2026-09-18 13:45,全量日志 + Lean 真实退出码)
+
+方法:`lake env lean <file> > /tmp/hurst-main-1345-<track>.log 2>&1`,退出码取自 Lean 本身
+(无 head 管道)。检查点 = 该时刻的快照证据;各路 agent 随后仍在编辑,最终验收以
+completion report 后的新鲜全量编译 + axiom 检查为准。
+
+| 路 | 检查点退出码 | 日志路径 | 该时刻已编译通过的具体定理 | 当前 blocker |
+|---|---|---|---|---|
+| M1-A | **exit 0** | `/tmp/hurst-main-1345-UnweightedRieszOperator.log` | 全部 36 项声明,含冻结接口 `hsKernel_unweightedRieszKernel`/`isSymmetric_TOp_unweightedRiesz`/`isCompactOperator_TOp_unweightedRiesz` 与 **hc 版正性块** `inner_TOp_unweightedRiesz_nonneg`、`exists_nonneg_eigenfamily`;另有 `integrable_abs_sub_rpow_vol2`(hg 消解)、`lintegral_laplace_eq`、`lintegral_schur_dir(_swap)`、`integrable_laplace_integrand` | 检查点后 agent 仍编辑(14:0x 中间态 olean 构建未过=正常迭代);待 completion report 后重验 + axiom |
+| M1-B | exit 1(剩 2 错) | `/tmp/hurst-main-1345-PositiveSquareRoot.log` | 已绿小块:`mpair` 层(线性/对称/界)、`mulOperator`+`_apply`+`inner_mulOperator(')`+`_symm`+`norm_le`+`_action`、`measurable_equivalentKernel`+`aeBounded_equivalentKernel`(实际模型适用性)、`specPair`/`summable_specPair` 可和层 | 464:xx unsolved goals、471 case tag `hf`(协调 4 项已在消);**尚未写出** `exists_positive_sqrt` 与 B=S∘M∘S 绑定构造 |
+| M1-C | **exit 0** | `/tmp/hurst-main-1345-EndLevelTraceBridge.log` | 全链 48 项声明,含 **`exists_diag_enumeration_clm`、`hBridge_clm`、`hBridge_clm_tsum`、`summable_val_of_summable_kappa`**(End 级桥完整交付)及支撑(纤维分组、|μ|≤‖T‖、可数枚举) | 检查点后 agent 扩展至 76KB(14:12 中间态构建红=正常迭代);待 completion report 后重验 + axiom |
+
+第四路 **M1-D1**(`Hurst/TracePairCycle.lean`,`tracePair_cyclic`,抽象配对循环性,
+不依赖 A/B/C)已于 13:5x 派发。
+
+## 下一步接口(M1-D,已冻结于规范 §5)
+
+- M1-D1:`tracePair_cyclic`(进行中)。
+- M1-D2:`mulOperator_comp_TOp`(左乘=核运算)→ `diagSum_B_eq_weightedCycle`
+  (step1 算子恒等式 → step2 循环性 → step3 核化 → step4 k 步迭代 → step5 加权认同)
+  → `exists_weightedRieszSpectrum_min`(组装 + equivalentKernel r 实例化)。
+- 依赖:A 的 `exists_nonneg_eigenfamily`(✔ 检查点绿)+ B 的 S/B 绑定(进行中)+
+  C 的 `hBridge_clm`/`exists_diag_enumeration_clm`(✔ 检查点绿)。
+
 ## 契约修正记录(2026-09-18 协调检查轮)
 
 协调 agent 复核发现 M1 契约 5 处错误,已全部处理:
