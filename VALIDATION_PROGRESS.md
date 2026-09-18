@@ -2,6 +2,18 @@
 
 更新:2026-09-18(独立 validation 轮启动)。
 
+## 各路检查点(2026-09-18 12:31 协调短查后采集)
+
+| 路 | 文件路径 | 状态 | 最小编译检查点 | 当前 blocker |
+|---|---|---|---|---|
+| M1-A | `Hurst/UnweightedRieszOperator.lean` | **未落盘**(探索中;hc 修正已确认,正性路线用已落地 `laplace_rpow_neg`) | 无 | 已收到"尽早落地小块"指令:先 def/symm/可测/HS/对称⇒自伴,编译绿后再做紧性与正性 |
+| M1-B | `Hurst/PositiveSquareRoot.lean` | **未落盘**(探索中) | 无 | 已收到修正 #2(可测+本质有界**双**前提;仅 hess 不够)+ 同款流程指令:先 mulOperator/action/范数/equivalentKernel 适用性推论 |
+| M1-C | `Hurst/EndLevelTraceBridge.lean` | 落盘中(8.5KB,160 行级草稿,含 sorry/语法占位) | 尚未通过;最近编译错误:1×`unexpected token 'else'`(语法)+ 2×`unsolved goals` | 语法占位消除后进入证明填充;HS 型条件修正已传达 |
+
+协调指令执行:①M1-B 可测性遗漏已发(签名需 `hm : Measurable omega` + `hess` 双前提,
+实际 equivalentKernel 上消解;规范 §3 已同步);②A/B 收到"先落小块、报最小编译检查点、
+长期卡住要报错误原文"的流程指令;③不重跑全库构建。
+
 ## 契约修正记录(2026-09-18 协调检查轮)
 
 协调 agent 复核发现 M1 契约 5 处错误,已全部处理:

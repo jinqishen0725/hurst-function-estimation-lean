@@ -109,14 +109,20 @@ theorem exists_nonneg_eigenfamily {psi c : ℝ} (hpsi0 : 0 < psi) (hpsi2 : 2 * p
 模块 `Hurst/PositiveSquareRoot.lean`(namespace HS):
 
 ```lean
-/-- 有界(本质有界)可测乘法算子:仅可测不足以在全体 L2 上有界。 -/
-def mulOperator (omega : ℝ → ℝ) (hess : ∀ᵐ x ∂vol, |omega x| ≤ MR) : L2 →L[ℝ] L2
-theorem mulOperator_action {omega : ℝ → ℝ} {MR : ℝ} (hess : ∀ᵐ x ∂vol, |omega x| ≤ MR)
-    (f : L2) : ⇑(mulOperator omega hess) f =ᵐ[vol] (fun x => omega x * ⇑f x)
-theorem mulOperator_symm {omega : ℝ → ℝ} {MR : ℝ} (hess : ∀ᵐ x ∂vol, |omega x| ≤ MR) :
-    (↑(mulOperator omega hess) : L2 →ₗ[ℝ] L2).IsSymmetric
-theorem norm_mulOperator_le {omega : ℝ → ℝ} {MR : ℝ} (hess : ∀ᵐ x ∂vol, |omega x| ≤ MR) :
-    ‖mulOperator omega hess‖ ≤ MR
+/-- 有界(本质有界)且**可测**的乘法算子:两个前提都必须——仅可测不足以有界,
+    有界非可测也不足以充当 L2 乘子。实际模型由 `equivalentKernel_continuous`/
+    `equivalentKernel_bounded` 消解(连续 ⇒ 可测)。 -/
+def mulOperator (omega : ℝ → ℝ) (hm : Measurable omega)
+    (hess : ∀ᵐ x ∂vol, |omega x| ≤ MR) : L2 →L[ℝ] L2
+theorem mulOperator_action {omega : ℝ → ℝ} (hm : Measurable omega) {MR : ℝ}
+    (hess : ∀ᵐ x ∂vol, |omega x| ≤ MR) (f : L2) :
+    ⇑(mulOperator omega hm hess) f =ᵐ[vol] (fun x => omega x * ⇑f x)
+theorem mulOperator_symm {omega : ℝ → ℝ} (hm : Measurable omega) {MR : ℝ}
+    (hess : ∀ᵐ x ∂vol, |omega x| ≤ MR) :
+    (↑(mulOperator omega hm hess) : L2 →ₗ[ℝ] L2).IsSymmetric
+theorem norm_mulOperator_le {omega : ℝ → ℝ} (hm : Measurable omega) {MR : ℝ}
+    (hess : ∀ᵐ x ∂vol, |omega x| ≤ MR) :
+    ‖mulOperator omega hm hess‖ ≤ MR
 
 /-- 正平方根(定义在完备非负特征族上,Parseval 收敛)。
     结论:S v_i = √κ_i•v_i(范数 √κ_i)、S² = T、自伴、S 非负。
