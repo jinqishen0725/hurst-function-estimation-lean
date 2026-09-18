@@ -3,6 +3,20 @@
 更新:2026-09-18。项目:`/Users/jinqishen/repo/lean_verification/hurst_function_estimation`。
 本文件**接替** `TRANSITION_session2_2026-09-16.md`(其落地清单与判定仍有效),按其 §3 精确剩余工作执行并收官。
 
+> ## ⚠️ 状态更正(2026-09-18 独立复核)
+>
+> 本文件 §1 的"收官/仅剩 hPos"结论**已被独立复核否决**,以
+> [SESSION3_INDEPENDENT_REVIEW_2026-09-18.md](SESSION3_INDEPENDENT_REVIEW_2026-09-18.md)
+> 与 [VALIDATION_PROGRESS.md](VALIDATION_PROGRESS.md) 为准。已核实的阻断:
+> ① `hconst`(全域量词)对含 `equivalentKernel` 的实际模型不可满足
+> (`verification/Session3PremiseAudit.lean` 已 Lean 证明;`omega(x)K(x,y)` 一般非自伴),
+> 因此本文件的 `rieszSpectrumVal_hGen`/`*_v3_closed` 尚不能实例化到实际等价核;
+> ② FullChainEndpoint 的 `hm : ∀ n` 全行非空在 n=0 矛盾;
+> ③ P5/FullChainEndpoint 的 `hE2` 未归一化能量不可满足;
+> ④ P3SignedMatching 的 `hNegMass → 0` 只覆盖负谱渐消,一般带符号极限未闭合。
+> §2 的落地清单与工程事实(打包可满足性、审计一致性、命名空间)仍然有效;
+> 修复路线按 22:W6–W9 与 23:A4–A6(`B = K^(1/2) W K^(1/2)`)。
+
 ## 1. 一句话状态
 
 Session-2 遗留的两项剩余工作(**3.1 hTwo 组装**、**3.2 general-k hP 实例 + 组装**)已全部落地:
