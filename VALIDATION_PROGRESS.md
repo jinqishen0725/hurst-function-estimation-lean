@@ -9,7 +9,7 @@
 
 | 路 | 快照诊断 | 当前状态 | 剩余 M1 对象 |
 |---|---|---|---|
-| M1-A | 18 项:重点 = 可测性引理的局部路线错误(`eq_or_lt_of_le` 推不出 0≤s;可测性对任意 s 成立,应复用已落地 `HS.measurable_abs_sub_rpow` 或走 Measurable 组合);另有补集析取/`volume_singleton` 隐参/`rpow_nonneg` 缺指数参等 API 项 | 正性/eigenfamily(**hc 版**)尚未交付 | `inner_TOp_unweightedRiesz_nonneg` + `exists_nonneg_eigenfamily` + 紧性 |
+| M1-A | 18 项:重点 = 可测性引理的局部路线错误(已修:复用已落地 `HS.measurable_abs_sub_rpow`,一行);API 项处理中 | ✅ **13:2x 检查点绿**:def+symm+可测+HS+对称⇒自伴(无权重前提)+紧性,全编译通过(exit 0);**额外交付:`integrable_abs_sub_rpow_vol2` 无条件消解旧 capstone 的 `hg` 前提** | 正性块(A5 Laplace+hc)进行中:`kernelPSD_rpow_dist_of_poisson`(用已落地 `laplace_rpow_neg` + `kernelPSD_exp_dist`)→ `inner_TOp_unweightedRiesz_nonneg` → `exists_nonneg_eigenfamily` |
 | M1-B | 11 项:mpair 系列 `omega` 隐参误作首显参(改 `(omega := omega)`);`inner_mulOperator'` 非 definitional 不能 rfl(由 `inner_mulOperator` + mpair def 推) | hm+hess 双前提 ✔(协调已确认);正平方根与真实 B=S∘M∘S 尚未交付 | `exists_positive_sqrt` + B(定义等式绑定)+ A7 界 |
 | M1-C(优先) | 仅 4 项:553/556 `real_inner_comm` 方向反;591 `tsum_le_tsum` 未知名(mathlib v4.31 改名);594 Finset 双和→subtype tsum 重写形状(先显式证明 `Finset.sum = subtype tsum`) | 33KB,该区域正在重写中 | 最终公开 `hBridge_clm`(含 hTHS + `Summable val²` 结论) |
 
