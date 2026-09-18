@@ -1,0 +1,33 @@
+verification/checkpoints/2026-09-18-1418/EndLevelTraceBridge.lean:773:65: error: unexpected token 'set_option'; expected 'lemma'
+verification/checkpoints/2026-09-18-1418/EndLevelTraceBridge.lean:775:0: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (8000000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+verification/checkpoints/2026-09-18-1418/EndLevelTraceBridge.lean:871:0: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (1000000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+verification/checkpoints/2026-09-18-1418/EndLevelTraceBridge.lean:1360:56: error: Application type mismatch: The argument
+  e i
+has type
+  L2
+but is expected to have type
+  L2 →ₗ[ℝ] L2
+in the application
+  inner ℝ (↑T ^ j) (e i)
+verification/checkpoints/2026-09-18-1418/EndLevelTraceBridge.lean:1360:24: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  Inner ℝ (L2 →ₗ[ℝ] L2)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+verification/checkpoints/2026-09-18-1418/EndLevelTraceBridge.lean:1368:37: error: Application type mismatch: The argument
+  hts
+has type
+  ∑' (i : ℕ), inner ℝ ((↑T ^ j) (e i)) (e i) = ∑' (l : ι), κ l ^ j
+but is expected to have type
+  nhds (∑' (b : ℕ), inner ℝ ((T ^ j) (e b)) (e b)) = nhds (∑' (l : ι), κ l ^ j)
+in the application
+  LE.le.trans_eq (Summable.hasSum hdiagSummCLM) hts
+verification/checkpoints/2026-09-18-1418/EndLevelTraceBridge.lean:1295:8: error: (kernel) unknown constant '_private.verification.checkpoints.«2026-09-18-1418».EndLevelTraceBridge.0.HS.tsum_diag_inner_pow_eq_tsum_kappaPow'
+exit=1

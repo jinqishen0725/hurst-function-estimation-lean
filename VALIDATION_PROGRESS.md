@@ -86,6 +86,23 @@ completion report 后的新鲜全量编译 + axiom 检查为准。
 - 依赖:A 的 `exists_nonneg_eigenfamily`(✔ 检查点绿)+ B 的 S/B 绑定(进行中)+
   C 的 `hBridge_clm`/`exists_diag_enumeration_clm`(✔ 检查点绿)。
 
+## 14:18 快照轮结果(源码快照+完整日志+内嵌退出码+sha256 已绑定)
+
+存档:`verification/checkpoints/2026-09-18-1418/`(sha256 校验 OK)。**14:18 时刻三路
+均为中间态、均未绿**(与 13:45 的 A/C exit-0 检查点相比是 agent 后续开发引入的新中间态):
+
+| 路 | exit | 首个错误 | 诊断 |
+|---|---|---|---|
+| A | 1(5 错) | 387:63 unknown identifier `y` | 变量作用域(收正性块时引入) |
+| B | 1(4 错) | 613:6 rewrite 失败 | specPair/可和层收尾 |
+| C | 1(7 错) | 773:65 `set_option` 语法位置 | heartbeat 拆解中的语法错 |
+
+**14:5x**:D1(`tracePair_cyclic`)完成并按协议归档
+`verification/checkpoints/2026-09-18-1500-M1D1/`(exit=0,快照+日志+hash 齐备);
+D1 执行者已转做 **A8 有限矩阵迹恒等式**(新文件 `Hurst/FiniteMatrixTraceCycle.lean`,
+纯有限维,无 S/B 依赖)。A/B/C 已被要求各自报告:当前最小失败目标、逐声明耗时、
+现有绿色小块清单;收敛优先于推进 S²=K / B=S∘M∘S / A7。
+
 ## 契约修正记录(2026-09-18 协调检查轮)
 
 协调 agent 复核发现 M1 契约 5 处错误,已全部处理:

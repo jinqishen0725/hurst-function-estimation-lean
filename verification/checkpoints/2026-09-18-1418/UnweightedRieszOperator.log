@@ -1,0 +1,95 @@
+verification/checkpoints/2026-09-18-1418/UnweightedRieszOperator.lean:387:63: error(lean.unknownIdentifier): Unknown identifier `y`
+verification/checkpoints/2026-09-18-1418/UnweightedRieszOperator.lean:383:89: error: unsolved goals
+psi : ℝ
+hpsi0 : 0 < psi
+hpsi1 : psi < 1
+f : L2
+hC0 : 0 ≤ 2 + 2 / (1 - psi)
+hfsq : AEStronglyMeasurable (fun y => |↑↑f y| ^ 2) vol
+hfinabs : Integrable (fun y => |↑↑f y| ^ 2) vol
+hintmeas : ∀ (a : ℝ), AEMeasurable (fun b => ENNReal.ofReal (|b - a| ^ (-psi))) vol
+houter : ∫⁻ (a : ℝ), ENNReal.ofReal (|↑↑f a| ^ 2) ∂vol = ENNReal.ofReal (∫ (a : ℝ), |↑↑f a| ^ 2 ∂vol)
+hfeq : ∫ (a : ℝ), |↑↑f a| ^ 2 ∂vol = ∫ (a : ℝ), ↑↑f a ^ 2 ∂vol
+hGmeas : AEMeasurable (fun p => ENNReal.ofReal (|p.2 - p.1| ^ (-psi) * |↑↑f p.1| ^ 2)) vol2
+z : ℝ
+⊢ ∫⁻ (y : ℝ), ENNReal.ofReal (|y - z| ^ (-psi) * |↑↑f z| ^ 2) ∂vol =
+    ∫⁻ (b : ℝ), ENNReal.ofReal (|↑↑f z| ^ 2) * ENNReal.ofReal (|b - z| ^ (-psi)) ∂vol
+verification/checkpoints/2026-09-18-1418/UnweightedRieszOperator.lean:482:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  q.2 ^ (psi - 1) * (rexp (-(q.2 * |q.1.1 - q.1.2|)) * (|↑↑f q.1.2| * |↑↑f q.1.1|))
+in the target expression
+  ENNReal.ofReal (q.2 ^ (psi - 1) * (rexp (-(q.2 * |q.1.1 - q.1.2|)) * |↑↑f q.1.2| * |↑↑f q.1.1|)) =
+    ENNReal.ofReal (q.2 ^ (psi - 1) * rexp (-(q.2 * |q.1.1 - q.1.2|))) *
+      (ENNReal.ofReal |↑↑f q.1.2| * ENNReal.ofReal |↑↑f q.1.1|)
+
+psi : ℝ
+hpsi0 : 0 < psi
+hpsi2 : 2 * psi < 1
+f : L2
+ν : Measure ℝ := volume.restrict (Ioi 0)
+hνdef : ν = volume.restrict (Ioi 0)
+G : (ℝ × ℝ) × ℝ → ℝ := fun q => q.2 ^ (psi - 1) * (rexp (-(q.2 * |q.1.1 - q.1.2|)) * ↑↑f q.1.2 * ↑↑f q.1.1)
+hGdef : G = fun q => q.2 ^ (psi - 1) * (rexp (-(q.2 * |q.1.1 - q.1.2|)) * ↑↑f q.1.2 * ↑↑f q.1.1)
+hcontA : ContinuousOn (fun s => s ^ (psi - 1)) (Ioi 0)
+hA2 : AEStronglyMeasurable (fun q => q.2 ^ (psi - 1)) (vol2.prod ν)
+hE : AEStronglyMeasurable (fun q => rexp (-(q.2 * |q.1.1 - q.1.2|))) (vol2.prod ν)
+hF2 : AEStronglyMeasurable (fun q => ↑↑f q.1.2) (vol2.prod ν)
+hF1 : AEStronglyMeasurable (fun q => ↑↑f q.1.1) (vol2.prod ν)
+hGae : AEStronglyMeasurable G (vol2.prod ν)
+hnull : (vol2.prod ν) {q | ¬0 < q.2} = 0
+hpos_ae : ∀ᵐ (q : (ℝ × ℝ) × ℝ) ∂vol2.prod ν, 0 < q.2
+q : (ℝ × ℝ) × ℝ
+hq2 : 0 < q.2
+hab0 : 0 ≤ q.2 ^ (psi - 1) * rexp (-(q.2 * |q.1.1 - q.1.2|))
+⊢ ENNReal.ofReal (q.2 ^ (psi - 1) * (rexp (-(q.2 * |q.1.1 - q.1.2|)) * |↑↑f q.1.2| * |↑↑f q.1.1|)) =
+    ENNReal.ofReal (q.2 ^ (psi - 1) * rexp (-(q.2 * |q.1.1 - q.1.2|))) *
+      (ENNReal.ofReal |↑↑f q.1.2| * ENNReal.ofReal |↑↑f q.1.1|)
+verification/checkpoints/2026-09-18-1418/UnweightedRieszOperator.lean:495:4: error: Type mismatch
+  Measurable.comp_aemeasurable (Continuous.measurable ENNReal.continuous_ofReal) ?m.1090
+has type
+  AEMeasurable ((fun x => ENNReal.ofReal x) ∘ ?m.1080) ?m.1078
+but is expected to have type
+  AEMeasurable
+    (fun q =>
+      ENNReal.ofReal (q.2 ^ (psi - 1) * rexp (-(q.2 * |q.1.1 - q.1.2|))) * ENNReal.ofReal |↑↑f q.1.2 * ↑↑f q.1.1|)
+    (vol2.prod ν)
+verification/checkpoints/2026-09-18-1418/UnweightedRieszOperator.lean:498:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∫⁻ (z : (ℝ × ℝ) × ℝ),
+    ENNReal.ofReal (z.2 ^ (psi - 1) * rexp (-(z.2 * |z.1.1 - z.1.2|))) *
+      ENNReal.ofReal |↑↑f z.1.2 * ↑↑f z.1.1| ∂vol2.prod ν
+in the target expression
+  ∫⁻ (a : (ℝ × ℝ) × ℝ),
+      ENNReal.ofReal (a.2 ^ (psi - 1) * rexp (-(a.2 * |a.1.1 - a.1.2|))) *
+        (ENNReal.ofReal |↑↑f a.1.2| * ENNReal.ofReal |↑↑f a.1.1|) ∂vol2.prod ν <
+    ⊤
+
+psi : ℝ
+hpsi0 : 0 < psi
+hpsi2 : 2 * psi < 1
+f : L2
+ν : Measure ℝ := volume.restrict (Ioi 0)
+hνdef : ν = volume.restrict (Ioi 0)
+G : (ℝ × ℝ) × ℝ → ℝ := fun q => q.2 ^ (psi - 1) * (rexp (-(q.2 * |q.1.1 - q.1.2|)) * ↑↑f q.1.2 * ↑↑f q.1.1)
+hGdef : G = fun q => q.2 ^ (psi - 1) * (rexp (-(q.2 * |q.1.1 - q.1.2|)) * ↑↑f q.1.2 * ↑↑f q.1.1)
+hcontA : ContinuousOn (fun s => s ^ (psi - 1)) (Ioi 0)
+hA2 : AEStronglyMeasurable (fun q => q.2 ^ (psi - 1)) (vol2.prod ν)
+hE : AEStronglyMeasurable (fun q => rexp (-(q.2 * |q.1.1 - q.1.2|))) (vol2.prod ν)
+hF2 : AEStronglyMeasurable (fun q => ↑↑f q.1.2) (vol2.prod ν)
+hF1 : AEStronglyMeasurable (fun q => ↑↑f q.1.1) (vol2.prod ν)
+hGae : AEStronglyMeasurable G (vol2.prod ν)
+hnull : (vol2.prod ν) {q | ¬0 < q.2} = 0
+hpos_ae : ∀ᵐ (q : (ℝ × ℝ) × ℝ) ∂vol2.prod ν, 0 < q.2
+hae :
+  ∀ᵐ (q : (ℝ × ℝ) × ℝ) ∂vol2.prod ν,
+    ‖G q‖ₑ =
+      ENNReal.ofReal (q.2 ^ (psi - 1) * rexp (-(q.2 * |q.1.1 - q.1.2|))) *
+        (ENNReal.ofReal |↑↑f q.1.2| * ENNReal.ofReal |↑↑f q.1.1|)
+hΦ :
+  AEMeasurable
+    (fun q =>
+      ENNReal.ofReal (q.2 ^ (psi - 1) * rexp (-(q.2 * |q.1.1 - q.1.2|))) * ENNReal.ofReal |↑↑f q.1.2 * ↑↑f q.1.1|)
+    (vol2.prod ν)
+⊢ ∫⁻ (a : (ℝ × ℝ) × ℝ),
+      ENNReal.ofReal (a.2 ^ (psi - 1) * rexp (-(a.2 * |a.1.1 - a.1.2|))) *
+        (ENNReal.ofReal |↑↑f a.1.2| * ENNReal.ofReal |↑↑f a.1.1|) ∂vol2.prod ν <
+    ⊤
+exit=1
