@@ -641,5 +641,7 @@ import Hurst.CapstoneV3Closed
 
 import Hurst.RieszSectionBounds
 import Hurst.TensorParsevalTracePair
+import Hurst.TOpComposition
 import Hurst.EigenTraceBridge
+import Hurst.P2CloseoutV2
 import Hurst.GeneralKHasSumFinal
