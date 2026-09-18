@@ -638,3 +638,8 @@ import Hurst.TensorONBCompleteness
 import Hurst.CauchyKernelPSD
 import Hurst.GeneralKIntegrabilityClosed
 import Hurst.CapstoneV3Closed
+
+import Hurst.RieszSectionBounds
+import Hurst.TensorParsevalTracePair
+import Hurst.EigenTraceBridge
+import Hurst.GeneralKHasSumFinal
