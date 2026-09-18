@@ -26,6 +26,11 @@ hconst 不可满足)、书面方案 22:W6 与 23:A4–A6。本契约冻结定理
    阶段性缺口记录在案但**不算 M1 验收通过**。
 6. **Hilbert 基存在是内部待证事项**,不是已完成的环境数据(见 §1 表格更正:
    状态从"✅ 环境数据"改为"⏳ 内部待证(唯一残余,见 §5)")。
+7. **§5 路线纠正(2026-09-18 独立复核,二轮)**:K 是 HS 推不出 S=√K 是 HS
+   (反例 κ_n=1/(n+1)),A7 只给 B=SWS 的 HS 界——"tracePair_cyclic 移 S"不合法。
+   D2 改用 23:A8–A9 有限谱压缩+极限路线;不新增"K 迹类"或"S 是 HS"假设。
+   M1-D1 引理保留为可复用工具(其抽象命题仍真),但非 D2 承重件。
+   新登记缺口:ι 可数化(可分性)、A4 型幂对角扰动估计、有限矩阵迹恒等式、三项收敛。
 
 ## 0. 根因与修复原则
 
@@ -189,11 +194,12 @@ tsum 的 Lean 默认值当作结论。
 
 ## 5. M1-D 最小接口(主 agent 已准备;依赖 A/B/C 通过后接入执行)
 
-关键路线简化(比 23:A8/A9 的通用 k-Fubini 更省):**B^k 的对角和经"配对循环性"移到
-`(W∘T)^k` 的对角和,而 `W∘T = TOp(rieszKernel psi c omega)`(左乘 ω(x) 是核运算!)**,
-于是识别链全部落在已落地工具上:`TOp_compPowR`(核算子幂=复合核,TOpComposition)、
-`tracePair_comp_tsum`(2 因子对角和=cycle2,TensorParsevalTracePair)、
-`weightedRieszCycleIntegral_eq_kernelProd`(加权循环积分认同)。
+路线 = **23:A8–A9 有限谱压缩 + 极限**(2026-09-18 二轮复核后定稿;早先的
+"循环性移 S"方案作废——K 是 HS 推不出 S=√K 是 HS,详见本节 diagSum_B_eq_weightedCycle
+的路由注释与更正记录 7)。保留的既落地工具链:`mulOperator_comp_TOp` 的核化
+(左乘 ω(x) 是核运算,`W∘T = TOp(rieszKernel psi c omega)`)、`TOp_compPowR`
+(核算子幂=复合核)、`tracePair_comp_tsum` 的 k 步迭代、加权循环积分认同
+(`weightedRieszCycleIntegral_eq_kernelProd`)。
 
 ### M1-D1(模块 `Hurst/TracePairCycle.lean`,抽象层,无核依赖)
 
@@ -215,23 +221,35 @@ theorem mulOperator_comp_TOp {omega : ℝ → ℝ} (hm : Measurable omega) {MR :
     (hK : HSKernel K) (hK' : HSKernel (fun p => omega p.1 * K p)) :
     (mulOperator omega hm hess).comp (TOp K hK) = TOp (fun p => omega p.1 * K p) hK'
 
-/-- 主桥:B 的谱幂对角和 = 加权循环积分(k ≥ 2;基不变由 M1-C,hc/hpsi 系 capstone 数据)。 -/
+/-- 主桥:B 的谱幂对角和 = 加权循环积分(k ≥ 2;基不变由 M1-C,hc/hpsi 系 capstone 数据)。
+    **路线 = 23:A8–A9 有限谱压缩 + 极限**。不能用 tracePair_cyclic 移动 S:K 是 HS
+    推不出 S=√K 是 HS(反例 κ_n=1/(n+1):∑κ²<∞ 但 S 的 ∑κ 发散);A7 只给 B=SWS 的
+    HS 界,不给 S(纠正记录 2026-09-18 独立复核)。 -/
 theorem diagSum_B_eq_weightedCycle (psi c : ℝ) (hc : 0 < c) (hpsi0 : 0 < psi)
     (hpsi2 : 2 * psi < 1) (omega : ℝ → ℝ) (hm : Measurable omega) {MR : ℝ}
     (hess : ∀ᵐ x ∂vol, |omega x| ≤ MR) (k : ℕ) (hk : 2 ≤ k) (e : HilbertBasis ℕ ℝ L2) :
     (∑' i : ℕ, inner ℝ e i ((B psi c omega hpsi0 hpsi2 hc) ^ k) (e i))
       = Hurst.weightedRieszCycleIntegral k psi c omega
--- 路线:
--- step1(算子恒等式): B^k = S ∘ (W∘T)^{k-1} ∘ W ∘ S   [B = S∘W∘S, S² = T,归纳]
--- step2(循环性): Diag(B^k) = Diag((W∘T)^k)            [tracePair_cyclic × k;两个 S 移位;
---        S 的 HS 型条件由 A7 的矩阵界 + ∑κ² 供给]
--- step3(核化):   W∘T = TOp (rieszKernel psi c omega)   [mulOperator_comp_TOp;
---        rieszKernel psi c omega 的 HSKernel 已落地]
--- step4(k 步迭代): Diag((TOp C)^k) = cycle2 C (compPowR (k-2) C)
+-- 路线(A8–A9 压缩极限;原"循环性移 S"方案作废,原因如上):
+-- step0(枚举化,新增前提件——已登记缺口): K 的完备非负特征族可数化(23:A4:
+--        E=L2(vol) 可分;正交单位向量互距 √2,可分空间中互不相交小球各取一点得单射
+--        ⇒ ι 可数),重排为 ℕ 索引,取前 N 项有限截断核
+--        K_N(x,y) = ∑_{i<N} κ_i v_i(x) v_i(y) 与 B_N' = P_N B P_N = K_N^{1/2} W K_N^{1/2}(有限秩)。
+-- step1(有限矩阵迹恒等式,纯有限维线性代数,A8):
+--        tr((B_N')^k) = tr((W K_N)^k) = ∑_{i₁..i_k<N} ∏_j κ_{i_j}⟪v_{i_j}, W v_{i_{j+1}}⟫。
+-- step2(三项收敛):
+--   (a) ‖B − B_N'‖_HS → 0(P_N B P_N 谱压缩;B 是 HS——A7 供给);
+--   (b) ‖W K_N − W K‖_{L²(vol²)} → 0(K_N → K 于核 L²,乘有界 ω 不破坏);
+--   (c) A4 型扰动估计 |Diag_k(X) − Diag_k(Y)| ≤ k·C^{k−1}·‖X−Y‖_HS(‖·‖_HS ≤ C 一致)。
+-- step3(取极限): Diag(B^k) = lim Diag((B_N')^k) = lim Diag((W K_N)^k) = Diag((W∘T)^k),
+--        其中 W∘T = TOp(rieszKernel psi c omega)(左乘=核运算,mulOperator_comp_TOp)。
+-- step4(k 步核迭代): Diag((TOp C)^k) = cycle2 C (compPowR (k-2) C)
 --        [tracePair_comp_tsum × (k-2) 迭代 + TOp_compPowR / compKernel 结合,已落地]
 -- step5(认同):     = weightedRieszCycleIntegral k psi c omega
 --        [weightedRieszCycleIntegral_eq_kernelProd + rieszCycleIntegrand_eq,已落地;
 --         k=2 锚:cycle2_rieszKernel_eq_weighted]
+-- 注:M1-D1 的 tracePair_cyclic 抽象引理仍真(其 HS 型假设下成立),但**不再是 D2 的
+-- 承重件**(B 侧移 S 被上述压缩路线取代);保留为可复用工具,勿销毁其成果。
 
 /-- 最终组装:B 的谱枚举即实际带权 Riesz 谱(审查阻断 1 的直接消除)。 -/
 theorem exists_weightedRieszSpectrum_min (psi c : ℝ) (hc : 0 < c) (hpsi0 : 0 < psi)
@@ -249,10 +267,12 @@ theorem exists_weightedRieszSpectrum_min (psi c : ℝ) (hc : 0 < c) (hpsi0 : 0 <
 
 ### 分工与缺口登记
 
-- M1-D1(tracePair_cyclic):新分析,复用 H/E 可和性模式;先行派发(不依赖 A/B/C)。
+- M1-D1(tracePair_cyclic):已派发;**角色降级**——抽象命题仍真、保留为可复用工具,
+  但 D2 的 B 侧已改压缩路线,不再承重(见 §5 路线纠正 7)。
 - M1-D2:依赖 A(正性+特征族)、B(S 与 B 的绑定 + A7)、C(hBridge_clm + 枚举存在)。
-- **已登记缺口**(完成前不算 M1 验收):step1 的归纳细节;step2 中 S 的 HS 型条件从
-  A7 矩阵界到"任意基"的转写;`Summable (val²)` 从 A7 的显式推导;
+- **已登记缺口**(完成前不算 M1 验收;压缩路线版):ι 可数化(E=L2(vol) 可分性路线);
+  A4 型幂对角扰动估计 `|Diag_k(X)−Diag_k(Y)| ≤ k·C^{k−1}·‖X−Y‖_HS`;A8 有限矩阵迹
+  恒等式;三项收敛(B 压缩 / 核 L² / 幂对角);`Summable (val²)` 推导;
   `exists_weightedRieszSpectrum_min` 的 equivalentKernel 实例化。
 - Hilbert 基 `e` 仍是环境参数(内部待证事项,见 §1)。
 

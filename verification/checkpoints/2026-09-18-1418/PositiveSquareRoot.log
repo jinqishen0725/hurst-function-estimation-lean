@@ -1,0 +1,37 @@
+verification/checkpoints/2026-09-18-1418/PositiveSquareRoot.lean:613:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  inner ℝ ?m.34 (v k)
+in the target expression
+  inner ℝ (v k) ((specOperator hc hC0 hv) x) = c k * inner ℝ (v k) x
+
+ι : Type
+c : ι → ℝ
+C : ℝ
+hc : ∀ (i : ι), |c i| ≤ C
+hC0 : 0 ≤ C
+v : ι → L2
+hv : Orthonormal ℝ v
+k : ι
+x : L2
+⊢ inner ℝ (v k) ((specOperator hc hC0 hv) x) = c k * inner ℝ (v k) x
+verification/checkpoints/2026-09-18-1418/PositiveSquareRoot.lean:624:45: error(lean.unknownIdentifier): Unknown identifier `k`
+verification/checkpoints/2026-09-18-1418/PositiveSquareRoot.lean:625:35: error: Application type mismatch: The argument
+  hv
+has type
+  Orthonormal ℝ v
+but is expected to have type
+  0 ≤ C
+in the application
+  summable_specPair hc hv
+verification/checkpoints/2026-09-18-1418/PositiveSquareRoot.lean:619:76: error: unsolved goals
+ι : Type
+c : ι → ℝ
+C : ℝ
+hc : ∀ (i : ι), |c i| ≤ C
+hC0 : 0 ≤ C
+v : ι → L2
+hv : Orthonormal ℝ v
+x : L2
+h1 : ‖(specOperator hc hC0 hv) x‖ ^ 2 = inner ℝ ((specOperator hc hC0 hv) x) ((specOperator hc hC0 hv) x)
+hflip : ∀ (k : ι), inner ℝ (v k) ((specOperator hc hC0 hv) x) = c k * inner ℝ (v k) x
+⊢ specPair c x ((specOperator hc hC0 hv) x) = ∑' (i : ι), c i ^ 2 * inner ℝ (v i) x ^ 2
+exit=1

@@ -12,14 +12,14 @@
   验收必须全量重定向 + 真实退出码。管道 exit-0 不计编译绿。
 - **用语更正**:`hg`(= `integrable_abs_sub_rpow_vol2`)是 0≤s<1 内**可消解的内部可积性
   前提**,已消解;与 hconst 的"不可能性"是两类陈述,不得混用。
-- **M1-D 精确接口已由主 agent 写入规范 §5**(依赖通过后接入):
-  关键路线简化 = 循环性把 B^k 对角和移到 (W∘T)^k,而 W∘T = TOp(rieszKernel)(左乘 ω
-  即核运算),识别链全部落在已落地工具(TOp_compPowR / tracePair_comp_tsum /
-  weightedRieszCycleIntegral_eq_kernelProd)。
-  分工:M1-D1(tracePair_cyclic,抽象,不依赖 A/B/C,可立即派发);
+- **M1-D 精确接口已写入规范 §5**;二轮复核后路线定为 **A8–A9 有限谱压缩 + 极限**
+  ("循环性移 S"作废:S=√K 一般非 HS;详见规范更正记录 7)。
+  分工:M1-D1(tracePair_cyclic,抽象命题仍真,已派发但**角色降级为可复用工具**);
   M1-D2(diagSum_B_eq_weightedCycle + exists_weightedRieszSpectrum_min,依赖 A/B/C)。
-  已登记缺口:step1 归纳、step2 的 A7→任意基转写、Summable(val²) 推导、
-  equivalentKernel 实例化——完成前不算 M1 验收通过。
+  已登记缺口(压缩路线):ι 可数化(可分性)、A4 型幂对角扰动估计、A8 有限矩阵迹恒等式、
+  三项收敛、`Summable (val²)` 推导、equivalentKernel 实例化——完成前不算 M1 验收通过。
+- 13:xx 追加指令:C 逐声明计时定位 elaboration 慢点(禁全文件预算放大);
+  A/B 先保存可编译小块再推进(正性/平方根/B+A7)。规范 §5 开头旧路线残留已清除。
 
 ## 各路检查点(2026-09-18 13:02 协调短查后更新;快照诊断已分发)
 
@@ -48,7 +48,21 @@
 实际 equivalentKernel 上消解;规范 §3 已同步);②A/B 收到"先落小块、报最小编译检查点、
 长期卡住要报错误原文"的流程指令;③不重跑全库构建。
 
-## 验收级编译检查点(2026-09-18 13:45,全量日志 + Lean 真实退出码)
+## ⚠️ 证据事件更正(2026-09-18 14:1x,独立复核发现)
+
+13:45 检查点所用 /tmp 日志路径与各路 agent 的自用编译路径**撞车被覆盖**
+(现行文件内容为 A_EXIT:1 / C_EXIT:1,系 agent 中间态的后续编译)。原检查点的
+Lean 真实退出码(A_EXIT:0 / C_EXIT:0)仍保留于会话 exec 标准输出,已复制存档:
+`verification/checkpoints/2026-09-18-1345-incident/`(含 README)。但**该保留证据
+仅为退出码文本,不足以独立复现历史结果**——历史声明据此降级为"曾有 exit-0 记录,
+完整日志已失"。
+**流程修正(即日起)**:每个通过检查点 = 专属目录
+`verification/checkpoints/<日期时刻>-<track>/` 内绑定 {源码快照 .lean, 完整编译日志
+.log, 日志内嵌真实退出码 exit=…, sha256.txt},四件齐备才计通过。
+14:18 快照轮(源码快照已存 `verification/checkpoints/2026-09-18-1418/`,逐文件
+全量编译 + hash)结果将回填下表。
+
+## 验收级编译检查点(2026-09-18 13:45,**证据降级**,见上)
 
 方法:`lake env lean <file> > /tmp/hurst-main-1345-<track>.log 2>&1`,退出码取自 Lean 本身
 (无 head 管道)。检查点 = 该时刻的快照证据;各路 agent 随后仍在编辑,最终验收以
