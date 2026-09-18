@@ -31,3 +31,4 @@ in the application
   LE.le.trans_eq (Summable.hasSum hdiagSummCLM) hts
 verification/checkpoints/2026-09-18-1418/EndLevelTraceBridge.lean:1295:8: error: (kernel) unknown constant '_private.verification.checkpoints.«2026-09-18-1418».EndLevelTraceBridge.0.HS.tsum_diag_inner_pow_eq_tsum_kappaPow'
 exit=1
+exit=1
