@@ -6,11 +6,11 @@ import Hurst.CycleTraceIdentification
 import Hurst.RieszSectionBounds
 
 /-!
-# The general-`k` spectral bridge: foundations layer (PARTIALLY LANDED)
+# The general-`k` spectral bridge: foundations + section bounds + cycle bridge
 
 ## Honest session status
 
-This session landed the **foundations layer** below (zero errors, zero sorries):
+This file compiles with zero errors and zero sorries.  Landed here:
 
 * `hasEigenvector_smul`, `isDiagEnum_of_entry` — eigen-pairing helpers;
 * `measurable_abs_sub_rpow`, `measurable_rieszKernel`, `rieszKernel_symm` — the
@@ -18,21 +18,35 @@ This session landed the **foundations layer** below (zero errors, zero sorries):
 * `sectionCS`, `integral_secE2_eq`, `integral_secE1_eq` — the section
   Cauchy–Schwarz engine and the section-energy integral identities;
 * `compPowR_section_aux` — the composition tower keeps uniform section `L²` bounds
-  (both orientations) and everywhere-`MemLp` sections, the input needed to discharge
-  the chain-integrability `hP` via
-  `HS.chainProd_integrable_of_sectionBounds` (`Hurst.GeneralKIntegrabilityClosed`,
-  imported and consumed-ready).
+  (both orientations) and everywhere-`MemLp` sections;
+* `hP_of_sectionBounds` — the chain-integrability discharge, now in the **per-level
+  packaging**: the tower bounds carry the finite rate
+  `max 1 ((hsNorm K ^ 2) ^ r)` and the chain-uniform bounds are formed inside
+  (`max E (E * rate)`, `max D (D * rate)`); a single `r`-independent `E` was
+  unsatisfiable whenever `hsNorm K > 1`;
+* `gate_of_bridge`, `hasSum_general_k_of_gate`, `hasSum_weighted_of_gate` — the
+  conditional gate architecture (consumes `hBridge`/`hPair`, the isolated gaps of
+  `Hurst.CycleTraceIdentification` / the operator-power identification);
+* **`rieszKernel_sectionBounds_package`** (with projections `rieszKernel_lintSq`,
+  `rieszKernel_lintSq_symm`, `rieszKernel_lintL1`) — the six packaged section-bound
+  shapes of `hP_of_sectionBounds`, discharged UNCONDITIONALLY at the capstone Riesz
+  data (from the committed `Hurst.RieszSectionBounds` uniform bounds composed with
+  `compPowR_section_aux` and the `ofReal` transport);
+* **`hW_bridge`** — the cycle-encoding bridge (spec §7, unconditional, every `k`):
+  `cycleIntegral k (rieszKernel psi c omega) = weightedRieszCycleIntegral k psi c omega`,
+  transporting the `vol^k`-integral along the `I^k`-cylinder to `volume^k` and
+  matching the cyclic successors;
+* **`rieszSpectrumVal_hasSum_of_bridge` / `rieszSpectrumVal_hGen_of_bridge`** — the
+  capstone HasSum / `hGen` clause at the constructed enumeration
+  (`HS.rieszSpectrumVal`), with hypotheses reduced to: capstone data + feasibility
+  window + a Hilbert basis + `hBridge` + `hPair`.
 
-## Remaining work (NOT landed in this session)
+## Remaining work (NOT landed here)
 
-The route items 1–6 of the original plan (the master fractional bound
-`fract_section_bound` `∫_I |a-y|^{-s} da ≤ 2 + 2/(1-s)` with its `[-1,1]`-halving
-and shift-transport machinery, the uniform bounds `rieszKernel_section_sq` derived
-from it, the section-integral form of the Riesz representers, the eigen-action,
-the mixed Parseval trace recursion, the multiplicity comparison, and the final
-`gate_riesz` / `hasSum_general_k_riesz_final` / `rieszSpectrum_hGen` assembly) were
-drafted but did not reach a compiling state within the session budget; the gate
-`∑' j, val j ^ k = cycle2 (compPowR (k-2) K) K` therefore remains open here.
+The two operator-side bridge clauses remain hypotheses (they are the documented
+isolated gaps of the wider project): `hBridge` (trace-class basis-invariance +
+multiplicity bookkeeping — spec §8, AGENT-H) and `hPair` (the operator-power
+identification `TOp K ∘ TOp (compPowR (k-2) K) = T^k` — spec §6, AGENT-G).
 
 # (Original plan header, retained for the continuation)
 
@@ -385,17 +399,25 @@ theorem compPowR_section_aux {K : ℝ × ℝ → ℝ} (hKm : Measurable K) (hK :
 
 
 
-/-- **The `hP` discharge from uniform tower section bounds** (spec §2): with uniform
-`ENNReal.ofReal`-form section bounds for `K` and every tower level `compPowR r K`
-(both orientations for `L²`, plus `L¹`), the chain-integrability hypothesis of the
-peel induction holds at every level. -/
+/-- **The `hP` discharge from uniform tower section bounds** (spec §2, per-level
+packaging): with per-level `ENNReal.ofReal`-form section bounds for `K` and every tower
+level `compPowR r K` — the tower bounds carrying the finite multiplicative rate
+`max 1 ((hsNorm K ^ 2) ^ r)` — the chain-integrability hypothesis of the peel induction
+holds at every level.  (The chain-uniform bounds are formed inside: for fixed `n, r` the
+rate `max 1 ((hsNorm K ^ 2) ^ r)` is a single finite real, and both the base and the
+tower entries are dominated by `max E (E * rate)` resp. `max D (D * rate)`.  A single
+`r`-independent `E` would be unsatisfiable: by `compPowR_section_aux` the tower bound
+`E_K * (hsNorm K ^ 2) ^ r` is unbounded in `r` whenever `hsNorm K > 1`.) -/
 theorem hP_of_sectionBounds {K : ℝ × ℝ → ℝ} (hKm : Measurable K)
     (hE1 : ∀ (r : ℕ) (y : ℝ),
-      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (a, y)| ^ 2 ∂vol ≤ ENNReal.ofReal E)
+      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (a, y)| ^ 2 ∂vol
+        ≤ ENNReal.ofReal (E * max 1 ((hsNorm K ^ 2) ^ r)))
     (hE2 : ∀ (r : ℕ) (y : ℝ),
-      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (y, a)| ^ 2 ∂vol ≤ ENNReal.ofReal E)
+      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (y, a)| ^ 2 ∂vol
+        ≤ ENNReal.ofReal (E * max 1 ((hsNorm K ^ 2) ^ r)))
     (hD1 : ∀ (r : ℕ) (y : ℝ),
-      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (a, y)| ∂vol ≤ ENNReal.ofReal D)
+      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (a, y)| ∂vol
+        ≤ ENNReal.ofReal (D * max 1 ((hsNorm K ^ 2) ^ r)))
     (hEK1 : ∀ y : ℝ, ∫⁻ a : ℝ, ENNReal.ofReal |K (a, y)| ^ 2 ∂vol ≤ ENNReal.ofReal E)
     (hEK2 : ∀ y : ℝ, ∫⁻ a : ℝ, ENNReal.ofReal |K (y, a)| ^ 2 ∂vol ≤ ENNReal.ofReal E)
     (hDK1 : ∀ y : ℝ, ∫⁻ a : ℝ, ENNReal.ofReal |K (a, y)| ∂vol ≤ ENNReal.ofReal D)
@@ -409,25 +431,27 @@ theorem hP_of_sectionBounds {K : ℝ × ℝ → ℝ} (hKm : Measurable K)
       exact measurable_compPowR r hKm
     · rw [kchain, if_neg hi]
       exact hKm
-  refine chainProd_integrable_of_sectionBounds (by norm_num) (kchain n r K) hWm E D ?_ ?_ ?_
+  refine chainProd_integrable_of_sectionBounds (by norm_num) (kchain n r K) hWm
+    (max E (E * max 1 ((hsNorm K ^ 2) ^ r)))
+    (max D (D * max 1 ((hsNorm K ^ 2) ^ r))) ?_ ?_ ?_
   · intro i y
     by_cases hi : i = Fin.last (n + 1)
     · rw [kchain, if_pos hi]
-      exact hE1 r y
+      exact (hE1 r y).trans (ENNReal.ofReal_le_ofReal (le_max_right _ _))
     · rw [kchain, if_neg hi]
-      exact hEK1 y
+      exact (hEK1 y).trans (ENNReal.ofReal_le_ofReal (le_max_left _ _))
   · intro i y
     by_cases hi : i = Fin.last (n + 1)
     · rw [kchain, if_pos hi]
-      exact hE2 r y
+      exact (hE2 r y).trans (ENNReal.ofReal_le_ofReal (le_max_right _ _))
     · rw [kchain, if_neg hi]
-      exact hEK2 y
+      exact (hEK2 y).trans (ENNReal.ofReal_le_ofReal (le_max_left _ _))
   · intro i y
     by_cases hi : i = Fin.last (n + 1)
     · rw [kchain, if_pos hi]
-      exact hD1 r y
+      exact (hD1 r y).trans (ENNReal.ofReal_le_ofReal (le_max_right _ _))
     · rw [kchain, if_neg hi]
-      exact hDK1 y
+      exact (hDK1 y).trans (ENNReal.ofReal_le_ofReal (le_max_left _ _))
 
 /-- **The operator-side gate from the enumeration↔basis bridge** (spec §3).  Two
 inputs, both the documented isolated gaps of the wider project:
@@ -442,7 +466,7 @@ inputs, both the documented isolated gaps of the wider project:
 
 The kernel-side leg is landed: `tracePair_comp_tsum` identifies the composite
 pairing sum with `cycle2 (compPowR (k-2) K) K`. -/
-theorem gate_of_bridge {K : ℝ × ℝ → ℝ} {val : ℕ → ℝ} {vec : ℕ → L2} {k : ℕ}
+theorem gate_of_bridge {K : ℝ × ℝ → ℝ} {val : ℕ → ℝ} {k : ℕ}
     (hk : 2 ≤ k) (hK : HSKernel K) (hKL : HSKernel (compPowR (k - 2) K))
     (e : HilbertBasis ℕ ℝ L2)
     (hBridge : ∀ j : ℕ, 2 ≤ j → ∀ (e : HilbertBasis ℕ ℝ L2),
@@ -476,11 +500,14 @@ theorem hasSum_general_k_of_gate {K : ℝ × ℝ → ℝ} (hKm : Measurable K) (
     (hPair : ∀ x : L2, (TOp K hK) ((TOp (compPowR (k - 2) K) hKL) x)
         = (TOpEnd' K hK ^ k) x)
     (hE1 : ∀ (r : ℕ) (y : ℝ),
-      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (a, y)| ^ 2 ∂vol ≤ ENNReal.ofReal E)
+      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (a, y)| ^ 2 ∂vol
+        ≤ ENNReal.ofReal (E * max 1 ((hsNorm K ^ 2) ^ r)))
     (hE2 : ∀ (r : ℕ) (y : ℝ),
-      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (y, a)| ^ 2 ∂vol ≤ ENNReal.ofReal E)
+      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (y, a)| ^ 2 ∂vol
+        ≤ ENNReal.ofReal (E * max 1 ((hsNorm K ^ 2) ^ r)))
     (hD1 : ∀ (r : ℕ) (y : ℝ),
-      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (a, y)| ∂vol ≤ ENNReal.ofReal D)
+      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (a, y)| ∂vol
+        ≤ ENNReal.ofReal (D * max 1 ((hsNorm K ^ 2) ^ r)))
     (hEK1 : ∀ y : ℝ, ∫⁻ a : ℝ, ENNReal.ofReal |K (a, y)| ^ 2 ∂vol ≤ ENNReal.ofReal E)
     (hEK2 : ∀ y : ℝ, ∫⁻ a : ℝ, ENNReal.ofReal |K (y, a)| ^ 2 ∂vol ≤ ENNReal.ofReal E)
     (hDK1 : ∀ y : ℝ, ∫⁻ a : ℝ, ENNReal.ofReal |K (a, y)| ∂vol ≤ ENNReal.ofReal D)
@@ -493,7 +520,7 @@ theorem hasSum_general_k_of_gate {K : ℝ × ℝ → ℝ} (hKm : Measurable K) (
       (Measure.pi fun _ : Fin (n + 2) => vol) :=
     hP_of_sectionBounds hKm hE1 hE2 hD1 hEK1 hEK2 hDK1
   refine hasSum_general_k_assembled hCompact hsym hdiag hmult hP k hk ?_
-  exact gate_of_bridge (vec := vec) hk hK hKL e hBridge hPair
+  exact gate_of_bridge hk hK hKL e hBridge hPair
 
 /-- **The general-`k` weighted HasSum (conditional)**: given the k↔weighted
 cycle-integral identification (spec §4: both sides are the cyclic kernel product;
@@ -514,11 +541,14 @@ theorem hasSum_weighted_of_gate (K : ℝ × ℝ → ℝ) (psi c : ℝ) (omega : 
     (hPair : ∀ (k : ℕ) (x : L2), (TOp K hK) ((TOp (compPowR (k - 2) K) (hKL k)) x)
         = (TOpEnd' K hK ^ k) x)
     (hE1 : ∀ (r : ℕ) (y : ℝ),
-      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (a, y)| ^ 2 ∂vol ≤ ENNReal.ofReal E)
+      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (a, y)| ^ 2 ∂vol
+        ≤ ENNReal.ofReal (E * max 1 ((hsNorm K ^ 2) ^ r)))
     (hE2 : ∀ (r : ℕ) (y : ℝ),
-      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (y, a)| ^ 2 ∂vol ≤ ENNReal.ofReal E)
+      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (y, a)| ^ 2 ∂vol
+        ≤ ENNReal.ofReal (E * max 1 ((hsNorm K ^ 2) ^ r)))
     (hD1 : ∀ (r : ℕ) (y : ℝ),
-      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (a, y)| ∂vol ≤ ENNReal.ofReal D)
+      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (a, y)| ∂vol
+        ≤ ENNReal.ofReal (D * max 1 ((hsNorm K ^ 2) ^ r)))
     (hEK1 : ∀ y : ℝ, ∫⁻ a : ℝ, ENNReal.ofReal |K (a, y)| ^ 2 ∂vol ≤ ENNReal.ofReal E)
     (hEK2 : ∀ y : ℝ, ∫⁻ a : ℝ, ENNReal.ofReal |K (y, a)| ^ 2 ∂vol ≤ ENNReal.ofReal E)
     (hDK1 : ∀ y : ℝ, ∫⁻ a : ℝ, ENNReal.ofReal |K (a, y)| ∂vol ≤ ENNReal.ofReal D)
@@ -533,6 +563,501 @@ theorem hasSum_weighted_of_gate (K : ℝ × ℝ → ℝ) (psi c : ℝ) (omega : 
     hBridge (hPair k) hE1 hE2 hD1 hEK1 hEK2 hDK1 hdiag hmult
   rw [hW k hk] at hcore
   exact hcore
+
+/-! ### The capstone section bounds at the Riesz kernel data (unconditional) -/
+
+/-- The carrier measure has total mass `2` (the interval `I = Icc (-1 : ℝ) 1` has
+length `2`). -/
+private theorem vol_univ_eq_two : ((vol : Measure ℝ) Set.univ) = 2 := by
+  show (MeasureTheory.volume.restrict (I : Set ℝ)) Set.univ = 2
+  rw [Measure.restrict_apply MeasurableSet.univ, Set.univ_inter, Real.volume_Icc]
+  norm_num
+
+/-- Off `I` the carrier measure gives no mass, so the plain distance power and its
+`I`-indicator are a.e.-equal against `HS.vol`. -/
+private theorem indicator_ae_abs_sub' {p : ℝ} (y : ℝ) :
+    ((I : Set ℝ).indicator (fun b : ℝ => |b - y| ^ (-p)))
+      =ᵐ[vol] (fun a : ℝ => |a - y| ^ (-p)) := by
+  filter_upwards [MeasureTheory.ae_restrict_mem
+    (measurableSet_Icc : MeasurableSet (I : Set ℝ))] with a ha
+  rw [Set.indicator_of_mem ha]
+
+/-- The distance-power section is integrable against the carrier measure. -/
+private theorem integrable_abs_sub_vol' {p : ℝ} (hp : p < 1) (y : ℝ) :
+    MeasureTheory.Integrable (fun a : ℝ => |a - y| ^ (-p)) vol := by
+  have hint := Hurst.intervalIntegrable_abs_sub_rpow hp y (-2 : ℝ) 2
+  have h4 := intervalIntegrable_iff.mp hint
+  rw [Set.uIoc_of_le (by norm_num : (-2 : ℝ) ≤ 2)] at h4
+  have h5 : MeasureTheory.IntegrableOn (fun a : ℝ => |a - y| ^ (-p)) (I : Set ℝ)
+      MeasureTheory.volume := by
+    refine h4.mono_set ?_
+    intro x hx
+    obtain ⟨hx1, hx2⟩ := hx
+    exact ⟨by linarith, by linarith⟩
+  have hmeas : ((vol : MeasureTheory.Measure ℝ).restrict (I : Set ℝ))
+      = MeasureTheory.volume.restrict (I : Set ℝ) :=
+    MeasureTheory.Measure.restrict_restrict_of_subset
+      (Subset.rfl : (I : Set ℝ) ⊆ (I : Set ℝ))
+  have hind : MeasureTheory.Integrable
+      ((I : Set ℝ).indicator (fun a : ℝ => |a - y| ^ (-p))) vol := by
+    refine (MeasureTheory.integrable_indicator_iff measurableSet_Icc).mpr ?_
+    show MeasureTheory.Integrable (fun a : ℝ => |a - y| ^ (-p))
+      ((vol : MeasureTheory.Measure ℝ).restrict (I : Set ℝ))
+    rw [hmeas]
+    exact h5
+  exact hind.congr (indicator_ae_abs_sub' y)
+
+/-- Pointwise domination of the squared Riesz kernel by the distance power. -/
+private theorem rieszKernel_sq_le' {psi c : ℝ} {omega : ℝ → ℝ} {MR : ℝ}
+    (hbdd : ∀ x : ℝ, |omega x| ≤ MR) (a y : ℝ) :
+    rieszKernel psi c omega (a, y) ^ 2 ≤ c ^ 2 * MR ^ 2 * |a - y| ^ (-(2 * psi)) := by
+  have hMR : (0 : ℝ) ≤ MR := le_trans (abs_nonneg (omega 0)) (hbdd 0)
+  have hbind : ∀ x : ℝ, |(I : Set ℝ).indicator omega x| ≤ MR := by
+    intro x
+    by_cases hx : x ∈ (I : Set ℝ)
+    · rw [Set.indicator_of_mem hx]; exact hbdd x
+    · rw [Set.indicator_of_notMem hx, abs_zero]; exact hMR
+  have hrpow : (|a - y| ^ (-psi)) ^ 2 = |a - y| ^ (-(2 * psi)) := by
+    rw [← Real.rpow_natCast (|a - y| ^ (-psi)) 2, ← Real.rpow_mul (abs_nonneg (a - y)),
+      show (2 : ℝ) * psi = psi * 2 from by ring, ← neg_mul]
+    norm_num
+  have hsplit : rieszKernel psi c omega (a, y) ^ 2
+      = ((I : Set ℝ).indicator omega a * c) ^ 2 * (|a - y| ^ (-psi)) ^ 2 := by
+    rw [rieszKernel_apply, mul_pow, mul_pow]
+  have habs : |(I : Set ℝ).indicator omega a * c| ≤ MR * |c| := by
+    rw [abs_mul]
+    exact mul_le_mul (hbind a) (le_refl |c|) (abs_nonneg c) hMR
+  have h1 : ((I : Set ℝ).indicator omega a * c) ^ 2 ≤ (MR * |c|) ^ 2 := by
+    rw [← sq_abs ((I : Set ℝ).indicator omega a * c)]
+    exact pow_le_pow_left₀ (abs_nonneg _) habs 2
+  have h2 : (MR * |c|) ^ 2 = c ^ 2 * MR ^ 2 := by rw [mul_pow, sq_abs c]; ring
+  calc rieszKernel psi c omega (a, y) ^ 2
+      = ((I : Set ℝ).indicator omega a * c) ^ 2 * (|a - y| ^ (-psi)) ^ 2 := hsplit
+    _ = ((I : Set ℝ).indicator omega a * c) ^ 2 * |a - y| ^ (-(2 * psi)) := by rw [hrpow]
+    _ ≤ (MR * |c|) ^ 2 * |a - y| ^ (-(2 * psi)) :=
+        mul_le_mul_of_nonneg_right h1 (Real.rpow_nonneg (abs_nonneg (a - y)) _)
+    _ = c ^ 2 * MR ^ 2 * |a - y| ^ (-(2 * psi)) := by rw [h2]
+
+/-- `ofReal |x| ^ 2 = ofReal (|x| ^ 2)` (the packaging transport step). -/
+private theorem ofReal_abs_pow_two (x : ℝ) :
+    ENNReal.ofReal |x| ^ 2 = ENNReal.ofReal (|x| ^ 2) := by
+  rw [pow_two, ← ENNReal.ofReal_mul (abs_nonneg x), ← pow_two]
+
+/-- `|x| ≤ x ^ 2 + 1` (the section-`L¹` domination). -/
+private theorem abs_le_sq_add_one (x : ℝ) : |x| ≤ x ^ 2 + 1 := by
+  rw [← sq_abs x]
+  have h : (0 : ℝ) ≤ |x| ^ 2 - 2 * |x| + 1 := by nlinarith [sq_nonneg (|x| - 1)]
+  linarith [abs_nonneg x]
+
+/-- **The capstone section-bound bundle** (spec §2, unconditional): at the capstone
+Riesz data, the six packaged bound shapes consumed by `hP_of_sectionBounds` hold with
+`E := c ^ 2 * MR ^ 2 * (2 + 2 / (1 - 2 * psi))` and
+`D := |c| * MR * (2 + 2 / (1 - psi)) + Real.sqrt (2 * E)` — the tower bounds carrying
+the finite per-level rate `max 1 ((hsNorm K ^ 2) ^ r)` (a single `r`-independent `E`
+would be unsatisfiable whenever `hsNorm K > 1`). -/
+theorem rieszKernel_sectionBounds_package {psi c : ℝ} {omega : ℝ → ℝ} {MR : ℝ}
+    (hpow : AEStronglyMeasurable (fun p : ℝ × ℝ => |p.1 - p.2| ^ (-psi)) vol2)
+    (homega : Measurable omega) (hbdd : ∀ x : ℝ, |omega x| ≤ MR)
+    (hg : Integrable (fun p : ℝ × ℝ => |p.1 - p.2| ^ (-2 * psi)) vol2)
+    (hconst : ∀ x y : ℝ, (I : Set ℝ).indicator omega x = (I : Set ℝ).indicator omega y)
+    (hpsi2 : 2 * psi < 1) (hpsi0 : 0 ≤ psi) :
+    (∀ (r : ℕ) (y : ℝ),
+      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r (rieszKernel psi c omega) (a, y)| ^ 2 ∂vol
+        ≤ ENNReal.ofReal (c ^ 2 * MR ^ 2 * (2 + 2 / (1 - 2 * psi)) *
+          max 1 ((hsNorm (rieszKernel psi c omega) ^ 2) ^ r)))
+    ∧ (∀ (r : ℕ) (y : ℝ),
+      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r (rieszKernel psi c omega) (y, a)| ^ 2 ∂vol
+        ≤ ENNReal.ofReal (c ^ 2 * MR ^ 2 * (2 + 2 / (1 - 2 * psi)) *
+          max 1 ((hsNorm (rieszKernel psi c omega) ^ 2) ^ r)))
+    ∧ (∀ (r : ℕ) (y : ℝ),
+      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r (rieszKernel psi c omega) (a, y)| ∂vol
+        ≤ ENNReal.ofReal ((|c| * MR * (2 + 2 / (1 - psi))
+            + Real.sqrt (2 * (c ^ 2 * MR ^ 2 * (2 + 2 / (1 - 2 * psi))))) *
+          max 1 ((hsNorm (rieszKernel psi c omega) ^ 2) ^ r)))
+    ∧ (∀ y : ℝ,
+      ∫⁻ a : ℝ, ENNReal.ofReal |rieszKernel psi c omega (a, y)| ^ 2 ∂vol
+        ≤ ENNReal.ofReal (c ^ 2 * MR ^ 2 * (2 + 2 / (1 - 2 * psi))))
+    ∧ (∀ y : ℝ,
+      ∫⁻ a : ℝ, ENNReal.ofReal |rieszKernel psi c omega (y, a)| ^ 2 ∂vol
+        ≤ ENNReal.ofReal (c ^ 2 * MR ^ 2 * (2 + 2 / (1 - 2 * psi))))
+    ∧ (∀ y : ℝ,
+      ∫⁻ a : ℝ, ENNReal.ofReal |rieszKernel psi c omega (a, y)| ∂vol
+        ≤ ENNReal.ofReal (|c| * MR * (2 + 2 / (1 - psi))
+            + Real.sqrt (2 * (c ^ 2 * MR ^ 2 * (2 + 2 / (1 - 2 * psi)))))) := by
+  set K : ℝ × ℝ → ℝ := rieszKernel psi c omega with hKdef
+  set E : ℝ := c ^ 2 * MR ^ 2 * (2 + 2 / (1 - 2 * psi)) with hEdef
+  set Df : ℝ := |c| * MR * (2 + 2 / (1 - psi))
+    + Real.sqrt (2 * (c ^ 2 * MR ^ 2 * (2 + 2 / (1 - 2 * psi)))) with hDfdef
+  have hMR : (0 : ℝ) ≤ MR := le_trans (abs_nonneg (omega 0)) (hbdd 0)
+  have hEp : (0 : ℝ) ≤ E := by
+    have h1 : (0 : ℝ) < 1 - 2 * psi := by linarith
+    have h2 : (0 : ℝ) < 2 + 2 / (1 - 2 * psi) :=
+      add_pos (by norm_num) (div_pos (by norm_num) h1)
+    exact mul_nonneg (mul_nonneg (sq_nonneg c) (sq_nonneg MR)) h2.le
+  -- everywhere section-square-integrability, both orientations
+  have hintcol : ∀ z : ℝ, Integrable (fun a : ℝ => K (a, z) ^ 2) vol := by
+    intro z
+    have hdom : Integrable (fun a : ℝ => c ^ 2 * MR ^ 2 * |a - z| ^ (-(2 * psi))) vol :=
+      (integrable_abs_sub_vol' (by linarith) z).const_mul _
+    refine hdom.mono ?_ ?_
+    · exact (((measurable_rieszKernel homega).comp
+        (measurable_id.prodMk measurable_const)).pow_const 2).aestronglyMeasurable
+    · filter_upwards with a
+      have h := rieszKernel_sq_le' (psi := psi) (c := c) hbdd a z
+      rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _),
+        abs_of_nonneg (by positivity)]
+      exact h
+  have hintrow : ∀ z : ℝ, Integrable (fun a : ℝ => K (z, a) ^ 2) vol := by
+    intro z
+    have hdom : Integrable (fun a : ℝ => c ^ 2 * MR ^ 2 * |a - z| ^ (-(2 * psi))) vol :=
+      (integrable_abs_sub_vol' (by linarith) z).const_mul _
+    refine hdom.mono ?_ ?_
+    · exact (((measurable_rieszKernel homega).comp
+        (measurable_const.prodMk measurable_id)).pow_const 2).aestronglyMeasurable
+    · filter_upwards with a
+      have h := rieszKernel_sq_le' (psi := psi) (c := c) hbdd z a
+      rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _),
+        abs_of_nonneg (by positivity)]
+      rwa [abs_sub_comm z a] at h
+  -- the Bochner-form base bounds
+  have hEcol : ∀ y : ℝ, ∫ a : ℝ, K (a, y) ^ 2 ∂vol ≤ E := by
+    intro y
+    have hcongr : (∫ a : ℝ, K (a, y) ^ 2 ∂vol) = ∫ a : ℝ, |K (a, y)| ^ 2 ∂vol :=
+      integral_congr_ae (Filter.Eventually.of_forall fun a => (sq_abs (K (a, y))).symm)
+    rw [hcongr]
+    exact rieszKernel_section_sq (psi := psi) (c := c) (MR := MR) hbdd hconst hpsi2 hpsi0 y
+  have hErow : ∀ x : ℝ, ∫ a : ℝ, K (x, a) ^ 2 ∂vol ≤ E := by
+    intro x
+    have hcongr : (∫ a : ℝ, K (x, a) ^ 2 ∂vol) = ∫ a : ℝ, |K (x, a)| ^ 2 ∂vol :=
+      integral_congr_ae (Filter.Eventually.of_forall fun a => (sq_abs (K (x, a))).symm)
+    rw [hcongr]
+    exact rieszKernel_section_sq_symm (psi := psi) (c := c) (MR := MR) hbdd hpsi2 hpsi0 x
+  -- the composition tower keeps the section bounds (every level)
+  have haux := compPowR_section_aux (K := K) (measurable_rieszKernel homega)
+    (hsKernel_rieszKernel hpow homega hbdd hg) hEcol hErow hintcol hintrow
+  -- the per-level tower `L²` bounds in `lintegral`/`ofReal` form, both orientations
+  have hL2col : ∀ (r : ℕ) (y : ℝ),
+      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (a, y)| ^ 2 ∂vol
+        ≤ ENNReal.ofReal (E * max 1 ((hsNorm K ^ 2) ^ r)) := by
+    intro r y
+    obtain ⟨hcol, hrow, hmemCol, hmemRow⟩ := haux r
+    have hint2 : Integrable (fun a : ℝ => |compPowR r K (a, y)| ^ 2) vol :=
+      (MemLp.integrable_sq (hmemCol y)).congr
+        (Filter.Eventually.of_forall fun a => (sq_abs _).symm)
+    calc ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (a, y)| ^ 2 ∂vol
+        = ∫⁻ a : ℝ, ENNReal.ofReal (|compPowR r K (a, y)| ^ 2) ∂vol :=
+          lintegral_congr_pt fun a => ofReal_abs_pow_two _
+      _ = ENNReal.ofReal (∫ a : ℝ, |compPowR r K (a, y)| ^ 2 ∂vol) :=
+          (ofReal_integral_eq_lintegral_ofReal hint2
+            (Filter.Eventually.of_forall fun a =>
+              sq_nonneg (abs (compPowR r K (a, y))))).symm
+      _ ≤ ENNReal.ofReal (E * (hsNorm K ^ 2) ^ r) := by
+          refine ENNReal.ofReal_le_ofReal ?_
+          rw [integral_congr_ae (Filter.Eventually.of_forall fun a =>
+            sq_abs (compPowR r K (a, y)))]
+          exact hcol y
+      _ ≤ ENNReal.ofReal (E * max 1 ((hsNorm K ^ 2) ^ r)) :=
+          ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_left (le_max_right 1 _) hEp)
+  have hL2row : ∀ (r : ℕ) (y : ℝ),
+      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (y, a)| ^ 2 ∂vol
+        ≤ ENNReal.ofReal (E * max 1 ((hsNorm K ^ 2) ^ r)) := by
+    intro r y
+    obtain ⟨hcol, hrow, hmemCol, hmemRow⟩ := haux r
+    have hint2 : Integrable (fun a : ℝ => |compPowR r K (y, a)| ^ 2) vol :=
+      (MemLp.integrable_sq (hmemRow y)).congr
+        (Filter.Eventually.of_forall fun a => (sq_abs _).symm)
+    calc ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (y, a)| ^ 2 ∂vol
+        = ∫⁻ a : ℝ, ENNReal.ofReal (|compPowR r K (y, a)| ^ 2) ∂vol :=
+          lintegral_congr_pt fun a => ofReal_abs_pow_two _
+      _ = ENNReal.ofReal (∫ a : ℝ, |compPowR r K (y, a)| ^ 2 ∂vol) :=
+          (ofReal_integral_eq_lintegral_ofReal hint2
+            (Filter.Eventually.of_forall fun a =>
+              sq_nonneg (abs (compPowR r K (y, a))))).symm
+      _ ≤ ENNReal.ofReal (E * (hsNorm K ^ 2) ^ r) := by
+          refine ENNReal.ofReal_le_ofReal ?_
+          rw [integral_congr_ae (Filter.Eventually.of_forall fun a =>
+            sq_abs (compPowR r K (y, a)))]
+          exact hrow y
+      _ ≤ ENNReal.ofReal (E * max 1 ((hsNorm K ^ 2) ^ r)) :=
+          ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_left (le_max_right 1 _) hEp)
+  -- the per-level tower `L¹` bounds (section Cauchy–Schwarz from the `L²` bounds)
+  have hL1col : ∀ (r : ℕ) (y : ℝ),
+      ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (a, y)| ∂vol
+        ≤ ENNReal.ofReal (Df * max 1 ((hsNorm K ^ 2) ^ r)) := by
+    intro r y
+    obtain ⟨hcol, hrow, hmemCol, hmemRow⟩ := haux r
+    have hN0 : (0 : ℝ) ≤ (hsNorm K ^ 2) ^ r := pow_nonneg (sq_nonneg (hsNorm K)) r
+    -- the section is `L¹`-integrable (domination by the square + 1)
+    have hint1 : Integrable (fun a : ℝ => |compPowR r K (a, y)|) vol := by
+      have hsq : Integrable (fun a : ℝ => compPowR r K (a, y) ^ 2) vol :=
+        MemLp.integrable_sq (hmemCol y)
+      have hdom : Integrable (fun a : ℝ => compPowR r K (a, y) ^ 2 + 1) vol :=
+        hsq.add (integrable_const 1)
+      refine hdom.mono ?_ ?_
+      · exact (((measurable_compPowR r (measurable_rieszKernel homega)).comp
+          (measurable_id.prodMk measurable_const)).abs).aestronglyMeasurable
+      · filter_upwards with a
+        show ‖|compPowR r K (a, y)|‖ ≤ ‖compPowR r K (a, y) ^ 2 + 1‖
+        have h1 : ‖|compPowR r K (a, y)|‖ = |compPowR r K (a, y)| := by simp
+        have h2 : ‖compPowR r K (a, y) ^ 2 + 1‖ = compPowR r K (a, y) ^ 2 + 1 := by
+          rw [Real.norm_eq_abs,
+            abs_of_nonneg (show (0 : ℝ) ≤ compPowR r K (a, y) ^ 2 + 1 by positivity)]
+        rw [h1, h2]
+        exact abs_le_sq_add_one _
+    -- the section Cauchy–Schwarz bound (transposed kernel against the constant `1`)
+    have hcs := sectionCS (K := fun p : ℝ × ℝ => compPowR r K p.swap)
+      (L := fun _ => (1 : ℝ)) y y (hmemCol y) (memLp_const (1 : ℝ))
+    have hbeta : ∀ t : ℝ,
+        |(fun p : ℝ × ℝ => compPowR r K p.swap) (y, t)|
+            * |(fun _ => (1 : ℝ)) (t, y)|
+          = |compPowR r K (t, y)| := by
+      intro t
+      show |compPowR r K (t, y)| * |(1 : ℝ)| = |compPowR r K (t, y)|
+      simp
+    rw [integral_congr_ae (Filter.Eventually.of_forall hbeta)] at hcs
+    have hsec2 : secE2 (fun p : ℝ × ℝ => compPowR r K p.swap) y
+        = ∫ t : ℝ, compPowR r K (t, y) ^ 2 ∂vol := rfl
+    have hmass : vol.real Set.univ = 2 := by
+      show ((vol : Measure ℝ) Set.univ).toReal = 2
+      rw [vol_univ_eq_two]
+      norm_num
+    have hsec1 : secE1 (fun _ => (1 : ℝ)) y = 2 := by
+      simp only [secE1, one_pow, integral_const, smul_eq_mul, mul_one, hmass]
+    rw [hsec2, hsec1] at hcs
+    have hSN : Real.sqrt ((hsNorm K ^ 2) ^ r) ≤ max 1 ((hsNorm K ^ 2) ^ r) := by
+      rcases Nat.eq_zero_or_pos r with hr | hr
+      · subst hr
+        simp
+      · rcases le_or_gt 1 ((hsNorm K ^ 2) ^ r) with h | h
+        · have hx : Real.sqrt ((hsNorm K ^ 2) ^ r)
+                ≤ Real.sqrt (((hsNorm K ^ 2) ^ r) ^ 2) :=
+              Real.sqrt_le_sqrt (le_self_pow₀ h (by norm_num))
+          rw [Real.sqrt_sq (pow_nonneg (sq_nonneg (hsNorm K)) r)] at hx
+          exact hx.trans (le_max_right _ _)
+        · exact (Real.sqrt_le_sqrt h.le).trans
+            (by rw [Real.sqrt_one]; exact le_max_left _ _)
+    calc ∫⁻ a : ℝ, ENNReal.ofReal |compPowR r K (a, y)| ∂vol
+        = ENNReal.ofReal (∫ a : ℝ, |compPowR r K (a, y)| ∂vol) :=
+          (ofReal_integral_eq_lintegral_ofReal hint1
+            (Filter.Eventually.of_forall fun a => abs_nonneg (compPowR r K (a, y)))).symm
+      _ ≤ ENNReal.ofReal (Real.sqrt (2 * E) * max 1 ((hsNorm K ^ 2) ^ r)) := by
+          refine ENNReal.ofReal_le_ofReal (hcs.trans ?_)
+          calc Real.sqrt (∫ t : ℝ, compPowR r K (t, y) ^ 2 ∂vol) * Real.sqrt 2
+              ≤ Real.sqrt (E * (hsNorm K ^ 2) ^ r) * Real.sqrt 2 := by
+                refine mul_le_mul_of_nonneg_right ?_ (Real.sqrt_nonneg 2)
+                exact Real.sqrt_le_sqrt (hcol y)
+            _ = Real.sqrt ((E * (hsNorm K ^ 2) ^ r) * 2) := by
+                rw [Real.sqrt_mul (mul_nonneg hEp hN0)]
+            _ = Real.sqrt ((2 * E) * (hsNorm K ^ 2) ^ r) :=
+                congrArg Real.sqrt (by ring)
+            _ = Real.sqrt (2 * E) * Real.sqrt ((hsNorm K ^ 2) ^ r) := by
+                rw [Real.sqrt_mul (mul_nonneg (by norm_num) hEp)]
+            _ ≤ Real.sqrt (2 * E) * max 1 ((hsNorm K ^ 2) ^ r) :=
+                mul_le_mul_of_nonneg_left hSN (Real.sqrt_nonneg (2 * E))
+      _ ≤ ENNReal.ofReal (Df * max 1 ((hsNorm K ^ 2) ^ r)) := by
+          refine ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right ?_
+            (by positivity : (0 : ℝ) ≤ max 1 ((hsNorm K ^ 2) ^ r)))
+          have h1 : (0 : ℝ) < 1 - psi := by linarith
+          have h2 : (0 : ℝ) ≤ 2 + 2 / (1 - psi) :=
+            (add_pos (by norm_num) (div_pos (by norm_num) h1)).le
+          exact le_add_of_nonneg_left
+            (mul_nonneg (mul_nonneg (abs_nonneg c) hMR) h2)
+  refine ⟨hL2col, hL2row, hL1col, ?_, ?_, ?_⟩
+  · intro y
+    have h := hL2col 0 y
+    rwa [pow_zero, max_self, mul_one] at h
+  · intro y
+    have h := hL2row 0 y
+    rwa [pow_zero, max_self, mul_one] at h
+  · intro y
+    have h := hL1col 0 y
+    rwa [pow_zero, max_self, mul_one] at h
+
+/-- The `hEK1`-shape: uniform section-`L²` bound of the Riesz kernel (lintegral form). -/
+theorem rieszKernel_lintSq {psi c : ℝ} {omega : ℝ → ℝ} {MR : ℝ}
+    (hpow : AEStronglyMeasurable (fun p : ℝ × ℝ => |p.1 - p.2| ^ (-psi)) vol2)
+    (homega : Measurable omega) (hbdd : ∀ x : ℝ, |omega x| ≤ MR)
+    (hg : Integrable (fun p : ℝ × ℝ => |p.1 - p.2| ^ (-2 * psi)) vol2)
+    (hconst : ∀ x y : ℝ, (I : Set ℝ).indicator omega x = (I : Set ℝ).indicator omega y)
+    (hpsi2 : 2 * psi < 1) (hpsi0 : 0 ≤ psi) (y : ℝ) :
+    ∫⁻ a : ℝ, ENNReal.ofReal |rieszKernel psi c omega (a, y)| ^ 2 ∂vol
+      ≤ ENNReal.ofReal (c ^ 2 * MR ^ 2 * (2 + 2 / (1 - 2 * psi))) :=
+  (rieszKernel_sectionBounds_package hpow homega hbdd hg hconst hpsi2 hpsi0).2.2.2.1 y
+
+/-- The `hEK2`-shape: uniform transposed section-`L²` bound of the Riesz kernel. -/
+theorem rieszKernel_lintSq_symm {psi c : ℝ} {omega : ℝ → ℝ} {MR : ℝ}
+    (hpow : AEStronglyMeasurable (fun p : ℝ × ℝ => |p.1 - p.2| ^ (-psi)) vol2)
+    (homega : Measurable omega) (hbdd : ∀ x : ℝ, |omega x| ≤ MR)
+    (hg : Integrable (fun p : ℝ × ℝ => |p.1 - p.2| ^ (-2 * psi)) vol2)
+    (hconst : ∀ x y : ℝ, (I : Set ℝ).indicator omega x = (I : Set ℝ).indicator omega y)
+    (hpsi2 : 2 * psi < 1) (hpsi0 : 0 ≤ psi) (y : ℝ) :
+    ∫⁻ a : ℝ, ENNReal.ofReal |rieszKernel psi c omega (y, a)| ^ 2 ∂vol
+      ≤ ENNReal.ofReal (c ^ 2 * MR ^ 2 * (2 + 2 / (1 - 2 * psi))) :=
+  (rieszKernel_sectionBounds_package hpow homega hbdd hg hconst hpsi2 hpsi0).2.2.2.2.1 y
+
+/-- The `hDK1`-shape: uniform section-`L¹` bound of the Riesz kernel (lintegral form). -/
+theorem rieszKernel_lintL1 {psi c : ℝ} {omega : ℝ → ℝ} {MR : ℝ}
+    (hpow : AEStronglyMeasurable (fun p : ℝ × ℝ => |p.1 - p.2| ^ (-psi)) vol2)
+    (homega : Measurable omega) (hbdd : ∀ x : ℝ, |omega x| ≤ MR)
+    (hg : Integrable (fun p : ℝ × ℝ => |p.1 - p.2| ^ (-2 * psi)) vol2)
+    (hconst : ∀ x y : ℝ, (I : Set ℝ).indicator omega x = (I : Set ℝ).indicator omega y)
+    (hpsi2 : 2 * psi < 1) (hpsi0 : 0 ≤ psi) (y : ℝ) :
+    ∫⁻ a : ℝ, ENNReal.ofReal |rieszKernel psi c omega (a, y)| ∂vol
+      ≤ ENNReal.ofReal (|c| * MR * (2 + 2 / (1 - psi))
+          + Real.sqrt (2 * (c ^ 2 * MR ^ 2 * (2 + 2 / (1 - 2 * psi))))) :=
+  (rieszKernel_sectionBounds_package hpow homega hbdd hg hconst hpsi2 hpsi0).2.2.2.2.2 y
+
+/-! ### Task 2: the cycle-encoding bridge (spec §7) -/
+
+/-- The two cyclic successors of the landed layers agree. -/
+private theorem finCyclicSucc_eq_cycleSucc' {k : ℕ} (i : Fin k) :
+    Hurst.finCyclicSucc i = cycleSucc i := by
+  by_cases h : i.val + 1 < k
+  · simp only [Hurst.finCyclicSucc, cycleSucc, dif_pos h]
+  · simp only [Hurst.finCyclicSucc, cycleSucc, dif_neg h]
+
+/-- The `Measure.pi vol^k`-integral equals the `volume^k`-integral for integrands
+supported on the `I^k`-cylinder (the general-`k` form of the landed `k = 2` transport
+`integral_pi_vol_eq_pi_volume`, via `restrict_pi_pi`). -/
+private theorem integral_pi_vol_eq_volume_cube (k : ℕ) (F : (Fin k → ℝ) → ℝ)
+    (hF : ∀ z : Fin k → ℝ,
+      F z = (Set.pi univ fun _ : Fin k => (I : Set ℝ)).indicator F z) :
+    (∫ z : Fin k → ℝ, F z ∂(Measure.pi fun _ : Fin k => vol))
+      = (∫ z : Fin k → ℝ, F z ∂(volume : Measure (Fin k → ℝ))) := by
+  have hmeasSet : MeasurableSet (Set.pi univ fun _ : Fin k => (I : Set ℝ)) :=
+    MeasurableSet.univ_pi fun _ => measurableSet_Icc
+  have hmeq : (Measure.pi fun _ : Fin k => (volume : Measure ℝ)).restrict
+      (Set.pi univ fun _ : Fin k => (I : Set ℝ))
+      = (Measure.pi fun _ : Fin k => vol).restrict
+        (Set.pi univ fun _ : Fin k => (I : Set ℝ)) := by
+    simp only [restrict_pi_pi, vol]
+    rw [Measure.restrict_restrict_of_subset (Set.Subset.refl (I : Set ℝ))]
+  have hint1 : (∫ z : Fin k → ℝ, F z ∂(Measure.pi fun _ : Fin k => vol))
+      = ∫ z : Fin k → ℝ, F z
+          ∂((Measure.pi fun _ : Fin k => vol).restrict
+            (Set.pi univ fun _ : Fin k => (I : Set ℝ))) := by
+    rw [integral_congr_ae (Filter.Eventually.of_forall hF), integral_indicator hmeasSet]
+  have hint2 : (∫ z : Fin k → ℝ, F z ∂(volume : Measure (Fin k → ℝ)))
+      = ∫ z : Fin k → ℝ, F z
+          ∂((volume : Measure (Fin k → ℝ)).restrict
+            (Set.pi univ fun _ : Fin k => (I : Set ℝ))) := by
+    rw [integral_congr_ae (Filter.Eventually.of_forall hF), integral_indicator hmeasSet]
+  rw [hint1, hint2]
+  exact congrArg (fun M : Measure (Fin k → ℝ) => ∫ z : Fin k → ℝ, F z ∂M) hmeq.symm
+
+/-- **The cycle-encoding bridge (spec §7)**: the HS `k`-cycle integral of the Riesz
+kernel IS the continuum weighted cycle integral, unconditionally for every `k`
+(the `vol^k`-integral of the cyclic kernel product transported along the
+`I^k`-cylinder restriction to `volume^k`; the integrands match by
+`finCyclicSucc_eq_cycleSucc'` and `rieszKernel_apply`).  This replaces the packaged
+`hW` hypothesis of `hasSum_weighted_of_gate`. -/
+theorem hW_bridge (psi c : ℝ) (omega : ℝ → ℝ) (k : ℕ) :
+    cycleIntegral k (rieszKernel psi c omega)
+      = Hurst.weightedRieszCycleIntegral k psi c omega := by
+  have hzero : ∀ z : Fin k → ℝ,
+      z ∉ (Set.pi univ fun _ : Fin k => (I : Set ℝ)) →
+      (∏ i : Fin k, rieszKernel psi c omega (z i, z (cycleSucc i))) = 0 := by
+    intro z hz
+    have hex : ∃ i : Fin k, z i ∉ (I : Set ℝ) := by
+      by_contra hall
+      refine hz fun i _ => not_not.mp fun hcon => hall ⟨i, hcon⟩
+    obtain ⟨i, hi⟩ := hex
+    refine Finset.prod_eq_zero (i := i) (Finset.mem_univ i) ?_
+    rw [rieszKernel_apply, Set.indicator_of_notMem hi]
+    ring
+  have hind : ∀ z : Fin k → ℝ,
+      (∏ i : Fin k, rieszKernel psi c omega (z i, z (cycleSucc i)))
+        = (Set.pi univ fun _ : Fin k => (I : Set ℝ)).indicator
+            (fun w : Fin k → ℝ =>
+              ∏ i : Fin k, rieszKernel psi c omega (w i, w (cycleSucc i))) z := by
+    intro z
+    by_cases hz : z ∈ (Set.pi univ fun _ : Fin k => (I : Set ℝ))
+    · rw [Set.indicator_of_mem hz]
+    · rw [Set.indicator_of_notMem hz]
+      exact hzero z hz
+  show (∫ z : Fin k → ℝ,
+      ∏ i : Fin k, rieszKernel psi c omega (z i, z (cycleSucc i))
+      ∂(Measure.pi fun _ : Fin k => vol)) = _
+  rw [integral_pi_vol_eq_volume_cube k _ hind, weightedRieszCycleIntegral_eq_kernelProd]
+  refine integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)
+  exact Finset.prod_congr rfl fun i _ => by rw [finCyclicSucc_eq_cycleSucc' i]
+
+/-! ### The capstone: the general-`k` HasSum at the constructed enumeration -/
+
+/-- **The capstone `HasSum` at the constructed enumeration (all `k ≥ 2`)**: the
+hypotheses are exactly the capstone Riesz data (`hpow homega hbdd hg hconst`), the
+feasibility window (`hpsi2 : 2 * psi < 1`, `hpsi0 : 0 ≤ psi`), a Hilbert basis `e`
+(any one works — `hBridge` is basis-uniform), and the two bridge clauses
+`hBridge`/`hPair`.  The packaged `hW` hypothesis and all six section-bound shapes are
+discharged internally (`hW_bridge`, `rieszKernel_sectionBounds_package`). -/
+theorem rieszSpectrumVal_hasSum_of_bridge
+    (psi c : ℝ) (omega : ℝ → ℝ) (MR : ℝ)
+    (hpow : AEStronglyMeasurable (fun p : ℝ × ℝ => |p.1 - p.2| ^ (-psi)) vol2)
+    (homega : Measurable omega) (hbdd : ∀ x : ℝ, |omega x| ≤ MR)
+    (hg : Integrable (fun p : ℝ × ℝ => |p.1 - p.2| ^ (-2 * psi)) vol2)
+    (hconst : ∀ x y : ℝ, (I : Set ℝ).indicator omega x = (I : Set ℝ).indicator omega y)
+    (hpsi2 : 2 * psi < 1) (hpsi0 : 0 ≤ psi)
+    (e : HilbertBasis ℕ ℝ L2)
+    (hBridge : ∀ j : ℕ, 2 ≤ j → ∀ (e' : HilbertBasis ℕ ℝ L2),
+      (∑' i : ℕ, inner ℝ
+        ((TOpEnd' (rieszKernel psi c omega) (hsKernel_rieszKernel hpow homega hbdd hg) ^ j)
+          (e' i)) (e' i))
+        = ∑' m : ℕ,
+          rieszSpectrumVal psi c omega MR hpow homega hbdd hg hconst m ^ j)
+    (hPair : ∀ (k : ℕ) (x : L2),
+      (TOp (rieszKernel psi c omega) (hsKernel_rieszKernel hpow homega hbdd hg))
+        ((TOp (compPowR (k - 2) (rieszKernel psi c omega))
+          (hsKernel_compPowR (k - 2) (measurable_rieszKernel homega)
+            (hsKernel_rieszKernel hpow homega hbdd hg))) x)
+        = (TOpEnd' (rieszKernel psi c omega)
+            (hsKernel_rieszKernel hpow homega hbdd hg) ^ k) x)
+    (k : ℕ) (hk : 2 ≤ k) :
+    HasSum (fun j : ℕ => rieszSpectrumVal psi c omega MR hpow homega hbdd hg hconst j ^ k)
+      (Hurst.weightedRieszCycleIntegral k psi c omega) := by
+  obtain ⟨hE1, hE2, hD1, hEK1, hEK2, hDK1⟩ :=
+    rieszKernel_sectionBounds_package hpow homega hbdd hg hconst hpsi2 hpsi0
+  exact hasSum_weighted_of_gate (rieszKernel psi c omega) psi c omega
+    (measurable_rieszKernel homega) (hsKernel_rieszKernel hpow homega hbdd hg)
+    (isCompactOperator_TOp_riesz hpow homega hbdd hg hconst)
+    (isSymmetric_TOp_rieszKernel hpow homega hbdd hg hconst)
+    (fun k (_ : 2 ≤ k) => hW_bridge psi c omega k)
+    (fun k => hsKernel_compPowR (k - 2) (measurable_rieszKernel homega)
+      (hsKernel_rieszKernel hpow homega hbdd hg))
+    e hBridge hPair hE1 hE2 hD1 hEK1 hEK2 hDK1
+    (isDiagEnum_of_entry
+      (rieszSpectrum_pack psi c omega MR hpow homega hbdd hg hconst).1)
+    (rieszSpectrum_pack psi c omega MR hpow homega hbdd hg hconst).2.1 k hk
+
+/-- **`hGen` at the constructed enumeration** — the CapstoneV3 `hGen` clause discharged
+by the two bridge hypotheses: the remaining hypotheses are exactly the capstone Riesz
+data, the feasibility window, `hpsi0 : 0 ≤ psi`, `hBridge`, `hPair`, and a Hilbert
+basis. -/
+theorem rieszSpectrumVal_hGen_of_bridge
+    (psi c : ℝ) (omega : ℝ → ℝ) (MR : ℝ)
+    (hpow : AEStronglyMeasurable (fun p : ℝ × ℝ => |p.1 - p.2| ^ (-psi)) vol2)
+    (homega : Measurable omega) (hbdd : ∀ x : ℝ, |omega x| ≤ MR)
+    (hg : Integrable (fun p : ℝ × ℝ => |p.1 - p.2| ^ (-2 * psi)) vol2)
+    (hconst : ∀ x y : ℝ, (I : Set ℝ).indicator omega x = (I : Set ℝ).indicator omega y)
+    (hpsi2 : 2 * psi < 1) (hpsi0 : 0 ≤ psi)
+    (e : HilbertBasis ℕ ℝ L2)
+    (hBridge : ∀ j : ℕ, 2 ≤ j → ∀ (e' : HilbertBasis ℕ ℝ L2),
+      (∑' i : ℕ, inner ℝ
+        ((TOpEnd' (rieszKernel psi c omega) (hsKernel_rieszKernel hpow homega hbdd hg) ^ j)
+          (e' i)) (e' i))
+        = ∑' m : ℕ,
+          rieszSpectrumVal psi c omega MR hpow homega hbdd hg hconst m ^ j)
+    (hPair : ∀ (k : ℕ) (x : L2),
+      (TOp (rieszKernel psi c omega) (hsKernel_rieszKernel hpow homega hbdd hg))
+        ((TOp (compPowR (k - 2) (rieszKernel psi c omega))
+          (hsKernel_compPowR (k - 2) (measurable_rieszKernel homega)
+            (hsKernel_rieszKernel hpow homega hbdd hg))) x)
+        = (TOpEnd' (rieszKernel psi c omega)
+            (hsKernel_rieszKernel hpow homega hbdd hg) ^ k) x)
+    (k : ℕ) (hk : 3 ≤ k) :
+    HasSum (fun j : ℕ => rieszSpectrumVal psi c omega MR hpow homega hbdd hg hconst j ^ k)
+      (Hurst.weightedRieszCycleIntegral k psi c omega) :=
+  rieszSpectrumVal_hasSum_of_bridge psi c omega MR hpow homega hbdd hg hconst hpsi2 hpsi0
+    e hBridge hPair k (le_trans (by norm_num : (2 : ℕ) ≤ 3) hk)
 
 end HS
 
