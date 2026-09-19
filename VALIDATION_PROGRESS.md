@@ -62,6 +62,20 @@ Lean 真实退出码(A_EXIT:0 / C_EXIT:0)仍保留于会话 exec 标准输出,�
 14:18 快照轮(源码快照已存 `verification/checkpoints/2026-09-18-1418/`,逐文件
 全量编译 + hash)结果将回填下表。
 
+## 15:2x:M1-C 最终落地(已提交 fcc2822)
+
+`Hurst/EndLevelTraceBridge.lean`(1291 行)**全绿落地**:全量日志 exit=0(0 字节日志)、
+olean 已产出、`#print axioms` 仅基础三条。交付:
+- `exists_diag_enumeration_clm`:抽象紧自伴 CLM 的对角枚举 + 多重性 + `|val j| ≤ ‖T‖`
+  (声明的偏差:一般紧 T 无法给出可和性,消费方从 `hBridge_clm` 的结论推导);
+- `hBridge_clm`:hTHS 基一致矩阵平方和假设(M1-B 的 A7 交付)+ **`Summable (val²)`
+  作为结论** + HasSum 形式(junk-tsum 依赖已消除);
+- `hBridge_clm_tsum`(tsum 形式推论)+ 新胶水 `summable_kappaSq_of_matrixSq`
+  (hTHS ⇒ `Summable κ²`,private)——**正是 M1-D 压缩路线的消费件**。
+逐声明耗时:max 10.3s(hBridge_clm),仅两处**局部** maxHeartbeats 注释(文件预算不变)。
+检查点:`verification/checkpoints/2026-09-18-1520-M1C/`(四件齐备)。
+**M1-D 依赖项 C ✔**;A(收敛中)/B(S、B、A7 进行中)/A8(进行中)落地后即派 M1-D2。
+
 ## 验收级编译检查点(2026-09-18 13:45,**证据降级**,见上)
 
 方法:`lake env lean <file> > /tmp/hurst-main-1345-<track>.log 2>&1`,退出码取自 Lean 本身
