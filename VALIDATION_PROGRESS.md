@@ -62,6 +62,18 @@ Lean 真实退出码(A_EXIT:0 / C_EXIT:0)仍保留于会话 exec 标准输出,�
 14:18 快照轮(源码快照已存 `verification/checkpoints/2026-09-18-1418/`,逐文件
 全量编译 + hash)结果将回填下表。
 
+## 17:1x:A8 最终落地(已提交 e05b356)
+
+`Hurst/FiniteMatrixTraceCycle.lean`(纯 Mathlib,无 sorry)**全绿落地**:exit=0 全量日志、
+olean 已产出、公理仅基础三条;检查点 `verification/checkpoints/2026-09-18-1714-A8/`
+(hash 自仓库根校验 2/2 OK,协议格式与 M1D1 略异——仓内相对路径,后续统一为目录内裸名)。
+交付(A8 = M1-D2 压缩路线的有限维核心):
+- `trace_pow_eq_cycleSum`:一般矩阵幂的迹 = 循环乘积和(`Fin (k+1)` 循环编码 k≥1,
+  声明偏差:k=0 字面情形为假);
+- `trace_Bm_eq_cycleSum`:√ 结构 B-矩阵的迹 = κ-加权循环和(√-伸缩相消需 `κ ≥ 0`);
+- `trace_WKm_eq_cycleSum`:WK-矩阵同循环和(无需符号条件)。
+**M1-D 依赖项 A8 ✔**;C ✔。剩余:A 收敛、B 的 S/B/A7 → M1-D2 派发。
+
 ## 15:2x:M1-C 最终落地(已提交 fcc2822)
 
 `Hurst/EndLevelTraceBridge.lean`(1291 行)**全绿落地**:全量日志 exit=0(0 字节日志)、
