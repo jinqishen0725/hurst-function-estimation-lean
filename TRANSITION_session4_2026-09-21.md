@@ -36,7 +36,7 @@
 | A8 有限迹恒等式 | `Hurst/FiniteMatrixTraceCycle.lean` | ✅ **全绿落地**:`trace_pow_eq_cycleSum`/`trace_Bm_eq_cycleSum`(κ≥0)/`trace_WKm_eq_cycleSum`;`Fin (k+1)` 编码 k≥1(声明偏差,k=0 字面为假);检查点 `2026-09-18-1714-A8/` | e05b356 |
 | M1-D1(非承重) | `Hurst/TracePairCycle.lean` | ✅ `tracePair_cyclic`(**角色降级**:S=√K 非 HS,cyclicity 移 S 不合法;保留为可复用工具);检查点 `2026-09-18-1500-M1D1/` | 81405a4 |
 | M1-B2(B 收尾) | `Hurst/PositiveSquareRoot.lean`(追加) | 🔄 **在途**(agent_73b98fef;独占该文件):exists_B_selfAdjoint_hs | — |
-| D2-pre 可数化 | `Hurst/CountableEigenfamily.lean`(新建) | 🔄 **在途**(agent_f46af92f;独占新文件):step0 ι 可数化 + SeparableSpace L2 | — |
+| D2-pre 可数化 | `Hurst/CountableEigenfamily.lean` | ✅ **全绿落地**(19:04,`a66acd7`):`instSeparableSpaceL2`(无条件,mathlib 可分测度链 + 局部 `Fact (2≠∞)` 补丁)、`dist_orthonormal_eq_sqrt_two`、`countable_of_orthonormal`、`exists_injective_to_nat`——step0 冻结签名逐字零偏差;契约缺口"ι 可数化"**关闭**;已入聚合层,增量 build 绿;检查点 `2026-09-21-1904-CountableEigenfamily` | a66acd7 |
 | D2-pre A4 扰动 | `Hurst/TracePerturbationEstimate.lean`(新建) | 🔄 **在途**(agent_4aa52870;独占新文件):A4 幂对角扰动估计(HS 型前提,对照 hTHS) | — |
 | M1-D2 压缩胶水 | `Hurst/EquivalentKernelSpectrum.lean`(未建) | ⏳ 等 B2 落地后派发(契约 §5;A8 恒等式/A8 工具、k 步核迭代、加权认同已落地;前置件在途) | — |
 
@@ -62,7 +62,30 @@ hc、双前提 hm+hess、删假合取、B 绑定定义式)。
 8. 语言纪律:hg 类"内部可消解前提"≠ hconst 类"不可满足前提",不得混用;
    编译通过 ≠ 目标完成。
 
-## 4. 开发与测试流程(subagent 编排与即时跟进)
+## 4. 开发与测试流程(⚠️ 2026-09-21 19:3x 政策变更:停用 subagent,主 agent 直接证明)
+
+**变更(用户指示)**:subagent 的 token 消耗对本 session 过高(B2 单 agent ~6.0M tokens,
+可数化 ~2.2M),即日起**停用 subagent 编排,全部形式化由主 agent 亲自完成**。原 4.2/4.3
+的多路派发/跟进协议不再使用;其中仍然有效的部分转为**主 agent 自律**:
+
+- **小块先行、逐轮编译**(原 4.2 小块纪律):每写一块立即 `lake env lean` 单文件
+  全量日志编译,绿了再写下一块;单声明同一错误卡壳 >2 次即上报 trace_state 原文
+  (向用户/协调方求助),不静默硬磨。
+- **落地即跟进**(原 4.3,自执行):每块落地 → 新鲜编译 + `lake build` 产 olean +
+  `#print axioms`(临时 /tmp scratch)→ 检查点四件套归档 → git 提交 → 部分集成
+  进 `Hurst.lean` 跑增量聚合 build → 更新 VALIDATION_PROGRESS 与本文件。
+- **冻结契约接口 + 声明式偏差回写**(原 4.1 契约相):不变——先数学后 Lean,
+  偏差必须回写规范与本文件;打包前提必须全量词域可满足(反例清单仍有效:
+  ∀k hPair、∀r 塔界+单 E、hconst)。
+- **验收 ≠ 编译绿**:公理审计 ⊆ 三条 + 可满足实例(equivalentKernel r)+
+  全量 build 日志,不变。
+- 已交付的 subagent 成果(B2 = `exists_B_selfAdjoint_hs`、可数化、A4 WIP)照常
+  验收消费;A4 agent 已被停止,其 WIP(`Hurst/TracePerturbationEstimate.lean`,
+  218 行,几何和恒等式 + 逐项界已就绪、4 组机械错误待修、HS 层未做)由主 agent
+  按"续作"接管(先编译评估真实剩余,不重做)。
+- 被停止的 M1-D2 主组装派发计划取消;D2 由主 agent 直接实现。
+
+以下 4.1–4.5 为历史记录(2026-09-18 协调多轮纠偏沉淀;除上述转自律者外不再执行)。
 
 本节是本轮验证实际运转并验证有效的编排流程,接管者照此执行。
 

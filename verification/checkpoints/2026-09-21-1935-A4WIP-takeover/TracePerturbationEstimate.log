@@ -1,0 +1,55 @@
+Hurst/TracePerturbationEstimate.lean:108:59: warning: Variable name `hy` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Hurst/TracePerturbationEstimate.lean:125:2: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+Hurst/TracePerturbationEstimate.lean:143:6: error: `ring_nf` made no progress on the goal
+Hurst/TracePerturbationEstimate.lean:147:4: error: Type mismatch
+  Finset.sum_congr rfl fun j hj => ?m.195
+has type
+  Finset.sum ?m.192 ?m.189 = Finset.sum ?m.192 ?m.190
+but is expected to have type
+  ∑ i ∈ Finset.range n, X * (X ^ i * (X - Y) * Y ^ (n - 1 - i)) + (X - Y) * Y ^ n =
+    ∑ k ∈ Finset.range n, X ^ (k + 1) * (X - Y) * Y ^ (n + 1 - 1 - (k + 1)) + (X - Y) * Y ^ n
+Hurst/TracePerturbationEstimate.lean:175:8: warning: `ContinuousLinearMap.sub_apply` has been deprecated: Use `sub_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.sub_apply` to `sub_apply x`).
+Hurst/TracePerturbationEstimate.lean:192:42: error: Application type mismatch: The argument
+  norm_nonneg ?m.585
+has type
+  0 ≤ ‖?m.585‖
+but is expected to have type
+  0 ≤ ‖X ^ j‖ * ‖X - Y‖
+in the application
+  mul_le_mul_of_nonneg_left hYj (norm_nonneg ?m.585)
+Hurst/TracePerturbationEstimate.lean:194:12: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a ^ ?m * ?a ^ ?n
+in the target expression
+  C ^ j * (‖X - Y‖ * C ^ (k - 1 - j)) = C ^ (k - 1) * ‖X - Y‖
+
+X Y : L2 →L[ℝ] L2
+C : ℝ
+hXn : ‖X‖ ≤ C
+hYn : ‖Y‖ ≤ C
+e : HilbertBasis ℕ ℝ L2
+i k : ℕ
+hk : 1 ≤ k
+hCpos : 0 ≤ C
+hsub : inner ℝ (e i) ((X ^ k) (e i)) - inner ℝ (e i) ((Y ^ k) (e i)) = inner ℝ (e i) ((X ^ k - Y ^ k) (e i))
+j : ℕ
+hj : j ∈ Finset.range k
+hjk : j < k
+hXj : ‖X ^ j‖ ≤ C ^ j
+hYj : ‖Y ^ (k - 1 - j)‖ ≤ C ^ (k - 1 - j)
+h1 : ‖X ^ j * (X - Y) * Y ^ (k - 1 - j)‖ ≤ ‖X ^ j‖ * ‖X - Y‖ * C ^ (k - 1 - j)
+⊢ C ^ j * (‖X - Y‖ * C ^ (k - 1 - j)) = C ^ (k - 1) * ‖X - Y‖
+Hurst/TracePerturbationEstimate.lean:199:12: error: Type mismatch
+  mul_le_mul_of_nonneg_right hXj (pow_nonneg (pow_nonneg hCpos ?m.735) ?m.736)
+has type
+  ‖X ^ j‖ * (C ^ ?m.735) ^ ?m.736 ≤ C ^ j * (C ^ ?m.735) ^ ?m.736
+but is expected to have type
+  ‖X ^ j * (X - Y) * Y ^ (k - 1 - j)‖ ≤ C ^ j * ‖X - Y‖ * C ^ (k - 1 - j)
+exit=1
