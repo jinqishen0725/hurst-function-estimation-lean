@@ -192,3 +192,62 @@ subagent completion report 一到,主 agent **立即**依次执行(本轮标准�
   `measure_mono_null` 未知名。接管时新鲜编译日志:`/tmp/takeover-{UnweightedRieszOperator,PositiveSquareRoot}.log`。
 - 聚合 `Hurst.lean` 不含 A/B/C/A8/D1 新模块(M1 验收时统一接入);
   mathlib v4.31.0,Lean 4.31.0,arm64。
+
+## 9. 接管执行日志(17:12 起,持续回写)
+
+- 17:12 接管者新鲜编译复核(`/tmp/takeover2-{A,B}.log`,全量重定向+真实退出码):
+  - **M1-A** = 6 错,与交接一致;首错 488:11 `MeasureTheory.Measure.measure_mono_null`
+    未知名(mathlib v4.31 该名在 `OuterMeasure/Basic.lean` 根级、不在
+    `MeasureTheory.Measure` 命名空间;另有 `measure_mono_null_ae`)。489/505 为级联。
+    **新发现潜伏错误**:511 起 `hsplit2` 在 live 文件被引用但从未定义
+    (14:18 快照有定义,live 重写时丢失)——前错中止 elaboration 才未爆出。
+  - **M1-B** = 2 错,与交接一致:822:4 unsolved(根因查明:`Summable.tsum_mul_left`
+    在 mathlib v4.31 的第一参数 `a` 是**显式**参数,`rw [Summable.tsum_mul_left]`
+    重写后遗留 `⊢ Summable (fun i => κ i ^ 2)` 副目标);764:0 whnf 800k 超时。
+  - 14:18 快照对比:快照是**另一中间态**(前段 5 错、后段绿);live 文件前段已修好
+    (hint2 块、hae 重写),但后段在重写时引入 hsplit2 丢失 + 687 行 summable_zero
+    路线改为 `by simp`(该处 `Summable fun i => (0:ℝ)` 的 ι 隐式推断失败,报
+    "don't know how to synthesize implicit argument β"——快照的
+    `funext i; simp [hκ0 i]` + `summable_zero` 路线可回移植)。
+- 修复策略(进行中):A 按块修(488 改 `Measure.measure_mono_null` 根级名或换
+  `measure_mono_null_ae`;505 hPair 改为 `abs` 分裂测度路线(快照 hΦ 可参考);
+  687 回移植快照 `summable_zero` 收尾);B 先修两处 `rw [Summable.tsum_mul_left _ hκ]`,
+  再以 /tmp 探针二分 764 whnf 超时块(临时探针文件不入库)。
+- 17:2x **重要发现:14:18 快照的后段也从未被编译过**(快照日志 498 错误中止了
+  integrable_laplace_integrand 的 tactic 块,其后所有行均未 elaboration;live 文件的
+  488 错误同理掩盖了 hsplit2 未定义、hinner/hstage 引用未定义 `ν`、`le_trans` 配
+  `< ⊤` 目标类型错误、`summable_zero` 不存在于 mathlib v4.31 等一批潜伏问题)。
+  **两个中间态文件的错误清单都不可信,以接管者重写为准。**
+- A 第一轮修复落地(我方重写,非快照移植):
+  - hae 改 `filter_upwards [hpos_ae]` + 合并 ofReal 形式
+    (`ofReal_norm` 经 deprecation 记录确认为 `ENNReal.ofReal ‖a‖ = ‖a‖ₑ`);
+  - hPair/hAB 两路 Fubini 改为单一 `hcomb` 可测性 + 一次 `lintegral_prod`;
+  - hinner:补 ν 全名、`lintegral_mul_const''` 前置 `hspos`(单变量 a.e. 正性,仿
+    live hnull 模式)+ `lintegral_congr_ae` 合并 ofReal 拆分;
+  - hstage:`← ENNReal.ofReal_mul` 方向修正;尾部 Schur 计算整体重写
+    (`lt_of_le_of_lt` + hsplitL/R + hdir1/2 + `lintegral_add_right'` 可和性拆分,
+    hdir 用 `lintegral_schur_dir`/`_swap` + 常数提出);
+  - eigenfamily 收尾:`Summable (fun i : ι => (0:ℝ))` 显式 ι 注记 +
+    `⟨0, tendsto_const_nhdf⟩`(mathlib v4.31 无 `summable_zero`/`hasSum_zero`)。
+- B 第一轮修复落地(重写处比交接文档记录多,超时掩盖了未编译段):
+  - 两处 `rw [Summable.tsum_mul_left _ hκ]`(显式首参;rw 闭目标,删 ring);
+  - `hHrowle`/`hHbound` 首弹的 `rw [hWk j]`(对不等式重写,非法)改 nlinarith 路线
+    (对齐 hGrowle 已验证模式);
+  - `hHrow` 族错误:H 的行族是 `κ j²·⟪v j, W (v i)⟫²`,原代码用了 `hsumv (W (v j))`
+    的 `⟪v i, W (v j)⟫²` 族——新增 `hfam`(inner 交换 + W 自伴逐点桥接)后 congr;
+  - `hHrowsum` 改 calc 链(族转换必须在 `tsum_mul_left` 之前,原 rw 链顺序错误)。
+- 当前在途:fixA2(A 第二轮,hstage 语句改合并内层形式)、fixB1(B 第一轮编译)。
+- 17:3x 第二轮结果(fixA2/fixB1):A 剩 2 错(hstage 语句形状 vs Fubini 拆分后目标——
+  改合并内层形式后消失级联);B 剩 7 错——**重写暴露的未编译段问题持续**:
+  hHrow 族 congr 的 beta-redex 不被 rw 穿透、hHrowsum 链 `.symm` 方向、
+  `summable_prod_of_nonneg`/`tsum_prod'` 均为**第一坐标**主序而 H 需要第二坐标坍缩、
+  结论合取从未被拆(原 764 超时前的骨架就没有 `⟨?_, ?_⟩`)。
+- **B H-侧最终方案(第三轮)**:`hfam`(注意本版 mathlib `real_inner_comm (x y) :
+  ⟪y, x⟫ = ⟪x, y⟫`,方向与旧版相反)⇒ `hHswapG : H p = G p.swap` **逐点相等**
+  ⇒ `hHb0` 有限部分和界(`Finset.sum_image` + swap 单射 + `Summable.sum_le_tsum`,
+  `classical` 提供 DecidableEq)⇒ `summable_of_sum_le` 得 `Summable H`、
+  `Real.tsum_le_of_sum_le` 得 `∑' H ≤ MR²∑κ²`。完全绕开 tsum_prod' 的坐标方向。
+  AM-GM 支配族改 `(1/2)·(G+H)` 形式(除法形状与 `Summable.mul_left` 不合)。
+- A 第三轮:剩余为 hX1m 链式 exact **少一个右括号**(解析错误 612)——拆出
+  `hX1r`/`hX1m` 两步消除深嵌套。
+- 当前在途:fixA4(A 第四轮)、fixB3(B 第三轮)。

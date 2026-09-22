@@ -1,0 +1,12 @@
+'HS.unweightedRieszKernel_symm' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.hsKernel_unweightedRieszKernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.isSymmetric_TOp_unweightedRiesz' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.isCompactOperator_TOp_unweightedRiesz' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.inner_TOp_unweightedRiesz_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.exists_nonneg_eigenfamily' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.mulOperator' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.mulOperator_symm' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.coeFn_mulOperator_action' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.exists_positive_sqrt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.summable_and_bound_matrix' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit=0
