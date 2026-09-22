@@ -1,0 +1,40 @@
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+Hurst/PositiveSquareRoot.lean:822:4: error: unsolved goals
+case refine_2.hf
+ι : Type
+κ : ι → ℝ
+v : ι → L2
+MR : ℝ
+hv : Orthonormal ℝ v
+hcomp : (span ℝ (range v))ᗮ = ⊥
+hκ0 : ∀ (i : ι), 0 ≤ κ i
+hκ : Summable fun i => κ i ^ 2
+W : L2 →L[ℝ] L2
+hWsymm : ∀ (x y : L2), inner ℝ (W x) y = inner ℝ x (W y)
+hWn : ∀ (u : L2), ‖W u‖ ≤ MR * ‖u‖
+hWk : ∀ (k : ι), ‖W (v k)‖ ≤ MR
+hpv : ∀ (u : L2), ‖u‖ ^ 2 = ∑' (i : ι), inner ℝ (v i) u ^ 2
+hsumv : ∀ (u : L2), Summable fun i => inner ℝ (v i) u ^ 2
+G : ι × ι → ℝ := fun p => κ p.1 ^ 2 * inner ℝ (v p.2) (W (v p.1)) ^ 2
+hGdef : G = fun p => κ p.1 ^ 2 * inner ℝ (v p.2) (W (v p.1)) ^ 2
+H : ι × ι → ℝ := fun p => κ p.2 ^ 2 * inner ℝ (v p.2) (W (v p.1)) ^ 2
+hHdef : H = fun p => κ p.2 ^ 2 * inner ℝ (v p.2) (W (v p.1)) ^ 2
+hGnn : ∀ (p : ι × ι), 0 ≤ G p
+hHnn : ∀ (p : ι × ι), 0 ≤ H p
+hGrow : ∀ (i : ι), Summable fun j => G (i, j)
+hGrowsum : ∀ (i : ι), ∑' (j : ι), G (i, j) = κ i ^ 2 * ‖W (v i)‖ ^ 2
+hGrowle : ∀ (i : ι), ∑' (j : ι), G (i, j) ≤ MR ^ 2 * κ i ^ 2
+hG1sum : Summable fun i => ∑' (j : ι), G (i, j)
+hG1 : Summable G
+⊢ Summable fun i => κ i ^ 2
+Hurst/PositiveSquareRoot.lean:764:0: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (800000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+exit=1
