@@ -300,39 +300,35 @@ subagent completion report 一到,主 agent **立即**依次执行(本轮标准�
 | 部分集成(6 模块入 `Hurst.lean`,聚合 build 9195 jobs 绿) | `Hurst.lean` | `build_session4_partial.log` | 471b35e |
 | spec §3 落地回写(B 绑定形态+hm 显式) | `milestone1_hconst_elimination_math_spec.md` | — | e0e15d4 |
 
-### 10.3 A4 扰动估计(`Hurst/TracePerturbationEstimate.lean`,约 570 行,**唯一在途件**;
-2026-09-22 更新:主 agent 续作多轮后,主定理仅剩 **3 处错误**(最新日志 `/tmp/a4_ha.log`)
-- 已绿(零 sorry):
-  - (i) `pow_sub_pow_eq_sum_range`(几何和因式分解,无条件,泛型 Ring);
-  - `norm_pow_le_of_norm_le`、`inner_pow_sub_inner_pow_le`(逐项界,无条件);
-  - (ii) `isSymmetric_pow`、`norm_pow_iter_le`、`pow_sq_comm`、
-    `diag_hs_pow_le`(迭代算子的基-HS 数据:Summable + ∑ ≤ C^{2m})、
-    `diag_pair_abs_tsum_le`(CS 配对:∑'|c_i| ≤ A·B)。
-- **主定理 `diag_pow_sub_diag_pow_le`(对角和版 A4)已基本写完**(j=0/m=0/middle
-  三 regime CS 配对 + 装配链 hstep0/hstep1/hdb)。**仅剩 3 处错误**(日志
-  `/tmp/a4_ha.log`),修法已定位:
-  1. **439:6(middle 分支)**:calc 结束后残留 `⊢ C ^ (k - 1) * D ≤ C ^ (k - 1) * D`
-     ——calc 末行 `_ = C ^ (k - 1) * D := mul_comm D (C ^ (k - 1))` 之后补一行
-     `exact le_refl _`(或把末行改为 `≤` 关系 + `rw [mul_comm D (C ^ (k - 1))]`);
-  2. **550:16(hdouble 的 summable_of_sum_le 第二参)**:`(fun u => by ...)` 块内
-     第二个 bullet 的收尾 `rw [Finset.sum_const, …]; push_cast; ring` 试图直接把
-     `∑_{j<k} (∑'_i |c_ij|) ≤ ↑k·C^{k-1}·D` 用 ring 闭掉——∑' 不透明,ring 不行。
-     修法:第二个 bullet 改为
-     `refine le_trans (Finset.sum_le_sum fun j _ => (hterm j hj).2) ?_`
-     (per-j 用 hterm 的结论 `∑'_i |c_ij| ≤ C^{k-1}·D`),再做 sum_const/数值;
-  3. **566:4(hstep1 内)**:`exact Finset.abs_sum_le_sum_abs` 因 instance/参数
-     metavar 未合——给显式参数:
-     `exact @Finset.abs_sum_le_sum_abs ℝ _ _ _ _ (fun j => …) (Finset.range k)`
-     (或 refine 带显式 f/s)。
-- **数学形态(协调员修正后定稿)**:前提**保留** `hZhs`/`hZhsC`(X−Y 的
-  基-对角 ℓ² 尺寸 ≤ D²)——**D 同时控制 X−Y 的 op 与 HS 尺寸**;压缩路线
-  step2(c) 必须供给 **HS-范数收敛** `‖B_N′ − B‖_HS → 0`(仅 op 收敛不足以推出
-  迹幂收敛)。冻结形 `‖X−Y‖_HS` 的偏差仅在:D 以「op 界 + hZhsC」组合出现,
-  而非单一 ‖·‖_HS 记号——此形态随 D2 回写规范 §5 缺口清单。
+### 10.3 A4 扰动估计(`Hurst/TracePerturbationEstimate.lean`)— ✅ **已落地**
+(2026-09-22 14:23,commit `d1a2f37`,检查点 `verification/checkpoints/2026-09-22-1423-A4/`)
 
-### 10.4 下一步(按序)
-1. 续完 `diag_pow_sub_diag_pow_le`(按 §10.3 的三点定位修,均为机械)→
-   新鲜编译绿 → 检查点 → 提交 → 入聚合层;
+- **落地状态**:exit=0、零 sorry、9 个公开定理(pow_sub_pow_eq_sum_range/
+  norm_pow_le_of_norm_le/inner_pow_sub_inner_pow_le/isSymmetric_pow/
+  norm_pow_iter_le/pow_sq_comm/diag_hs_pow_le/diag_pair_abs_tsum_le/
+  **diag_pow_sub_diag_pow_le**)公理均 ⊆ {propext, Classical.choice, Quot.sound};
+  已入聚合层,增量 `lake build Hurst` 绿(9197 jobs)。
+- **收尾记录**:三处机械错误按 2026-09-22 版定位逐一修复(439 le_refl 残留/
+  hdb 第二 bullet 用 hterm.2 + Finset.sum_le_sum/hstep1 abs_sum_le_sum_abs
+  显式 f/s)。连锁暴露两处新问题并已修:①hdouble 的 `summable_of_sum_le`
+  隐参 `c` 合成失败("don't know how to synthesize implicit argument c"——
+  项级 `(fun u => by …)` + postponed elaboration 的坑)→ 重构为具名
+  `hsumbound : ∀ u : Finset ℕ, …≤ k·C^{k−1}·D`,hdouble/hdb 由此派生;
+  ②v4.31 `ring` 只关**等式**目标,`≤` 目标报 "ring failed" → 改
+  `exact le_of_eq (by ring)`。
+- **落地前偏差自查(§4 纪律,已执行)**:(a) 方向核查过——装配链全部为
+  |tsumA−tsumB| = |tsum(A−B)| ≤ tsum|A−B| ≤ tsum(双重族) ≤ k·C^{k−1}·D,
+  middle 分支 calc 证等式后以 le_refl 转 ≤,sum_const 段以 le_of_eq (by ring)
+  转 ≤,无误用;(b) 前提全部被消费(hXsym/hYsym→CS 配对,hXn/hYn→幂范数,
+  hDn→中段 Z 界,hXhs/hYhs/hXhsC/hYhsC→diag_hs_pow_le,hZhs/hZhsC→CS 配对,
+  hXabs/hYabs→可和性,hk→三 regime 的 1≤k−1);文件头曾宣称不存在的定理
+  (colsSq_tsum_eq_matrixSq_tsum 等,旧草稿残留)已删除,重写为与实际声明
+  逐一对齐;(c) 签名 = 协调员定稿形态(hZhs/hZhsC 保留 + hXabs/hYabs
+  显式前提),"D 以 op 界 + hZhsC 组合替代单一 ‖·‖_HS 记号"的偏差已在
+  文件头声明,待随 D2 回写规范 §5 缺口清单。
+
+### 10.4 下一步(按序;2026-09-22 14:2x 更新)
+1. ~~续完 `diag_pow_sub_diag_pow_le`~~ ✅ **已完成**(d1a2f37,见 §10.3);
 2. **M1-D2 主组装**(契约 §5,A8–A9 压缩路线,主 agent 亲自做,不再派发):
    新文件 `Hurst/EquivalentKernelSpectrum.lean`——step0(用
    `countable_of_orthonormal`/`exists_injective_to_nat`)→ step1(A8:
@@ -345,7 +341,7 @@ subagent completion report 一到,主 agent **立即**依次执行(本轮标准�
    **ω := equivalentKernel r 实例化**(hm=`measurable_equivalentKernel`
    PositiveSquareRoot:304,hess=`aeBounded_equivalentKernel`:308);
    消费件:`exists_B_selfAdjoint_hs`(A7 界量化在结论)、`hBridge_clm`/
-   `exists_diag_enumeration_clm`(M1-C)。
+   `exists_diag_enumeration_clm`(M1-C);
 3. **M1 验收**(契约 §6):聚合补齐 + `lake build Hurst`(写 build.log)+
    `AxiomAudit` 追加 + `check_coverage.py`/`verify_axioms.py` + 实例化写入
    VALIDATION_PROGRESS;旧 `rieszSpectrumVal_hGen`/`*_v3_closed` 保留并注明
@@ -367,5 +363,12 @@ subagent completion report 一到,主 agent **立即**依次执行(本轮标准�
 - `Real.mul_rpow`/`rpow_half` 不存在(用 `← Real.sqrt_eq_rpow` + `Real.sqrt_sq`);
 - `Summable.of_norm_bounded (hf) (h : ∀ i, ‖g i‖ ≤ f i)` 需 double-abs 处理;
 - `inner_sum`(非 `inner_sum_right`);`abs_real_inner_le_norm (x y)` 显式参数。
+- **2026-09-22 新增(A4 收尾实测)**:`ring` **只关等式目标**,`≤` 目标直接
+  失败(报 "ring failed … use ring_nf"),改 `exact le_of_eq (by ring)`;
+  项级 `(fun u => by …)` 作引理实参 + postponed elaboration 会让隐参(如
+  `summable_of_sum_le` 的 `c`)合成失败,改具名 `have h : ∀ u, … := by
+  intro u; …` 后整块传入更稳;`Finset.abs_sum_le_sum_abs` 的 `f`/`s` 是
+  显式参数(裸用会 metavar 未合);tactic 错误恢复会掩盖后续段的真错误,
+  中间态错误清单不可信(以新鲜编译为准)。
 - **历史教训**:13:45/14:18 中间态错误清单不可信(tactic 中止掩盖未编译段);
   接手任何 WIP 先新鲜全量编译评估真实状态。

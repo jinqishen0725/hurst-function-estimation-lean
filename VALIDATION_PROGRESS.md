@@ -1,23 +1,34 @@
 # VALIDATION_PROGRESS（供协调 agent 检查；持续更新）
 
-更新:2026-09-21 18:40(Session-4 接管者;本块置顶,历史块在下)。
+更新:2026-09-22 14:2x(Session-4 接管者 2;本块置顶,历史块在下)。
 
-## 当前里程碑:M1(消除 hconst)— **暂停交接点 2026-09-21 20:1x**(详读 TRANSITION_session4 §10)
+## 当前里程碑:M1(消除 hconst)— **A4 已落地,进入 M1-D2 主组装**
 
-- **已落地提交**:M1-A 全齐、M1-B 完整(含 B2 `exists_B_selfAdjoint_hs`)、
-  M1-C、A8、M1-D1、D2-pre 可数化;聚合层 6 模块集成 build 绿;
-  spec §3 已回写。全部 exit=0、零 sorry、公理三条,检查点四件套齐全。
-- **唯一在途**:`Hurst/TracePerturbationEstimate.lean`(A4 对角和版,约 570 行,
-  零 sorry):层(i)几何和+逐项界+助手(CS 配对/迭代 HS 数据)全绿;主定理
-  `diag_pow_sub_diag_pow_le` 仅剩 **3 处机械错误**(位置与修法已逐条定位,见
-  TRANSITION_session4 §10.3 2026-09-22 版);数学形态经协调员修正:保留
-  hZhs/hZhsC(D 控制 X−Y 的 op+HS 尺寸),压缩路线须供 HS-范数收敛
-  (仅 op 不足)——文件头/文档已同步,op-only 表述已删除。
-- **政策**:subagent 停用(用户指示),主 agent 亲自证明;并新增**落地前偏差
-  自查**纪律(TRANSITION §4)。接管者按 TRANSITION_session4 §10.4 顺序续作:
-  ①A4 收尾(3 错,机械)→ ②M1-D2 主组装 `EquivalentKernelSpectrum.lean`
-  (ω := equivalentKernel r 实例化)→ ③M1 验收 → ④阻断 2/3/4 + 端点组装。
-- **mathlib v4.31 雷区清单**见 TRANSITION_session4 §10.5(实测,必读)。
+- **本轮新落地(2026-09-22 14:23,commit d1a2f37)**:`Hurst/TracePerturbationEstimate.lean`
+  (A4 对角和版,约 600 行)exit=0、零 sorry、9 个公开定理公理均 ⊆
+  {propext, Classical.choice, Quot.sound};检查点
+  `verification/checkpoints/2026-09-22-1423-A4/`;已入聚合层 `Hurst.lean`,
+  增量 `lake build Hurst` 绿(9197 jobs)。主定理 `HS.diag_pow_sub_diag_pow_le`
+  签名 = 协调员定稿形态(保留 hZhs/hZhsC,D 控制 X−Y 的 op+HS 尺寸;另加
+  hXabs/hYabs 幂对角可和性前提,文件头声明)。修复记录:三处机械错误按交接
+  定位修好,连锁暴露两处新问题(hdouble 的隐参 c 合成失败→重构为具名
+  hsumbound;v4.31 `ring` 只关等式→改 `le_of_eq (by ring)`)。文件头重写
+  以对齐实际声明(删除旧草稿的 colsSq/matrixSq 宣称)——雷区清单可加:
+  **`ring` 不处理 ≤ 目标;项级 `(fun u => by …)` 配 postponed elaboration
+  会引发隐参合成失败,改具名 `have` 更稳**。
+- **下一步**:任务 2 = M1-D2 主组装 `Hurst/EquivalentKernelSpectrum.lean`
+  (契约 §5,A8–A9 压缩路线,step0–step5,消费 CountableEigenfamily/
+  FiniteMatrixTraceCycle/A4 diag_pow_sub_diag_pow_le/A7 Bop_A7_matrix_summable_bound/
+  M1-C hBridge_clm;产出 diagSum_B_eq_weightedCycle +
+  exists_weightedRieszSpectrum_min + ω := equivalentKernel r 实例化)
+  → 任务 3 = M1 验收(聚合+build.log+AxiomAudit+check_coverage/verify_axioms
+  +实例化写入;旧 rieszSpectrumVal_hGen/*_v3_closed 注明 hconst 不可满足)
+  → 任务 4 = 阻断 2/3/4 + 端点组装。
+- **政策**:subagent 停用(用户指示),主 agent 亲自证明;落地前偏差自查
+  (方向/前提消费/签名比对)已对 A4 执行(a/b/c 三项过,记录见 TRANSITION
+  §10.3 更新)。
+- **mathlib v4.31 雷区清单**见 TRANSITION_session4 §10.5(实测,必读;本轮
+  新增 ring-≤ 与 fun-u-by 两条)。
 
 ---
 
