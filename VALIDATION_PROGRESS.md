@@ -2,7 +2,26 @@
 
 更新:2026-09-21 18:40(Session-4 接管者;本块置顶,历史块在下)。
 
-## 当前里程碑:M1(消除 hconst)— A/B 双落,三路并行在途
+## 当前里程碑:M1(消除 hconst)— **暂停交接点 2026-09-21 20:1x**(详读 TRANSITION_session4 §10)
+
+- **已落地提交**:M1-A 全齐、M1-B 完整(含 B2 `exists_B_selfAdjoint_hs`)、
+  M1-C、A8、M1-D1、D2-pre 可数化;聚合层 6 模块集成 build 绿;
+  spec §3 已回写。全部 exit=0、零 sorry、公理三条,检查点四件套齐全。
+- **唯一在途**:`Hurst/TracePerturbationEstimate.lean`(A4 对角和版,497 行,
+  零 sorry):层(i)几何和+逐项界+CS 配对助手全绿;主定理
+  `diag_pow_sub_diag_pow_le` 骨架完成,剩 6 处机械错误(三点修法见
+  TRANSITION_session4 §10.3)。
+- **政策**:subagent 停用(用户指示),主 agent 亲自证明;接管者按
+  TRANSITION_session4 §10.4 顺序续作:①A4 收尾 → ②M1-D2 主组装
+  `EquivalentKernelSpectrum.lean`(ω := equivalentKernel r 实例化)→
+  ③M1 验收 → ④阻断 2/3/4 + 端点组装。
+- **mathlib v4.31 雷区清单**见 TRANSITION_session4 §10.5(实测,必读)。
+
+---
+
+## 历史块:Session-4 接管执行记录(2026-09-21 17:12–20:1x)
+
+### 当前里程碑:M1(消除 hconst)— A/B 双落,三路并行在途
 
 - **M1-A LANDED**(commit e4d79d8):`Hurst/UnweightedRieszOperator.lean` exit=0、
   零 sorry、公理审计 6 关键定理仅依赖 {propext, Classical.choice, Quot.sound}。

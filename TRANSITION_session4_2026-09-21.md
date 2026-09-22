@@ -277,3 +277,84 @@ subagent completion report 一到,主 agent **立即**依次执行(本轮标准�
 - A 第三轮:剩余为 hX1m 链式 exact **少一个右括号**(解析错误 612)——拆出
   `hX1r`/`hX1m` 两步消除深嵌套。
 - 当前在途:fixA4(A 第四轮)、fixB3(B 第三轮)。
+
+## 10. 交接更新(2026-09-21 20:1x,接管者暂停点;供下一 agent 续作)
+
+### 10.1 政策变更(用户指示,已生效)
+- **停用 subagent**(token 成本过高:B2 ~6.0M、可数化 ~2.2M);一切形式化由
+  主 agent 亲自完成。§4 已改写(派发协议退役,有效部分转主 agent 自律)。
+- 被停止的 A4 agent 的 WIP 已由主 agent 接管续作(见 §10.3)。
+
+### 10.2 已落地并提交(全部 exit=0、零 sorry、公理 ⊆ 三条)
+| 件 | 文件 | 检查点 | 提交 |
+|---|---|---|---|
+| M1-A(§2 冻结接口全齐,A5 正性+特征族) | `Hurst/UnweightedRieszOperator.lean` | `2026-09-21-1827-M1A` | e4d79d8 |
+| M1-B 主体(mulOperator 层+sqrtOp 层+A7 核心) | `Hurst/PositiveSquareRoot.lean` | `2026-09-21-1832-M1B` | e4d79d8 |
+| M1-B2(B 完成件: `Bop` 绑定+`inner_Bop_matrix`+`A7_aux`+`Bop_A7_matrix_summable_bound`+`exists_B_selfAdjoint_hs`) | 同上(1120 行) | `2026-09-21-1924-M1B2` | e0e15d4 |
+| M1-C / A8 / M1-D1 | EndLevelTraceBridge / FiniteMatrixTraceCycle / TracePairCycle | 2026-09-18 系列 | fcc2822/e05b356/81405a4 |
+| D2-pre 可数化(`instSeparableSpaceL2` 无条件、`countable_of_orthonormal`、`exists_injective_to_nat`) | `Hurst/CountableEigenfamily.lean` | `2026-09-21-1904-CountableEigenfamily` | a66acd7 |
+| 部分集成(6 模块入 `Hurst.lean`,聚合 build 9195 jobs 绿) | `Hurst.lean` | `build_session4_partial.log` | 471b35e |
+| spec §3 落地回写(B 绑定形态+hm 显式) | `milestone1_hconst_elimination_math_spec.md` | — | e0e15d4 |
+
+### 10.3 A4 扰动估计(`Hurst/TracePerturbationEstimate.lean`,497 行,**唯一在途件**)
+- 已绿(文件内,当前编译仅剩主定理 6 处机械错误,无 sorry):
+  - (i) `pow_sub_pow_eq_sum_range`(几何和因式分解,无条件,泛型 Ring);
+  - `norm_pow_le_of_norm_le`、`inner_pow_sub_inner_pow_le`(逐项界,无条件);
+  - (ii) `isSymmetric_pow`、`norm_pow_iter_le`、`diag_hs_pow_le`(迭代算子的
+    基-HS 数据:Summable + ∑ ≤ C^{2m})、`diag_pair_abs_tsum_le`(CS 配对:
+    ∑'|c_i| ≤ A·B)。
+- **主定理 `diag_pow_sub_diag_pow_le`(对角和版 A4)骨架已写完**(几何和分解 +
+  三 regime CS 配对 + 有限和交换 + tsum 组装),剩 6 处机械错误(最新日志
+  `/tmp/a4_wip_latest.log`,行号 388/390/391/403/407/408),根因均为:
+  1. j=0 / m=0 分支:目标族的 `X ^ 0`、`k - 1 - 0`、`k - 1 - (k - 1)` 未归约——
+     在分支开头对 hterm 结论族先 `rw [pow_zero, one_mul, Nat.sub_zero]`(j=0)/
+     `rw [hzero]`(m=0,已有 hpair 内处理但**外层 Summable/goal 族未同步**),
+     再调 `diag_pair_abs_tsum_le`;
+  2. `Summable.of_norm_bounded` 的 hc 需 double-abs 形式
+     (`‖|c i|‖ ≤ |a_i*b_i|`:rw [Real.norm_eq_abs, abs_of_nonneg (abs_nonneg _),
+     abs_of_nonneg (mul_nonneg …)],参照文件内 `diag_pair_abs_tsum_le` 的写法);
+  3. diag_pair 的 A/B 依 hAu/hBv/hA0/hB0 顺序显式对位(j=0: A=D,B=C^{k-1};
+     m=0: A=C^{k-1},B=D;middle: A=C^j,B=D·C^m)。
+- 数学偏差(须随 D2 回写规范 §5 缺口清单):冻结形 `‖X−Y‖_HS` 改为 **op-范数 D**
+  ——对非迹类算子 `|tr Z| ≤ ‖Z‖_HS` 不真,op 版是 D2 step2(c) 实际消费的形态
+  (该步只需 `‖B_N′ − B‖_op → 0`)。
+
+### 10.4 下一步(按序)
+1. 续完 `diag_pow_sub_diag_pow_le`(按 §10.3 三点修)→ 新鲜编译绿 → 检查点
+   → 提交 → 入聚合层;
+2. **M1-D2 主组装**(契约 §5,A8–A9 压缩路线,主 agent 亲自做,不再派发):
+   新文件 `Hurst/EquivalentKernelSpectrum.lean`——step0(用
+   `countable_of_orthonormal`/`exists_injective_to_nat`)→ step1(A8:
+   `FiniteMatrixTraceCycle.trace_pow_eq_cycleSum`)→ step2(三项收敛,
+   消费 A4 的 `diag_pow_sub_diag_pow_le` + A7 的
+   `Bop_A7_matrix_summable_bound`)→ step3(取极限)→ step4(k 步核迭代,
+   `TOp_compPowR_apply`/`tracePair_comp_tsum`)→ step5(加权认同,
+   `weightedRieszCycleIntegral_eq_kernelProd`/`cycle2_rieszKernel_eq_weighted`);
+   产出 `diagSum_B_eq_weightedCycle` + `exists_weightedRieszSpectrum_min` +
+   **ω := equivalentKernel r 实例化**(hm=`measurable_equivalentKernel`
+   PositiveSquareRoot:304,hess=`aeBounded_equivalentKernel`:308);
+   消费件:`exists_B_selfAdjoint_hs`(A7 界量化在结论)、`hBridge_clm`/
+   `exists_diag_enumeration_clm`(M1-C)。
+3. **M1 验收**(契约 §6):聚合补齐 + `lake build Hurst`(写 build.log)+
+   `AxiomAudit` 追加 + `check_coverage.py`/`verify_axioms.py` + 实例化写入
+   VALIDATION_PROGRESS;旧 `rieszSpectrumVal_hGen`/`*_v3_closed` 保留并注明
+   "hconst 不可满足,实际模型走 EquivalentKernelSpectrum 线"。
+4. M1 之后(交接清单 §6 顺序):阻断 2(eventualCard 传播)→ 阻断 3(P5 归一化
+   能量 W8–W9)→ 阻断 4(23:B–D 一般带符号)→ 端点组装。
+
+### 10.5 mathlib v4.31 雷区清单(本轮实测,续作者必读)
+- `real_inner_comm (x y) : ⟪y, x⟫ = ⟪x, y⟫`(**方向与直觉相反**);
+- `pow_succ' (a) (n)` 需显式 n(泛型 Ring 处裸 `pow_succ' X` 解析到别的泛化);
+- `summable_zero`/`hasSum_zero`/`ENNReal.ofReal_nonneg`/`Measure.·.measure_mono_null`
+  **不存在**(替代:`⟨0, tendsto_const_nhdf⟩`、`ENNReal.ofReal_ne_top`、
+  根级 `measure_mono_null`);
+- `Summable.tsum_mul_left (a) (hf)` **a 显式**;`Summable.sum_le_tsum` 成员条件为
+  `∀ i ∉ s`;`Finset.sum_le_sum_of_subset` 需 CanonicallyOrdered(ℝ 上改用
+  `Finset.sum_image`/有限部分和);`Finset.sum_congr` 在 metavariable 上卡 instance
+  (先具名两侧具体和再 refine);
+- `mul_le_mul` 第 4 参数位是 `0 ≤ a`(按错误提示对位,或改 nlinarith);
+- `Real.mul_rpow`/`rpow_half` 不存在(用 `← Real.sqrt_eq_rpow` + `Real.sqrt_sq`);
+- `Summable.of_norm_bounded (hf) (h : ∀ i, ‖g i‖ ≤ f i)` 需 double-abs 处理;
+- `inner_sum`(非 `inner_sum_right`);`abs_real_inner_le_norm (x y)` 显式参数。
+- **历史教训**:13:45/14:18 中间态错误清单不可信(tactic 中止掩盖未编译段);
+  接手任何 WIP 先新鲜全量编译评估真实状态。

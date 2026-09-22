@@ -1,0 +1,154 @@
+Hurst/TracePerturbationEstimate.lean:109:59: warning: Variable name `hy` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Hurst/TracePerturbationEstimate.lean:126:2: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+Hurst/TracePerturbationEstimate.lean:177:8: warning: `ContinuousLinearMap.sub_apply` has been deprecated: Use `sub_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.sub_apply` to `sub_apply x`).
+Hurst/TracePerturbationEstimate.lean:207:10: warning: 'push_cast' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+Hurst/TracePerturbationEstimate.lean:238:22: warning: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
+Hurst/TracePerturbationEstimate.lean:239:6: warning: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
+Hurst/TracePerturbationEstimate.lean:240:8: warning: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
+Hurst/TracePerturbationEstimate.lean:241:8: warning: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
+Hurst/TracePerturbationEstimate.lean:253:6: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+Hurst/TracePerturbationEstimate.lean:259:31: warning: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
+Hurst/TracePerturbationEstimate.lean:352:15: warning: `ContinuousLinearMap.sub_apply` has been deprecated: Use `sub_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.sub_apply` to `sub_apply x`).
+Hurst/TracePerturbationEstimate.lean:367:14: warning: `ContinuousLinearMap.sum_apply` has been deprecated: Use `sum_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.sum_apply` to `sum_apply x`).
+Hurst/TracePerturbationEstimate.lean:384:12: warning: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
+Hurst/TracePerturbationEstimate.lean:388:10: error: Invalid rewrite argument: Expected an equality or iff proof or definition name, but `abs_real_inner_le_norm ?x
+  ?y` is a proof of
+  |inner ℝ ?x ?y| ≤ ‖?x‖ * ‖?y‖
+Hurst/TracePerturbationEstimate.lean:390:76: error: Application type mismatch: The argument
+  hpair
+has type
+  ∀ (i : ℕ), |inner ℝ (e i) (((X - Y) * Y ^ (k - 1)) (e i))| ≤ ‖(X - Y) (e i)‖ * ‖(Y ^ (k - 1)) (e i)‖
+but is expected to have type
+  ∀ (i : ℕ), ‖|inner ℝ (e i) ((X ^ 0 * (X - Y) * Y ^ (k - 1 - 0)) (e i))|‖ ≤ |‖(X - Y) (e i)‖ * ‖(Y ^ (k - 1)) (e i)‖|
+in the application
+  Summable.of_norm_bounded (summable_abs_mul_of_sq hZhs hYsum.left) hpair
+Hurst/TracePerturbationEstimate.lean:391:49: error: Application type mismatch: The argument
+  hZhsC
+has type
+  ∑' (i : ℕ), ‖(X - Y) (e i)‖ ^ 2 ≤ D ^ 2
+but is expected to have type
+  ∑' (i : ℕ), ‖(X - Y) (e i)‖ ^ 2 ≤ (C ^ (k - 1)) ^ 2
+in the application
+  diag_pair_abs_tsum_le hpair hZhs hYsum.left hZhsC
+Hurst/TracePerturbationEstimate.lean:403:31: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  1 * ?a
+in the target expression
+  |inner ℝ (e i) ((X ^ (k - 1) * (X - Y) * 1) (e i))| ≤ ‖(X ^ (k - 1)) (e i)‖ * ‖(X - Y) (e i)‖
+
+k✝ : ℕ
+X Y : L2 →L[ℝ] L2
+C D : ℝ
+hXsym : (↑X).IsSymmetric
+hYsym : (↑Y).IsSymmetric
+hXn : ‖X‖ ≤ C
+hYn : ‖Y‖ ≤ C
+hDn : ‖X - Y‖ ≤ D
+e : HilbertBasis ℕ ℝ L2
+hXhs : Summable fun i => ‖X (e i)‖ ^ 2
+hXhsC : ∑' (i : ℕ), ‖X (e i)‖ ^ 2 ≤ C ^ 2
+hYhs : Summable fun i => ‖Y (e i)‖ ^ 2
+hYhsC : ∑' (i : ℕ), ‖Y (e i)‖ ^ 2 ≤ C ^ 2
+hZhs : Summable fun i => ‖(X - Y) (e i)‖ ^ 2
+hZhsC : ∑' (i : ℕ), ‖(X - Y) (e i)‖ ^ 2 ≤ D ^ 2
+hXabs : Summable fun i => |inner ℝ (e i) ((X ^ k✝) (e i))|
+hYabs : Summable fun i => |inner ℝ (e i) ((Y ^ k✝) (e i))|
+k : ℕ
+hk : 2 ≤ k
+hD0 : 0 ≤ D
+hC0 : 0 ≤ C
+hX' : ∀ (u v : L2), inner ℝ (X u) v = inner ℝ u (X v)
+hY' : ∀ (u v : L2), inner ℝ (Y u) v = inner ℝ u (Y v)
+hZsym : ∀ (u v : L2), inner ℝ ((X - Y) u) v = inner ℝ u ((X - Y) v)
+hdec :
+  ∀ (i : ℕ),
+    inner ℝ (e i) ((X ^ k) (e i)) - inner ℝ (e i) ((Y ^ k) (e i)) =
+      ∑ j ∈ Finset.range k, inner ℝ (e i) ((X ^ j * (X - Y) * Y ^ (k - 1 - j)) (e i))
+hj : k - 1 ∈ Finset.range k
+hjk : k - 1 < k
+hjp : k - 1 ≥ 1
+hm0 hzero : k - 1 - (k - 1) = 0
+i : ℕ
+⊢ |inner ℝ (e i) ((X ^ (k - 1) * (X - Y) * 1) (e i))| ≤ ‖(X ^ (k - 1)) (e i)‖ * ‖(X - Y) (e i)‖
+Hurst/TracePerturbationEstimate.lean:407:79: error: Application type mismatch: The argument
+  hpair
+has type
+  ∀ (i : ℕ),
+    |inner ℝ (e i) ((X ^ (k - 1) * (X - Y) * Y ^ (k - 1 - (k - 1))) (e i))| ≤ ‖(X ^ (k - 1)) (e i)‖ * ‖(X - Y) (e i)‖
+but is expected to have type
+  ∀ (i : ℕ),
+    ‖|inner ℝ (e i) ((X ^ (k - 1) * (X - Y) * Y ^ (k - 1 - (k - 1))) (e i))|‖ ≤
+      |‖(X ^ (k - 1)) (e i)‖ * ‖(X - Y) (e i)‖|
+in the application
+  Summable.of_norm_bounded (summable_abs_mul_of_sq hXsum.left hZhs) hpair
+Hurst/TracePerturbationEstimate.lean:408:55: error: Application type mismatch: The argument
+  hXsum.right
+has type
+  ∑' (i : ℕ), ‖(X ^ (k - 1)) (e i)‖ ^ 2 ≤ C ^ (2 * (k - 1))
+but is expected to have type
+  ∑' (i : ℕ), ‖(X ^ (k - 1)) (e i)‖ ^ 2 ≤ (C ^ (k - 1)) ^ 2
+in the application
+  diag_pair_abs_tsum_le hpair hXsum.left hZhs hXsum.right
+Hurst/TracePerturbationEstimate.lean:415:14: warning: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
+Hurst/TracePerturbationEstimate.lean:415:45: warning: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
+Hurst/TracePerturbationEstimate.lean:417:12: error: Invalid rewrite argument: Expected an equality or iff proof or definition name, but `abs_real_inner_le_norm ?x
+  ?y` is a proof of
+  |inner ℝ ?x ?y| ≤ ‖?x‖ * ‖?y‖
+Hurst/TracePerturbationEstimate.lean:439:12: error: Type mismatch
+  hZdom i
+has type
+  ‖(X - Y) ((Y ^ (k - 1 - j)) (e i))‖ ^ 2 ≤ D ^ 2 * ‖Y (e i)‖ ^ 2
+but is expected to have type
+  ‖(X - Y) ((Y ^ (k - 1 - j)) (e i))‖ ^ 2 ≤ D ^ 2 * C ^ (2 * (k - 1 - j - 1)) * ‖Y (e i)‖ ^ 2
+Hurst/TracePerturbationEstimate.lean:444:15: error: (deterministic) timeout at `isDefEq`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+Hurst/TracePerturbationEstimate.lean:446:10: error: (deterministic) timeout at `«tactic execution»`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+Hurst/TracePerturbationEstimate.lean:457:8: error: (deterministic) timeout at `«tactic execution»`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+Hurst/TracePerturbationEstimate.lean:324:0: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+exit=1
