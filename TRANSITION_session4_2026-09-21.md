@@ -25,17 +25,20 @@
 
 **修复顺序(用户指定):1→2→3→4,最后端点组装。** 当前处于阻断 1 的里程碑 M1。
 
-## 2. M1(消除 hconst)记分板 @ 2026-09-21 17:02
+## 2. M1(消除 hconst)记分板 @ 2026-09-21 18:40(接管者更新)
 
 | 件 | 文件 | 状态 | 提交 |
 |---|---|---|---|
 | M1 契约 | `milestone1_hconst_elimination_math_spec.md` | **权威契约**(冻结签名+前提模型消解表+更正记录 1–7;§5 = D2 压缩路线) | be201e8…8a3db4e |
-| M1-A 无权算子 | `Hurst/UnweightedRieszOperator.lean`(696 行,**未提交**) | ⚠️ 中间态:exit=1,6 错(首错 488:11 `measure_mono_null` 未知名;489 no-goals;505 类型失配)。**13:45 曾全绿**(36 声明含 hc 版正性 `inner_TOp_unweightedRiesz_nonneg`/`exists_nonneg_eigenfamily`,证据降级见 §4)——收敛这 6 错即完成 | — |
-| M1-B 平方根/B | `Hurst/PositiveSquareRoot.lean`(878 行,**未提交**) | ⚠️ 中间态:exit=1,**仅 2 错**(764 whnf 800k 超时;822 unsolved)。乘法算子层(mulOperator+双前提 hm/hess+action+范数+equivalentKernel 适用性)与 specPair 可和层已绿;`exists_positive_sqrt`/B=S∘M∘S 绑定/A7 待收尾 | — |
+| M1-A 无权算子 | `Hurst/UnweightedRieszOperator.lean`(697 行) | ✅ **全绿落地**:exit=0、零 sorry、公理三条;§2 接口全齐(A5 正性 + 完备非负特征族);声明偏差 hc(更正 1)。检查点 `2026-09-21-1827-M1A` | e4d79d8 |
+| M1-B 平方根/B | `Hurst/PositiveSquareRoot.lean` | 🟡 **大部分落地**:exit=0、零 sorry、公理三条;mulOperator 层 + sqrtOp 层(S²=T/symm/nonneg + `exists_positive_sqrt`)+ A7 核心 `summable_and_bound_matrix` 全绿。**缺**:`exists_B_selfAdjoint_hs`(B 绑定+矩阵公式+任意基 A7 界)→ 已派发 B2 agent。检查点 `2026-09-21-1832-M1B` | e4d79d8 |
 | M1-C End 级迹桥 | `Hurst/EndLevelTraceBridge.lean`(1291 行) | ✅ **全绿落地**:`exists_diag_enumeration_clm`、`hBridge_clm`(hTHS 假设+Summable val² 结论+HasSum)、`hBridge_clm_tsum`、`summable_kappaSq_of_matrixSq`(M1-D 消费件);公理干净;检查点 `verification/checkpoints/2026-09-18-1520-M1C/` | fcc2822 |
 | A8 有限迹恒等式 | `Hurst/FiniteMatrixTraceCycle.lean` | ✅ **全绿落地**:`trace_pow_eq_cycleSum`/`trace_Bm_eq_cycleSum`(κ≥0)/`trace_WKm_eq_cycleSum`;`Fin (k+1)` 编码 k≥1(声明偏差,k=0 字面为假);检查点 `2026-09-18-1714-A8/` | e05b356 |
 | M1-D1(非承重) | `Hurst/TracePairCycle.lean` | ✅ `tracePair_cyclic`(**角色降级**:S=√K 非 HS,cyclicity 移 S 不合法;保留为可复用工具);检查点 `2026-09-18-1500-M1D1/` | 81405a4 |
-| M1-D2 压缩胶水 | `Hurst/EquivalentKernelSpectrum.lean`(未建) | ⏳ **未开始**——契约在规范 §5(A8–A9 路线:ι 可数化→A8 恒等式→三项收敛→加权认同→组装+equivalentKernel r 实例);依赖 A/B 落地 | — |
+| M1-B2(B 收尾) | `Hurst/PositiveSquareRoot.lean`(追加) | 🔄 **在途**(agent_73b98fef;独占该文件):exists_B_selfAdjoint_hs | — |
+| D2-pre 可数化 | `Hurst/CountableEigenfamily.lean`(新建) | 🔄 **在途**(agent_f46af92f;独占新文件):step0 ι 可数化 + SeparableSpace L2 | — |
+| D2-pre A4 扰动 | `Hurst/TracePerturbationEstimate.lean`(新建) | 🔄 **在途**(agent_4aa52870;独占新文件):A4 幂对角扰动估计(HS 型前提,对照 hTHS) | — |
+| M1-D2 压缩胶水 | `Hurst/EquivalentKernelSpectrum.lean`(未建) | ⏳ 等 B2 落地后派发(契约 §5;A8 恒等式/A8 工具、k 步核迭代、加权认同已落地;前置件在途) | — |
 
 中断原因:M1-A/B 两个 agent 于 09-18 19:27 触发 5 小时配额,文件停在中间态;
 接管者第一步 = 把 A(6 错)、B(2 错)收敛到绿(契约签名在规范 §2/§3,含全部更正:

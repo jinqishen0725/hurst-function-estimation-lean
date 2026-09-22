@@ -1,5 +1,43 @@
 # VALIDATION_PROGRESS（供协调 agent 检查；持续更新）
 
+更新:2026-09-21 18:40(Session-4 接管者;本块置顶,历史块在下)。
+
+## 当前里程碑:M1(消除 hconst)— A/B 双落,三路并行在途
+
+- **M1-A LANDED**(commit e4d79d8):`Hurst/UnweightedRieszOperator.lean` exit=0、
+  零 sorry、公理审计 6 关键定理仅依赖 {propext, Classical.choice, Quot.sound}。
+  检查点 `verification/checkpoints/2026-09-21-1827-M1A/`(源码+全量日志+sha256)。
+  冻结 §2 接口全齐:def/symm/HS/compact/symmetric + A5 正性
+  (`inner_TOp_unweightedRiesz_nonneg`,Γ–Laplace × exp-PSD 混合,Schur 可积性
+  `integrable_laplace_integrand` 在 A 内消解)+ `exists_nonneg_eigenfamily`
+  (κ≥0 + Summable κ²)。声明偏差:正性两定理带 `hc : 0 ≤ c`(契约更正 1,可满足)。
+- **M1-B 现有内容 LANDED**(同 commit):`Hurst/PositiveSquareRoot.lean` exit=0、
+  零 sorry、公理审计 5 关键定理三条基础公理。检查点
+  `verification/checkpoints/2026-09-21-1832-M1B/`。已齐:mulOperator 层
+  (hm+hess/action/symm/norm)、sqrtOp 层(S²=T/symm/nonneg/norm,
+  `exists_positive_sqrt` 带附加 ‖S v i‖=√κ i 合取,真,加法性偏差)、
+  A7 核心 `summable_and_bound_matrix`(族 Σκ_iκ_j⟪v_j,W v_i⟫² ≤ MR²∑κ²,自伴 W)。
+  **未齐**:`exists_B_selfAdjoint_hs`(B=S∘M∘S 绑定+矩阵公式+任意基 A7 界)
+  ——已派发 B2 agent(独占该文件)。
+- **重要历史更正**:2026-09-18 13:45/14:18 两个中间态的错误清单**不可信**
+  (tactic 中止/超时掩盖大量未编译段:hsplit2 未定义、ν 未定义、hHrow 族错误、
+  结论合取未拆等十余处)。本轮全部以新鲜重编译逐轮收敛,A 重写 5 个块、
+  B 重写 4 个块;13:45 "曾全绿" 的 A 正性块说法与现状无法互证,以本轮为准。
+- **并行在途(18:3x 派发,3 路,文件互斥)**:
+  1. B2:exists_B_selfAdjoint_hs(独占 PositiveSquareRoot.lean 追加);
+  2. D2-pre:ι 可数化(新文件 Hurst/CountableEigenfamily.lean,含 SeparableSpace L2);
+  3. D2-pre:A4 型幂对角扰动估计(新文件 Hurst/TracePerturbationEstimate.lean,
+     HS 型前提形态对照 hTHS 声明)。
+- 下一步:B2 落地 ⇒ 派发 D2 主组装(`Hurst/EquivalentKernelSpectrum.lean`,
+  A8–A9 压缩路线,ω := equivalentKernel r 实例化)⇒ M1 验收
+  (聚合 import + lake build + AxiomAudit 追加 + check_coverage/verify_axioms)。
+- M1 后(契约 §1 顺序):阻断 2(FullChainEndpoint eventualCard)→ 阻断 3(P5
+  归一化能量 W8–W9)→ 阻断 4(一般带符号 23:B–D)→ 端点组装。
+
+---
+
+# 历史块(2026-09-18 validation 轮)
+
 更新:2026-09-18(独立 validation 轮启动)。
 
 ## 13:38 定时短查执行记录
