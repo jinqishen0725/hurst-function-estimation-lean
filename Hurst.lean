@@ -652,3 +652,4 @@ import Hurst.FiniteMatrixTraceCycle
 import Hurst.EndLevelTraceBridge
 import Hurst.UnweightedRieszOperator
 import Hurst.PositiveSquareRoot
+import Hurst.CountableEigenfamily
