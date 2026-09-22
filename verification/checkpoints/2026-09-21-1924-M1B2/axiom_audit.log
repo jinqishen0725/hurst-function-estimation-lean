@@ -1,0 +1,6 @@
+'HS.Bop' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.Bop_symm' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.inner_Bop_matrix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.Bop_A7_matrix_summable_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.exists_B_selfAdjoint_hs' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit=0

@@ -164,6 +164,21 @@ theorem exists_B_selfAdjoint_hs {omega : ℝ → ℝ} {MR : ℝ}
 `≤ ‖ω‖∞²·∑κ²`、可和性;③`B (v i)` 的 `√(κ_iκ_j)`-矩阵结构必须作为命名定理可独立
 消费——M1-D 依赖这三件。签名细化后**必须回写本文件**。)
 
+### §3 落地回写(2026-09-21 19:2x,B2 交付后;检查点 2026-09-21-<TS>-M1B2)
+
+`exists_B_selfAdjoint_hs` 及配套件已全部落地于 `Hurst/PositiveSquareRoot.lean`
+(exit=0、零 sorry、公理三条),落地签名相对本节伪码的**声明式偏差**:
+
+1. S 的绑定对象 = `HS.sqrtOp hv he hκ0`(文件内正平方根,S²=T 由 `sqrtOp_sq`
+   交付);复合写作 bundled 算子复合 `(sqrtOp …).comp ((mulOperator …).comp (sqrtOp …))`
+   (函数级 `∘` 经 `ContinuousLinearMap.coe_comp` 定义等价可得)。
+2. `mulOperator` 显式携带 `hm : Measurable omega`(本规范正文已要求;伪码漏写)。
+3. 消费接口(独立命名定理):`Bop`(定义)、`Bop_symm`(自伴)、`inner_Bop_matrix`
+   (矩阵公式,与冻结文本逐字一致)、`Bop_A7_matrix_summable_bound`(对给定
+   HilbertBasis e 的 Summable + ≤ MR²∑κ²)、`A7_aux`(通用因子化:自伴 B +
+   v-矩阵界 ⟹ 任意基 A7 尾部,供下游复用)、`exists_B_selfAdjoint_hs`(冻结前提
+   原样;A7 界量化在结论,`∀ e : HilbertBasis ℕ ℝ L2`,C = MR²∑κ²)。
+
 ## 4. 冻结接口(M1-C → M1-D)
 
 模块 `Hurst/EndLevelTraceBridge.lean`(namespace HS):把 `EigenTraceBridge.hBridge`
