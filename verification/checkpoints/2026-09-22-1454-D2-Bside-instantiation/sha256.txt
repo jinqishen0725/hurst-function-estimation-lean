@@ -1,0 +1,2 @@
+cc3ccb0301e45a50bcb3d0b98ba9dc1b7890e3bb3c09d76c2c677167bf921d92  EquivalentKernelSpectrum.lean
+19eaf43821a7660ec323a87c8457bf74823beb296c39f5e01aa8a683aa50f061  EquivalentKernelSpectrum.log
