@@ -59,7 +59,88 @@ hc、双前提 hm+hess、删假合取、B 绑定定义式)。
 8. 语言纪律:hg 类"内部可消解前提"≠ hconst 类"不可满足前提",不得混用;
    编译通过 ≠ 目标完成。
 
-## 4. 历史检查点与证据等级(诚实记录)
+## 4. 开发与测试流程(subagent 编排与即时跟进)
+
+本节是本轮验证实际运转并验证有效的编排流程,接管者照此执行。
+
+### 4.1 总循环:数学契约 → 并行形式化 → 落地即跟进 → 集成验收
+
+每个里程碑按四相推进,任何一相不达标不进入下一相:
+
+1. **契约相(主 agent)**:写数学规范(如 `milestone1_*.md`)——冻结定理签名、
+   每个前提的"实际模型中如何消解"表、路线注释、预期缺口。契约是**可证伪初稿**:
+   执行中发现的错误(本轮 7 处:hc、假合取、本质有界、HS 条件等)必须声明式回写。
+2. **派发相(主 agent → 3–5 路 subagent)**:见 4.2。
+3. **跟进相(主 agent,不等全)**:见 4.3。
+4. **集成验收相(主 agent)**:见 4.4。
+
+### 4.2 subagent 派发纪律
+
+- **3–5 路并行,文件互斥**:每个 agent 恰好拥有一个新文件,绝不共写;
+  需要他人产出时以"冻结契约签名"为接口先行起草(条件化),不阻塞等待。
+- **任务书自包含**(agent 无会话记忆):①契约签名(逐字)+ 数学路线;
+  ②已落地工具地图(文件名+定理名,注明"READ first, import and glue, 勿重证");
+  ③编译协议(全量日志+真实退出码+单文件 lake env lean,禁 head 管道);
+  ④验收标准(exit 0、零 sorry、公理⊆三条、签名偏差须声明);
+  ⑤诚实报告要求(landed/not-landed、conditional/unconditional 分列,
+  不许把缺口写成"机械步骤"收尾)。
+- **解耦模式**:下游定理把上游结论打包为显式假设先编译通过(可立即验证组装
+  逻辑),上游落地后追加一行无条件推论。**反例警告**(本轮教训,审查前必须
+  检查):打包假设必须在全量词域上可满足——∀k hPair(k=1 假)、∀r 塔界+单一 E
+  (hsNorm>1 无解)、hconst(全域量词)都是不可满足打包,会使定理变空真。
+- **小块先行**:任务书明确"先落可编译小块并报最小编译检查点";
+  单点卡壳 >2 次同一错误 → agent 上报 trace_state 目标原文,主 agent 直接给修正项
+  或介入缩小目标;禁止 agent 长时间静默磨同一错误。
+- **依赖解锁通知**:上游落地→主 agent 用 SendMessage 把最终签名(含任何偏差)
+  即时发给在途下游;agent 因配额中断→快照其中间态+写交接,重启时按"续作"派发
+  (先编译评估真实剩余,不重做)。
+
+### 4.3 落地即跟进(核心原则:不等全员到齐)
+
+subagent completion report 一到,主 agent **立即**依次执行(本轮标准动作,全程
+分钟级,不与其它在途 agent 冲突):
+
+1. **验证**:对落地文件新鲜全量编译(不信任 agent 报告里的日志)+ `lake build`
+   产 olean + `#print axioms`(临时 /tmp scratch 文件,不入库)。
+2. **归档**:按检查点协议四件套(§3.1)存 `verification/checkpoints/<时刻>-<件>/`。
+3. **提交**:git add(文件+检查点目录),commit message 写明交付物与偏差。
+4. **传播**:解锁依赖 SendMessage;能立即消费的部分(如 import 下游、装配推论)
+   马上做;**部分集成**——每落一个模块就 import 入 `Hurst.lean` 跑增量 `lake build`,
+   不攒到收官(及早暴露聚合层冲突;本轮两次部分集成均提前发现命名空间/审计问题)。
+5. **同步**:`VALIDATION_PROGRESS.md` 回填(定理清单、日志路径、退出码、剩余对象),
+   供协调 agent 30 分钟只读检查。
+
+### 4.4 集成与测试验收(每里程碑一次)
+
+1. 全部新模块 import 入 `Hurst.lean`(注意命名空间:多数模块在根级 `HS.*`,
+   审计行前缀写错会产生 unknown-constant 混入日志)。
+2. `lake build Hurst > verification/build.log 2>&1`(真实退出码,日志尾部须有
+   `Build completed successfully`);此前**先等所有在途编译结束**(本轮曾发生
+   /tmp 与归档路径的双重竞写——归档目录必须专属,重跑前检查无同名任务在途)。
+3. `verification/AxiomAudit.lean` 追加新定理的 `#print axioms` 行 →
+   `lake env lean verification/AxiomAudit.lean > verification/axioms.log`
+   (0 个 `error:`;名字含 "error" 的定理不算)。
+4. `python3 scripts/check_coverage.py` + `python3 scripts/verify_axioms.py`
+   (后者会捕捉 coverage-审计漂移:模块提交了但未入聚合→缺名断言失败,本轮
+   P2CloseoutV2 即此例)。
+5. **适用性验收 ≠ 编译绿**:对里程碑目标定理给出实际模型实例化
+   (M1:ω := equivalentKernel r,hm/hess 由 `equivalentKernel_continuous`/
+   `equivalentKernel_bounded` 消解)并写入进度文件;无法实例化的部分列入
+   "未消解前提",不得宣称完成。
+6. 检查点目录、进度文件、交接文档(如里程碑收官)一并提交。
+
+### 4.5 监控与纠偏接口
+
+- 协调 agent 每 30 分钟本地只读检查 `VALIDATION_PROGRESS.md`(其配置见
+  [ZCODE_VALIDATION_MONITOR.md](ZCODE_VALIDATION_MONITOR.md));主 agent 保持该文件
+  **每次状态变化即更新**(当前里程碑、变更文件、已运行验证+日志路径+退出码、
+  未消解前提、下一步)。
+- 协调方的快照诊断分发前,先对最新源码重编译核对(快照滞后于活文件,
+  避免重修已解决的问题——本轮多次发生,已验证有效)。
+- 用户/协调方的纠偏建议按"先通知在途 agent(带时效提醒)→ 回写规范 → 更新进度
+  文件 → 提交"的顺序落实;与在途 agent 冲突的指示等其当前编译轮结束再应用。
+
+## 5. 历史检查点与证据等级(诚实记录)
 
 - **13:45 检查点(A/C exit=0)**:日志被 agent 同路径编译覆盖,仅存退出码文本
   (`verification/checkpoints/2026-09-18-1345-incident/`,README 说明)——**证据降级,
@@ -68,7 +149,7 @@ hc、双前提 hm+hess、删假合取、B 绑定定义式)。
 - 14:18 快照轮(三路中间态:A 5 错/B 4 错/C 7 错)归档完好,sha256 校验通过;
   其可复现性已被重复编译验证(同快照→同结果)。
 
-## 5. 接管者的执行清单(按序)
+## 6. 接管者的执行清单(按序)
 
 1. **收敛 M1-A**(6 错,文件已 696 行,曾全绿):对照规范 §2 签名;首错 488 行
    `measure_mono_null`(mathlib v4.31 可能改名,查 `Measure.measure_mono_null`/
@@ -86,7 +167,7 @@ hc、双前提 hm+hess、删假合取、B 绑定定义式)。
 5. **然后**按 §1 顺序:阻断 2(eventual 传播)、阻断 3(W8–W9 归一化能量重做 P5)、
    阻断 4(23:B–D 一般带符号)、最终端点组装。
 
-## 6. 资产与雷区
+## 7. 资产与雷区
 
 - **可复用资产(已提交,勿动)**:P1 实际谱幂和(`P1ActualPowerSums`)、
   通用 HS/Parseval/核复合工具(`TensorParsevalTracePair`、`TOpComposition`、
@@ -103,7 +184,7 @@ hc、双前提 hm+hess、删假合取、B 绑定定义式)。
   ([ZCODE_VALIDATION_MONITOR.md](ZCODE_VALIDATION_MONITOR.md));建议通过
   VALIDATION_PROGRESS.md 传递状态,纠偏建议会由用户粘贴过来。
 
-## 7. 验证快照(2026-09-21 17:02)
+## 8. 验证快照(2026-09-21 17:02)
 
 - HEAD `7814f84`;工作树未跟踪:A/B 两中间态文件 + 审查/监控文档
   (SESSION3_INDEPENDENT_REVIEW、Session3PremiseAudit、ZCODE_VALIDATION_MONITOR)。
