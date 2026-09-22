@@ -6,6 +6,15 @@ import Hurst.LevelCakeTransfer
 /-!
 # Capstone v3 CLOSED: the `k = 2` exact bridge `hTwo` discharged
 
+> **⚠️ M1 状态注记(2026-09-22,hconst 修复线)**:本文件及其消费链
+> (`rieszSpectrumVal_hGen` 等)的谱枚举路线依赖 `hconst`(全域量词的权重常值
+> 前提)——已被 Lean 证明**不可满足**(`verification/Session3PremiseAudit.lean`:
+> 与 `equivalentKernel_integral r = 1` 矛盾,含 r=1),**不能实例化到实际等价核**。
+> 实际模型走 `Hurst.EquivalentKernelSpectrum` 线
+> (M1:`B = K^{1/2} W K^{1/2}`;核侧迹幂恒等已无 hconst 落地为
+> `HS.diagSum_TOpRiesz_pow_eq_weightedCycle`)。本文件组合结构保留作可复用
+> 工具,不据其宣称任何"实际模型谱"结论。
+
 This file discharges the honest boundary hypothesis `hTwo` of
 `Hurst.CapstoneV3.actualQ1LongStatistic_tendsto_secondChaos_v3` — the `k = 2` exact
 spectral bridge `HasSum (fun j => val j ^ 2) (weightedRieszCycleIntegral 2 …)` for the

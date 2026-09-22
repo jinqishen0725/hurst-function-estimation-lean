@@ -10,6 +10,16 @@ import Hurst.EigenTraceBridge
 /-!
 # The general-`k` spectral bridge: foundations + section bounds + cycle bridge
 
+> **⚠️ M1 状态注记(2026-09-22,hconst 修复线)**:本文件的 `rieszSpectrumVal_hGen` /
+> `rieszSpectrumVal_hasSum_of_bridge` / `rieszSpectrumVal_hGen_of_bridge` 及其截面
+> 界打包 `rieszKernel_sectionBounds_package`(带 `hconst` 前提)服务于旧
+> P2 谱枚举线——`hconst` 已被 Lean 证明**不可满足**,该线不能实例化到实际等价核。
+> 实际模型走 `Hurst.EquivalentKernelSpectrum` 线(其
+> `rieszKernel_sectionBounds_nohconst` / `diagSum_TOpRiesz_pow_eq_weightedCycle`
+> 已去除 hconst)。本文件的 `hW_bridge`、`compPowR_section_aux`、
+> `hP_of_sectionBounds`、`gate/hasSum` 条件架构与 `hPair` 消费链均为无 hconst
+> 可复用工具(M1-D2 已实际消费)。
+
 ## Honest session status
 
 This file compiles with zero errors and zero sorries.  Landed here:

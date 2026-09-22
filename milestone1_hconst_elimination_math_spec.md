@@ -291,6 +291,31 @@ theorem exists_weightedRieszSpectrum_min (psi c : ℝ) (hc : 0 < c) (hpsi0 : 0 <
   `exists_weightedRieszSpectrum_min` 的 equivalentKernel 实例化。
 - Hilbert 基 `e` 仍是环境参数(内部待证事项,见 §1)。
 
+### §5 落地回写(2026-09-22,A4+D2 执行者;声明式偏差)
+
+- **A4 幂对角扰动估计已落地**(`Hurst/TracePerturbationEstimate.lean`,exit=0、零
+  sorry、公理三条),相对本节缺口文本的声明偏差:
+  1. 结论形 `|Diag_k(X)−Diag_k(Y)| ≤ k·C^{k−1}·D`,其中 `D` 以「op 界 `‖X−Y‖ ≤ D`
+     + 基-HS 界 `hZhsC : ∑'‖(X−Y)(e i)‖² ≤ D²`」组合出现,而非单一 `‖·‖_HS` 记号
+     (本仓无 Schatten API;协调员 2026-09-22 定稿形态);
+  2. 幂对角族可和性(`hXabs`/`hYabs`)为显式前提(一般有界算子的对角族不必可和,
+     tsum 会是 junk 值)——压缩路线须为截断族供给之。
+- **D2 主组装部分落地**(`Hurst/EquivalentKernelSpectrum.lean`,exit=0、零 sorry、
+  公理三条):
+  - **核侧(step3 右端+step4+step5)已无 hconst 全量落地**:
+    `diagSum_TOpRiesz_pow_eq_weightedCycle`(∀k≥2 ∀基:加权核算子幂对角和 =
+    weightedRieszCycleIntegral)+ 截面界六件套去 hconst 版
+    (`rieszKernel_sectionBounds_nohconst` 等);
+  - **B 侧 step0+B 绑定已落地**:`exists_Briesz_selfAdjoint_A7`(自伴+矩阵公式+
+    A7 界,hTHS 形);
+  - **ω := equivalentKernel r 实例化已落地**(模型侧前提全部消解,无 hconst):
+    `diagSum_TOpRiesz_pow_eq_weightedCycle_equiv`、`exists_Briesz_selfAdjoint_A7_equiv`。
+  - **仍未落地(缺口,完成前不算 M1 验收通过)**:①B 紧性(sqrtOp 有限秩截断论证,
+    hBridge_clm 消费需要);②压缩恒等式 Diag_k(B) = Diag_k((WK)^k)(A8–A9 路线
+    step0–3 的截断构造与三项收敛之 (a)(b);(c)=A4 已落地)。
+    `diagSum_B_eq_weightedCycle` 与 `exists_weightedRieszSpectrum_min` 因此
+    **本文件未产出**(按纪律不得把待证目标包装为前提)。
+
 ## 6. 验收标准(M1)
 
 1. A/B/C/D 四模块全部编译零错误、零 sorry;`#print axioms` 仅基础三条。
