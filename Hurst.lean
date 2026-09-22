@@ -653,3 +653,4 @@ import Hurst.EndLevelTraceBridge
 import Hurst.UnweightedRieszOperator
 import Hurst.PositiveSquareRoot
 import Hurst.CountableEigenfamily
+import Hurst.TracePerturbationEstimate
