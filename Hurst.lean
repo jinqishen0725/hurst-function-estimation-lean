@@ -645,3 +645,10 @@ import Hurst.TOpComposition
 import Hurst.EigenTraceBridge
 import Hurst.P2CloseoutV2
 import Hurst.GeneralKHasSumFinal
+
+-- M1 (hconst elimination) modules, partially integrated as they land (Session 4)
+import Hurst.TracePairCycle
+import Hurst.FiniteMatrixTraceCycle
+import Hurst.EndLevelTraceBridge
+import Hurst.UnweightedRieszOperator
+import Hurst.PositiveSquareRoot
