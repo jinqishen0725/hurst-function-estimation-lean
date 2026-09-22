@@ -1,35 +1,45 @@
 # VALIDATION_PROGRESS（供协调 agent 检查；持续更新）
 
-更新:2026-09-22 14:2x(Session-4 接管者 2;本块置顶,历史块在下)。
+更新:2026-09-22 15:1x(Session-4 接管者 2,本轮收官回写;历史块在下)。
 
-## 当前里程碑:M1(消除 hconst)— **A4 已落地,进入 M1-D2 主组装**
+## 当前里程碑:M1(消除 hconst)— **任务 1/2/3 完成(诚实口径:M1 验收未通过,缺口已登记)**
 
-- **本轮新落地(2026-09-22 14:23,commit d1a2f37)**:`Hurst/TracePerturbationEstimate.lean`
-  (A4 对角和版,约 600 行)exit=0、零 sorry、9 个公开定理公理均 ⊆
-  {propext, Classical.choice, Quot.sound};检查点
-  `verification/checkpoints/2026-09-22-1423-A4/`;已入聚合层 `Hurst.lean`,
-  增量 `lake build Hurst` 绿(9197 jobs)。主定理 `HS.diag_pow_sub_diag_pow_le`
-  签名 = 协调员定稿形态(保留 hZhs/hZhsC,D 控制 X−Y 的 op+HS 尺寸;另加
-  hXabs/hYabs 幂对角可和性前提,文件头声明)。修复记录:三处机械错误按交接
-  定位修好,连锁暴露两处新问题(hdouble 的隐参 c 合成失败→重构为具名
-  hsumbound;v4.31 `ring` 只关等式→改 `le_of_eq (by ring)`)。文件头重写
-  以对齐实际声明(删除旧草稿的 colsSq/matrixSq 宣称)——雷区清单可加:
-  **`ring` 不处理 ≤ 目标;项级 `(fun u => by …)` 配 postponed elaboration
-  会引发隐参合成失败,改具名 `have` 更稳**。
-- **下一步**:任务 2 = M1-D2 主组装 `Hurst/EquivalentKernelSpectrum.lean`
-  (契约 §5,A8–A9 压缩路线,step0–step5,消费 CountableEigenfamily/
-  FiniteMatrixTraceCycle/A4 diag_pow_sub_diag_pow_le/A7 Bop_A7_matrix_summable_bound/
-  M1-C hBridge_clm;产出 diagSum_B_eq_weightedCycle +
-  exists_weightedRieszSpectrum_min + ω := equivalentKernel r 实例化)
-  → 任务 3 = M1 验收(聚合+build.log+AxiomAudit+check_coverage/verify_axioms
-  +实例化写入;旧 rieszSpectrumVal_hGen/*_v3_closed 注明 hconst 不可满足)
-  → 任务 4 = 阻断 2/3/4 + 端点组装。
-- **政策**:subagent 停用(用户指示),主 agent 亲自证明;落地前偏差自查
-  (方向/前提消费/签名比对)已对 A4 执行(a/b/c 三项过,记录见 TRANSITION
-  §10.3 更新)。
-- **mathlib v4.31 雷区清单**见 TRANSITION_session4 §10.5(实测,必读;本轮
-  新增 ring-≤ 与 fun-u-by 两条)。
-
+- **本轮 landed(全部 exit=0、零 sorry、公理 ⊆ 三条、检查点+提交齐全)**:
+  1. **A4 收尾**(d1a2f37):`diag_pow_sub_diag_pow_le` 全绿;文件头重写对齐实际声明。
+  2. **M1-D2 核侧无 hconst**(ff550a3):`diagSum_TOpRiesz_pow_eq_weightedCycle`
+     —— ∀k≥2 ∀Hilbert 基:加权核算子 `TOp(rieszKernel psi c omega)` 的幂对角和
+     = `weightedRieszCycleIntegral k psi c omega`(可和性+恒等式)。旧
+     `rieszSpectrumVal_hGen` 线在此处消费 hconst 的环节被直接替换。配套:
+     `rieszKernel_section_sq_col`/`rieszKernel_sectionBounds_nohconst`/
+     `hP_rieszKernel_nohconst`(截面界六件套去 hconst)。
+  3. **M1-D2 B 侧 + 实例化**(b2007ec):`exists_Briesz_selfAdjoint_A7`
+     (模型 B 全套结构包:自伴+√(κᵢκⱼ) 矩阵公式+A7 界 hTHS 形)+
+     `diagSum_TOpRiesz_pow_eq_weightedCycle_equiv` +
+     `exists_Briesz_selfAdjoint_A7_equiv`(ω := equivalentKernel r,模型侧
+     前提全消解,**无 hconst**)。
+  4. **验收机械件**(b3119f7):AxiomAudit 追加 35 行(0 error、公理干净)、
+     `verification/build.log` 绿(9198 jobs)、check_coverage 27/27、
+     verify_axioms 全过(sorryAx false/custom_axioms false);旧线注记
+     (CapstoneV3Closed/GeneralKHasSumFinal 头部:hconst 不可满足,实际模型走
+     EquivalentKernelSpectrum 线);规范 §5 声明式回写(A4 偏差 + D2 部分落地)。
+- **not-landed(诚实登记,完成前不算 M1 验收通过)**:
+  ① **B 紧性**(sqrtOp 有限秩截断论证;`hBridge_clm` 消费需要);
+  ② **压缩恒等式 Diag_k(B) = Diag_k((WK)^k)**(A8–A9 路线 step0–3 的截断构造与
+  三项收敛 (a)(b);(c)=A4 已落地);
+  ③ 因此 `diagSum_B_eq_weightedCycle` 与 `exists_weightedRieszSpectrum_min`
+  **未产出**(纪律:不得把待证目标包装为前提),**M1 验收(契约 §6)未通过**。
+- **conditional/unconditional 分列**:本轮全部交付为 unconditional(相对其声明
+  前提;capstone Riesz 数据 hpow/hg 与可行窗口 0<ψ、2ψ<1 为数据前提,与旧线同);
+  conditional 件 = 旧线 rieszSpectrumVal_*/CapstoneV3Closed(已注记)。
+- **编译证据**:/tmp 快照对应各检查点目录内完整日志(内嵌 exit=0):
+  `2026-09-22-1423-A4`、`2026-09-22-1447-D2-kernelside`、
+  `2026-09-22-1454-D2-Bside-instantiation`;全量 build=`verification/build.log`。
+- **下一步(按 TRANSITION §10.4)**:①B 紧性(sqrtOp 截断;消费
+  `isCompactOperator_of_tendsto` + 有限维靶紧性);②压缩恒等式(截断族
+  K_N/B_N′ + A8 有限矩阵恒等式 + A4 已落地件);③之后 M1 验收复审;④阻断 2/3/4。
+- **mathlib v4.31 雷区清单**见 TRANSITION_session4 §10.5(本轮新增:
+  ring 不关 ≤ 目标;项级 fun u => by 隐参合成坑;Measurable.pow 指数是可测
+  函数非数值;私有助手跨文件不可见须本地复刻;set 折叠后隐参须显式命名传参)。
 ---
 
 ## 历史块:Session-4 接管执行记录(2026-09-21 17:12–20:1x)

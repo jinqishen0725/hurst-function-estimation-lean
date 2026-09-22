@@ -5,6 +5,15 @@
 本文件供接管 agent 使用;权威过程记录见 [VALIDATION_PROGRESS.md](VALIDATION_PROGRESS.md)
 (逐检查点、逐契约修正、含日志路径与退出码)。
 
+## 0. 2026-09-22 15:1x 收官快照(接管者 2;详读 VALIDATION_PROGRESS 置顶块)
+
+任务 1(A4)✅ d1a2f37;任务 2(D2)部分 ✅:核侧无 hconst 恒等式
+`diagSum_TOpRiesz_pow_eq_weightedCycle` + B 绑定 + equivalentKernel 实例化
+(ff550a3/b2007ec);任务 3 验收机械件全绿+旧线注记+规范回写(b3119f7)。
+**M1 验收未通过**(诚实口径):缺口 = B 紧性 + 压缩恒等式 Diag_k(B)=Diag_k((WK)^k)
+(`diagSum_B_eq_weightedCycle`/`exists_weightedRieszSpectrum_min` 未产出)。
+任务 4(阻断 2/3/4)本轮未开始。
+
 ## 1. 背景与使命(必读)
 
 上一轮(Session-3)宣称的"收官"被独立复核否决
@@ -327,8 +336,10 @@ subagent completion report 一到,主 agent **立即**依次执行(本轮标准�
   显式前提),"D 以 op 界 + hZhsC 组合替代单一 ‖·‖_HS 记号"的偏差已在
   文件头声明,待随 D2 回写规范 §5 缺口清单。
 
-### 10.4 下一步(按序;2026-09-22 14:2x 更新)
+### 10.4 下一步(按序;2026-09-22 15:1x 更新)
 1. ~~续完 `diag_pow_sub_diag_pow_le`~~ ✅ **已完成**(d1a2f37,见 §10.3);
+1b. ✅ D2 核侧+B 侧+实例化已落地(ff550a3/b2007ec),验收机械件绿(b3119f7);
+    **剩余**:B 紧性 + 压缩恒等式(见 VALIDATION_PROGRESS 置顶);
 2. **M1-D2 主组装**(契约 §5,A8–A9 压缩路线,主 agent 亲自做,不再派发):
    新文件 `Hurst/EquivalentKernelSpectrum.lean`——step0(用
    `countable_of_orthonormal`/`exists_injective_to_nat`)→ step1(A8:
