@@ -79,6 +79,10 @@ hc、双前提 hm+hess、删假合取、B 绑定定义式)。
   ∀k hPair、∀r 塔界+单 E、hconst)。
 - **验收 ≠ 编译绿**:公理审计 ⊆ 三条 + 可满足实例(equivalentKernel r)+
   全量 build 日志,不变。
+- **落地前偏差自查**(2026-09-22 用户指示,针对 A4 装配段曾用 `=` 应为 `≤`、
+  文档宣称 op-only 与签名不符两例):每块证明完成后,对照冻结契约逐项核对
+  (a) 等号/不等号方向与三角不等式的合法性;(b) 前提是否真的被消费、
+  有无文档宣称超出签名;(c) 签名与规范逐字比对。不允许文档描述领先于签名。
 - 已交付的 subagent 成果(B2 = `exists_B_selfAdjoint_hs`、可数化、A4 WIP)照常
   验收消费;A4 agent 已被停止,其 WIP(`Hurst/TracePerturbationEstimate.lean`,
   218 行,几何和恒等式 + 逐项界已就绪、4 组机械错误待修、HS 层未做)由主 agent
@@ -296,32 +300,39 @@ subagent completion report 一到,主 agent **立即**依次执行(本轮标准�
 | 部分集成(6 模块入 `Hurst.lean`,聚合 build 9195 jobs 绿) | `Hurst.lean` | `build_session4_partial.log` | 471b35e |
 | spec §3 落地回写(B 绑定形态+hm 显式) | `milestone1_hconst_elimination_math_spec.md` | — | e0e15d4 |
 
-### 10.3 A4 扰动估计(`Hurst/TracePerturbationEstimate.lean`,497 行,**唯一在途件**)
-- 已绿(文件内,当前编译仅剩主定理 6 处机械错误,无 sorry):
+### 10.3 A4 扰动估计(`Hurst/TracePerturbationEstimate.lean`,约 570 行,**唯一在途件**;
+2026-09-22 更新:主 agent 续作多轮后,主定理仅剩 **3 处错误**(最新日志 `/tmp/a4_ha.log`)
+- 已绿(零 sorry):
   - (i) `pow_sub_pow_eq_sum_range`(几何和因式分解,无条件,泛型 Ring);
   - `norm_pow_le_of_norm_le`、`inner_pow_sub_inner_pow_le`(逐项界,无条件);
-  - (ii) `isSymmetric_pow`、`norm_pow_iter_le`、`diag_hs_pow_le`(迭代算子的
-    基-HS 数据:Summable + ∑ ≤ C^{2m})、`diag_pair_abs_tsum_le`(CS 配对:
-    ∑'|c_i| ≤ A·B)。
-- **主定理 `diag_pow_sub_diag_pow_le`(对角和版 A4)骨架已写完**(几何和分解 +
-  三 regime CS 配对 + 有限和交换 + tsum 组装),剩 6 处机械错误(最新日志
-  `/tmp/a4_wip_latest.log`,行号 388/390/391/403/407/408),根因均为:
-  1. j=0 / m=0 分支:目标族的 `X ^ 0`、`k - 1 - 0`、`k - 1 - (k - 1)` 未归约——
-     在分支开头对 hterm 结论族先 `rw [pow_zero, one_mul, Nat.sub_zero]`(j=0)/
-     `rw [hzero]`(m=0,已有 hpair 内处理但**外层 Summable/goal 族未同步**),
-     再调 `diag_pair_abs_tsum_le`;
-  2. `Summable.of_norm_bounded` 的 hc 需 double-abs 形式
-     (`‖|c i|‖ ≤ |a_i*b_i|`:rw [Real.norm_eq_abs, abs_of_nonneg (abs_nonneg _),
-     abs_of_nonneg (mul_nonneg …)],参照文件内 `diag_pair_abs_tsum_le` 的写法);
-  3. diag_pair 的 A/B 依 hAu/hBv/hA0/hB0 顺序显式对位(j=0: A=D,B=C^{k-1};
-     m=0: A=C^{k-1},B=D;middle: A=C^j,B=D·C^m)。
-- 数学偏差(须随 D2 回写规范 §5 缺口清单):冻结形 `‖X−Y‖_HS` 改为 **op-范数 D**
-  ——对非迹类算子 `|tr Z| ≤ ‖Z‖_HS` 不真,op 版是 D2 step2(c) 实际消费的形态
-  (该步只需 `‖B_N′ − B‖_op → 0`)。
+  - (ii) `isSymmetric_pow`、`norm_pow_iter_le`、`pow_sq_comm`、
+    `diag_hs_pow_le`(迭代算子的基-HS 数据:Summable + ∑ ≤ C^{2m})、
+    `diag_pair_abs_tsum_le`(CS 配对:∑'|c_i| ≤ A·B)。
+- **主定理 `diag_pow_sub_diag_pow_le`(对角和版 A4)已基本写完**(j=0/m=0/middle
+  三 regime CS 配对 + 装配链 hstep0/hstep1/hdb)。**仅剩 3 处错误**(日志
+  `/tmp/a4_ha.log`),修法已定位:
+  1. **439:6(middle 分支)**:calc 结束后残留 `⊢ C ^ (k - 1) * D ≤ C ^ (k - 1) * D`
+     ——calc 末行 `_ = C ^ (k - 1) * D := mul_comm D (C ^ (k - 1))` 之后补一行
+     `exact le_refl _`(或把末行改为 `≤` 关系 + `rw [mul_comm D (C ^ (k - 1))]`);
+  2. **550:16(hdouble 的 summable_of_sum_le 第二参)**:`(fun u => by ...)` 块内
+     第二个 bullet 的收尾 `rw [Finset.sum_const, …]; push_cast; ring` 试图直接把
+     `∑_{j<k} (∑'_i |c_ij|) ≤ ↑k·C^{k-1}·D` 用 ring 闭掉——∑' 不透明,ring 不行。
+     修法:第二个 bullet 改为
+     `refine le_trans (Finset.sum_le_sum fun j _ => (hterm j hj).2) ?_`
+     (per-j 用 hterm 的结论 `∑'_i |c_ij| ≤ C^{k-1}·D`),再做 sum_const/数值;
+  3. **566:4(hstep1 内)**:`exact Finset.abs_sum_le_sum_abs` 因 instance/参数
+     metavar 未合——给显式参数:
+     `exact @Finset.abs_sum_le_sum_abs ℝ _ _ _ _ (fun j => …) (Finset.range k)`
+     (或 refine 带显式 f/s)。
+- **数学形态(协调员修正后定稿)**:前提**保留** `hZhs`/`hZhsC`(X−Y 的
+  基-对角 ℓ² 尺寸 ≤ D²)——**D 同时控制 X−Y 的 op 与 HS 尺寸**;压缩路线
+  step2(c) 必须供给 **HS-范数收敛** `‖B_N′ − B‖_HS → 0`(仅 op 收敛不足以推出
+  迹幂收敛)。冻结形 `‖X−Y‖_HS` 的偏差仅在:D 以「op 界 + hZhsC」组合出现,
+  而非单一 ‖·‖_HS 记号——此形态随 D2 回写规范 §5 缺口清单。
 
 ### 10.4 下一步(按序)
-1. 续完 `diag_pow_sub_diag_pow_le`(按 §10.3 三点修)→ 新鲜编译绿 → 检查点
-   → 提交 → 入聚合层;
+1. 续完 `diag_pow_sub_diag_pow_le`(按 §10.3 的三点定位修,均为机械)→
+   新鲜编译绿 → 检查点 → 提交 → 入聚合层;
 2. **M1-D2 主组装**(契约 §5,A8–A9 压缩路线,主 agent 亲自做,不再派发):
    新文件 `Hurst/EquivalentKernelSpectrum.lean`——step0(用
    `countable_of_orthonormal`/`exists_injective_to_nat`)→ step1(A8:

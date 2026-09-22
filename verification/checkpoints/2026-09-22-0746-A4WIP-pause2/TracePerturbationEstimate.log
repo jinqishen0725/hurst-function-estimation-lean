@@ -1,0 +1,149 @@
+Hurst/TracePerturbationEstimate.lean:109:59: warning: Variable name `hy` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Hurst/TracePerturbationEstimate.lean:126:2: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+Hurst/TracePerturbationEstimate.lean:177:8: warning: `ContinuousLinearMap.sub_apply` has been deprecated: Use `sub_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.sub_apply` to `sub_apply x`).
+Hurst/TracePerturbationEstimate.lean:207:10: warning: 'push_cast' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+Hurst/TracePerturbationEstimate.lean:241:22: warning: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
+Hurst/TracePerturbationEstimate.lean:242:6: warning: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
+Hurst/TracePerturbationEstimate.lean:243:8: warning: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
+Hurst/TracePerturbationEstimate.lean:244:8: warning: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
+Hurst/TracePerturbationEstimate.lean:256:6: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+Hurst/TracePerturbationEstimate.lean:262:31: warning: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
+Hurst/TracePerturbationEstimate.lean:271:29: warning: Variable name `hC` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Hurst/TracePerturbationEstimate.lean:366:15: warning: `ContinuousLinearMap.sub_apply` has been deprecated: Use `sub_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.sub_apply` to `sub_apply x`).
+Hurst/TracePerturbationEstimate.lean:381:14: warning: `ContinuousLinearMap.sum_apply` has been deprecated: Use `sum_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.sum_apply` to `sum_apply x`).
+Hurst/TracePerturbationEstimate.lean:399:12: warning: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
+Hurst/TracePerturbationEstimate.lean:424:14: warning: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
+Hurst/TracePerturbationEstimate.lean:444:14: warning: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
+Hurst/TracePerturbationEstimate.lean:444:45: warning: `ContinuousLinearMap.mul_apply` has been deprecated: Use `mul_apply_eq_comp` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.mul_apply` to `mul_apply_eq_comp x`).
+Hurst/TracePerturbationEstimate.lean:439:6: error: unsolved goals
+case inr.inr.calc.step
+X Y : L2 →L[ℝ] L2
+C D : ℝ
+hXsym : (↑X).IsSymmetric
+hYsym : (↑Y).IsSymmetric
+hXn : ‖X‖ ≤ C
+hYn : ‖Y‖ ≤ C
+hDn : ‖X - Y‖ ≤ D
+e : HilbertBasis ℕ ℝ L2
+hXhs : Summable fun i => ‖X (e i)‖ ^ 2
+hXhsC : ∑' (i : ℕ), ‖X (e i)‖ ^ 2 ≤ C ^ 2
+hYhs : Summable fun i => ‖Y (e i)‖ ^ 2
+hYhsC : ∑' (i : ℕ), ‖Y (e i)‖ ^ 2 ≤ C ^ 2
+hZhs : Summable fun i => ‖(X - Y) (e i)‖ ^ 2
+hZhsC : ∑' (i : ℕ), ‖(X - Y) (e i)‖ ^ 2 ≤ D ^ 2
+k : ℕ
+hk : 2 ≤ k
+hXabs : Summable fun i => |inner ℝ (e i) ((X ^ k) (e i))|
+hYabs : Summable fun i => |inner ℝ (e i) ((Y ^ k) (e i))|
+hD0 : 0 ≤ D
+hC0 : 0 ≤ C
+hX' : ∀ (u v : L2), inner ℝ (X u) v = inner ℝ u (X v)
+hY' : ∀ (u v : L2), inner ℝ (Y u) v = inner ℝ u (Y v)
+hZsym : ∀ (u v : L2), inner ℝ ((X - Y) u) v = inner ℝ u ((X - Y) v)
+hdec :
+  ∀ (i : ℕ),
+    inner ℝ (e i) ((X ^ k) (e i)) - inner ℝ (e i) ((Y ^ k) (e i)) =
+      ∑ j ∈ Finset.range k, inner ℝ (e i) ((X ^ j * (X - Y) * Y ^ (k - 1 - j)) (e i))
+j : ℕ
+hj : j ∈ Finset.range k
+hjk : j < k
+hjp : j ≥ 1
+hmp : k - 1 - j > 0
+hpair :
+  ∀ (i : ℕ),
+    |inner ℝ (e i) ((X ^ j * (X - Y) * Y ^ (k - 1 - j)) (e i))| ≤ ‖(X ^ j) (e i)‖ * ‖(X - Y) ((Y ^ (k - 1 - j)) (e i))‖
+hXsum : (Summable fun i => ‖(X ^ j) (e i)‖ ^ 2) ∧ ∑' (i : ℕ), ‖(X ^ j) (e i)‖ ^ 2 ≤ C ^ (2 * j)
+hYsum :
+  (Summable fun i => ‖(Y ^ (k - 1 - j)) (e i)‖ ^ 2) ∧ ∑' (i : ℕ), ‖(Y ^ (k - 1 - j)) (e i)‖ ^ 2 ≤ C ^ (2 * (k - 1 - j))
+hZdom : ∀ (i : ℕ), ‖(X - Y) ((Y ^ (k - 1 - j)) (e i))‖ ^ 2 ≤ D ^ 2 * C ^ (2 * (k - 1 - j - 1)) * ‖Y (e i)‖ ^ 2
+hZv : Summable fun i => ‖(X - Y) ((Y ^ (k - 1 - j)) (e i))‖ ^ 2
+hAu : ∑' (i : ℕ), ‖(X ^ j) (e i)‖ ^ 2 ≤ (C ^ j) ^ 2
+hZvC : ∑' (i : ℕ), ‖(X - Y) ((Y ^ (k - 1 - j)) (e i))‖ ^ 2 ≤ (D * C ^ (k - 1 - j)) ^ 2
+hbound : ∑' (i : ℕ), |inner ℝ (e i) ((X ^ j * (X - Y) * Y ^ (k - 1 - j)) (e i))| ≤ C ^ j * (D * C ^ (k - 1 - j))
+hsum : j + (k - 1 - j) = k - 1
+⊢ C ^ (k - 1) * D ≤ C ^ (k - 1) * D
+Hurst/TracePerturbationEstimate.lean:550:16: error: unsolved goals
+X Y : L2 →L[ℝ] L2
+C D : ℝ
+hXsym : (↑X).IsSymmetric
+hYsym : (↑Y).IsSymmetric
+hXn : ‖X‖ ≤ C
+hYn : ‖Y‖ ≤ C
+hDn : ‖X - Y‖ ≤ D
+e : HilbertBasis ℕ ℝ L2
+hXhs : Summable fun i => ‖X (e i)‖ ^ 2
+hXhsC : ∑' (i : ℕ), ‖X (e i)‖ ^ 2 ≤ C ^ 2
+hYhs : Summable fun i => ‖Y (e i)‖ ^ 2
+hYhsC : ∑' (i : ℕ), ‖Y (e i)‖ ^ 2 ≤ C ^ 2
+hZhs : Summable fun i => ‖(X - Y) (e i)‖ ^ 2
+hZhsC : ∑' (i : ℕ), ‖(X - Y) (e i)‖ ^ 2 ≤ D ^ 2
+k : ℕ
+hk : 2 ≤ k
+hXabs : Summable fun i => |inner ℝ (e i) ((X ^ k) (e i))|
+hYabs : Summable fun i => |inner ℝ (e i) ((Y ^ k) (e i))|
+hD0 : 0 ≤ D
+hC0 : 0 ≤ C
+hX' : ∀ (u v : L2), inner ℝ (X u) v = inner ℝ u (X v)
+hY' : ∀ (u v : L2), inner ℝ (Y u) v = inner ℝ u (Y v)
+hZsym : ∀ (u v : L2), inner ℝ ((X - Y) u) v = inner ℝ u ((X - Y) v)
+hdec :
+  ∀ (i : ℕ),
+    inner ℝ (e i) ((X ^ k) (e i)) - inner ℝ (e i) ((Y ^ k) (e i)) =
+      ∑ j ∈ Finset.range k, inner ℝ (e i) ((X ^ j * (X - Y) * Y ^ (k - 1 - j)) (e i))
+hterm :
+  ∀ j ∈ Finset.range k,
+    (Summable fun i => |inner ℝ (e i) ((X ^ j * (X - Y) * Y ^ (k - 1 - j)) (e i))|) ∧
+      ∑' (i : ℕ), |inner ℝ (e i) ((X ^ j * (X - Y) * Y ^ (k - 1 - j)) (e i))| ≤ C ^ (k - 1) * D
+habsdiff : Summable fun i => |inner ℝ (e i) ((X ^ k) (e i)) - inner ℝ (e i) ((Y ^ k) (e i))|
+hsubsumm : Summable fun i => inner ℝ (e i) ((X ^ k) (e i)) - inner ℝ (e i) ((Y ^ k) (e i))
+hAsumm : Summable fun i => inner ℝ (e i) ((X ^ k) (e i))
+hBsumm : Summable fun i => inner ℝ (e i) ((Y ^ k) (e i))
+hdouble : Summable fun i => ∑ j ∈ Finset.range k, |inner ℝ (e i) ((X ^ j * (X - Y) * Y ^ (k - 1 - j)) (e i))|
+u : Finset ℕ
+⊢ ∑ y ∈ Finset.range k, ∑ x ∈ u, |inner ℝ (e x) ((X ^ y * (X - Y) * Y ^ (k - 1 - y)) (e x))| ≤ ↑k * C ^ (k - 1) * D
+Hurst/TracePerturbationEstimate.lean:566:4: error: Type mismatch
+  Finset.abs_sum_le_sum_abs
+has type
+  ∀ (f : ?m.4266 → ?m.4267) (s : Finset ?m.4266), |∑ i ∈ s, f i| ≤ ∑ i ∈ s, |f i|
+but is expected to have type
+  |∑ j ∈ Finset.range k, inner ℝ (e i) ((X ^ j * (X - Y) * Y ^ (k - 1 - j)) (e i))| ≤
+    ∑ j ∈ Finset.range k, |inner ℝ (e i) ((X ^ j * (X - Y) * Y ^ (k - 1 - j)) (e i))|
+exit=1
