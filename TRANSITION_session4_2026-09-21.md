@@ -5,20 +5,28 @@
 本文件供接管 agent 使用;权威过程记录见 [VALIDATION_PROGRESS.md](VALIDATION_PROGRESS.md)
 (逐检查点、逐契约修正、含日志路径与退出码)。
 
-## 0. 2026-09-23 15:2x 快照(接管者 3;k=2 压缩恒等式闭环)
+## 0. 2026-09-23 16:2x 快照(接管者 3;k=2 闭环 + 一般 k 第 1 节)
 
 任务 1(k=2 闭环)✅ **d628418**:`Hurst/CompressionIdentity.lean`
 (exit=0、零 sorry、8 公理 ⊆ 三条、检查点 `2026-09-23-1508-CompressionK2`、
-增量 `lake build Hurst` 绿 9200 jobs)——`mulOperator_comp_TOp_riesz`
-(W∘T=TOp(rieszKernel),纯 a.e. congruence 无 Fubini)+
+增量 `lake build Hurst` 绿)——`mulOperator_comp_TOp_riesz`+
 `TOp_riesz_apply_eigenfamily` + 任意指标型张量 Parseval/cycle2 展开 +
 子引理②`diag2_TOpRiesz_eq_kappaWeighted_matrixSum` +
 子引理①`matrixSq_sum_eq_of_complete` + 组装 `diag2_Bop_eq_weightedCycle`
 (hTwo 的无 hconst 复现)+ `tsum_Briesz_valSq_eq_weightedCycle`
-(∑'val² = WRCI 2)。**唯一剩余缺口 = 一般 k≥3 截断路线**;M1 验收仍未
-通过(诚实口径),落地一般 k 后复审。
+(∑'val² = WRCI 2)。
+任务 2(一般 k)**第 1 节(解析核心)✅ 85c05ae**:
+`Hurst/CompressionGeneralK.lean`(exit=0、零 sorry、10 公理 ⊆ 三条、
+检查点 `2026-09-23-1616-CompressionGeneralK-s1`)——a.e. 运输 +
+`mulOperator_comp_TOp_gen`(对一切 HS 核)+ `hsNorm_add_le2` +
+`integrable_section_prod_ae` + `compKernel_sub_ae`(a.e. 次线性)+
+`hsNorm_compPowR_sub_le`(塔 Lipschitz)。**第 2–6 节未落地**
+(截断数据/有限秩 cyclicity 中段/核侧 cycle2 比较/B 侧 A4 极限/组装;
+中段用 tracePair_cyclic 替代 A8 矩阵桥,核侧用塔 Lipschitz 替代 A4 的
+自伴要求——路线全图在 CompressionGeneralK.lean 文件头)。M1 验收仍未
+通过(诚实口径)。
 
-## 0b. 2026-09-22 17:4x 快照(接管者 2 续;留档)
+## 0b. 2026-09-23 15:2x 快照(接管者 3;k=2 闭环时点;留档)
 
 任务 1(A4)✅ d1a2f37;任务 2(D2)大部分 ✅:核侧无 hconst 恒等式
 `diagSum_TOpRiesz_pow_eq_weightedCycle` + B 绑定 + equivalentKernel 实例化

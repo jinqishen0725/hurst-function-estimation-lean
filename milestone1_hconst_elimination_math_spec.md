@@ -345,6 +345,33 @@ theorem exists_weightedRieszSpectrum_min (psi c : ℝ) (hc : 0 < c) (hpsi0 : 0 <
    `exists_weightedRieszSpectrum_min`(∀k≥2 幂和)仍未产出,
    **M1 验收仍未通过**。
 
+### §5 落地回写(2026-09-23 下午,一般 k 路线第 1 节;声明式进度)
+
+**一般 k 截断路线的解析核心已落地**(接管者 3,85c05ae,新文件
+`Hurst/CompressionGeneralK.lean`;exit=0、零 sorry、10 条公开定理公理 ⊆ 三条;
+检查点 `verification/checkpoints/2026-09-23-1616-CompressionGeneralK-s1/`;
+已入聚合层,增量 build 绿)。相对本节路线注记的**架构偏差**(已在文件头声明):
+
+- **中段等式改走 `tracePair_cyclic`**:有限秩截断 `S N` 的循环移位给出
+  Diag_k((S_N∘W∘S_N)^k) = Diag_k((W∘S_N²)^k)(S-陷阱不触发——移动的是
+  有限秩 S_N 而非非-HS 的 S);原计划的 A8 有限矩阵桥不再承重(A8 已独立
+  落地于 FiniteMatrixTraceCycle,保留)。
+- **核侧极限改走 cycle2/塔 Lipschitz**(A4 的自伴要求对非对称的
+  TOp(ω·K_N) 不适用):`hsNorm_compPowR_sub_le`(塔 Lipschitz,
+  ≤ 2^{r+1}(r+1)M^r δ)+ `compKernel_sub_ae`(compKernel 的 a.e. 次线性,
+  依赖新件 `integrable_section_prod_ae`——混合截面的 a.e. L¹)+
+  `hsNorm_add_le2` + a.e. 运输三件。
+- **通用核版左乘恒等式** `mulOperator_comp_TOp_gen`(TOp(fun p => ω p.1 * K p)
+  = M_ω ∘ TOp K,对一切 HS 核 K;无 Fubini)——k=2 版 `mulOperator_comp_TOp_riesz`
+  的推广。
+- **仍未落地**(第 2–6 节):截断数据(S_N/T_N/K_N + κ²-尾 L² 收敛,
+  由 `countable_of_orthonormal` 的单射枚举 + 张量 Parseval)、有限秩
+  cyclicity 的幂重组代数、核侧 cycle2 差比较的组装、B 侧 A4 极限
+  (D_N-包装:op-界走 level-set 有限性路线,ℓ²-界走 A7-尾 +
+  `matrixSq_sum_eq_of_complete` 基运输)、最终 `diagSum_Bop_eq_weightedCycle`
+  (∀k≥2)+ `exists_weightedRieszSpectrum_min` + equivalentKernel r 实例化。
+  **M1 验收仍未通过**。
+
 ## 6. 验收标准(M1)
 
 1. A/B/C/D 四模块全部编译零错误、零 sorry;`#print axioms` 仅基础三条。

@@ -1,12 +1,51 @@
 # VALIDATION_PROGRESS（供协调 agent 检查；持续更新）
 
-更新:2026-09-23 15:2x(Session-4 接管者 3;**k=2 压缩恒等式已闭环落地**,在攻一般 k;历史块在下)。
+更新:2026-09-23 16:2x(Session-4 接管者 3;**k=2 压缩恒等式闭环 + 一般 k 路线
+解析核心(第 1 节)落地**;一般 k 的第 2–6 节未落地;历史块在下)。
 
-> 交接状态(2026-09-23 15:2x 更新):任务书 = `HANDOVER_PROMPT_session4_takeover4.md`。
-> **k=2 压缩恒等式已落地**(d628418,新文件 `Hurst/CompressionIdentity.lean`,
-> 检查点 `verification/checkpoints/2026-09-23-1508-CompressionK2/`,exit=0、
-> 零 sorry、8 条公开定理公理 ⊆ {propext, Classical.choice, Quot.sound},
-> 增量 `lake build Hurst` 绿 9200 jobs):
+> 交接状态(2026-09-23 16:2x 更新):任务书 = `HANDOVER_PROMPT_session4_takeover4.md`。
+> **本轮两块落地**:
+> ① **k=2 压缩恒等式闭环**(d628418,`Hurst/CompressionIdentity.lean`,
+> 检查点 `2026-09-23-1508-CompressionK2/`,exit=0、零 sorry、8 条公开定理
+> 公理 ⊆ 三条,增量 build 绿):
+> - `mulOperator_comp_TOp_riesz`(W∘T=TOp(rieszKernel),纯 a.e. congruence、
+>   无 Fubini)+ `TOp_riesz_apply_eigenfamily`(T_R v_j = κ_j•W v_j);
+> - `kernel_inner_eq_tsum_prodKernel'`/`cycle2_eq_tsum_pair'`(张量-ONB Parseval
+>   与 cycle2 矩阵展开的**任意指标型完备正交族**版);
+> - 子引理② `diag2_TOpRiesz_eq_kappaWeighted_matrixSum`
+>   (∑'⟪T_R²e_i,e_i⟫ = ∑'_{ι²}κᵢκⱼ⟪vᵢ,Wvⱼ⟫²);
+> - 子引理① `matrixSq_sum_eq_of_complete`(A7_aux 的 ENNReal 链全等式版);
+> - 组装 `diag2_Bop_eq_weightedCycle`:∀Hilbert 基,
+>   ∑'⟪(B^2)e_i,e_i⟫ = weightedRieszCycleIntegral 2 psi c omega
+>   —— **CapstoneV3 的 hTwo 在无 hconst 线上的完整复现**;
+> - `tsum_Briesz_valSq_eq_weightedCycle`(∑'val² = WRCI 2,
+>   exists_weightedRieszSpectrum_min 的 k=2 种子,结构包齐全)。
+> ② **一般 k 路线解析核心(第 1 节)**(85c05ae,新文件
+> `Hurst/CompressionGeneralK.lean`,检查点
+> `2026-09-23-1616-CompressionGeneralK-s1/`,exit=0、零 sorry、10 条公开定理
+> 公理 ⊆ 三条,增量 build 绿 9201 jobs):a.e. 运输三件
+> (`hSKernel_congr_ae`/`TOp_congr_ae`/`hsNorm_congr_ae`)+
+> `hsNorm_le_of_abs_le` + `hSKernel_weight_mul` +
+> **`mulOperator_comp_TOp_gen`**(TOp(ω·K) = M_ω∘TOp K 对一切 HS 核)+
+> `hsNorm_add_le2` + **`integrable_section_prod_ae`**(混合截面的 a.e. L¹,
+> 复用公开 `ae_section_memLp_fst/snd` 的 lift 模式)+ **`compKernel_sub_ae`**
+> (a.e. 次线性)+ **`hsNorm_compPowR_sub_le`**(塔 Lipschitz,
+> ≤ 2^{r+1}(r+1)M^r δ;注意 `hsNorm_compPowR_le` 已在 GeneralKPeelInduction
+> 落地,勿重名)。
+> **一般 k 路线第 2–6 节未落地**(截断数据 S_N/T_N/K_N+κ²-尾收敛、
+> 有限秩 cyclicity 中段等式 Diag_k(B_N)=Diag_k((W∘T_N)^k)(用已落地
+> tracePair_cyclic,有限秩因子绕开 S-陷阱,替代原计划的 A8 矩阵桥)、
+> 核侧 cycle2/塔比较(消费本轮塔 Lipschitz)、B 侧 A4 极限
+> (消费 matrixSq_sum_eq_of_complete 的 A7-尾)、组装
+> `diagSum_Bop_eq_weightedCycle`(∀k≥2)+`exists_weightedRieszSpectrum_min`
+> + equivalentKernel 实例化)。**M1 验收仍未通过**(诚实口径)。
+> 完整战术已写入 CompressionGeneralK.lean 文件头路线节。
+> v4.31 雷区新增:`∫`-calc 中 beta-redex 要 `show`/`dsimp only` 先 β-化;
+> `integral_sub` 方向是 ∫(f−g) = ∫f − ∫g;`Real.sqrt_sq`(√(a²)=|a|类)与
+> `Real.sq_sqrt`((√a)²=a)勿混;`pow_le_pow_left₀`(带 0≤a 前提);
+> `one_le_pow_of_le` 在 namespace Left 下且需 MulLeftMono(ℝ 无实例,
+> 1≤2^n 自证小归纳);`set_option ... in` 必须在 docstring **之前**;
+> 定理名先 grep 全库防重名(hsNorm_compPowR_le 撞名实录)。
 > - `mulOperator_comp_TOp_riesz`(W∘T=TOp(rieszKernel) 算子恒等式,纯 a.e.
 >   congruence、无 Fubini)+ `TOp_riesz_apply_eigenfamily`(T_R v_j = κ_j•W v_j);
 > - `kernel_inner_eq_tsum_prodKernel'`/`cycle2_eq_tsum_pair'`(张量-ONB Parseval
@@ -22,12 +61,6 @@
 > - `tsum_Briesz_valSq_eq_weightedCycle`:模型 B 的谱枚举平方和
 >   ∑'val² = weightedRieszCycleIntegral 2(exists_weightedRieszSpectrum_min 的
 >   k=2 种子,结构包齐全)。
-> **唯一剩余缺口 = 一般 k≥3 截断路线**(P_N/B_N′ 截断构造 + 收敛 (a)(b);
-> (c)=A4 已落地、A8 已落地)。**M1 验收仍未通过**(诚实口径):落地一般 k 后
-> 产出 `diagSum_B_eq_weightedCycle` + `exists_weightedRieszSpectrum_min` 再复审。
-> 声明偏差(已回写规范 §5):k=2 种子参数化(特征族为显式参数)、
-> mulOperator_comp_TOp_riesz 方向与 §5 草案相反且特化 Riesz 核。
-
 ## 上一轮交接状态(2026-09-22 置顶块,留档)
 
 > 交接状态(2026-09-23 更新):**最新接手任务书 =
