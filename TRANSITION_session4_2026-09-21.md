@@ -5,14 +5,17 @@
 本文件供接管 agent 使用;权威过程记录见 [VALIDATION_PROGRESS.md](VALIDATION_PROGRESS.md)
 (逐检查点、逐契约修正、含日志路径与退出码)。
 
-## 0. 2026-09-22 15:1x 收官快照(接管者 2;详读 VALIDATION_PROGRESS 置顶块)
+## 0. 2026-09-22 17:4x 快照(接管者 2 续;详读 VALIDATION_PROGRESS 置顶块)
 
-任务 1(A4)✅ d1a2f37;任务 2(D2)部分 ✅:核侧无 hconst 恒等式
+任务 1(A4)✅ d1a2f37;任务 2(D2)大部分 ✅:核侧无 hconst 恒等式
 `diagSum_TOpRiesz_pow_eq_weightedCycle` + B 绑定 + equivalentKernel 实例化
 (ff550a3/b2007ec);任务 3 验收机械件全绿+旧线注记+规范回写(b3119f7)。
-**M1 验收未通过**(诚实口径):缺口 = B 紧性 + 压缩恒等式 Diag_k(B)=Diag_k((WK)^k)
-(`diagSum_B_eq_weightedCycle`/`exists_weightedRieszSpectrum_min` 未产出)。
-任务 4(阻断 2/3/4)本轮未开始。
+续作推进:**缺口①(B 紧性)已关闭**——`Hurst/BopCompactness.lean`
+(sqrtOp 紧:B 紧,c0a72c7)+ `exists_Briesz_spectral_enumeration`
+(B 谱枚举组装,b8eac1b)。**M1 验收仍未通过**(诚实口径):唯一剩余缺口 =
+压缩恒等式 Diag_k(B)=Diag_k((WK)^k)(截断构造+收敛 (a)(b);(c)=A4 已落地;
+核侧已无 hconst 落地)。落地后与 B 枚举+核侧恒等式合成即收官。任务 4(阻断
+2/3/4)未开始。
 
 ## 1. 背景与使命(必读)
 

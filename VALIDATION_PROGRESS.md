@@ -2,9 +2,15 @@
 
 更新:2026-09-22 15:3x(Session-4 接管者 2,本轮收官;**会话已结束,等待下一 agent 接手**,历史块在下)。
 
-> 交接状态:下一 agent 的接手任务书已存根目录
-> `HANDOVER_PROMPT_session4_takeover3.md`(与 TRANSITION §0、本块配合使用;
-> 剩余两个缺口 = B 紧性 + 压缩恒等式,按其任务 1/2 顺序执行)。
+> 交接状态(17:4x 更新):接手任务书在根目录
+> `HANDOVER_PROMPT_session4_takeover3.md`。**原缺口①(B 紧性)已关闭**
+> (c0a72c7 `Hurst/BopCompactness.lean` + b8eac1b
+> `exists_Briesz_spectral_enumeration`:模型 B 带乘性精确、平方可和的谱枚举,
+> 幂对角 HasSum 到 ∑'val^k,∀k≥2)。**唯一剩余缺口 = 压缩恒等式
+> Diag_k(B) = Diag_k((WK)^k)**(截断构造+收敛 (a)(b);(c)=A4 已落地;
+> 核侧恒等式已无 hconst 落地)。落地该恒等式后与
+> `exists_Briesz_spectral_enumeration` + `diagSum_TOpRiesz_pow_eq_weightedCycle`
+> 合成即得 `exists_weightedRieszSpectrum_min`,M1 验收复审。
 
 ## 当前里程碑:M1(消除 hconst)— **任务 1/2/3 完成(诚实口径:M1 验收未通过,缺口已登记)**
 
