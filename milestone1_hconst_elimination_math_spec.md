@@ -316,6 +316,35 @@ theorem exists_weightedRieszSpectrum_min (psi c : ℝ) (hc : 0 < c) (hpsi0 : 0 <
     `diagSum_B_eq_weightedCycle` 与 `exists_weightedRieszSpectrum_min` 因此
     **本文件未产出**(按纪律不得把待证目标包装为前提)。
 
+### §5 落地回写(2026-09-23,k=2 压缩恒等式闭环;声明式偏差)
+
+**k=2 压缩恒等式已无 hconst 全量落地**(接管者 3,d628418,新文件
+`Hurst/CompressionIdentity.lean`;exit=0、零 sorry、8 条公开定理公理 ⊆ 三条;
+检查点 `verification/checkpoints/2026-09-23-1508-CompressionK2/`;已入聚合层,
+增量 `lake build Hurst` 绿)。相对本节文本的**声明偏差**:
+
+1. **k=2 种子参数化**:`diag2_Bop_eq_weightedCycle` 是
+   `diagSum_B_eq_weightedCycle`(∀k≥2)的 k=2 特例,且特征族数据
+   (ι v κ hv he hcomp hκ0 hκ)作为显式前提进入(非 B 定义内嵌的内部构造);
+   k=2 不需要 `hc`(特征族存在性由前提携带),`hc` 仅在存在性推论
+   `tsum_Briesz_valSq_eq_weightedCycle`(= `exists_weightedRieszSpectrum_min`
+   的 k=2 种子:结构包 + ∑'val² = weightedRieszCycleIntegral 2)中出现。
+2. **`mulOperator_comp_TOp_riesz` 方向与特化**:本节草案的
+   `mulOperator_comp_TOp` 写作 `(M_ω).comp (TOp K hK) = TOp (ω·K) hK'`(一般核);
+   落地版为 `TOp (rieszKernel psi c omega) hKR = (M_ω).comp (TOp (unweightedRieszKernel psi c) hK)`
+   (方向相反、特化到 Riesz 核对),证明为纯 a.e. congruence(无 Fubini:
+   自伴性把 M_ω 移到测试侧 + `coeFn_mulOperator_action` + I-指示 a.e. 相等)。
+3. **配套新件**:任意指标型(完备正交族)张量-ONB Parseval
+   `kernel_inner_eq_tsum_prodKernel'` 与 cycle2 矩阵展开 `cycle2_eq_tsum_pair'`
+   (已落地 ℕ 版的逐字推广,索引类型 ι);子引理②
+   `diag2_TOpRiesz_eq_kappaWeighted_matrixSum`、子引理①
+   `matrixSq_sum_eq_of_complete`(A7_aux 的 ENNReal 链全等式版,e/v 两侧
+   ℝ-可和性为前提、由 A7 界供给)。
+4. **仍未落地**:一般 k≥3 截断路线(P_N/B_N′ + 收敛 (a)(b);(c)=A4、A8 已
+   落地);因此 `diagSum_B_eq_weightedCycle`(∀k≥2)与
+   `exists_weightedRieszSpectrum_min`(∀k≥2 幂和)仍未产出,
+   **M1 验收仍未通过**。
+
 ## 6. 验收标准(M1)
 
 1. A/B/C/D 四模块全部编译零错误、零 sorry;`#print axioms` 仅基础三条。

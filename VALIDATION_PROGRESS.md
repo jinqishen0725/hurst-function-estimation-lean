@@ -1,6 +1,34 @@
 # VALIDATION_PROGRESS（供协调 agent 检查；持续更新）
 
-更新:2026-09-22 15:3x(Session-4 接管者 2,本轮收官;**会话已结束,等待下一 agent 接手**,历史块在下)。
+更新:2026-09-23 15:2x(Session-4 接管者 3;**k=2 压缩恒等式已闭环落地**,在攻一般 k;历史块在下)。
+
+> 交接状态(2026-09-23 15:2x 更新):任务书 = `HANDOVER_PROMPT_session4_takeover4.md`。
+> **k=2 压缩恒等式已落地**(d628418,新文件 `Hurst/CompressionIdentity.lean`,
+> 检查点 `verification/checkpoints/2026-09-23-1508-CompressionK2/`,exit=0、
+> 零 sorry、8 条公开定理公理 ⊆ {propext, Classical.choice, Quot.sound},
+> 增量 `lake build Hurst` 绿 9200 jobs):
+> - `mulOperator_comp_TOp_riesz`(W∘T=TOp(rieszKernel) 算子恒等式,纯 a.e.
+>   congruence、无 Fubini)+ `TOp_riesz_apply_eigenfamily`(T_R v_j = κ_j•W v_j);
+> - `kernel_inner_eq_tsum_prodKernel'`/`cycle2_eq_tsum_pair'`(张量-ONB Parseval
+>   与 cycle2 矩阵展开的**任意指标型完备正交族**版,证明照抄已落地 ℕ 版);
+> - 子引理② `diag2_TOpRiesz_eq_kappaWeighted_matrixSum`:
+>   ∑'⟪T_R²e_i,e_i⟫ = ∑'_{ι²} κᵢκⱼ⟪vᵢ,Wvⱼ⟫²(tracePair_comp_tsum +
+>   v-族展开 + 特征作用 + W 对称坍缩);
+> - 子引理① `matrixSq_sum_eq_of_complete`:∑'_{ℕ²}⟪e,B e⟫² = ∑'_{ι²}⟪v,B v⟫²
+>   (A7_aux 的 ENNReal 链全等式版,可和性双侧为前提由 A7 供给);
+> - 组装 `diag2_Bop_eq_weightedCycle`:∀Hilbert 基,
+>   ∑'⟪(B^2)e_i,e_i⟫ = weightedRieszCycleIntegral 2 psi c omega
+>   —— **CapstoneV3 的 hTwo 在无 hconst 线上的完整复现**;
+> - `tsum_Briesz_valSq_eq_weightedCycle`:模型 B 的谱枚举平方和
+>   ∑'val² = weightedRieszCycleIntegral 2(exists_weightedRieszSpectrum_min 的
+>   k=2 种子,结构包齐全)。
+> **唯一剩余缺口 = 一般 k≥3 截断路线**(P_N/B_N′ 截断构造 + 收敛 (a)(b);
+> (c)=A4 已落地、A8 已落地)。**M1 验收仍未通过**(诚实口径):落地一般 k 后
+> 产出 `diagSum_B_eq_weightedCycle` + `exists_weightedRieszSpectrum_min` 再复审。
+> 声明偏差(已回写规范 §5):k=2 种子参数化(特征族为显式参数)、
+> mulOperator_comp_TOp_riesz 方向与 §5 草案相反且特化 Riesz 核。
+
+## 上一轮交接状态(2026-09-22 置顶块,留档)
 
 > 交接状态(2026-09-23 更新):**最新接手任务书 =
 > `HANDOVER_PROMPT_session4_takeover4.md`**(含 k=2 闭环路线与一般 k 截断路线
@@ -15,11 +43,7 @@
 > **第二轮增量**(18c9aa7,检查点 2026-09-22-2016-Compression-prelims):压缩
 > 恒等式的 step-0 前置件已落地——`prod_sqrt_cycle_eq`(循环 telescoping,使
 > B 侧/(WK) 侧循环项逐点相等的杠杆)+ `diag2_symmetric_eq_sumSq`(k=2 对称
-> 坍缩 ⟪B²x,x⟫=‖Bx‖²)。完整战术要点(逐项相等杠杆、不可绝对可和的本质
-> 困难、k=2 闭环路线、一般 k 截断路线、v4.31 新雷区)已写入
-> HANDOVER_PROMPT_session4_takeover3.md 任务 2 节。建议下一轮先闭环 k=2
-> (价值独立成立:∑'val² = weightedRieszCycleIntegral 2 的无 hconst 复现),
-> 再攻一般 k 截断。
+> 坍缩 ⟪B²x,x⟫=‖Bx‖²)。
 
 ## 当前里程碑:M1(消除 hconst)— **任务 1/2/3 完成(诚实口径:M1 验收未通过,缺口已登记)**
 

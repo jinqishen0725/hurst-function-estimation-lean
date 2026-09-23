@@ -1,11 +1,24 @@
 # Session 4 交接:独立验证轮的 M1 执行状态(take-over 文档)
 
-更新:2026-09-21 17:02 PDT。HEAD `7814f84`。项目:
+更新:2026-09-23 15:2x PDT(接管者 3)。HEAD `d628418`。项目:
 `/Users/jinqishen/repo/lean_verification/hurst_function_estimation`。
 本文件供接管 agent 使用;权威过程记录见 [VALIDATION_PROGRESS.md](VALIDATION_PROGRESS.md)
 (逐检查点、逐契约修正、含日志路径与退出码)。
 
-## 0. 2026-09-22 17:4x 快照(接管者 2 续;详读 VALIDATION_PROGRESS 置顶块)
+## 0. 2026-09-23 15:2x 快照(接管者 3;k=2 压缩恒等式闭环)
+
+任务 1(k=2 闭环)✅ **d628418**:`Hurst/CompressionIdentity.lean`
+(exit=0、零 sorry、8 公理 ⊆ 三条、检查点 `2026-09-23-1508-CompressionK2`、
+增量 `lake build Hurst` 绿 9200 jobs)——`mulOperator_comp_TOp_riesz`
+(W∘T=TOp(rieszKernel),纯 a.e. congruence 无 Fubini)+
+`TOp_riesz_apply_eigenfamily` + 任意指标型张量 Parseval/cycle2 展开 +
+子引理②`diag2_TOpRiesz_eq_kappaWeighted_matrixSum` +
+子引理①`matrixSq_sum_eq_of_complete` + 组装 `diag2_Bop_eq_weightedCycle`
+(hTwo 的无 hconst 复现)+ `tsum_Briesz_valSq_eq_weightedCycle`
+(∑'val² = WRCI 2)。**唯一剩余缺口 = 一般 k≥3 截断路线**;M1 验收仍未
+通过(诚实口径),落地一般 k 后复审。
+
+## 0b. 2026-09-22 17:4x 快照(接管者 2 续;留档)
 
 任务 1(A4)✅ d1a2f37;任务 2(D2)大部分 ✅:核侧无 hconst 恒等式
 `diagSum_TOpRiesz_pow_eq_weightedCycle` + B 绑定 + equivalentKernel 实例化
@@ -339,27 +352,25 @@ subagent completion report 一到,主 agent **立即**依次执行(本轮标准�
   显式前提),"D 以 op 界 + hZhsC 组合替代单一 ‖·‖_HS 记号"的偏差已在
   文件头声明,待随 D2 回写规范 §5 缺口清单。
 
-### 10.4 下一步(按序;2026-09-22 15:1x 更新)
+### 10.4 下一步(按序;2026-09-23 15:2x 更新)
 1. ~~续完 `diag_pow_sub_diag_pow_le`~~ ✅ **已完成**(d1a2f37,见 §10.3);
 1b. ✅ D2 核侧+B 侧+实例化已落地(ff550a3/b2007ec),验收机械件绿(b3119f7);
-    **剩余**:B 紧性 + 压缩恒等式(见 VALIDATION_PROGRESS 置顶);
-2. **M1-D2 主组装**(契约 §5,A8–A9 压缩路线,主 agent 亲自做,不再派发):
-   新文件 `Hurst/EquivalentKernelSpectrum.lean`——step0(用
-   `countable_of_orthonormal`/`exists_injective_to_nat`)→ step1(A8:
-   `FiniteMatrixTraceCycle.trace_pow_eq_cycleSum`)→ step2(三项收敛,
-   消费 A4 的 `diag_pow_sub_diag_pow_le` + A7 的
-   `Bop_A7_matrix_summable_bound`)→ step3(取极限)→ step4(k 步核迭代,
-   `TOp_compPowR_apply`/`tracePair_comp_tsum`)→ step5(加权认同,
-   `weightedRieszCycleIntegral_eq_kernelProd`/`cycle2_rieszKernel_eq_weighted`);
-   产出 `diagSum_B_eq_weightedCycle` + `exists_weightedRieszSpectrum_min` +
-   **ω := equivalentKernel r 实例化**(hm=`measurable_equivalentKernel`
-   PositiveSquareRoot:304,hess=`aeBounded_equivalentKernel`:308);
-   消费件:`exists_B_selfAdjoint_hs`(A7 界量化在结论)、`hBridge_clm`/
-   `exists_diag_enumeration_clm`(M1-C);
-3. **M1 验收**(契约 §6):聚合补齐 + `lake build Hurst`(写 build.log)+
-   `AxiomAudit` 追加 + `check_coverage.py`/`verify_axioms.py` + 实例化写入
-   VALIDATION_PROGRESS;旧 `rieszSpectrumVal_hGen`/`*_v3_closed` 保留并注明
-   "hconst 不可满足,实际模型走 EquivalentKernelSpectrum 线"。
+1c. ✅ B 紧性(c0a72c7)+ B 谱枚举(b8eac1b)+ step-0 前置件(18c9aa7);
+1d. ✅ **k=2 压缩恒等式闭环**(d628418,`Hurst/CompressionIdentity.lean`,
+    见 §0 快照;hTwo 的无 hconst 复现);
+2. **一般 k≥3 截断路线**(接管者 3 在攻;任务书 takeover4 任务 2):
+   P_N := v-族前 N 项张成正交投影,B_N′ := P_N B P_N;A8 有限矩阵迹恒等式
+   (已落地)+ A4 扰动估计(已落地)→ Diag_k(B_N′) → Diag_k(B);
+   核 L² 收敛 (b) 用无 hconst 截面界 package;产出
+   `diagSum_B_eq_weightedCycle`(∀k≥2)+ `exists_weightedRieszSpectrum_min`;
+2b. (历史注记,已被 1c/1d/2 覆盖)原 M1-D2 主组装计划的 step4/step5(k 步核
+    迭代+加权认同)与 step0/step1 均已落地;ω := equivalentKernel r 实例化
+    消解件:`measurable_equivalentKernel`(PositiveSquareRoot)/
+    `aeBounded_equivalentKernel`;
+3. **M1 验收**(契约 §6;在一般 k 落地后执行):聚合补齐 + `lake build Hurst`
+   (写 build.log)+ `AxiomAudit` 追加 + `check_coverage.py`/`verify_axioms.py` +
+   实例化写入 VALIDATION_PROGRESS;旧 `rieszSpectrumVal_hGen`/`*_v3_closed`
+   保留并注明"hconst 不可满足,实际模型走 EquivalentKernelSpectrum 线"。
 4. M1 之后(交接清单 §6 顺序):阻断 2(eventualCard 传播)→ 阻断 3(P5 归一化
    能量 W8–W9)→ 阻断 4(23:B–D 一般带符号)→ 端点组装。
 
