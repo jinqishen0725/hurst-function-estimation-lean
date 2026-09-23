@@ -655,3 +655,4 @@ import Hurst.PositiveSquareRoot
 import Hurst.CountableEigenfamily
 import Hurst.TracePerturbationEstimate
 import Hurst.EquivalentKernelSpectrum
+import Hurst.BopCompactness
