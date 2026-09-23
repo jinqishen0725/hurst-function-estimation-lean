@@ -1,0 +1,11 @@
+'HS.hSKernel_congr_ae' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.TOp_congr_ae' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.hsNorm_congr_ae' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.hsNorm_le_of_abs_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.hSKernel_weight_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.mulOperator_comp_TOp_gen' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.hsNorm_add_le2' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.integrable_section_prod_ae' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.compKernel_sub_ae' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.hsNorm_compPowR_sub_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit=0
