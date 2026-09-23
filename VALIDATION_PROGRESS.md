@@ -2,8 +2,9 @@
 
 更新:2026-09-22 15:3x(Session-4 接管者 2,本轮收官;**会话已结束,等待下一 agent 接手**,历史块在下)。
 
-> 交接状态(20:2x 更新,第二轮):接手任务书在根目录
-> `HANDOVER_PROMPT_session4_takeover3.md`。**原缺口①(B 紧性)已关闭**
+> 交接状态(2026-09-23 更新):**最新接手任务书 =
+> `HANDOVER_PROMPT_session4_takeover4.md`**(含 k=2 闭环路线与一般 k 截断路线
+> 的完整战术);旧 takeover3 版已被消费,留档。**原缺口①(B 紧性)已关闭**
 > (c0a72c7 `Hurst/BopCompactness.lean` + b8eac1b
 > `exists_Briesz_spectral_enumeration`:模型 B 带乘性精确、平方可和的谱枚举,
 > 幂对角 HasSum 到 ∑'val^k,∀k≥2)。**唯一剩余缺口 = 压缩恒等式
