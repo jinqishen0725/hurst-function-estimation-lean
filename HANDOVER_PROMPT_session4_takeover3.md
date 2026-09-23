@@ -75,7 +75,45 @@ git 已最新(HEAD `f297fad`,工作树仅协调员监控文件未跟踪改动,�
   落地后即可把 `exists_diag_enumeration_clm`+`hBridge_clm` 应用到 B。
 
 **任务 2:压缩恒等式 Diag_k(B) = Diag_k((WK)^k)**(A8–A9 路线 step0–3,剩余
-最大块;组装目标本轮已勘察定形):
+最大块;组装目标已勘察定形,**其 step-0 算术前件已于第二轮落地**——
+`HS.prod_sqrt_cycle_eq`(循环 telescoping:∏√(κ_{i_j}κ_{i_{j+1}}) = ∏κ_{i_j},
+使 B 侧与 (WK) 侧循环乘积逐点相等)+ `HS.diag2_symmetric_eq_sumSq`
+(k=2 对称坍缩 ⟪B²x,x⟫ = ‖Bx‖²,含对角可和性)):
+
+**⚠️ 战术要点(2026-09-22 第二轮推导,直接可用)**:
+1. **逐项相等的杠杆**:⟪v_i, B v_j⟫ = √(κᵢκⱼ)⟪v_i, W v_j⟫(inner_Bop_matrix)且
+   ⟪v_i, WK v_j⟫ = κⱼ⟪v_i, W v_j⟫(T_K v_j = κ_j v_j);配以 telescoping
+   (已落地),两侧 k-循环乘积**逐项相等**——压缩恒等式的核心是**级数交换与
+   取极限**,不是项级数学。
+2. **不可绝对可和是本质困难**:循环项的绝对界是 MR^k·∏κ_{i_j},其 ι^k 和 =
+   (∑κ)^k 发散(∑κ²<∞ 不给 ∑κ<∞)。故任意"直接展开+Tonelli"路线都不可行,
+   **必须走有限截断**或(k=2 的)平方和特殊通道。
+3. **k=2 特殊通道(建议先落,最快闭环)**:
+   - B 侧:tr(B²) = ∑'‖B e_i‖²(diag2_symmetric_eq_sumSq 已给可和性+恒等式)
+     = ∑'_{ℕ²}⟪e_p, B e_q⟫² [Parseval 逐列]
+     = ∑'_{ι²} κᵢκⱼ⟪v_i, W v_j⟫² [基↔特征族矩阵平方等式 + inner_Bop_matrix];
+   - 核侧:tr(T_R²) = cycle2 K_R K_R(tracePair_comp_tsum,已落地)
+     = weightedRieszCycleIntegral 2(cycle2_rieszKernel_eq_weighted,已落地);
+   - **还需**:①基↔特征族矩阵平方**等式**引理(A7_aux 的链全部是等式步,照抄其
+     calc 骨架、去掉最后的 ≤ 即可,~40 行;注意 A7_aux 的 hflip 步需要 B 对称);
+     ②cycle2 侧展开到 ∑'_{ι²} 的桥(TensorParsevalTracePair 的 k=2 乘积形,
+     tracePair_comp_tsum 的证明里已有逐纤维 Parseval 骨架可参考)。
+   - k=2 闭环后即得 ∑'val² = weightedRieszCycleIntegral 2(CapstoneV3 的 hTwo
+     在无 hconst 线上的复现),价值独立成立。
+4. **一般 k**:有限截断路线(B_N′ = P_N B P_N):A8 有限矩阵恒等式(已落地)给
+   tr((B_N′矩阵)^k) = N^k 上循环和;A4(已落地)给 Diag_k(B_N′) → Diag_k(B)
+   (op+HS 界从 A7 结论供给);截断循环和 → (WK)^k 对角(核侧
+   diagSum_TOpRiesz_pow_eq_weightedCycle 的有限近似,需核 L² 收敛 (b),无 hconst
+   截面界 package 已落地)。P_N 的构造:在 v-族上的正交投影
+   (Submodule.span ℝ (v '' (Finset.range N)) 的 starProjection,
+   CountableEigenfamily 供给可数性)。
+5. **v4.31 新雷区(第二轮实测)**:此版 IsSymmetric 方向为
+   `inner (B x) y = inner x (B y)`(与旧注记相反!);`↑B` coercion 在 show/rw
+   实参中目标类型未知时报 invalid coercion——需全标注 `(B : L2 →ₗ[ℝ] L2)`;
+   `finRotate` 是根级名(非 Fin.finRotate);无 tsum_sub(用 HasSum.sub.tsum_eq);
+   `Finset.sum_const` 的加数 b 是显式参数(仅限常量加数);`∑'` 记号在括号内
+   会吞掉尾随 `+ 1`(先把 tsum 命名为实数);`Measurable.pow` 的指数是可测函数。
+
 - Diag_k(B) = lim_N Diag_k(B_N′)[B_N′ = P_N B P_N,用 A4 的
   `diag_pow_sub_diag_pow_le`:op+HS 界由 A7(`exists_Briesz_selfAdjoint_A7` 结论)
   供,hXabs/hYabs 幂对角可和性对 B_N′ 由有限维 + 对 B 由 hBridge_clm(任务 1 后)
