@@ -2,7 +2,7 @@
 
 更新:2026-09-22 15:3x(Session-4 接管者 2,本轮收官;**会话已结束,等待下一 agent 接手**,历史块在下)。
 
-> 交接状态(17:4x 更新):接手任务书在根目录
+> 交接状态(20:2x 更新,第二轮):接手任务书在根目录
 > `HANDOVER_PROMPT_session4_takeover3.md`。**原缺口①(B 紧性)已关闭**
 > (c0a72c7 `Hurst/BopCompactness.lean` + b8eac1b
 > `exists_Briesz_spectral_enumeration`:模型 B 带乘性精确、平方可和的谱枚举,
@@ -11,6 +11,14 @@
 > 核侧恒等式已无 hconst 落地)。落地该恒等式后与
 > `exists_Briesz_spectral_enumeration` + `diagSum_TOpRiesz_pow_eq_weightedCycle`
 > 合成即得 `exists_weightedRieszSpectrum_min`,M1 验收复审。
+> **第二轮增量**(18c9aa7,检查点 2026-09-22-2016-Compression-prelims):压缩
+> 恒等式的 step-0 前置件已落地——`prod_sqrt_cycle_eq`(循环 telescoping,使
+> B 侧/(WK) 侧循环项逐点相等的杠杆)+ `diag2_symmetric_eq_sumSq`(k=2 对称
+> 坍缩 ⟪B²x,x⟫=‖Bx‖²)。完整战术要点(逐项相等杠杆、不可绝对可和的本质
+> 困难、k=2 闭环路线、一般 k 截断路线、v4.31 新雷区)已写入
+> HANDOVER_PROMPT_session4_takeover3.md 任务 2 节。建议下一轮先闭环 k=2
+> (价值独立成立:∑'val² = weightedRieszCycleIntegral 2 的无 hconst 复现),
+> 再攻一般 k 截断。
 
 ## 当前里程碑:M1(消除 hconst)— **任务 1/2/3 完成(诚实口径:M1 验收未通过,缺口已登记)**
 
