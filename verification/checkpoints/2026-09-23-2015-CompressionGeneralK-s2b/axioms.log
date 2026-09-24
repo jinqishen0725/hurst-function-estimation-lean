@@ -1,0 +1,5 @@
+'HS.tsum_indicator_finset' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.hSKernel_tensKernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.hSKernel_truncKernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.kpair_truncKernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit=0
