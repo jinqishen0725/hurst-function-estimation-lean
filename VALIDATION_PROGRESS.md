@@ -1,9 +1,9 @@
 # VALIDATION_PROGRESS（供协调 agent 检查；持续更新）
 
-更新:2026-09-23 21:5x(Session-4 接管者 3 第三轮;**k=2 闭环 + 一般 k 路线
-第 1/2a/2b/2c 节落地**;一般 k 的第 3–6 节未落地;历史块在下)。
+更新:2026-09-23 22:2x(Session-4 接管者 3 第三轮;**k=2 闭环 + 一般 k 路线
+第 1/2a/2b/2c/3a 节落地**;一般 k 的第 3b–6 节未落地;历史块在下)。
 
-> 交接状态(2026-09-23 21:5x 更新):任务书 = `HANDOVER_PROMPT_session4_takeover4.md`。
+> 交接状态(2026-09-23 22:2x 更新):任务书 = `HANDOVER_PROMPT_session4_takeover4.md`。
 > **k=2 压缩恒等式闭环**(d628418,`Hurst/CompressionIdentity.lean`,检查点
 > `2026-09-23-1508-CompressionK2/`,8 定理公理 ⊆ 三条):
 > `mulOperator_comp_TOp_riesz`(W∘T=TOp(rieszKernel),纯 a.e. congruence 无
@@ -38,11 +38,20 @@
 >   tsum_indicator_finset 桥接)+ `sqrtTruncOp_comp_eq_kappaTruncOp`/
 >   `sqrtTruncOp_sq`(**S_t² = T_t**)+ `BtruncOp_apply` +
 >   `inner_Btrunc_matrix`(√(χ·κ) 矩阵公式,inner_Bop_matrix 的截断对应物)。
-> **未落地(诚实登记,完成前 M1 验收不通过)**:第 3 节(tracePair_cyclic
-> 中段等式 Diag_k(B_t^k) = Diag_k((W∘T_t)^k):有限秩 S_t/W∘S_t 的矩阵平方
-> 可和性走 Bessel-有限和路线,幂重组 S_t(W S_t²)^{k-1}W S_t 后单次 cyclic;
-> 核侧 W∘T_t = TOp(ω·truncKernel) 经 mulOperator_comp_TOp_gen +
-> TOp_truncKernel_eq_specOperator,其矩阵平方经 kernel-HS↔矩阵平方恒等)、
+> - 第 3a 节(301e7bc,检查点 `2026-09-23-2225-CompressionGeneralK-s3a/`):
+>   **有限秩矩阵平方工具**——`tsum_inner_sq_hilbertBasis_eq_norm_sq`(Hilbert 基
+>   Parseval 等式)+ `tsum_eq_finset_sum_of_forall_notMem`(有限支撑 ∑' 坍缩,
+>   任意符号,走 indicator 桥)+ `specOperator_apply_eq_finset_sum`(有限支撑
+>   谱算子的有限和作用公式)+ **`matrixSq_summable_of_decomp`**(带有限秩一
+>   分解的算子在任意 Hilbert 基下矩阵平方可和,显式界 #t·∑(‖wᵢ‖‖uᵢ‖)² —
+>   正是 tracePair_cyclic 消费的 HS-包装;ENNReal Tonelli +
+>   sq_sum_le_card_mul_sum_sq + A7 式运输)。
+> **未落地(诚实登记,完成前 M1 验收不通过)**:第 3b 节(tracePair_cyclic
+> 中段等式 Diag_k(B_t^k) = Diag_k((W∘T_t)^k):幂重组 B_t^k x =
+> S_t((W∘T_t)^{k-1}(W(S_t x))) 后单次 cyclic;矩阵平方可和性已由 3a 的
+> matrixSq_summable_of_decomp 供给(W∘S_t 与 S_t∘(W∘T_t)^{k-1} 的秩一分解经
+> specOperator_apply_eq_finset_sum);核侧 W∘T_t = TOp(ω·truncKernel) 经
+> mulOperator_comp_TOp_gen + TOp_truncKernel_eq_specOperator)、
 > 第 4 节(cycle2/塔比较组装,消费 hsNorm_compPowR_sub_le)、第 5 节(A4 的
 > B 侧极限 ‖B−B_t‖→0 + 对角 ℓ² 内容 = A7 尾)、第 6 节(最终组装
 > diagSum_Bop_eq_weightedCycle ∀k≥2 + exists_weightedRieszSpectrum_min +
@@ -66,7 +75,14 @@ Application type mismatch);无 `DecidableEq ι` 的 `Type` 上 `if i ∈ t` 不�
 判定——节级 `open scoped Classical` 统一 def 与引理 show-ite 的实例;
 rw 的 rfl-probe 常已自动收尾,显式补 `rfl` 可能报 No goals to be solved
 (报错再删);/tmp 里 import 本文件的公理审计前必须先 `lake build` 刷新
-olean(否则 Unknown constant)。
+olean(否则 Unknown constant);`ENNReal.ofReal_tsum_of_nonneg` 本版带**两个参数**
+(非负 + Summable);refine 链中 by-block 遇到含 ?b 的目标时 rw 的 auto-rfl 会把
+?b 赋值吞掉目标(要 show 类型钉死);`•` 优先级高于 `*`,`c i * ⟪v i,x⟫ • v i`
+会被解析成 ℝ×L2 混乘(必须 `(c i * ⟪v i,x⟫) • v i`);`ℝ≥0∞` 记法需
+`open scoped ENNReal`(本文件头未开);`← ENNReal.ofReal_mul` 带显式证明参数
+会把模式钉死(改 `exact (…).symm`);binder 下的 `rw [Finset.sum_insert]`
+不稳定(改 show-项 + tsum_congr);`sum_inner`/`inner_sum` 分工:前者和在
+第一个参数,后者和在第二个参数。
 
 ## 上一轮交接状态(2026-09-22 置顶块,留档)
 

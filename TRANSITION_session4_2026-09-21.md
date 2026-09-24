@@ -5,7 +5,20 @@
 本文件供接管 agent 使用;权威过程记录见 [VALIDATION_PROGRESS.md](VALIDATION_PROGRESS.md)
 (逐检查点、逐契约修正、含日志路径与退出码)。
 
-## 0. 2026-09-23 21:5x 快照(接管者 3 第三轮;k=2 闭环 + 一般 k 第 1/2a/2b/2c 节)
+## 0. 2026-09-23 22:2x 快照(接管者 3 第三轮;k=2 闭环 + 一般 k 第 1/2a/2b/2c/3a 节)
+
+任务 2(一般 k)推进:**第 3a 节 ✅ 301e7bc**(有限秩矩阵平方工具:
+`tsum_inner_sq_hilbertBasis_eq_norm_sq`/`tsum_eq_finset_sum_of_forall_notMem`/
+`specOperator_apply_eq_finset_sum`/**`matrixSq_summable_of_decomp`**(有限
+秩一分解算子的矩阵平方可和 + 显式界,tracePair_cyclic 的 HS-包装供给件);
+exit=0、零 sorry、4 公理 ⊆ 三条、检查点 `2026-09-23-2225-CompressionGeneralK-s3a`、
+增量 lake build Hurst 绿)。**第 3b–6 节未落地**(cyclicity 中段组装:幂重组 +
+分解实例 + tracePair_cyclic 应用;核侧 W∘T_t = TOp(ω·truncKernel) 组件已就绪;
+cycle2/塔比较;A4 的 B 侧极限;最终组装)。M1 验收仍未通过(诚实口径)。
+新增雷区(• 优先级、open scoped ENNReal、rw auto-rfl 吞 ?b 等)见
+VALIDATION_PROGRESS 置顶块。
+
+## 0b. 2026-09-23 21:5x 快照(接管者 3 第三轮;k=2 闭环 + 一般 k 第 1/2a/2b/2c 节;留档)
 
 任务 2(一般 k)推进:**第 2c 节 ✅ 8d7ddae**(截断谱算子:
 `truncKappaCoeff`/`truncSqrtCoeff` 系数族 + `kappaTruncOp`/`sqrtTruncOp`/
