@@ -1,0 +1,9 @@
+'HS.abs_truncKappaCoeff_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.abs_truncSqrtCoeff_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.truncSqrtCoeff_sq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.TOp_truncKernel_eq_specOperator' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.sqrtTruncOp_comp_eq_kappaTruncOp' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.sqrtTruncOp_sq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.BtruncOp_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.inner_Btrunc_matrix' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit=0
