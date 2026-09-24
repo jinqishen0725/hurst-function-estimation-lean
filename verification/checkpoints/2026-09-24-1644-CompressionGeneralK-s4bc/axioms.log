@@ -1,0 +1,6 @@
+'HS.measurable_truncKernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.measurable_weightedTruncKernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.comp_mulOperator_kappaTruncOp_eq_TOp' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.hsNorm_weight_mul_sub_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.hsNorm_weight_mul_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit=0
