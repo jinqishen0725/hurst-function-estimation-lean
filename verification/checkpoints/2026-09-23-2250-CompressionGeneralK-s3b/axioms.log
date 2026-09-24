@@ -1,0 +1,2 @@
+'HS.diagTsum_Btrunc_pow_eq_diagTsum_WTtrunc_pow' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit=0
