@@ -1,0 +1,7 @@
+'HS.exists_measurable_rep_family' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.tensorCoord_unweightedRiesz' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.tensorCoord_truncKernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.hsNorm_sub_truncKernel_sq_eq_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.exists_exhausting_finsets' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.hsNorm_sub_truncKernel_tendsto_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit=0
