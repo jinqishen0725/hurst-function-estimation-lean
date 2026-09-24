@@ -364,12 +364,14 @@ theorem exists_weightedRieszSpectrum_min (psi c : ℝ) (hc : 0 < c) (hpsi0 : 0 <
 - **通用核版左乘恒等式** `mulOperator_comp_TOp_gen`(TOp(fun p => ω p.1 * K p)
   = M_ω ∘ TOp K,对一切 HS 核 K;无 Fubini)——k=2 版 `mulOperator_comp_TOp_riesz`
   的推广。
-- **仍未落地**(第 2–6 节):截断数据(S_N/T_N/K_N + κ²-尾 L² 收敛,
-  由 `countable_of_orthonormal` 的单射枚举 + 张量 Parseval)、有限秩
-  cyclicity 的幂重组代数、核侧 cycle2 差比较的组装、B 侧 A4 极限
-  (D_N-包装:op-界走 level-set 有限性路线,ℓ²-界走 A7-尾 +
-  `matrixSq_sum_eq_of_complete` 基运输)、最终 `diagSum_Bop_eq_weightedCycle`
-  (∀k≥2)+ `exists_weightedRieszSpectrum_min` + equivalentKernel r 实例化。
+- **进度更新(2026-09-23 第二轮)**:第 2a 节(耗竭尾引擎,免可数化——
+  level-set 截断替代注入-枚举)与第 2b 节(截断张量核 truncKernel 及其
+  kpair = 截断谱配对)已落地(7eadf38/2a28506,exit=0、零 sorry、公理 ⊆ 三条)。
+- **仍未落地**(第 2c–6 节):TOp(KN) = specOperator-截断 + S_N²=T_N +
+  B_N 矩阵公式;有限秩 cyclicity 中段(S_N 的矩阵平方可和性走 Bessel-有限和,
+  W∘T_N = TOp(ω·KN) 侧走 kernel-HS↔矩阵平方恒等);核侧 cycle2/塔比较;
+  B 侧 A4 极限;最终 `diagSum_Bop_eq_weightedCycle`(∀k≥2)+
+  `exists_weightedRieszSpectrum_min` + equivalentKernel r 实例化。
   **M1 验收仍未通过**。
 
 ## 6. 验收标准(M1)

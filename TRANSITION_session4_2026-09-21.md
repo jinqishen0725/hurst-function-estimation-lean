@@ -5,7 +5,19 @@
 本文件供接管 agent 使用;权威过程记录见 [VALIDATION_PROGRESS.md](VALIDATION_PROGRESS.md)
 (逐检查点、逐契约修正、含日志路径与退出码)。
 
-## 0. 2026-09-23 16:2x 快照(接管者 3;k=2 闭环 + 一般 k 第 1 节)
+## 0. 2026-09-23 20:2x 快照(接管者 3 第二轮;k=2 闭环 + 一般 k 第 1/2a/2b 节)
+
+任务 2(一般 k)推进:**第 2a 节 ✅ 7eadf38**(免可数化耗竭尾引擎:
+`tail_indicator_tendsto_zero`/`partial_tendsto_tsum` 等 7 定理,检查点
+`2026-09-23-1938-CompressionGeneralK-s2a`);**第 2b 节 ✅ 2a28506**(截断张量核:
+`tsum_indicator_finset`/`tensKernel`/`truncKernel`/`kpair_truncKernel`,
+检查点 `2026-09-23-2015-CompressionGeneralK-s2b`)。**第 2c–6 节未落地**
+(TOp(KN)=specOperator-截断+S_N²=T_N+B_N 矩阵公式;tracePair_cyclic 中段
+(Bessel-有限和给 S_N 矩阵平方可和、kernel-HS↔矩阵平方恒等给 W∘T_N 侧);
+cycle2/塔比较;A4 的 B 侧极限;最终组装)。M1 验收仍未通过(诚实口径)。
+新增雷区与战术要点见 VALIDATION_PROGRESS 置顶块。
+
+## 0b. 2026-09-23 16:2x 快照(接管者 3;k=2 闭环 + 一般 k 第 1 节;留档)
 
 任务 1(k=2 闭环)✅ **d628418**:`Hurst/CompressionIdentity.lean`
 (exit=0、零 sorry、8 公理 ⊆ 三条、检查点 `2026-09-23-1508-CompressionK2`、

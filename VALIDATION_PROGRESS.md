@@ -1,66 +1,57 @@
 # VALIDATION_PROGRESS（供协调 agent 检查；持续更新）
 
-更新:2026-09-23 16:2x(Session-4 接管者 3;**k=2 压缩恒等式闭环 + 一般 k 路线
-解析核心(第 1 节)落地**;一般 k 的第 2–6 节未落地;历史块在下)。
+更新:2026-09-23 20:2x(Session-4 接管者 3 第二轮;**k=2 闭环 + 一般 k 路线
+第 1/2a/2b 节落地**;一般 k 的第 2c–6 节未落地;历史块在下)。
 
-> 交接状态(2026-09-23 16:2x 更新):任务书 = `HANDOVER_PROMPT_session4_takeover4.md`。
-> **本轮两块落地**:
-> ① **k=2 压缩恒等式闭环**(d628418,`Hurst/CompressionIdentity.lean`,
-> 检查点 `2026-09-23-1508-CompressionK2/`,exit=0、零 sorry、8 条公开定理
-> 公理 ⊆ 三条,增量 build 绿):
-> - `mulOperator_comp_TOp_riesz`(W∘T=TOp(rieszKernel),纯 a.e. congruence、
->   无 Fubini)+ `TOp_riesz_apply_eigenfamily`(T_R v_j = κ_j•W v_j);
-> - `kernel_inner_eq_tsum_prodKernel'`/`cycle2_eq_tsum_pair'`(张量-ONB Parseval
->   与 cycle2 矩阵展开的**任意指标型完备正交族**版);
-> - 子引理② `diag2_TOpRiesz_eq_kappaWeighted_matrixSum`
->   (∑'⟪T_R²e_i,e_i⟫ = ∑'_{ι²}κᵢκⱼ⟪vᵢ,Wvⱼ⟫²);
-> - 子引理① `matrixSq_sum_eq_of_complete`(A7_aux 的 ENNReal 链全等式版);
-> - 组装 `diag2_Bop_eq_weightedCycle`:∀Hilbert 基,
->   ∑'⟪(B^2)e_i,e_i⟫ = weightedRieszCycleIntegral 2 psi c omega
->   —— **CapstoneV3 的 hTwo 在无 hconst 线上的完整复现**;
-> - `tsum_Briesz_valSq_eq_weightedCycle`(∑'val² = WRCI 2,
->   exists_weightedRieszSpectrum_min 的 k=2 种子,结构包齐全)。
-> ② **一般 k 路线解析核心(第 1 节)**(85c05ae,新文件
-> `Hurst/CompressionGeneralK.lean`,检查点
-> `2026-09-23-1616-CompressionGeneralK-s1/`,exit=0、零 sorry、10 条公开定理
-> 公理 ⊆ 三条,增量 build 绿 9201 jobs):a.e. 运输三件
-> (`hSKernel_congr_ae`/`TOp_congr_ae`/`hsNorm_congr_ae`)+
-> `hsNorm_le_of_abs_le` + `hSKernel_weight_mul` +
-> **`mulOperator_comp_TOp_gen`**(TOp(ω·K) = M_ω∘TOp K 对一切 HS 核)+
-> `hsNorm_add_le2` + **`integrable_section_prod_ae`**(混合截面的 a.e. L¹,
-> 复用公开 `ae_section_memLp_fst/snd` 的 lift 模式)+ **`compKernel_sub_ae`**
-> (a.e. 次线性)+ **`hsNorm_compPowR_sub_le`**(塔 Lipschitz,
-> ≤ 2^{r+1}(r+1)M^r δ;注意 `hsNorm_compPowR_le` 已在 GeneralKPeelInduction
-> 落地,勿重名)。
-> **一般 k 路线第 2–6 节未落地**(截断数据 S_N/T_N/K_N+κ²-尾收敛、
-> 有限秩 cyclicity 中段等式 Diag_k(B_N)=Diag_k((W∘T_N)^k)(用已落地
-> tracePair_cyclic,有限秩因子绕开 S-陷阱,替代原计划的 A8 矩阵桥)、
-> 核侧 cycle2/塔比较(消费本轮塔 Lipschitz)、B 侧 A4 极限
-> (消费 matrixSq_sum_eq_of_complete 的 A7-尾)、组装
-> `diagSum_Bop_eq_weightedCycle`(∀k≥2)+`exists_weightedRieszSpectrum_min`
-> + equivalentKernel 实例化)。**M1 验收仍未通过**(诚实口径)。
-> 完整战术已写入 CompressionGeneralK.lean 文件头路线节。
-> v4.31 雷区新增:`∫`-calc 中 beta-redex 要 `show`/`dsimp only` 先 β-化;
-> `integral_sub` 方向是 ∫(f−g) = ∫f − ∫g;`Real.sqrt_sq`(√(a²)=|a|类)与
-> `Real.sq_sqrt`((√a)²=a)勿混;`pow_le_pow_left₀`(带 0≤a 前提);
-> `one_le_pow_of_le` 在 namespace Left 下且需 MulLeftMono(ℝ 无实例,
-> 1≤2^n 自证小归纳);`set_option ... in` 必须在 docstring **之前**;
-> 定理名先 grep 全库防重名(hsNorm_compPowR_le 撞名实录)。
-> - `mulOperator_comp_TOp_riesz`(W∘T=TOp(rieszKernel) 算子恒等式,纯 a.e.
->   congruence、无 Fubini)+ `TOp_riesz_apply_eigenfamily`(T_R v_j = κ_j•W v_j);
-> - `kernel_inner_eq_tsum_prodKernel'`/`cycle2_eq_tsum_pair'`(张量-ONB Parseval
->   与 cycle2 矩阵展开的**任意指标型完备正交族**版,证明照抄已落地 ℕ 版);
-> - 子引理② `diag2_TOpRiesz_eq_kappaWeighted_matrixSum`:
->   ∑'⟪T_R²e_i,e_i⟫ = ∑'_{ι²} κᵢκⱼ⟪vᵢ,Wvⱼ⟫²(tracePair_comp_tsum +
->   v-族展开 + 特征作用 + W 对称坍缩);
-> - 子引理① `matrixSq_sum_eq_of_complete`:∑'_{ℕ²}⟪e,B e⟫² = ∑'_{ι²}⟪v,B v⟫²
->   (A7_aux 的 ENNReal 链全等式版,可和性双侧为前提由 A7 供给);
-> - 组装 `diag2_Bop_eq_weightedCycle`:∀Hilbert 基,
->   ∑'⟪(B^2)e_i,e_i⟫ = weightedRieszCycleIntegral 2 psi c omega
->   —— **CapstoneV3 的 hTwo 在无 hconst 线上的完整复现**;
-> - `tsum_Briesz_valSq_eq_weightedCycle`:模型 B 的谱枚举平方和
->   ∑'val² = weightedRieszCycleIntegral 2(exists_weightedRieszSpectrum_min 的
->   k=2 种子,结构包齐全)。
+> 交接状态(2026-09-23 20:2x 更新):任务书 = `HANDOVER_PROMPT_session4_takeover4.md`。
+> **k=2 压缩恒等式闭环**(d628418,`Hurst/CompressionIdentity.lean`,检查点
+> `2026-09-23-1508-CompressionK2/`,8 定理公理 ⊆ 三条):
+> `mulOperator_comp_TOp_riesz`(W∘T=TOp(rieszKernel),纯 a.e. congruence 无
+> Fubini)+ `TOp_riesz_apply_eigenfamily` + 任意指标型张量 Parseval/cycle2 展开 +
+> 子引理② `diag2_TOpRiesz_eq_kappaWeighted_matrixSum` + 子引理①
+> `matrixSq_sum_eq_of_complete` + 组装 **`diag2_Bop_eq_weightedCycle`**(hTwo 的
+> 无 hconst 复现)+ `tsum_Briesz_valSq_eq_weightedCycle`(∑'val² = WRCI 2)。
+> **一般 k 路线第 1/2a/2b 节已落地**(全部在 `Hurst/CompressionGeneralK.lean`):
+> - 第 1 节(85c05ae,检查点 `2026-09-23-1616-CompressionGeneralK-s1/`):
+>   a.e. 运输三件 + `hsNorm_le_of_abs_le` + `hSKernel_weight_mul` +
+>   **`mulOperator_comp_TOp_gen`**(TOp(ω·K) = M_ω∘TOp K 对一切 HS 核)+
+>   `hsNorm_add_le2` + `integrable_section_prod_ae` + `compKernel_sub_ae` +
+>   **`hsNorm_compPowR_sub_le`**(塔 Lipschitz ≤ 2^{r+1}(r+1)M^r δ)。
+> - 第 2a 节(7eadf38,检查点 `2026-09-23-1938-CompressionGeneralK-s2a/`,
+>   commit message 中时间戳笔误,以目录为准):**免可数化的耗竭尾引擎**——
+>   `summable_indicator`/`tsum_split_indicator`/
+>   `finset_sum_le_finset_sum_of_subset`(ENNReal 运输绕开 ℝ 上缺失的
+>   CanonicallyOrderedAdd)/`tsum_finite_support`/`exists_finite_small_tail`/
+>   **`tail_indicator_tendsto_zero`**(level-set 截断尾 → 0)/
+>   `partial_tendsto_tsum`。
+> - 第 2b 节(2a28506,检查点 `2026-09-23-2015-CompressionGeneralK-s2b/`):
+>   **截断张量核**——`tsum_indicator_finset`(indicator-∑' 坍缩到有限和,
+>   走 eventually-常值部分和路线)/`tensKernel`/`truncKernel` 定义 +
+>   `hSKernel_tensKernel`/`hSKernel_truncKernel` + **`kpair_truncKernel`**
+>   (截断核配对 = ∑_{i∈t}κᵢ⟪vᵢ,f⟫⟪vᵢ,g⟫;逐项 Fubini 用本版
+>   `integral_prod_mul`(无可积性假设!)+ a.e. 代表运输到内积)。
+> **未落地(诚实登记,完成前 M1 验收不通过)**:第 2c 节(TOp(KN) =
+> specOperator-截断、S_N²=T_N、B_N 矩阵公式)、第 3 节(tracePair_cyclic 中段
+> 等式:有限秩 S_N 的矩阵平方可和性走 Bessel-有限和路线,核侧 W∘T_N =
+> TOp(ω·KN) 走 kernel-HS↔矩阵平方恒等,`kernel_inner_eq_tsum_prodKernel'` +
+> `inner_prodKernel_pairing` 供给)、第 4 节(cycle2/塔比较组装)、第 5 节
+> (A4 的 B 侧极限 + D_N 包装)、第 6 节(最终组装 diagSum_Bop_eq_weightedCycle
+> ∀k≥2 + exists_weightedRieszSpectrum_min + equivalentKernel r 实例化)。
+> **M1 验收仍未通过**(诚实口径)。
+> v4.31 雷区本轮新增(累积):`Finset.sum_le_sum_of_subset` 需
+> CanonicallyOrderedAdd(ℝ 无,ENNReal 运输绕行);`Set.mem_compl_iff` 的
+> dot-notation `.mpr` 有时失效(用 `(Set.mem_compl_iff s x).mpr` 全参形式);
+> `Set.indicator_nonneg (∀ a ∈ s, 0 ≤ f a) i` 直接给非负性;`tendsto_const_nhdf`
+> 不存在(是 `tendsto_const_nhds`,Tendsto.sub 后需 `rw [sub_zero]` 消目标);
+> `Filter.Tendsto.congr' h (tendsto)` 是函数形式非 iff;`Finset.sum_insert`
+> 在积分 binder 下 rw 失败(改 `simp only`);`integral_prod_mul (f) (g)` 本版
+> **无可积性假设**;`MemLp.mul (hf : MemLp f q) (hφ : MemLp φ p)` 结论是
+> `MemLp (φ * f) r`(乘积顺序!);`Finset.sum_filter (p) (f)` 方向 =
+> filter-和 → ite-和;`Integrable.comp_fst` 需显式 ν + IsFiniteMeasure(改用
+> `Integrable.op_fst_snd (by fun_prop) ⟨1, ...⟩`);定义在 binder 下的
+> `rw [def名]` 失败(改 `show`/defeq 展开);`tendsto_congr'` 未知
+> (`Filter.Tendsto.congr'`)。
+
 ## 上一轮交接状态(2026-09-22 置顶块,留档)
 
 > 交接状态(2026-09-23 更新):**最新接手任务书 =
