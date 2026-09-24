@@ -381,7 +381,12 @@ theorem exists_weightedRieszSpectrum_min (psi c : ℝ) (hc : 0 < c) (hpsi0 : 0 <
   支撑 ∑' 坍缩、有限支撑谱算子有限和作用公式、**matrixSq_summable_of_decomp**
   (A x = ∑_{i∈t} ⟪w i,x⟫•u i ⟹ 任意 Hilbert 基下矩阵平方可和,界
   #t·∑(‖w i‖‖u i‖)²)——cyclicity 中段所需的全部可和性包装由它供给。
-- **仍未落地**(第 3b–6 节):有限秩 cyclicity 中段(S_t/W∘S_t 的矩阵平方
+- **进度更新(2026-09-23 第三轮,再续)**:第 3b 节(cyclicity 中段)已落地
+  (8f910e4,exit=0、零 sorry、公理 ⊆ 三条):
+  **`diagTsum_Btrunc_pow_eq_diagTsum_WTtrunc_pow`**——∀k≥1 ∀Hilbert 基 e,
+  Diag_k(B_t) = Diag_k((M_ω∘T_t)^k)。这就是压缩恒等式在截断层上的"中段
+  等式"整体(有限秩循环换位),不再依赖 A8 矩阵桥。
+- **仍未落地**(第 4–6 节):核侧极限组装(S_t/W∘S_t 的矩阵平方
   可和性走 Bessel-有限和,幂重组 S_t(W S_t²)^{k-1} W S_t 后单次
   tracePair_cyclic;核侧 W∘T_t = TOp(ω·truncKernel) 组件已就绪,经
   mulOperator_comp_TOp_gen + TOp_truncKernel_eq_specOperator 组装,其矩阵

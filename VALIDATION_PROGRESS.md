@@ -1,9 +1,9 @@
 # VALIDATION_PROGRESS（供协调 agent 检查；持续更新）
 
-更新:2026-09-23 22:2x(Session-4 接管者 3 第三轮;**k=2 闭环 + 一般 k 路线
-第 1/2a/2b/2c/3a 节落地**;一般 k 的第 3b–6 节未落地;历史块在下)。
+更新:2026-09-23 22:5x(Session-4 接管者 3 第三轮;**k=2 闭环 + 一般 k 路线
+第 1/2a/2b/2c/3a/3b 节落地**;一般 k 的第 4–6 节未落地;历史块在下)。
 
-> 交接状态(2026-09-23 22:2x 更新):任务书 = `HANDOVER_PROMPT_session4_takeover4.md`。
+> 交接状态(2026-09-23 22:5x 更新):任务书 = `HANDOVER_PROMPT_session4_takeover4.md`。
 > **k=2 压缩恒等式闭环**(d628418,`Hurst/CompressionIdentity.lean`,检查点
 > `2026-09-23-1508-CompressionK2/`,8 定理公理 ⊆ 三条):
 > `mulOperator_comp_TOp_riesz`(W∘T=TOp(rieszKernel),纯 a.e. congruence 无
@@ -46,12 +46,19 @@
 >   分解的算子在任意 Hilbert 基下矩阵平方可和,显式界 #t·∑(‖wᵢ‖‖uᵢ‖)² —
 >   正是 tracePair_cyclic 消费的 HS-包装;ENNReal Tonelli +
 >   sq_sum_le_card_mul_sum_sq + A7 式运输)。
-> **未落地(诚实登记,完成前 M1 验收不通过)**:第 3b 节(tracePair_cyclic
-> 中段等式 Diag_k(B_t^k) = Diag_k((W∘T_t)^k):幂重组 B_t^k x =
-> S_t((W∘T_t)^{k-1}(W(S_t x))) 后单次 cyclic;矩阵平方可和性已由 3a 的
-> matrixSq_summable_of_decomp 供给(W∘S_t 与 S_t∘(W∘T_t)^{k-1} 的秩一分解经
-> specOperator_apply_eq_finset_sum);核侧 W∘T_t = TOp(ω·truncKernel) 经
-> mulOperator_comp_TOp_gen + TOp_truncKernel_eq_specOperator)、
+> - 第 3b 节(8f910e4,检查点 `2026-09-23-2250-CompressionGeneralK-s3b/`):
+>   **有限秩 cyclicity 中段等式**——
+>   **`diagTsum_Btrunc_pow_eq_diagTsum_WTtrunc_pow`**(∀k≥1 ∀Hilbert 基 e:
+>   Diag_k(B_t) = Diag_k((M_ω∘T_t)^k);幂重组归纳 B_t^{n+1}z =
+>   S_t((W∘T_t)^n(W(S_t z))) 消费 S_t²=T_t;W∘S_t、S_t∘(W∘T_t)^m 及两个
+>   复合的秩一分解经 specOperator_apply_eq_finset_sum + adjoint_inner_left;
+>   四个 HS-包装由 matrixSq_summable_of_decomp 供给;单次 tracePair_cyclic)。
+>   证明内用 set-缩写 W/S/T/P 控制长项。
+> **未落地(诚实登记,完成前 M1 验收不通过)**:第 4 节(核侧极限组装:
+> W∘T_t = TOp(ω·truncKernel) 经 mulOperator_comp_TOp_gen +
+> TOp_truncKernel_eq_specOperator;cycle2/塔比较消费 hsNorm_compPowR_sub_le,
+> 把 Diag_k((W∘T_t)^k) 过渡到 Diag_k(TOp(rieszKernel)^k)——HS 范数平方尾
+> = ∑'_{i∉t}κᵢ² 经张量 Parseval + tail_indicator_tendsto_zero)、
 > 第 4 节(cycle2/塔比较组装,消费 hsNorm_compPowR_sub_le)、第 5 节(A4 的
 > B 侧极限 ‖B−B_t‖→0 + 对角 ℓ² 内容 = A7 尾)、第 6 节(最终组装
 > diagSum_Bop_eq_weightedCycle ∀k≥2 + exists_weightedRieszSpectrum_min +
@@ -82,7 +89,12 @@ olean(否则 Unknown constant);`ENNReal.ofReal_tsum_of_nonneg` 本版带**两个
 `open scoped ENNReal`(本文件头未开);`← ENNReal.ofReal_mul` 带显式证明参数
 会把模式钉死(改 `exact (…).symm`);binder 下的 `rw [Finset.sum_insert]`
 不稳定(改 show-项 + tsum_congr);`sum_inner`/`inner_sum` 分工:前者和在
-第一个参数,后者和在第二个参数。
+第一个参数,后者和在第二个参数;`X ^ n y` 解析为
+`X ^ (n y)`——幂后跟应用参数必须整体括号 `(X ^ n) y`(声明与引理皆然);
+`ContinuousLinearMap.map_sum` 本版不存在(map_sum 与 Measure 二义,用
+`_root_.map_sum`);长复合项用 `set … with h` 缩写 + 各引理证明内 `rw [h]`
+展开;real_inner_comm 在 rw 列表中方向不稳(exact real_inner_comm _ _ 或
+hstep 显式等式链更稳)。
 
 ## 上一轮交接状态(2026-09-22 置顶块,留档)
 

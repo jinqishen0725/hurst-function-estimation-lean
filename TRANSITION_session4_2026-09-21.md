@@ -5,7 +5,20 @@
 本文件供接管 agent 使用;权威过程记录见 [VALIDATION_PROGRESS.md](VALIDATION_PROGRESS.md)
 (逐检查点、逐契约修正、含日志路径与退出码)。
 
-## 0. 2026-09-23 22:2x 快照(接管者 3 第三轮;k=2 闭环 + 一般 k 第 1/2a/2b/2c/3a 节)
+## 0. 2026-09-23 22:5x 快照(接管者 3 第三轮;k=2 闭环 + 一般 k 第 1/2a/2b/2c/3a/3b 节)
+
+任务 2(一般 k)推进:**第 3b 节 ✅ 8f910e4**(有限秩 cyclicity 中段等式
+**`diagTsum_Btrunc_pow_eq_diagTsum_WTtrunc_pow`**:∀k≥1 Diag_k(B_t) =
+Diag_k((M_ω∘T_t)^k);幂重组归纳 + 秩一分解 + 四个 HS-包装 + 单次
+tracePair_cyclic;set-缩写 W/S/T/P 控长项;exit=0、零 sorry、公理 ⊆ 三条、
+检查点 `2026-09-23-2250-CompressionGeneralK-s3b`、增量 lake build Hurst 绿)。
+**第 4–6 节未落地**(核侧极限组装:W∘T_t = TOp(ω·truncKernel) 组件就绪 +
+cycle2/塔比较 + HS 范数平方尾 = κ²-尾;B 侧 A4 极限;最终组装 +
+exists_weightedRieszSpectrum_min + equivalentKernel r 实例化)。M1 验收仍未
+通过(诚实口径)。新增雷区(幂-应用优先级、_root_.map_sum、set-缩写战术、
+real_inner_comm 方向)见 VALIDATION_PROGRESS 置顶块。
+
+## 0b. 2026-09-23 22:2x 快照(接管者 3 第三轮;k=2 闭环 + 一般 k 第 1/2a/2b/2c/3a 节;留档)
 
 任务 2(一般 k)推进:**第 3a 节 ✅ 301e7bc**(有限秩矩阵平方工具:
 `tsum_inner_sq_hilbertBasis_eq_norm_sq`/`tsum_eq_finset_sum_of_forall_notMem`/
