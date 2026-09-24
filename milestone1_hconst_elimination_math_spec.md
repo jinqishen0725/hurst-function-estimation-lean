@@ -367,12 +367,22 @@ theorem exists_weightedRieszSpectrum_min (psi c : ℝ) (hc : 0 < c) (hpsi0 : 0 <
 - **进度更新(2026-09-23 第二轮)**:第 2a 节(耗竭尾引擎,免可数化——
   level-set 截断替代注入-枚举)与第 2b 节(截断张量核 truncKernel 及其
   kpair = 截断谱配对)已落地(7eadf38/2a28506,exit=0、零 sorry、公理 ⊆ 三条)。
-- **仍未落地**(第 2c–6 节):TOp(KN) = specOperator-截断 + S_N²=T_N +
-  B_N 矩阵公式;有限秩 cyclicity 中段(S_N 的矩阵平方可和性走 Bessel-有限和,
-  W∘T_N = TOp(ω·KN) 侧走 kernel-HS↔矩阵平方恒等);核侧 cycle2/塔比较;
-  B 侧 A4 极限;最终 `diagSum_Bop_eq_weightedCycle`(∀k≥2)+
-  `exists_weightedRieszSpectrum_min` + equivalentKernel r 实例化。
-  **M1 验收仍未通过**。
+- **进度更新(2026-09-23 第三轮)**:第 2c 节(截断谱算子)已落地
+  (8d7ddae,exit=0、零 sorry、8 定理公理 ⊆ 三条):截断系数族
+  `truncKappaCoeff`(κ·χ_t)/`truncSqrtCoeff`(√κ·χ_t)及界与逐点平方引理;
+  算子定义 `kappaTruncOp`(T_t)/`sqrtTruncOp`(S_t)/`BtruncOp`
+  (B_t := S_t ∘L M_ω ∘L S_t);**`TOp_truncKernel_eq_specOperator`**
+  (第 2b 节截断张量核的核算子 = T_t,即路线第 2 步的算子识别);
+  `sqrtTruncOp_comp_eq_kappaTruncOp`/`sqrtTruncOp_sq`(S_t² = T_t);
+  `inner_Btrunc_matrix`(⟪v_i, B_t v_j⟫ = √κχ_i·√κχ_j·⟪v_i, M_ω v_j⟫,
+  inner_Bop_matrix 的截断对应物)。
+- **仍未落地**(第 3–6 节):有限秩 cyclicity 中段(S_t/W∘S_t 的矩阵平方
+  可和性走 Bessel-有限和,幂重组 S_t(W S_t²)^{k-1} W S_t 后单次
+  tracePair_cyclic;核侧 W∘T_t = TOp(ω·truncKernel) 组件已就绪,经
+  mulOperator_comp_TOp_gen + TOp_truncKernel_eq_specOperator 组装,其矩阵
+  平方走 kernel-HS↔矩阵平方恒等);核侧 cycle2/塔比较;B 侧 A4 极限;最终
+  `diagSum_Bop_eq_weightedCycle`(∀k≥2)+ `exists_weightedRieszSpectrum_min`
+  + equivalentKernel r 实例化。**M1 验收仍未通过**。
 
 ## 6. 验收标准(M1)
 

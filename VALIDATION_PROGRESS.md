@@ -1,9 +1,9 @@
 # VALIDATION_PROGRESS（供协调 agent 检查；持续更新）
 
-更新:2026-09-23 20:2x(Session-4 接管者 3 第二轮;**k=2 闭环 + 一般 k 路线
-第 1/2a/2b 节落地**;一般 k 的第 2c–6 节未落地;历史块在下)。
+更新:2026-09-23 21:5x(Session-4 接管者 3 第三轮;**k=2 闭环 + 一般 k 路线
+第 1/2a/2b/2c 节落地**;一般 k 的第 3–6 节未落地;历史块在下)。
 
-> 交接状态(2026-09-23 20:2x 更新):任务书 = `HANDOVER_PROMPT_session4_takeover4.md`。
+> 交接状态(2026-09-23 21:5x 更新):任务书 = `HANDOVER_PROMPT_session4_takeover4.md`。
 > **k=2 压缩恒等式闭环**(d628418,`Hurst/CompressionIdentity.lean`,检查点
 > `2026-09-23-1508-CompressionK2/`,8 定理公理 ⊆ 三条):
 > `mulOperator_comp_TOp_riesz`(W∘T=TOp(rieszKernel),纯 a.e. congruence 无
@@ -30,13 +30,23 @@
 >   `hSKernel_tensKernel`/`hSKernel_truncKernel` + **`kpair_truncKernel`**
 >   (截断核配对 = ∑_{i∈t}κᵢ⟪vᵢ,f⟫⟪vᵢ,g⟫;逐项 Fubini 用本版
 >   `integral_prod_mul`(无可积性假设!)+ a.e. 代表运输到内积)。
-> **未落地(诚实登记,完成前 M1 验收不通过)**:第 2c 节(TOp(KN) =
-> specOperator-截断、S_N²=T_N、B_N 矩阵公式)、第 3 节(tracePair_cyclic 中段
-> 等式:有限秩 S_N 的矩阵平方可和性走 Bessel-有限和路线,核侧 W∘T_N =
-> TOp(ω·KN) 走 kernel-HS↔矩阵平方恒等,`kernel_inner_eq_tsum_prodKernel'` +
-> `inner_prodKernel_pairing` 供给)、第 4 节(cycle2/塔比较组装)、第 5 节
-> (A4 的 B 侧极限 + D_N 包装)、第 6 节(最终组装 diagSum_Bop_eq_weightedCycle
-> ∀k≥2 + exists_weightedRieszSpectrum_min + equivalentKernel r 实例化)。
+> - 第 2c 节(8d7ddae,检查点 `2026-09-23-2156-CompressionGeneralK-s2c/`):
+>   **截断谱算子**——`truncKappaCoeff`/`truncSqrtCoeff` 截断系数族(κ·χ_t 与
+>   √κ·χ_t;含界引理与逐点平方引理 truncSqrtCoeff_sq)+ `kappaTruncOp`/
+>   `sqrtTruncOp`/`BtruncOp` 三定义 + **`TOp_truncKernel_eq_specOperator`**
+>   (截断张量核的核算子 = 截断谱算子 T_t;kpair_truncKernel + specPair 展开 +
+>   tsum_indicator_finset 桥接)+ `sqrtTruncOp_comp_eq_kappaTruncOp`/
+>   `sqrtTruncOp_sq`(**S_t² = T_t**)+ `BtruncOp_apply` +
+>   `inner_Btrunc_matrix`(√(χ·κ) 矩阵公式,inner_Bop_matrix 的截断对应物)。
+> **未落地(诚实登记,完成前 M1 验收不通过)**:第 3 节(tracePair_cyclic
+> 中段等式 Diag_k(B_t^k) = Diag_k((W∘T_t)^k):有限秩 S_t/W∘S_t 的矩阵平方
+> 可和性走 Bessel-有限和路线,幂重组 S_t(W S_t²)^{k-1}W S_t 后单次 cyclic;
+> 核侧 W∘T_t = TOp(ω·truncKernel) 经 mulOperator_comp_TOp_gen +
+> TOp_truncKernel_eq_specOperator,其矩阵平方经 kernel-HS↔矩阵平方恒等)、
+> 第 4 节(cycle2/塔比较组装,消费 hsNorm_compPowR_sub_le)、第 5 节(A4 的
+> B 侧极限 ‖B−B_t‖→0 + 对角 ℓ² 内容 = A7 尾)、第 6 节(最终组装
+> diagSum_Bop_eq_weightedCycle ∀k≥2 + exists_weightedRieszSpectrum_min +
+> equivalentKernel r 实例化)。
 > **M1 验收仍未通过**(诚实口径)。
 > v4.31 雷区本轮新增(累积):`Finset.sum_le_sum_of_subset` 需
 > CanonicallyOrderedAdd(ℝ 无,ENNReal 运输绕行);`Set.mem_compl_iff` 的
@@ -50,7 +60,13 @@
 > filter-和 → ite-和;`Integrable.comp_fst` 需显式 ν + IsFiniteMeasure(改用
 > `Integrable.op_fst_snd (by fun_prop) ⟨1, ...⟩`);定义在 binder 下的
 > `rw [def名]` 失败(改 `show`/defeq 展开);`tendsto_congr'` 未知
-> (`Filter.Tendsto.congr'`)。
+> (`Filter.Tendsto.congr'`);`specOperator` 的系数族 `{c}` 是**隐式**参数
+——def/have/rw 钉参处必须 `(c := …)` 命名传参(位置传参被当成 hc,报
+Application type mismatch);无 `DecidableEq ι` 的 `Type` 上 `if i ∈ t` 不可
+判定——节级 `open scoped Classical` 统一 def 与引理 show-ite 的实例;
+rw 的 rfl-probe 常已自动收尾,显式补 `rfl` 可能报 No goals to be solved
+(报错再删);/tmp 里 import 本文件的公理审计前必须先 `lake build` 刷新
+olean(否则 Unknown constant)。
 
 ## 上一轮交接状态(2026-09-22 置顶块,留档)
 

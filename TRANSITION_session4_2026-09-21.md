@@ -5,7 +5,22 @@
 本文件供接管 agent 使用;权威过程记录见 [VALIDATION_PROGRESS.md](VALIDATION_PROGRESS.md)
 (逐检查点、逐契约修正、含日志路径与退出码)。
 
-## 0. 2026-09-23 20:2x 快照(接管者 3 第二轮;k=2 闭环 + 一般 k 第 1/2a/2b 节)
+## 0. 2026-09-23 21:5x 快照(接管者 3 第三轮;k=2 闭环 + 一般 k 第 1/2a/2b/2c 节)
+
+任务 2(一般 k)推进:**第 2c 节 ✅ 8d7ddae**(截断谱算子:
+`truncKappaCoeff`/`truncSqrtCoeff` 系数族 + `kappaTruncOp`/`sqrtTruncOp`/
+`BtruncOp` 定义 + **`TOp_truncKernel_eq_specOperator`**(截断张量核的核算子
+= 截断谱算子 T_t)+ `sqrtTruncOp_sq`(**S_t² = T_t**)+
+`inner_Btrunc_matrix`(√(χ·κ) 矩阵公式);exit=0、零 sorry、8 定理公理 ⊆
+三条、检查点 `2026-09-23-2156-CompressionGeneralK-s2c`、增量 lake build
+Hurst 绿)。**第 3–6 节未落地**(tracePair_cyclic 中段:Bessel-有限和给
+S_t/W∘S_t 矩阵平方可和、幂重组后单次 cyclic;核侧 W∘T_t =
+TOp(ω·truncKernel) 已就绪待组装;cycle2/塔比较;A4 的 B 侧极限;最终
+组装)。M1 验收仍未通过(诚实口径)。新增雷区(specOperator 隐式 {c} 须
+命名传参;无 DecidableEq 时节级 open scoped Classical 等)见
+VALIDATION_PROGRESS 置顶块。
+
+## 0b. 2026-09-23 20:2x 快照(接管者 3 第二轮;k=2 闭环 + 一般 k 第 1/2a/2b 节;留档)
 
 任务 2(一般 k)推进:**第 2a 节 ✅ 7eadf38**(免可数化耗竭尾引擎:
 `tail_indicator_tendsto_zero`/`partial_tendsto_tsum` 等 7 定理,检查点
