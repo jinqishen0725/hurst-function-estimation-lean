@@ -1,0 +1,3 @@
+f36da8d9826ddb4a6707ad760a12903d3bd102866aa879cc1bebab5fd36aafdd  CompressionGeneralK.lean
+394efc9d3ae7e9e90508168807022ed3e6048cffd208a96e5b191e3dfb3a8793  compile.log
+d9876807e147a9d629d4a3f3a14dcc5a0aa6424571bdd0e945f0291f8beb4af2  axioms.log

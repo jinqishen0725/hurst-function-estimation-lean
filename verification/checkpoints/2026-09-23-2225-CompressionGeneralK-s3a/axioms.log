@@ -1,0 +1,5 @@
+'HS.tsum_inner_sq_hilbertBasis_eq_norm_sq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.tsum_eq_finset_sum_of_forall_notMem' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.specOperator_apply_eq_finset_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.matrixSq_summable_of_decomp' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit=0
