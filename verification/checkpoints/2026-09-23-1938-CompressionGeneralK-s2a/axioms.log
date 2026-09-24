@@ -1,0 +1,8 @@
+'HS.summable_indicator' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.tsum_split_indicator' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.finset_sum_le_finset_sum_of_subset' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.tsum_finite_support' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.exists_finite_small_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.tail_indicator_tendsto_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.partial_tendsto_tsum' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit=0
