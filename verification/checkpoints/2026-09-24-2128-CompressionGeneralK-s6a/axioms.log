@@ -1,0 +1,7 @@
+'HS.summable_abs_diagTsum_pow' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.norm_sqrtOp_le'' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.norm_sqrtTruncOp_le'' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.norm_Bop_le'' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.norm_BtruncOp_le'' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.diagSum_Bop_eq_weightedCycle' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit=0
