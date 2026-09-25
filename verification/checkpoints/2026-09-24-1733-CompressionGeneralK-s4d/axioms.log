@@ -1,0 +1,7 @@
+'HS.weightedKernel_ae_rieszKernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.hsNorm_sub_comm' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.cycle2_sub_decompose' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.abs_cycle2_sub_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.diagTsum_pow_eq_cycle2' depends on axioms: [propext, Classical.choice, Quot.sound]
+'HS.diagTsum_pow_weightedTrunc_tendsto' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit=0
