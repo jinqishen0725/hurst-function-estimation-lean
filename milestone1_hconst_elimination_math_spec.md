@@ -386,13 +386,35 @@ theorem exists_weightedRieszSpectrum_min (psi c : ℝ) (hc : 0 < c) (hpsi0 : 0 <
   **`diagTsum_Btrunc_pow_eq_diagTsum_WTtrunc_pow`**——∀k≥1 ∀Hilbert 基 e,
   Diag_k(B_t) = Diag_k((M_ω∘T_t)^k)。这就是压缩恒等式在截断层上的"中段
   等式"整体(有限秩循环换位),不再依赖 A8 矩阵桥。
-- **仍未落地**(第 4–6 节):核侧极限组装(S_t/W∘S_t 的矩阵平方
-  可和性走 Bessel-有限和,幂重组 S_t(W S_t²)^{k-1} W S_t 后单次
-  tracePair_cyclic;核侧 W∘T_t = TOp(ω·truncKernel) 组件已就绪,经
-  mulOperator_comp_TOp_gen + TOp_truncKernel_eq_specOperator 组装,其矩阵
-  平方走 kernel-HS↔矩阵平方恒等);核侧 cycle2/塔比较;B 侧 A4 极限;最终
-  `diagSum_Bop_eq_weightedCycle`(∀k≥2)+ `exists_weightedRieszSpectrum_min`
-  + equivalentKernel r 实例化。**M1 验收仍未通过**。
+### §5 落地回写(2026-09-24,一般 k 路线第 4–6 节 + M1 验收;声明式偏差)
+
+**一般 k 截断路线第 4/5/6 节全部落地**(接管者 4,提交链
+7d0684f/5b5fbe8/1ea0961/23f1f67/bcfd3e3/af11726/7bc1663,全部 exit=0、
+零 sorry、公理 ⊆ 三条;检查点 2026-09-24-16xx–22xx-CompressionGeneralK-s4a…s6c):
+
+- **`diagSum_Bop_eq_weightedCycle`(∀k≥2)已无 hconst 全量落地**:
+  `∑' i, ⟪(B^k)(e i), e i⟫ = weightedRieszCycleIntegral k psi c omega`。
+- **`exists_weightedRieszSpectrum_min` 已落地**(模型 B 的重数精确、平方可和
+  谱枚举 + ∀k≥2 HasSum(val^k) = WRCI k)及 **`exists_weightedRieszSpectrum_min_equiv`**
+  (ω := equivalentKernel r 实例化,权重界存在式打包)。
+- 声明偏差(对本节路线注记):
+  1. 幂对角恒等式走 **cycle2/塔 Lipschitz**(hPair_uniform + tracePair_comp_tsum
+     给 Diag_k(TOp C) = cycle2(塔,顶)),B 侧走 **A4**(diag_pow_sub_diag_pow_le,
+     D-前提 = 2√‖T‖MR‖S−S_t‖ + √(对角尾) 同时控制 op 范数与 ℓ² 内容);
+     3b 中段等式 = tracePair_cyclic 有限秩版,核侧恒等 = mulOperator_comp_TOp_gen
+     + TOp_truncKernel_eq_specOperator。
+  2. HS 平方尾恒等式 `hsNorm_sub_truncKernel_sq_eq_tail` 走张量-ONB Parseval
+     沿对角坍缩(`Function.Injective.hasSum_iff`),免 ι 可数化;耗竭列 =
+     level-set 有限集(`exists_exhausting_finsets`)。
+  3. B−B_t 的对角 ℓ² 内容 = **A7 族在 t×t 上的补指示**
+     (`vmatrixSq_BsubBtrunc_eq_indicator`,√-系数坍缩;基不变经
+     matrixSq_sum_eq_of_complete),完全绕开非-HS 的 S(与更正记录 7 一致)。
+  4. 谱枚举的 k-幂族可和性由逐点支配 |val^k| ≤ M^{k−2}·val² + 枚举界
+     (val=0 或 |val| ≤ ‖B‖)供给。
+  5. M1 验收复审(§6)四项于 2026-09-24 执行且全绿(build.log 9201 jobs /
+     AxiomAudit 0 真实错误 / check_coverage 27/27 / verify_axioms 全过;
+     实例化 `exists_weightedRieszSpectrum_min_equiv` = 阻断 1 的谱侧消除,
+     hpow/hg/可行窗口为数据前提,与 §1 表同口径)。**M1 验收通过**。
 
 ## 6. 验收标准(M1)
 

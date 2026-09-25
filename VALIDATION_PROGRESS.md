@@ -1,9 +1,88 @@
 # VALIDATION_PROGRESS（供协调 agent 检查；持续更新）
 
-更新:2026-09-23 22:5x(Session-4 接管者 3 第三轮;**k=2 闭环 + 一般 k 路线
-第 1/2a/2b/2c/3a/3b 节落地**;一般 k 的第 4–6 节未落地;历史块在下)。
+更新:2026-09-24(Session-4 接管者 4;**一般 k 路线第 4/5/6 节全部落地;
+diagSum_Bop_eq_weightedCycle(∀k≥2)+ exists_weightedRieszSpectrum_min +
+equivalentKernel r 实例化落地;M1 验收复审四项全部执行**;历史块在下)。
 
-> 交接状态(2026-09-23 22:5x 更新):任务书 = `HANDOVER_PROMPT_session4_takeover4.md`。
+> 交接状态(2026-09-24 更新):任务书 = takeover5 口头任务书(Session-4 接管者 4)。
+> **第 4 节(核侧极限组装)已落地**(`Hurst/CompressionGeneralK.lean`):
+> - 4a(7d0684f,检查点 `2026-09-24-1628-CompressionGeneralK-s4a/`):
+>   `exists_measurable_rep_family` + 张量坐标两件
+>   (`tensorCoord_unweightedRiesz`/`tensorCoord_truncKernel`)+
+>   **`hsNorm_sub_truncKernel_sq_eq_tail`**(HS 平方尾 = κ²-尾,张量 Parseval
+>   沿对角坍缩经 `Function.Injective.hasSum_iff`,免 ι 可数化)+
+>   `levelSet_finite`/`exists_exhausting_finsets` +
+>   **`hsNorm_sub_truncKernel_tendsto_zero`**(核尾 → 0)。
+> - 4b+4c(5b5fbe8,检查点 `2026-09-24-1644-CompressionGeneralK-s4bc/`):
+>   `measurable_truncKernel`/`measurable_weightedTruncKernel` +
+>   **`comp_mulOperator_kappaTruncOp_eq_TOp`**(M_ω∘T_t = TOp(ω·truncKernel))+
+>   **`hsNorm_weight_mul_sub_le`**(加权差控制 ≤ MR·hsNorm(K−N))。
+> - 4d(1ea0961,检查点 `2026-09-24-1733-CompressionGeneralK-s4d/`):
+>   `weightedKernel_ae_rieszKernel` + `cycle2_sub_decompose`/
+>   `abs_cycle2_sub_le` + **`diagTsum_pow_eq_cycle2`**(TOp C 幂对角和 =
+>   cycle2(塔,顶)) + **`diagTsum_pow_weightedTrunc_tendsto`**(第 4 节主定理:
+>   截断幂对角和 → 加权 Riesz 核算子幂对角和,塔 Lipschitz + 4a 尾界挤压)。
+> **第 5 节(B 侧 A4 极限)已落地**(23f1f67,检查点
+> `2026-09-24-1915-CompressionGeneralK-s5/`,14 定理):
+> - 5a:`summable_normSq_apply_and_eq`(列平方和 = 矩阵双和,A4 的 ℓ² 供给)+
+>   `BtruncOp_symm` + `BtruncOp_matrixSq_summable`(有限秩包)。
+> - 5b:**`norm_sqrtOp_sub_sqrtTruncOp_tendsto_zero`**(level-set 逼近)+
+>   `Bop_sub_BtruncOp_eq`(B−B_t 两项分解)+ `norm_Bop_sub_BtruncOp_le`
+>   (≤ 2√‖T‖·MR·‖S−S_t‖)+ `norm_Bop_sub_BtruncOp_tendsto_zero`。
+> - 5c:**`vmatrixSq_BsubBtrunc_eq_indicator`**(B−B_t 的 v-矩阵平方 = A7 族在
+>   t×t 上的补指示,√-系数坍缩)+ `eMatrixSummable_BsubBtrunc`(A7_aux 运输,
+>   一致界 MR²∑κ²)+ `tsum_eMatrixSq_BsubBtrunc_eq_tail`(基不变)+
+>   **`diagL2_BsubBtrunc_tendsto_zero`**(对角 ℓ² 内容 → 0,完全绕开非-HS 的 S)。
+> **第 6 节(最终组装)已落地**:
+> - 6a(bcfd3e3,检查点 `2026-09-24-2128-CompressionGeneralK-s6a/`):
+>   `summable_abs_diagTsum_pow`(A4 的 hXabs/hYabs 供给:半幂自伴分裂 + CS 配对)
+>   + 四个小上下文范数 helper(`norm_sqrtOp_le'` 等逐点 opNorm 链——复合算子
+>   defeq 展开在 1M 心跳下也超时,故提取为独立引理)+ 常数 Cu =
+>   ‖T‖·MR + MR·√(∑κ²) 统一范数与列平方界 + **`diagSum_Bop_eq_weightedCycle`**
+>   (∀k≥2 ∀Hilbert 基:B 幂对角和 = weightedRieszCycleIntegral k;
+>   D_N = 2√‖T‖MR‖S−S_t‖ + √(尾) 同时满足 A4 两个 D-前提且 → 0;
+>   逐 N:A4 + 3b 中段等式 + 4b 识别 + 4d 核收敛,tendsto_nhds_unique 挤压)。
+> - 6b(af11726,检查点 `2026-09-24-2237-CompressionGeneralK-s6b/`):
+>   **`exists_weightedRieszSpectrum_min`**(模型 B 带重数精确、平方可和谱枚举,
+>   ∀k≥2 HasSum(val^k) = WRCI k;幂族可和性经
+>   |val^k| = |val|^{2+(k−2)} ≤ M^{k−2}·val² 逐点支配 + summable_of_sum_le)。
+> - 6c(7bc1663,检查点 `2026-09-24-2259-CompressionGeneralK-s6c/`):
+>   **`exists_weightedRieszSpectrum_min_equiv`**(ω := Hurst.equivalentKernel r
+>   完整实例化;权重界存在式打包——逐点界 equivalentKernel_bounded 同时充当
+>   hess 的 a.e. 前提(逐点 ⇒ a.e.);hpow/hg 与可行窗口为数据前提,与旧线
+>   rieszSpectrumVal 同口径;**无 hconst**)。
+> **M1 验收复审(合同 §6 四项,2026-09-24 执行)**:
+> 1. ✅ 全模块编译零错误零 sorry(全量 `lake build Hurst` 9201 jobs 绿,
+>    `verification/build.log` exit=0);新增 16 条关键定理 #print axioms 追加进
+>    `verification/AxiomAudit.lean`(2536 行,0 真实编译错误;35 个 grep "error"
+>    匹配均为定理名含 "error" 字样),全部 ⊆ {propext, Classical.choice,
+>    Quot.sound},日志 `verification/axioms.log` exit=0。
+> 2. ✅ `exists_weightedRieszSpectrum_min_equiv` 以 ω := equivalentKernel r
+>    完整实例化(阻断 1 的谱侧消除;hpow/hg/可行窗口为数据前提,合同 §1 表
+>    同口径)。
+> 3. ✅ 聚合 import + 全量 build + AxiomAudit 追加 +
+>    `check_coverage.py` 27/27(2519 声明)+ `verify_axioms.py`
+>    (sorryAx=false, custom_axioms=false, build_passed=true)。
+> 4. ✅ 旧 `rieszSpectrumVal_hGen`/`*_v3_closed` 保留并注记(前轮已做)。
+> **M1 验收通过(诚实口径:四项全部执行且绿;数据前提 hpow/hg/可行窗口与
+> 旧线同口径,由合同 §1 表分类;无不可满足前提残留)**。
+> 下一步(M1 后,按 TRANSITION §6 顺序):阻断 2(eventualCard 传播)→
+> 阻断 3(P5 归一化能量 W8–W9)→ 阻断 4(一般符号 23:B–D)→ 端点组装。
+> v4.31 雷区本轮新增(累积):`fun x,` 逗号形式已废除(必须 `fun x =>`);
+> `HasSum.congr` 改名 `HasSum.congr_fun`(方向:新函数 = 旧);`abs_add` 根名
+> 不存在(用 `AbsoluteValue.add_le AbsoluteValue.abs`);`integral_add` 方向
+> 与直觉相反(左 = 右);`Orthonormal` 字段是 norm_eq_one/orthonormal' 而非
+> 双参 inner 公式;`inner_sub_right`(第二参减法)vs `inner_sub_left`;
+> `pow_le_pow_left₀` 需非负首参;`opNorm_le_bound` 的 f 是首显参;
+> `Set.Finite.mem_toFinset`;`Real.sq_sqrt` 实例化需显式非负前提;
+> `Set.indicator_of_notMem` 需 f 实参;目标在 L2 中用 `abel` 非 `ring`/
+> `linarith`;`Finset.notMem_empty`;大上下文内复合算子 defeq 展开
+> (Bop/BtruncOp 范数)即使 1M 心跳也超时——提取为小上下文独立引理 +
+> 逐点 opNorm 链(`ContinuousLinearMap.le_opNorm` 逐级)是唯一稳定路线;
+> `summable_of_sum_le` 的 c 需显式命名传参;`tsum_congr`+`congrArg` 桥接
+> 算子等式到幂。
+
+> 交接状态(2026-09-23 22:5x 留档):任务书 = `HANDOVER_PROMPT_session4_takeover4.md`。
 > **k=2 压缩恒等式闭环**(d628418,`Hurst/CompressionIdentity.lean`,检查点
 > `2026-09-23-1508-CompressionK2/`,8 定理公理 ⊆ 三条):
 > `mulOperator_comp_TOp_riesz`(W∘T=TOp(rieszKernel),纯 a.e. congruence 无

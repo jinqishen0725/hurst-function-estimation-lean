@@ -1,11 +1,28 @@
 # Session 4 交接:独立验证轮的 M1 执行状态(take-over 文档)
 
-更新:2026-09-23 15:2x PDT(接管者 3)。HEAD `d628418`。项目:
+更新:2026-09-24 PDT(接管者 4)。HEAD `7bc1663`。项目:
 `/Users/jinqishen/repo/lean_verification/hurst_function_estimation`。
 本文件供接管 agent 使用;权威过程记录见 [VALIDATION_PROGRESS.md](VALIDATION_PROGRESS.md)
 (逐检查点、逐契约修正、含日志路径与退出码)。
 
-## 0. 2026-09-23 22:5x 快照(接管者 3 第三轮;k=2 闭环 + 一般 k 第 1/2a/2b/2c/3a/3b 节)
+## 0. 2026-09-24 快照(接管者 4;一般 k 第 4/5/6 节 + M1 验收复审)
+
+任务 1–3(一般 k 第 4/5/6 节)全部落地,提交链
+7d0684f(4a)→ 5b5fbe8(4b+4c)→ 1ea0961(4d)→ 23f1f67(5)→
+bcfd3e3(6a 主定理)→ af11726(6b 谱识别)→ 7bc1663(6c 实例化):
+**`diagSum_Bop_eq_weightedCycle`(∀k≥2)+ `exists_weightedRieszSpectrum_min` +
+`exists_weightedRieszSpectrum_min_equiv`(ω := equivalentKernel r)全部落地**
+(`Hurst/CompressionGeneralK.lean`;全部 exit=0、零 sorry、公理 ⊆ 三条、
+检查点四件套齐全)。**M1 验收复审(合同 §6)四项已执行且绿**:全量
+`lake build Hurst` 9201 jobs(`verification/build.log` exit=0)、AxiomAudit
+追加 16 条(0 真实错误,`verification/axioms.log` exit=0)、
+`check_coverage.py` 27/27、`verify_axioms.py`(sorryAx=false /
+custom_axioms=false / build_passed=true)。**M1 验收通过**(诚实口径:
+数据前提 hpow/hg/可行窗口与旧线同口径,合同 §1 表分类;无不可满足前提)。
+下一步(任务 5,未开始):阻断 2(eventualCard 传播)→ 阻断 3(P5 W8–W9)
+→ 阻断 4(一般符号 23:B–D)。新雷区批见 VALIDATION_PROGRESS 置顶块。
+
+## 0a. 2026-09-23 22:5x 快照(接管者 3 第三轮;k=2 闭环 + 一般 k 第 1/2a/2b/2c/3a/3b 节;留档)
 
 任务 2(一般 k)推进:**第 3b 节 ✅ 8f910e4**(有限秩 cyclicity 中段等式
 **`diagTsum_Btrunc_pow_eq_diagTsum_WTtrunc_pow`**:∀k≥1 Diag_k(B_t) =
