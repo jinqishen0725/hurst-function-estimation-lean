@@ -1,0 +1,7 @@
+'Hurst.harmonizableFeature_sub_norm_sq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.continuousOn_Ioi_ae_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.normalizedVaryingIncrement_ne_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.gridStrideFirstActual_ne_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.actualQ1_hane_discharged' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.actualQ1_hane_all' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit=0

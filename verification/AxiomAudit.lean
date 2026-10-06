@@ -2554,3 +2554,11 @@ import Hurst
 #print axioms Hurst.feasibleR_env_tendsto
 #print axioms Hurst.actualQ1_knownScaleH_fullChain_generalSigned_scalarRates
 #print axioms Hurst.actualQ1_knownScaleH_fullChain_generalSigned_feasible
+
+-- takeover8 (2026-10-06): feature-row nondegeneracy (hane spectral resolution).
+#print axioms Hurst.harmonizableFeature_sub_norm_sq
+#print axioms Hurst.continuousOn_Ioi_ae_zero
+#print axioms Hurst.normalizedVaryingIncrement_ne_zero
+#print axioms Hurst.gridStrideFirstActual_ne_zero
+#print axioms Hurst.actualQ1_hane_discharged
+#print axioms Hurst.actualQ1_hane_all

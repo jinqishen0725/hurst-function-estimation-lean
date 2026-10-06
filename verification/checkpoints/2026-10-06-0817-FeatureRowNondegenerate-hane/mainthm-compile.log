@@ -1,0 +1,191 @@
+Hurst/FeatureRowNondegenerate.lean:126:60: error: linarith failed to find a contradiction
+h : ↑(Ioo 0 1)
+t x : ℝ
+x✝ : x ∈ Ioi 0
+a✝ : ↑h + 1 / 2 < 0
+⊢ False
+failed
+Hurst/FeatureRowNondegenerate.lean:138:69: error: Application type mismatch: The argument
+  hx
+has type
+  x ∈ Ioi 0
+but is expected to have type
+  0 < ?m.258
+in the application
+  abs_of_pos hx
+Hurst/FeatureRowNondegenerate.lean:123:56: error: unsolved goals
+h : ↑(Ioo 0 1)
+t : ℝ
+hpow : ContinuousOn (fun x => x ^ (↑h + 1 / 2)) (Ioi 0)
+hnum : ContinuousOn (fun x => cexp (I * ↑(t * x)) - 1) (Ioi 0)
+hden : ContinuousOn (fun x => ↑(x ^ (↑h + 1 / 2))) (Ioi 0)
+hdennz : ∀ x ∈ Ioi 0, ↑(x ^ (↑h + 1 / 2)) ≠ 0
+x : ℝ
+hx : x ∈ Ioi 0
+⊢ (cexp (I * ↑(t * x)) - 1) / ↑(|x| ^ (↑h + 1 / 2)) = (cexp (I * ↑(t * x)) - 1) / ↑(x ^ (↑h + 1 / 2))
+Hurst/FeatureRowNondegenerate.lean:138:44: warning: This simp argument is unused:
+  Pi.sub_apply
+
+Hint: Omit it from the simp argument list.
+  simp only [rawHarmonizable, Pi.div_apply, P̵i̵.̵s̵u̵b̵_̵a̵p̵p̵l̵y̵,̵ ̵abs_of_pos hx]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Hurst/FeatureRowNondegenerate.lean:158:16: error: fail to show termination for
+  _private.Hurst.FeatureRowNondegenerate.0.Hurst.exp_I_mul_two_pi
+with errors
+failed to infer structural recursion:
+Not considering parameter hr of _private.Hurst.FeatureRowNondegenerate.0.Hurst.exp_I_mul_two_pi:
+  its type is an inductive datatype
+    r = 2 * Real.pi ∨ r = -(2 * Real.pi)
+  and the datatype parameter
+    r = 2 * Real.pi
+  depends on the function parameter
+    r
+  which is not fixed.
+Cannot use parameter r:
+  the type ℝ does not have a `.brecOn` recursor
+
+
+Could not find a decreasing measure.
+The basic measures relate at each recursive call as follows:
+(<, ≤, =: relation proved, ? all proofs failed, _: no proof attempted)
+            
+1) 166:23-52
+Please use `termination_by` to specify a decreasing measure.
+Hurst/FeatureRowNondegenerate.lean:177:50: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  1⁻¹
+in the target expression
+  (-1)⁻¹ = -1
+
+case inr
+r : ℝ
+hr : r = -Real.pi
+⊢ (-1)⁻¹ = -1
+Hurst/FeatureRowNondegenerate.lean:191:23: error: Invalid rewrite argument: Expected an equality or iff proof or definition name, but `exp_I_mul_pi_half
+  (Or.inl rfl)` is a proof of
+  cexp (I * ↑(Real.pi / 2)) = I ∨ cexp (I * ↑(Real.pi / 2)) = -I
+Hurst/FeatureRowNondegenerate.lean:213:10: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ‖harmonizableFeature k 0‖ ^ 2
+in the target expression
+  ‖harmonizableFeature k 0‖ = 0
+
+h k : ↑(Ioo 0 1)
+s ℓ : ℝ
+hℓ : 0 < ℓ
+hz : normalizedVaryingIncrement h k s ℓ = 0
+hsub : harmonizableFeature k 0 - harmonizableFeature h s = 0
+hu0 : s + ℓ = 0
+⊢ ‖harmonizableFeature k 0‖ = 0
+Hurst/FeatureRowNondegenerate.lean:218:37: error: linarith failed to find a contradiction
+h k : ↑(Ioo 0 1)
+s ℓ : ℝ
+hℓ : 0 < ℓ
+hz : normalizedVaryingIncrement h k s ℓ = 0
+hsub : -harmonizableFeature h s = 0
+hu0 : s + ℓ = 0
+hk0 : harmonizableFeature k 0 = 0
+hzs : harmonizableFeature h s = 0
+h1 : 0 ^ 2 = |s| ^ (2 * ↑h)
+a✝ : 2 * ↑h = 0
+⊢ False
+failed
+Hurst/FeatureRowNondegenerate.lean:227:10: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ‖harmonizableFeature h 0‖ ^ 2
+in the target expression
+  ‖harmonizableFeature h 0‖ = 0
+
+h k : ↑(Ioo 0 1)
+s ℓ : ℝ
+hℓ : 0 < ℓ
+hz : normalizedVaryingIncrement h k s ℓ = 0
+hsub : harmonizableFeature k (0 + ℓ) - harmonizableFeature h 0 = 0
+hu0 : ¬s + ℓ = 0
+hsv : s = 0
+⊢ ‖harmonizableFeature h 0‖ = 0
+Hurst/FeatureRowNondegenerate.lean:231:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  harmonizableFeature k (0 + ℓ)
+in the target expression
+  ‖harmonizableFeature k (s + ℓ)‖ ^ 2 = |s + ℓ| ^ (2 * ↑k)
+
+case pos
+h k : ↑(Ioo 0 1)
+s ℓ : ℝ
+hℓ : 0 < ℓ
+hz : normalizedVaryingIncrement h k s ℓ = 0
+hsub : harmonizableFeature k (0 + ℓ) = 0
+hu0 : ¬s + ℓ = 0
+hsv : s = 0
+hh0 : harmonizableFeature h 0 = 0
+h1 : ‖harmonizableFeature k (s + ℓ)‖ ^ 2 = |s + ℓ| ^ (2 * ↑k)
+⊢ False
+Hurst/FeatureRowNondegenerate.lean:259:6: error: 'show' tactic failed, pattern
+  ‖normalizedHarmonizable (↑k) u x - normalizedHarmonizable (↑h) s x‖ ^ 2 ≤
+    2 * ‖normalizedHarmonizable (↑k) u x‖ ^ 2 + 2 * ‖normalizedHarmonizable (↑h) s x‖ ^ 2
+is not definitionally equal to target
+  ‖‖normalizedHarmonizable (↑k) u x - normalizedHarmonizable (↑h) s x‖ ^ 2‖ ≤
+    ((fun x => 2 * ‖normalizedHarmonizable (↑k) u x‖ ^ 2) + fun x => 2 * ‖normalizedHarmonizable (↑h) s x‖ ^ 2) x
+Hurst/FeatureRowNondegenerate.lean:273:18: error: Type mismatch
+  norm_nonneg ?m.734
+has type
+  0 ≤ ‖?m.734‖
+but is expected to have type
+  0 x ≤ (fun x => ‖normalizedHarmonizable (↑k) u x - normalizedHarmonizable (↑h) s x‖ ^ 2) x
+Hurst/FeatureRowNondegenerate.lean:282:20: error: type expected, got
+  (Ioo 0 : ℝ → Set ℝ)
+Hurst/FeatureRowNondegenerate.lean:284:10: error: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+h k : ↑(Ioo 0 1)
+s ℓ : ℝ
+hℓ : 0 < ℓ
+hz : normalizedVaryingIncrement h k s ℓ = 0
+hsv : ¬s = 0
+hsNE : s ≠ 0
+u : ℝ := s + ℓ
+hsub : harmonizableFeature k u - harmonizableFeature h s = 0
+hu0 : ¬u = 0
+huNE : u ≠ 0
+hudef : u = s + ℓ
+hint : ∫ (x : ℝ), ‖normalizedHarmonizable (↑k) u x - normalizedHarmonizable (↑h) s x‖ ^ 2 = 0
+hI1 : Integrable (fun x => ‖normalizedHarmonizable (↑k) u x‖ ^ 2) ℙ
+hI2 : Integrable (fun x => ‖normalizedHarmonizable (↑h) s x‖ ^ 2) ℙ
+hint2 : Integrable (fun x => ‖normalizedHarmonizable (↑k) u x - normalizedHarmonizable (↑h) s x‖ ^ 2) ℙ
+hae : (fun x => normalizedHarmonizable (↑k) u x - normalizedHarmonizable (↑h) s x) =ᵐ[ℙ] fun x => 0
+hF0 : ∀ x ∈ Ioi 0, normalizedHarmonizable (↑k) u x - normalizedHarmonizable (↑h) s x = 0
+⊢ sorry
+Hurst/FeatureRowNondegenerate.lean:286:21: error: type expected, got
+  (Ioo 0 : ℝ → Set ℝ)
+Hurst/FeatureRowNondegenerate.lean:287:10: error: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+h k : ↑(Ioo 0 1)
+s ℓ : ℝ
+hℓ : 0 < ℓ
+hz : normalizedVaryingIncrement h k s ℓ = 0
+hsv : ¬s = 0
+hsNE : s ≠ 0
+u : ℝ := s + ℓ
+hsub : harmonizableFeature k u - harmonizableFeature h s = 0
+hu0 : ¬u = 0
+huNE : u ≠ 0
+hudef : u = s + ℓ
+hint : ∫ (x : ℝ), ‖normalizedHarmonizable (↑k) u x - normalizedHarmonizable (↑h) s x‖ ^ 2 = 0
+hI1 : Integrable (fun x => ‖normalizedHarmonizable (↑k) u x‖ ^ 2) ℙ
+hI2 : Integrable (fun x => ‖normalizedHarmonizable (↑h) s x‖ ^ 2) ℙ
+hint2 : Integrable (fun x => ‖normalizedHarmonizable (↑k) u x - normalizedHarmonizable (↑h) s x‖ ^ 2) ℙ
+hae : (fun x => normalizedHarmonizable (↑k) u x - normalizedHarmonizable (↑h) s x) =ᵐ[ℙ] fun x => 0
+hF0 : ∀ x ∈ Ioi 0, normalizedHarmonizable (↑k) u x - normalizedHarmonizable (↑h) s x = 0
+hpt : sorry
+⊢ sorry
+Hurst/FeatureRowNondegenerate.lean:290:20: error: type expected, got
+  (Ioo 0 : ℝ → Set ℝ)
+Hurst/FeatureRowNondegenerate.lean:293:29: error(lean.invalidField): Invalid field `property`: The environment does not contain `Real.property`, so it is not possible to project the field `property` from an expression
+  t
+of type `ℝ`
+Hurst/FeatureRowNondegenerate.lean:293:42: error(lean.invalidField): Invalid field `property`: The environment does not contain `Real.property`, so it is not possible to project the field `property` from an expression
+  t
+of type `ℝ`
+Hurst/FeatureRowNondegenerate.lean:294:55: error: type expected, got
+  (Ioo 0 : ℝ → Set ℝ)
+Hurst/FeatureRowNondegenerate.lean:296:35: error: Case tag `body` not found.
+
+Note: There are no cases to select.
+exit=1
