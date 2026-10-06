@@ -1,5 +1,87 @@
 # VALIDATION_PROGRESS（供协调 agent 检查；持续更新）
 
+更新:2026-10-05(Session-4 takeover7;**任务 1 标量率实例化 + 任务 2 γ = f t
+可行实例落地;任务 3 数据前提分类定稿**)。
+
+> 交接状态(2026-10-05 更新):任务书 = takeover7(commit a1a64aa)。
+> 全部形式化由主 agent 亲自完成(无 subagent,纪律 §4)。
+>
+> **任务 1+2 落地**(`Hurst/FeasibleRates.lean`,6 定理;commit 93c60b2,
+> 检查点 `verification/checkpoints/2026-10-05-2256-FeasibleRates-scalar-rates/`):
+>
+> | 定理 | 内容 | 消解算术 |
+> |---|---|---|
+> | `feasibleR_nat_tendsto` / `feasibleR_tendsto_atTop` | `R n = ⌊n^β⌋₊ → ∞`(`Nat.le_floor` + `tendsto_rpow_atTop` 复合;ℕ 值与 ℝ 值两版) | `n^β → ∞`,floor 单调保发散 |
+> | `feasibleR_cut_tendsto` | 切除率 `S^{2ψ-2}·card·(2R+1) → 0` | `card ≤ 3S`(mesh `n^{1-γ} ≥ 1` 时)+ `2⌊n^β⌋₊+1 ≤ 3n^β` ⇒ `≤ 9·n^{(1-γ)(2ψ-1)+β} → 0`;指数为负 ⟺ β-窗口 `β < (1-γ)(1-2ψ) = (1-γ)(4ft-3)`(hlong 保证非空) |
+> | `feasibleR_env_tendsto` | 长尾包络 → 0(**对一切固定实常数**成立——包络对常数线性,故强于端点 `∀ ≥ 0` 形,签名免符号前提) | 精确分解 `q1ActualLongTailEnvelope_eq` = 自由部分 + `16/(R+1)`;五项:D→0、`D·log n→0`(`nat_log_power_div_rpow_tendsto`)、`exp E→1`(连续性)、`16/(R+1)→0`(由 hR)、格点项分裂为 `(1+log 2n)·n^{(1-γ)ψ-1}→0`(需 `ψ < 1/2`,即长记忆带)与 `(1+log 2n)·n^{(1-γ)ψ+2b-2}→0`(**恰为 hgrid**),各由 `mesh_log_power_rpow_tendsto` 吸收 |
+> | `actualQ1_knownScaleH_fullChain_generalSigned_scalarRates` | 主端点全消解包装:`hR/hcut/hEnv` 三前提替换为 `0 < β < (1-γ)(1-2ψ)` 窗口 | 其余前提 = 模型窗口 + hgrid + hane + 中心带 + E5 漂移 |
+> | `actualQ1_knownScaleH_fullChain_generalSigned_feasible` | γ = f t 可行实例 | hgrid 化为 b-带数据 `(1-ft)^2 < 1 - b`(2(1-ft)² < 2-2b);hE5 由 hlong 纯算术消解(镜像 FullChainEndpoint:432 块);β-窗口化为 `β < (1-ft)(4ft-3)`;前提缩至模型窗口 + b-带 + hane + β + 中心带 + hBias |
+>
+> 消解表偏差回写(FullChainGeneralSigned 文件头):hR/hcut/hEnv 三行已改为
+> RESOLVED 状态并注明定理名;`+1` 项的"(1-γ)(2ψ-1)<0 自消"备用拆分未用到
+> (单挤压 `3n^β` 路线,需 β>0,窗口内含)。
+>
+> **任务 3:数据前提分类定稿(交付物;定稿后现状陈述)**:
+>
+> | 前提 | 内容 | 定稿分类 | 消解前景 |
+> |---|---|---|---|
+> | `hane` | 活动系数行非退化(∑ᵢ coeff_{k,i}·obs_i ≠ 0,对每活动行 k) | **数据前提**(M1 分类,维持) | 行向量非零 = 特征行非退化;空行(card=0)全称真空。不立项 |
+> | `hband`(cσ, d) | 中心校准:`(cσ - E Ĝ_n)/(2 log n)` eventual 落入 [d, 1-d] | **数据前提**(file-22-W9 口径,维持) | 统计中心的识别是独立模型步骤;若立项须新里程碑(给 cσ 的可满足构造 + 中心带验证),不得本轮偷做 |
+> | `hBias`(C) | E5 漂移包络:`|E X_n - f t| ≤ C·n^{-γ}` | **数据前提**(E5 口径,维持;四轮旧线均 explicit) | 方差侧有机械(E5RateLink:123 `correlationEnergy_rate` 能量率、:300 `e5_fluctuation_rate_of_window` 的 L1 波动率窗口定理),但 hBias 是**漂移侧**(统计量均值对真值中心的偏差),耦合中心校准 cσ 的选择;消解 = 新里程碑(须先给中心带可满足实例,再走 E5ChainInstantiation 消费链),不在本轮偷做 |
+>
+> **现状陈述(定稿后,诚实)**:主端点的标量率前提已在 Lean 中以显式
+> `R n = ⌊n^β⌋₊` 全实例化(任务 1);γ = f t 可行实例变体把 E5 窗口与
+> b-带数据外的窗口前提全部算术消解(任务 2)。**"统计闭环"仍不能宣称**:
+> 中心带 (cσ, d, hband) 与 E5 偏差 (C, hBias) 及 hane 仍为数据前提
+> (上表定稿);即端点结论是 conditional 的(条件为真数据前提),其
+> conditional/unconditional 状态与 takeover6 相同,仅标量率一行由
+> "未接线"升级为"已实例化"。
+>
+> **聚合验收(2026-10-05 执行)**:
+> 1. ✅ 全量 `lake build Hurst` **9214 jobs** 绿(`verification/build.log` exit=0;
+>    较 takeover6 的 9213 增加 FeasibleRates 一件)。
+> 2. ✅ `verification/AxiomAudit.lean` 追加 6 条新定理(总 2547 行 #print axioms):
+>    六件全部 ⊆ {propext, Classical.choice, Quot.sound},无 sorryAx(日志
+>    `/tmp/feasible-axaudit.log`,检查点内 axioms.log,exit=0)。
+> 3. ✅ 零 sorry 复查(FeasibleRates.lean grep 0 命中)。
+> 4. ✅ 检查点四件套(3 源快照 + compile.log + axioms.log + sha256.txt,裸名哈希)。
+>
+> **已知缺口(诚实登记,不得粉饰)**:
+> - ~~标量率前提(hR/hcut/hEnv)显式 R 实例化未接线~~ **已关闭**(任务 1,
+>   93c60b2;以 `FeasibleRates` 的显式 β-窗口为前提)。
+> - 中心带 (cσ, d, hband) 与 E5 数据 (C, hBias) 仍为数据前提(任务 3 定稿,
+>   见上表);hane 维持数据前提。消解任一须新里程碑立项。
+> - 旧 FullChainEndpoint 三定理保留为 conditional legacy;hconst 线条件
+>   文件未动(按纪律)。
+> - γ 的选取仍为自由参数(0 < γ < 1 且 b-带非空);单一"全前提数据侧定数"
+>   的完全可行实例(把 γ = f t、β 取窗口内显式值如中点)未构造——如需
+>   "单一定理零自由度"形态可作后续小步(β := (1-ft)(4ft-3)/2 等),
+>   不属本轮任务。
+>
+> **v4.31 雷区本轮新增(累积,takeover7 批)**:
+> - `Real.rpow_mul` 方向:`x^(y*z) = (x^y)^z`——把"幂的幂"并进指数要 `←`;
+> - `tendsto_rpow_neg_atTop` 的 `y` 隐式:在复合位置内嵌 `(by linarith)` 会在
+>   `y` 仍为元变量时挂(报 `?m ≤ 0`):改用 `tendsto_rpow_neg_of_atTop S e he hS`
+>   (`e` 显式,直接传已证 `e < 0`);
+> - `Tendsto.const_mul/.mul` 组合子给未 β-约简函数体与未算极限(`𝓝 (c*0)`):
+>   统一模式 = 显式类型标注 `have h2 := h.const_mul c; rwa [mul_zero] at h2`
+>   (β 由 defeq 吸收);
+> - **`Tendsto.congr'` 方向勘误**(推翻 takeover6 雷区记录):mathlib v4.31 实测
+>   `Tendsto.congr' (hl : f₁ =ᶠ f₂) (h : Tendsto f₁) : Tendsto f₂`——`hl` 是
+>   **已收敛 =ᶠ 目标**;组合子链函数为原始 `f ∘ g` 复合时 `Function.comp_apply`
+>   不触发(无应用节点),用 `Function.comp_def`;
+> - `Real.rpow_neg (hx) (y)`:`y` 是**显式**参数;`Real.mul_rpow` 的指数隐式,
+>   不能显式应用(用整式类型标注 `have : (x*y)^z = x^z*y^z := Real.mul_rpow _ _`);
+> - 目标已被展开为原始 `∃ i, ∀ b ≥ i, ...`(atTop 成员归约形)时
+>   `filter_upwards`/`Eventually.mono` 均挂:`Filter.eventually_atTop.1` 显式
+>   转换,中间 `have` 必须带显式类型(否则实例歧义出 `?m` 过滤器);
+> - linarith 对"两个线性式乘积"原子配对会触发内部 case-split 失败(签名
+>   `?m ≤ 0`):先 `rw [ring 引理]` 把目标化成单乘积原子形式再 linarith;
+> - `Nat.le_floor_iff.mpr` 的高阶 `?n` 实例化会卡:用 `Nat.le_floor h` 直接形式,
+>   中间 ℕ→ℝ cast 步用 `exact_mod_cast`;
+> - atTop 极限下的相加不是 `Tendsto.add`(𝓝 形):用
+>   `Filter.Tendsto.atTop_add`(atTop + 𝓝 常数)。
+
 更新:2026-10-05(Session-4 takeover6;**阻断 2/3/4 全部关闭 + 端点组装落地**;
 同时审计并落定了 2026-09-26 并行修复 session 的未提交工作;历史块在下)。
 

@@ -5,6 +5,38 @@
 本文件供接管 agent 使用;权威过程记录见 [VALIDATION_PROGRESS.md](VALIDATION_PROGRESS.md)
 (逐检查点、逐契约修正、含日志路径与退出码)。
 
+## 0. 2026-10-05 快照(takeover7;标量率实例化 + 可行实例 + 数据前提定稿)
+
+任务 1/2/3 完成(commit 93c60b2 formal + docs 本轮),检查点
+`verification/checkpoints/2026-10-05-2256-FeasibleRates-scalar-rates/`。
+
+- **任务 1(标量率实例化)**:`Hurst/FeasibleRates.lean` 六定理。显式速率
+  `R n = ⌊n^β⌋₊`:`feasibleR_nat_tendsto`/`feasibleR_tendsto_atTop`(R → ∞)、
+  `feasibleR_cut_tendsto`(切除率 → 0,指数 `(1-γ)(2ψ-1)+β < 0` 恰为 β-窗口
+  `β < (1-γ)(1-2ψ)`)、`feasibleR_env_tendsto`(包络五项逐项消解;第 (iii) 项
+  `n^{(1-γ)ψ+2b-2}` 消失恰为 hgrid;包络对常数线性 ⇒ 对一切固定实常数成立,
+  强于端点 `∀ ≥ 0` 形)+ 全消解包装
+  **`actualQ1_knownScaleH_fullChain_generalSigned_scalarRates`**
+  (hR/hcut/hEnv ⇒ 0 < β < (1-γ)(1-2ψ);余下 = 模型窗口 + hgrid + hane +
+  中心带 + E5 漂移)。takeover6 的"标量率未接线"缺口**关闭**。
+- **任务 2(γ = f t 可行实例)**:
+  **`actualQ1_knownScaleH_fullChain_generalSigned_feasible`**:hgrid 由 b-带
+  数据 `(1-ft)^2 < 1-b` 算术消解,hE5 由 hlong 消解(镜像 FullChainEndpoint:432),
+  β-窗口化为 `β < (1-ft)(4ft-3)`;前提缩至模型窗口 + b-带 + hane + β + 中心带
+  + hBias。
+- **任务 3(数据前提分类定稿)**:hane/hband/hBias 三者定稿为**数据前提**
+  (分类表在 VALIDATION_PROGRESS 置顶块):hane = M1 特征行非退化不变;
+  hband = file-22-W9 中心校准;hBias = E5 漂移侧(方差侧机械在 E5RateLink,
+  漂移侧消解须连中心带可满足实例,属新里程碑)。**端点仍为 conditional:
+  不得宣称统计闭环**;仅"标量率"一行由未接线升级为已实例化。
+- **验收**:全量 lake build Hurst 9214 jobs 绿(verification/build.log exit=0);
+  AxiomAudit 追加 6 条(2547 行),六件全 ⊆ 三公理、0 sorryAx;检查点四件套。
+- **雷区**:takeover7 新批次 9 条入 VALIDATION_PROGRESS 置顶块累积表
+  (rpow_mul 方向、隐元变量上的 linarith、congr' 方向勘误 + comp_def、
+  atTop_add 等)。
+- **剩余工作**:中心带/E5 偏差数据前提的消解 = 新里程碑;γ/β 的完全
+  零自由度实例(可选小步);旧 conditional legacy 与 hconst 线照旧不碰。
+
 ## 0. 2026-10-05 快照(takeover6;阻断 2/3/4 关闭 + 端点组装)
 
 主线三个下游阻断全部关闭并在消解前提上完成端点组装,commit 65aa208,
