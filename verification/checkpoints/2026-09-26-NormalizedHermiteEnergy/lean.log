@@ -1,0 +1,15 @@
+Hurst/NormalizedHermiteEnergy.lean:32:5: warning: Variable name `hε` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+'Hurst.normalized_weighted_fourth_tendsto_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.featureGaussian_log_quadratic_error_double_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.featureGaussian_log_limit_of_quadratic_limit_double_sum' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Hurst.realScaleMeshEnergy_eventually_bounded_of_approximation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Hurst.correlation_le_of_scaled_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.scaled_tail_envelope_tendsto_zero' depends on axioms: [propext, Classical.choice, Quot.sound]

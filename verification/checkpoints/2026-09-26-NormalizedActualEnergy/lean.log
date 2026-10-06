@@ -1,0 +1,4 @@
+'Hurst.q1RieszActiveKernel_eventually_energy_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.hurstHolder_q1_actual_normalized_energy_eventually_bounded' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
