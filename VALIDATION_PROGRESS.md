@@ -1,5 +1,97 @@
 # VALIDATION_PROGRESS（供协调 agent 检查；持续更新）
 
+更新:2026-10-05(Session-4 takeover6;**阻断 2/3/4 全部关闭 + 端点组装落地**;
+同时审计并落定了 2026-09-26 并行修复 session 的未提交工作;历史块在下)。
+
+> 交接状态(2026-10-05 更新):任务书 = takeover6(阻断 2 → 3 → 4 → 端点组装,
+> 顺序执行,commit 65aa208,检查点 `verification/checkpoints/2026-10-05-1827-mainline-blockers234-endpoint/`)。
+>
+> **前置说明(工作区来源)**:接手时工作区非干净——2026-09-26 的并行修复
+> session(用户当时授权 subagent 且禁止 commit,见 COORDINATION_2026-09-26.md)
+> 留下 11 个未跟踪新件 + 4 个修改件,其中 `GeneralSignedPowerMatching.lean`
+> 从未完整编译(5 处错误)。本轮全部形式化由主 agent 亲自完成:先审计该批
+> 工作,修复其唯一失败模块,再补齐组装。前 session 的两个检查点
+> (2026-09-26-Normalized{Actual,Hermite}Energy)随历史记录一并入库。
+>
+> **阻断 2(eventualCard 传播)关闭**:
+> - FullChainEndpoint 三处端点(原行 158/318/382)的 `hm : ∀ n, 0 < card`
+>   已移除;P5LogHLayers Layer 1 与 P5SeamClosed seam 改经
+>   `CapstoneV2.actualQ1LongStatistic_tendsto_secondChaos_signed_eventualCard`
+>   (D3 安全零填充先例,eventual 非空由 card/S → 2 内部派生;空行 Fin 0 空真)。
+> - `session3_fullChain_all_rows_impossible` 指向的旧形态已不存在
+>   (审计文件按任务书保留原样)。
+>
+> **阻断 3(P5 归一化能量 W8–W9)关闭**:
+> - 新件五枚:`NormalizedHermiteEnergy`(realScaleMeshEnergy 精确归一化恒等式
+>   S^(2ψ−2)、近/远带四阶余项 ≤ U²(带能量+ε²·总能量)、
+>   `gaussian_array_rank_second_moment_double_sum`(Hilbert 空间二阶矩
+>   双和界,保成对相关而非行最大)、double-sum 版 log 极限)、
+>   `NormalizedActualEnergy`(`hurstHolder_q1_actual_normalized_energy_eventually_bounded`:
+>   实际模型 S^(2ψ−2)·∑∑ρ² = O(1),由闭 HS→Riesz 网格逼近 + Riesz 参考能量,
+>   消解表见文件头)、`NormalizedActualRemainder`
+>   (`hurstHolder_q1_actual_weighted_fourth_tendsto_zero`:S^(2ψ)·∑∑|w_iw_j|ρ⁴ → 0,
+>   hEnv 对任意固定常数成立以解耦两个存在见证)、`NormalizedLogVariance`
+>   (单位权方差 ≤ 4·V·U²·S^(−2ψ)、裁剪窗 → 0)、`NormalizedLogProjection`
+>   (归一化能量下的 L1 投影收敛)。
+> - **矛盾定理已入档**:`verification/Session4Blocker3Audit.lean` 的
+>   `session4_unnormalized_hE2_impossible`(新引理 `featureCorrelation_self`:
+>   对角 ρ_ii = 1;对角和 ≥ card → ∞ 与 ∃C 上界矛盾;公理三条)。
+>   旧 hE2(未归一化)自 FullChainEndpoint 主线移除。
+>
+> **阻断 4(一般符号极限 23:B–D)关闭**:
+> - 新件六枚:`IntervalL2Basis`(区间指示族 → 内部构造 HilbertBasis ℕ,
+>   关闭外部基供给漏洞)、`WeightedRieszSpectrumClosed`
+>   (`exists_weightedRieszSpectrum_equiv_closed`:仅 0<ψ、2ψ<1、0<c 三前提)、
+>   `GeneralSignedPowerMatching`(B1 Weierstrass 连续测试、正/负部平方后
+>   非负剥离、antitoneResort+layer-cake 排序 profile、
+>   `signed_sorted_coefficients_tendsto`(无任何逐行非空前提,平移过坏行)、
+>   `signedInterleavedRow_matching_data`/`_tendsto_secondChaos_of_powerSums`)、
+>   `SignedInterleavedLaw`(符号感知置换 = 零填充原行的置换,含空行/重根)、
+>   `SignedPowerLimit`(`centeredSpectralSquares_tendsto_of_signed_powerSums`:
+>   全部幂和 → 构造二阶混沌;`exists_centeredSpectralSquares_limit_*`)、
+>   `ActualQ1SignedClosed`(`actualQ1LongStatistic_tendsto_secondChaos_generalSigned`:
+>   可行带宽二次端点,极限律为构造的加权 Riesz 二阶混沌;无 hNegMass、
+>   无 hlam 反序非负包、无 hQ、无仅偶次 hPow)。
+>   P3SignedMatching 行 178/429 的 hNegMass 与 interleaved 分布认同缺口
+>   均不再被主线消费(新线经 SignedInterleavedLaw 的恒等分布 + 构造极限)。
+>   **本文件由本轮修复到 exit=0**(前 session 留下 5 错:neg_pow 的 simp
+>   自环(RHS 含 (−1)^k 自匹配)改 rw 逐点改写;HasSum.even_add_odd 点记法
+>   高阶统一 whnf 超时改显式 f 实例化;interleaved 槽位改 definitional helper + rfl)。
+>
+> **端点组装(任务 4)落地**:`Hurst/FullChainGeneralSigned.lean`
+> - `gs_fourthEnergy_eq`(谱权双和四阶能量 ≡ q1ActiveWeightedFourthEnergy:
+>   actualQ1SpectralWeight = S^ψ·localPolynomialWeights 之代数 +
+>   gridStrideFirst_correlation_identity 之相关同一)+ 
+>   `gs_fourthEnergy_tendsto_zero`(标量率下消解)+ 
+>   `gs_logProjection_L1_tendsto_instantiated`(归一化 hJoin)+
+>   Layer 1'(`actualQ1_logStatistic_tendsto_secondChaos_doubleSum`,P5LogHLayers 新增)
+>   + 通用 seam 核心(`logStatistic_knownScaleH_seam_of_logLimit`,P5SeamClosed
+>   新增;旧 seam 改薄包装,签名不变)。
+> - **`actualQ1_knownScaleH_fullChain_generalSigned`**(truth-centered 主端点):
+>   `2 n^{ψ(1−γ)} log n (Ĥ_n − f t) ⇒ −Q`,Q 为构造的 signed 加权 Riesz
+>   二阶混沌律(存在性+律为结论)。前提 = 模型窗口 + hgrid + hane + 标量率
+>   (hR/hcut/hEnv,消解表在文件头,先于形式化写就)+ 中心带/E5 数据。
+>   **hm/hE2/hNegMass/hlam/hQ/偶次 hPow/hW0 全部从主线消失**。
+>
+> **聚合验收(2026-10-05 执行)**:
+> 1. ✅ 全量 `lake build Hurst` 9213 jobs 绿(`verification/build.log` exit=0)。
+> 2. ✅ `verification/AxiomAudit.lean` 追加 21 条关键定理(2541 行 #print axioms,
+>    0 真实错误,35 个 "error" 匹配均为定理名),全部 ⊆ {propext, Classical.choice,
+>    Quot.sound},0 sorryAx;定向审计 69 定理同判(日志
+>    `/tmp/axiom-audit-takeover6b.log`,检查点内 axioms.log)。
+> 3. ✅ 零 sorry 复查(grep 16 个涉改文件 0 命中)。
+> 4. ✅ 检查点四件套(19 源快照 + compile.log + axioms.log + sha256.txt,
+>    裸名哈希)。
+>
+> **已知缺口(诚实登记,不得粉饰)**:
+> - 标量率前提(hR/hcut/hEnv)为显式前提;其在可行带宽的可满足性已在
+>   消解表手推(R = ⌊n^β⌋,β < (1−γ)(1−2ψ);hEnv 第 (iii) 项消失恰为 hgrid),
+>   **但显式 R 的 Lean 实例化尚未接线**——这是端点全实例化的最后一步。
+> - 中心带 (cσ, d, hband) 与 E5 数据 (hE5, C, hBias) 仍为数据前提
+>   (file-22-W9 / E5 口径,与 M1 分类一致)。
+> - 旧 FullChainEndpoint 三定理保留为 conditional legacy(文件头已注明
+>   被新主线取代);hconst 线条件文件未动(按任务书纪律)。
+
 更新:2026-09-24(Session-4 接管者 4;**一般 k 路线第 4/5/6 节全部落地;
 diagSum_Bop_eq_weightedCycle(∀k≥2)+ exists_weightedRieszSpectrum_min +
 equivalentKernel r 实例化落地;M1 验收复审四项全部执行**;历史块在下)。

@@ -5,6 +5,40 @@
 本文件供接管 agent 使用;权威过程记录见 [VALIDATION_PROGRESS.md](VALIDATION_PROGRESS.md)
 (逐检查点、逐契约修正、含日志路径与退出码)。
 
+## 0. 2026-10-05 快照(takeover6;阻断 2/3/4 关闭 + 端点组装)
+
+主线三个下游阻断全部关闭并在消解前提上完成端点组装,commit 65aa208,
+检查点 `verification/checkpoints/2026-10-05-1827-mainline-blockers234-endpoint/`。
+
+- **阻断 2**:`hm : ∀ n, 0 < card` 自 FullChainEndpoint 三处端点移除;
+  Layer 1/seam 改经 CapstoneV2 eventualCard 版(D3 安全零填充先例,
+  eventual 非空内部派生)。
+- **阻断 3**:归一化能量线五新件(NormalizedHermiteEnergy /
+  NormalizedActualEnergy / NormalizedActualRemainder / NormalizedLogVariance /
+  NormalizedLogProjection);实际模型 S^(2ψ−2)∑∑ρ² = O(1) 与
+  S^(2ψ)∑∑|w_iw_j|ρ⁴ → 0 均落地;未归一化 hE2 的矛盾定理入档
+  (verification/Session4Blocker3Audit.lean,featureCorrelation_self 新)。
+- **阻断 4**:一般符号线六新件(IntervalL2Basis 内部构造基 /
+  WeightedRieszSpectrumClosed 三前提闭谱 / GeneralSignedPowerMatching(B1 连续
+  测试 + 分符号排序 profile + 无逐行前提的系数匹配,本轮修复其 5 处编译错误
+  到 exit=0)/ SignedInterleavedLaw 置换恒等 / SignedPowerLimit 构造极限 /
+  ActualQ1SignedClosed 可行带宽二次端点,构造 signed 加权 Riesz 二阶混沌律)。
+- **端点组装**:Layer 1'(double-sum 余项形式)+ 通用 seam 核心(旧 seam 改
+  薄包装,签名不变)+ FullChainGeneralSigned.gs_fourthEnergy_eq(谱权四阶
+  能量 ≡ q1ActiveWeightedFourthEnergy)⇒ **actualQ1_knownScaleH_fullChain_generalSigned**
+  (truth-centered:2 n^{ψ(1−γ)} log n (Ĥ_n − f t) ⇒ −Q,Q 构造;
+  hm/hE2/hNegMass/hlam/hQ/偶次 hPow/hW0 全部消失;消解表在文件头,
+  先于形式化写就)。
+- **验收**:全量 lake build Hurst 9213 jobs 绿(verification/build.log
+  exit=0);AxiomAudit 2541 行全 ⊆ 三公理、0 sorryAx;定向 69 定理审计同判。
+- **来源说明**:接手时工作区含 2026-09-26 并行修复 session 的未提交产物
+  (COORDINATION_2026-09-26.md;当时授权 subagent 且禁 commit),本轮经全量
+  审计后落定;其 GeneralSignedPowerMatching.lean 从未编译通过,由本轮修复。
+- **已知缺口(诚实)**:标量率前提(hR/hcut/hEnv)为显式前提,可满足性已在
+  消解表手推(R = ⌊n^β⌋,β < (1−γ)(1−2ψ);hEnv 第 (iii) 项消失恰为 hgrid),
+  但显式 R 的 Lean 实例化未接线;中心带(cσ/d/hband)与 E5 数据仍为数据前提。
+  旧 FullChainEndpoint 三定理 = conditional legacy(文件头注明被取代)。
+
 ## 0. 2026-09-24 快照(接管者 4;一般 k 第 4/5/6 节 + M1 验收复审)
 
 任务 1–3(一般 k 第 4/5/6 节)全部落地,提交链
