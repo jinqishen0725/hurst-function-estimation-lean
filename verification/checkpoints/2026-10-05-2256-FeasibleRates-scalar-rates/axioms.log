@@ -1,0 +1,9 @@
+'Hurst.feasibleR_nat_tendsto' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.feasibleR_tendsto_atTop' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.feasibleR_cut_tendsto' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.feasibleR_env_tendsto' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.actualQ1_knownScaleH_fullChain_generalSigned_scalarRates' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Hurst.actualQ1_knownScaleH_fullChain_generalSigned_feasible' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit=0

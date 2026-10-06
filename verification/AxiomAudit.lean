@@ -2545,3 +2545,12 @@ import Hurst
 #print axioms Hurst.gs_fourthEnergy_tendsto_zero
 #print axioms Hurst.gs_logProjection_L1_tendsto_instantiated
 #print axioms Hurst.actualQ1_knownScaleH_fullChain_generalSigned
+
+-- takeover7 (2026-10-05): the explicit scalar-rate instantiation and the
+-- feasible gamma = f t variants.
+#print axioms Hurst.feasibleR_nat_tendsto
+#print axioms Hurst.feasibleR_tendsto_atTop
+#print axioms Hurst.feasibleR_cut_tendsto
+#print axioms Hurst.feasibleR_env_tendsto
+#print axioms Hurst.actualQ1_knownScaleH_fullChain_generalSigned_scalarRates
+#print axioms Hurst.actualQ1_knownScaleH_fullChain_generalSigned_feasible
