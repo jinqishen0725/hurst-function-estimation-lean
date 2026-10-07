@@ -2569,3 +2569,6 @@ import Hurst
 #print axioms Hurst.centerBand_ratio_tendsto
 #print axioms Hurst.centerBand_hband_discharged
 #print axioms Hurst.actualQ1_knownScaleH_fullChain_generalSigned_feasible_centerBand
+
+-- takeover8 task 4 (2026-10-06): zero-degree-of-freedom feasible endpoint.
+#print axioms Hurst.actualQ1_knownScaleH_fullChain_generalSigned_feasible_centerBand_zeroDof

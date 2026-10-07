@@ -1,0 +1,4 @@
+'Hurst.actualQ1_knownScaleH_fullChain_generalSigned_feasible_centerBand_zeroDof' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+exit=0
