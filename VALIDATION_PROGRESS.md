@@ -1,4 +1,11 @@
-# VALIDATION_PROGRESS（供协调 agent 检查;持续更新）
+# VALIDATION_PROGRESS（供协调 agent 检查；持续更新）
+
+> **历史重写登记(2026-10-07,公开发布前)**:为将仓库推送至公开 git 仓库,两个源稿
+> PDF(19-AOS1825.pdf、suppdf_1.pdf)已从**全部提交历史**中清除(git-filter-repo,
+> --invert-paths;本地副本备份于仓库外,官方获取渠道见 README 的 DOI 链接)。
+> 因此**全部 commit 哈希已变**;本文档及各任务书/检查点中记载的旧哈希对应的
+> 新哈希,查映射表 `verification/history_rewrite_commit_map.txt`
+> (旧→新全量映射,重写时刻的新 HEAD = `a490ab4`)。
 
 ## ✅ 统计闭环验收记录(协调者独立复审,2026-10-07;闭环声明自此生效)
 
