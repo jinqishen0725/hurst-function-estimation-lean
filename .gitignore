@@ -1,6 +1,2 @@
-.lake/
-.DS_Store
-__pycache__/
-
-# Malformed zero-byte files produced by a failed external-source extraction.
-/.scratch/bs_src/
+19-AOS1825.pdf
+suppdf_1.pdf
