@@ -2,7 +2,8 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{booktabs}
-\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage[pdftitle={Revised Long-Memory Limit Theorems for the Hurst Function Estimator}, pdfauthor={hurst_function_estimation Lean audit}]{hyperref}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{proposition}[theorem]{Proposition}
@@ -141,49 +142,49 @@ envelope, and the drift condition reduces exactly to the $b$-band (R4).
 Every element of Theorem~\ref{thm:main} is machine-checked; the chain, from
 bottom to top:
 
-\begin{table}[h]\centering\small
-\begin{tabular}{@{}lll@{}}
+\begin{table}[h]\centering\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{0.20\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.26\textwidth}@{}}
 \toprule
 Element & Lean theorem & File \\
 \midrule
 Internal Hilbert basis, closed spectrum
- & \texttt{exists\_weightedRieszSpectrum\_equiv\_closed} & \texttt{WeightedRieszSpectrumClosed}\\
+ & \texttt{exists\_\allowbreak{}weighted\allowbreak{}Riesz\allowbreak{}Spectrum\_\allowbreak{}equiv\_\allowbreak{}closed} & \texttt{Weighted\allowbreak{}Riesz\allowbreak{}Spectrum\allowbreak{}Closed}\\
 Cycle-integral identification ($k\ge2$)
- & \texttt{diagSum\_Bop\_eq\_weightedCycle} & \texttt{CompressionGeneralK}\\
+ & \texttt{diag\allowbreak{}Sum\_\allowbreak{}Bop\_\allowbreak{}eq\_\allowbreak{}weighted\allowbreak{}Cycle} & \texttt{Compression\allowbreak{}General\allowbreak{}K}\\
 Signed sorted spectrum keeps moments
- & \texttt{signedSortedSpectrum\_hasSum\_pow} & \texttt{GeneralSignedPowerMatching}\\
+ & \texttt{signed\allowbreak{}Sorted\allowbreak{}Spectrum\_\allowbreak{}has\allowbreak{}Sum\_\allowbreak{}pow} & \texttt{General\allowbreak{}Signed\allowbreak{}Power\allowbreak{}Matching}\\
 Row nondegeneracy (all $n$; spectral)
- & \texttt{normalizedVaryingIncrement\_ne\_zero} & \texttt{FeatureRowNondegenerate}\\
+ & \texttt{normalized\allowbreak{}Varying\allowbreak{}Increment\_\allowbreak{}ne\_\allowbreak{}zero} & \texttt{Feature\allowbreak{}Row\allowbreak{}Nondegenerate}\\
 Normalized energy $S^{2\psi-2}\sum\rho^2 = O(1)$
- & \texttt{hurstHolder\_q1\_actual\_normalized\_energy\_*} & \texttt{NormalizedActualEnergy}\\
+ & \texttt{hurst\allowbreak{}Holder\_\allowbreak{}q1\_\allowbreak{}actual\_\allowbreak{}normalized\_\allowbreak{}energy\_\allowbreak{}*} & \texttt{Normalized\allowbreak{}Actual\allowbreak{}Energy}\\
 Fourth-order remainder $\to 0$
- & \texttt{hurstHolder\_q1\_actual\_weighted\_fourth\_tendsto\_zero} & \texttt{NormalizedActualRemainder}\\
+ & \texttt{hurst\allowbreak{}Holder\_\allowbreak{}q1\_\allowbreak{}actual\_\allowbreak{}weighted\_\allowbreak{}fourth\_\allowbreak{}tendsto\_\allowbreak{}zero} & \texttt{Normalized\allowbreak{}Actual\allowbreak{}Remainder}\\
 Quadratic endpoint (constructed law)
- & \texttt{actualQ1LongStatistic\_tendsto\_secondChaos\_generalSigned} & \texttt{ActualQ1SignedClosed}\\
+ & \texttt{actual\allowbreak{}Q1Long\allowbreak{}Statistic\_\allowbreak{}tendsto\_\allowbreak{}second\allowbreak{}Chaos\_\allowbreak{}general\allowbreak{}Signed} & \texttt{Actual\allowbreak{}Q1Signed\allowbreak{}Closed}\\
 Log layer (double-sum remainder)
- & \texttt{actualQ1\_logStatistic\_tendsto\_secondChaos\_doubleSum} & \texttt{P5LogHLayers}\\
+ & \texttt{actual\allowbreak{}Q1\_\allowbreak{}log\allowbreak{}Statistic\_\allowbreak{}tendsto\_\allowbreak{}second\allowbreak{}Chaos\_\allowbreak{}double\allowbreak{}Sum} & \texttt{P5Log\allowbreak{}HLayers}\\
 Seam (Layer 1 $\to$ Layer 2)
- & \texttt{logStatistic\_knownScaleH\_seam\_of\_logLimit} & \texttt{P5SeamClosed}\\
+ & \texttt{log\allowbreak{}Statistic\_\allowbreak{}known\allowbreak{}Scale\allowbreak{}H\_\allowbreak{}seam\_\allowbreak{}of\_\allowbreak{}log\allowbreak{}Limit} & \texttt{P5Seam\allowbreak{}Closed}\\
 Center band discharged ($d=(1-h)/2$)
- & \texttt{centerBand\_hband\_discharged} & \texttt{CenterBandDischarge}\\
+ & \texttt{center\allowbreak{}Band\_\allowbreak{}hband\_\allowbreak{}discharged} & \texttt{Center\allowbreak{}Band\allowbreak{}Discharge}\\
 Scalar rates ($R=\lfloor n^\beta\rfloor$)
- & \texttt{feasibleR\_*} & \texttt{FeasibleRates}\\
+ & \texttt{feasible\allowbreak{}R\_\allowbreak{}*} & \texttt{Feasible\allowbreak{}Rates}\\
 Second-order increment rate $n^{-(2-2b)}$
- & \texttt{varyingIncrement\_norm\_sq\_secondOrder} & \texttt{IncrementLogSecondOrder}\\
+ & \texttt{varying\allowbreak{}Increment\_\allowbreak{}norm\_\allowbreak{}sq\_\allowbreak{}second\allowbreak{}Order} & \texttt{Increment\allowbreak{}Log\allowbreak{}Second\allowbreak{}Order}\\
 Tail-based clipping transfer
- & \texttt{truncationCorrection\_le} & \texttt{TruncationTransfer}\\
+ & \texttt{truncation\allowbreak{}Correction\_\allowbreak{}le} & \texttt{Truncation\allowbreak{}Transfer}\\
 Unit variance rate $S^{-2\psi}$
- & \texttt{hurstHolder\_q1\_unitVariance\_eventually\_bounded} & \texttt{UnitVarianceRate}\\
+ & \texttt{hurst\allowbreak{}Holder\_\allowbreak{}q1\_\allowbreak{}unit\allowbreak{}Variance\_\allowbreak{}eventually\_\allowbreak{}bounded} & \texttt{Unit\allowbreak{}Variance\allowbreak{}Rate}\\
 Honest-rate drift lemma
- & \texttt{honestRate\_drift\_tendsto\_zero} & \texttt{HonestRateDrift}\\
+ & \texttt{honest\allowbreak{}Rate\_\allowbreak{}drift\_\allowbreak{}tendsto\_\allowbreak{}zero} & \texttt{Honest\allowbreak{}Rate\allowbreak{}Drift}\\
 \textbf{Main theorem}
- & \texttt{actualQ1\_knownScaleH\_fullChain\_honestRate} & \texttt{HonestRateClosure}\\
+ & \texttt{actual\allowbreak{}Q1\_\allowbreak{}known\allowbreak{}Scale\allowbreak{}H\_\allowbreak{}full\allowbreak{}Chain\_\allowbreak{}honest\allowbreak{}Rate} & \texttt{Honest\allowbreak{}Rate\allowbreak{}Closure}\\
 Refuted historical premises (audit)
- & \texttt{session3\_fullChain\_all\_rows\_impossible},
-   \texttt{session4\_unnormalized\_hE2\_impossible},
-   \texttt{bias\_window\_*\_infeasible} & \texttt{verification/}\\
+ & \texttt{session3\_\allowbreak{}full\allowbreak{}Chain\_\allowbreak{}all\_\allowbreak{}rows\_\allowbreak{}impossible},
+   \texttt{session4\_\allowbreak{}unnormalized\_\allowbreak{}h\allowbreak{}E2\_\allowbreak{}impossible},
+   \texttt{bias\_\allowbreak{}window\_\allowbreak{}*\_\allowbreak{}infeasible} & \texttt{verification/}\\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 \noindent\textbf{Machine status.} Lean 4.31.0 / mathlib v4.31.0; aggregate build
