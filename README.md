@@ -43,6 +43,8 @@ python3 verification/final_acceptance.py   # 闭环后七项机器验收(含端�
   阅读顺序见 [Hurst/README.md](Hurst/README.md)。
 - `paper_revision/revised_theorems.tex`：修订后主定理的论文式陈述(含与原稿
   及修复计划的逐条偏差表)。
+- `paper_revision/theorem_inventory.md`：**原文 27 项定理/引理的逐项验证状态
+  盘点**(已验证/已修复/仅书面/无结论四层 + 已验证的问题引理清单)。
 - `verification/final_acceptance.py`：闭环后的七项机器验收脚本。
 - `results/*.md`：正文13项、补充14项，每项单独记录，不将局部证明视为原定理证明。
 - `results/catalog.json`：机器可读依赖与证据映射。
