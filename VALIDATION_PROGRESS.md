@@ -1,5 +1,124 @@
 # VALIDATION_PROGRESS（供协调 agent 检查；持续更新）
 
+更新:2026-10-06(Session-4 takeover8;**hane 谱式消解 + hband 中心带消解落地;
+hBias 立项定界;零自由度实例**)。
+
+> 交接状态(2026-10-06 更新):任务书 = takeover8(HEAD 4bce44f,任务书 554580b)。
+> 全部形式化由主 agent 亲自完成(无 subagent,纪律 §4)。
+>
+> **任务 1 落地(hane 谱式消解)**(`Hurst/FeatureRowNondegenerate.lean`,12 定理;
+> commit cb61f12,检查点 `verification/checkpoints/2026-10-06-0817-FeatureRowNondegenerate-hane/`):
+>
+> | 定理 | 内容 |
+> |---|---|
+> | `harmonizableFeature_sub_norm_sq` | 两特征差之平方距离 = 逐点代表元平方距离的积分(L2.inner_def 路线,免可积性拆分) |
+> | `continuousOn_Ioi_ae_zero` | a.e. 零 + (0,∞) 上连续 ⟹ 逐点零(正测度邻域 + measure_mono_null) |
+> | `norm_exp_I_mul_sub_one` | ‖e^{iθ}−1‖² = 2−2cos θ(exponential_increment_inner 复用) |
+> | `normalizedVaryingIncrement_ne_zero` | **主引理(路线 A,全参数)**:对一切 h,k ∈ Ioo 0 1、s、ℓ>0,变增量 ≠ 0 |
+> | `gridStrideFirstActual_ne_zero` | 网格应用:∀ n、0<d、**任意 H**(无 Hölder/中点假设)、每步进指标 |
+> | `actualQ1_hane_discharged` / `actualQ1_hane_all` | 端点 hane 逐字消解(正标量 (1/n)^{H_left} • 恒等式;∀n 形态,n=0 由 card=0 空真) |
+>
+> 主引理证明结构:积分表示 ⟹ 积分零 ⟹ a.e. 零 ⟹ 连续性给逐点恒等
+> `α_k x^{−k−1/2}(e^{iux}−1) = α_h x^{−h−1/2}(e^{ivx}−1)`;在 `x_u = 2π/|u|`
+> 求值给 `v = n·|u|`(n∈ℤ,Complex.exp_eq_one_iff),对称给 `u = m·|v|`;
+> 绝对值比较 `|v| = |u|`、`|n|=|m|=1` ⟹ `v = ±u`;`v = −u` 情形在
+> `x₀ = π/|u|`、`x₁ = π/(2|u|)` 的模平衡(`|e^{iux}−1|` = 2 resp. √2,±u 指数
+> 同模)给 `2^{h−k} = 1` ⟹ `h = k`;末步 `e^{iux₁} = e^{−iux₁}` 即 `±I = ∓I` 矛盾。
+> **偏差登记**(文件头):任务书草图的"振幅比 |ξ|^{h−k} ≠ 1"只对应 `v = −u`
+> 子情形,一般第一步是整数倍论证;无一情形被证伪;路线 A 全量落地且强于要求。
+>
+> **回灌(逐点替换清单)**:`FeasibleRates.lean` 两端点
+> `…_generalSigned_scalarRates` 与 `…_generalSigned_feasible` 的 `hane` 前提
+> **删除**,内部 per-n lambda 实例化 `actualQ1_hane_all`(δ 依赖 n 故逐 n);
+> `FullChainGeneralSigned:349` 主端点保留 hane(一般 conditional 形态);
+> 消解表同步见文件头。
+>
+> **任务 2 落地(hband 中心带消解)**(`Hurst/CenterBandDischarge.lean`,5+1 定理;
+> commit 997a3c5,检查点 `verification/checkpoints/2026-10-06-1906-CenterBandDischarge-hband/`):
+>
+> | 定理 | 内容 |
+> |---|---|
+> | `centerBand_expectation_decomp` | **精确分解** E Ĝ_n = Σ w_j(−2H_j log n + log‖inc_j‖² + gLSM):gaussianLogStatistic_expectation + 系数恒等式,log‖组合‖² = −2H_j log n + log‖inc_j‖² **无估计成分** |
+> | `centerBand_increment_log_bound` | 行级 ‖log‖inc_j‖²‖ ≤ 10 ε_n,ε_n = C₀D(1+M)n^{b−1}(uniform_remainder + log_norm_square_error_from_unit,步界 |H_r−H_l| ≤ D(1+M)/n 来自 k=0 Lipschitz 包) |
+> | `centerBand_ratio_tendsto` | **核心**:∀ 固定 cσ,(cσ−E Ĝ_n)/(2 log n) → f t。重定心代数:E Ĝ + 2ft·log n = cσ + 2log n·Σw(H_j−ft) − Σw·log‖inc‖² − gLSM;Σw=1 与 Σ\|w\|≤C_w 来自三合一 localPolynomialWeights_uniform_stability 包(det 单位+行界+绝对和+矩含 k=0);|H_j−ft| ≤ D(1+M)δ(活跃窗 \|grid−t\|<δ);三角装配 \|cσ−E+2ft·logn\| ≤ K 有界;对 K/(2log n) 挤压(div_sub' + div_le_div_of_nonneg_right + tendsto_zero_iff_abs_tendsto_zero) |
+> | `centerBand_hband_discharged` | **hband 消解**:显式带 d = (1−ft)/2、∀ 固定 cσ;带选择算术 (1−ft)/2 < ft < 1−(1−ft)/2 ⟸ 3/4 < ft < 1 |
+> | `…_feasible_centerBand` | **新最强主端点**:可行前提缩至模型窗口 + b-带数据 (1−ft)² < 1−b + β-窗口 + cσ + E5 偏差包(hane 与 hband/d 均内部消解) |
+>
+> **偏差登记**(文件头):任务书草图的对数均值路线经 pair law;落地路线更短——
+> Gaussian 期望公式把一切化到确定性范数 ‖inc_j‖,只需 log_norm_square_error_from_unit
+> (免 pair law);无一被证伪;cσ 自由(任意固定实),d 显式,比的极限计算完整。
+> **循环导入**:回灌端点置于 CenterBandDischarge(其导入 FeasibleRates),避免环。
+>
+> **任务 3(hBias 立项定界——诚实蓝图,不消解、不弱化)**:
+>
+> 端点要的是**率** |E Htilde − f t| ≤ C·n^{−γ};任务 2 的分解只有 O(1) 精度:
+> E Ĝ + 2ft·log n → **gLSM**(χ² 对数均值,权重单位和使其存活),即
+> E Htilde − f t = (cσ − (E Ĝ + 2ft·log n))/(2 log n),分子 → cσ − gLSM。
+>
+> **Lean 分解强制发现**:中心常数 cσ 必须钉在 `gaussianLogSquareMean`——
+> cσ ≠ gLSM 时分子有非零极限,任何二阶精细化都无法给出 n^{−γ} 率。cσ 不是
+> 自由校准参数,这是模型决定的常数。
+>
+> 达到 n^{−γ} 率还需要(新里程碑 "E5 二阶展开" 的条目):
+> 1. **二阶 Taylor + k=1 矩条件**(新引理):Σ w_j(H_j−ft) 当前界 O(δ);
+>    用 k=1 矩 Σ w_j(grid_j−t)/δ = 0(localPolynomialWeights_moments k=1)
+>    消去线性项,Hölder 二阶余项 O(δ²) ⟹ 2log n·O(δ²) = O(n^{−2γ} log n)
+>    ≤ C n^{−γ}(log n ≤ n^γ)✓ 可达;
+> 2. **窗口条件 γ ≤ 1 − b**(或增量余项二阶谱精细化):增量对数项
+>    Σ w_j log‖inc_j‖² = O(n^{b−1}),要 ≤ C n^{−γ} 需 γ ≤ 1−b。**此条件不被
+>    b-带 (1−ft)² < 1−b 蕴含**(反例:ft = 0.9 时 b 可取 0.99,1−b = 0.01 <
+>    0.9 = γ)——必须作为 E5 里程碑的显式新增窗口条件,或做二阶谱展开把
+>    余项压到 n^{−γ}(新谱计算,工作量大);
+> 3. **裁剪恒等转移**:p5Trunc01_eq_self(P5LogHLayers:69)在 E Htilde ∈ [0,1]
+>    eventually(由 hband 保证)时把 E Htilde 的率转移到 E Estimator;
+> 4. 组合:|E Htilde − f t| ≤ (2log n·|Σw(H_j−ft)| + |Σ w·log‖inc‖²|)/(2 log n)
+>    ≤ C n^{−γ},C 显式。
+> 以上任一条均不在本轮偷偷做;蓝图本身即交付。
+>
+> **任务 4(零自由度实例)**:`…_feasible_centerBand_zeroDof` 落地
+> (commit e1445ac,检查点 `2026-10-06-1916-CenterBand-zeroDof`):β 窗口内部
+> 实例化为窗口中点 β := (1−ft)(4ft−3)/2(正性:mul_pos(0<1−ft, 0<4ft−3)),
+> 调用者无任何率参数。
+>
+> **聚合验收(2026-10-06 执行)**:
+> 1. ✅ 全量 `lake build Hurst` **9215 jobs** 绿(verification/build.log exit=0)。
+> 2. ✅ AxiomAudit 追加 12 行(FRN 6 + CBD 5 + zeroDof 1,总 2560 行),
+>    全部 ⊆ {propext, Classical.choice, Quot.sound},无 sorryAx。
+> 3. ✅ 零 sorry 复查(FeatureRowNondegenerate / CenterBandDischarge grep 0)。
+> 4. ✅ 检查点四件套 ×3(0817 / 1906 / 1916)。
+>
+> **已知缺口(诚实登记)**:
+> - **hBias(E5 二阶)仍未消解**——蓝图四条见上;cσ = gLSM 钉定 + γ ≤ 1−b
+>   窗口(或二阶谱精细化)+ k=1 矩 Taylor 引理均为新工作量。端点在
+>   `…_feasible_centerBand` 形态下仍 conditional 于 hBias(和模型窗口/b-带/β)。
+> - **不得宣称"端点无条件化/统计闭环"**:hBias 是最后一个数据前提。
+> - expectation-centered/unknown-scale 变体镜像未做(旧 FullChainEndpoint
+>   三变体格式;工作量小,留下一轮)。
+>
+> **v4.31 雷区本轮新增(累积,takeover8 批)**:
+> - `Real.rpow_mul` 方向:x^(y*z) = (x^y)^z;合并幂用 `←`;
+> - `Real.rpow_neg (hx : 0 ≤ x) (y)`:两参数均显式;无假设版本是
+>   `rpow_neg_eq_inv_rpow : x^(−y) = x⁻¹^y`;
+> - `Real.log_inv (x)` 显式取值(非假设传递);
+> - `Complex.ofReal_eq_zero.mp` 用于 `↑z = 0 → z = 0`(ofReal_ne_zero 是 ≠ 形);
+> - `Ioo` 类型必须双边界 `Ioo (0:ℝ) 1`(单参不构成类型);
+> - `ℂ` 字面量 elaborate 时 cast 会推进到乘积内部(如 `2 * ↑π` 而非 `↑(2*π)`):
+>   语句中实指数一律写 `((PROD : ℝ) : ℂ)` 双强制,与 rawHarmonizable 定义形对齐;
+> - `lt_of_le_of_ne` 在 v4.31 是 `a ≤ b → a ≠ b → a < b`(与旧记忆相反方向);
+> - `Filter.eventually_atTop.1`/`squeeze_zero'` 等 Eventually-引理:中间 have
+>   必须显式类型化,否则实例歧义;
+> - 组合子(`const_mul/.mul/.add`)产生未 β-约简函数体与未算极限:显式类型
+>   have + rwa [mul_zero/zero_mul/add_zero] at h2;
+> - abs-引理:`abs_add_le`(v4.31 非 abs_add)、`abs_eq_neg_self`、子集和用
+>   `Finset.sum_mono_set_of_nonneg`(有序域无 sum_le_sum_of_subset);
+> - `div_eq_iff`/`div_lt_iff₀`/`div_le_div_of_nonneg_right`:v4.31 名称族查证
+>   后再用;`div_sub' : a/b − c = (a − b*c)/b`;
+> - `Real.exp_eq_one_iff`(Complex/Log:141):e^x = 1 ↔ ∃ n:ℤ, x = n*(2π*I);
+> - `Nat.one_le_abs` + `exact_mod_cast` 桥 |↑n| ≥ 1;
+> - 主定理内混合 field_simp + linarith 会因原子规范化不一致而失败:改用
+>   linear_combination 或把方程化为单项式形式后 linarith(常系数乘法可行);
+> - 构建环检测:回灌端点不能放在被回灌文件的下游导入环内——放上游文件尾部。
+
 更新:2026-10-05(Session-4 takeover7;**任务 1 标量率实例化 + 任务 2 γ = f t
 可行实例落地;任务 3 数据前提分类定稿**)。
 

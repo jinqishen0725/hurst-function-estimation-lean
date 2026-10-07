@@ -5,6 +5,37 @@
 本文件供接管 agent 使用;权威过程记录见 [VALIDATION_PROGRESS.md](VALIDATION_PROGRESS.md)
 (逐检查点、逐契约修正、含日志路径与退出码)。
 
+## 0. 2026-10-06 快照(takeover8;hane 谱式消解 + hband 中心带消解 + hBias 立项)
+
+任务 1/2/3/4(β 实例)完成(commits cb61f12 / 997a3c5 / e1445ac + docs 本轮),
+检查点 2026-10-06-0817 / 1906 / 1916 三件。
+
+- **任务 1(hane 谱式消解)**:`Hurst/FeatureRowNondegenerate.lean` 12 定理。
+  主引理 `normalizedVaryingIncrement_ne_zero`(路线 A,全参数,无 Hölder/中点
+  假设):积分表示 → a.e. 零 → 连续性逐点 → 整数倍论证 → 模平衡 → h = k →
+  ±I 矛盾。`gridStrideFirstActual_ne_zero`(任意 H)+ `actualQ1_hane_all`
+  (端点逐字形态)。**回灌**:FeasibleRates 两端点 hane 前提删除(per-n lambda)。
+  偏差:草图"振幅比"仅覆盖 v=−u 子情形(文件头登记),无一证伪。
+- **任务 2(hband 中心带消解)**:`Hurst/CenterBandDischarge.lean` 5 定理。
+  精确期望分解(无估计成分)→ 增量对数界(10ε_n)→ **比值极限**
+  `(cσ − E Ĝ_n)/(2 log n) → f t`(∀ 固定 cσ;Σw=1/Σ|w|≤C_w 来自
+  localPolynomialWeights_uniform_stability 三合一包)→ hband 消解
+  (显式 d = (1−ft)/2)→ **新最强端点** `…_feasible_centerBand`
+  (前提:模型窗口 + b-带 + β-窗口 + cσ + hBias)。偏差:对数均值路线免 pair
+  law(文件头登记)。循环导入:回灌端点置上游文件尾部。
+- **任务 3(hBias 立项定界,蓝图即交付)**:hBias 要率 n^{−γ},任务 2 只有
+  O(1)。**强制发现:cσ 必须钉在 gaussianLogSquareMean**(否则分子极限非零)。
+  尚需四条:①k=1 矩 Taylor 引理(线性项消去 → O(δ²));②窗口 γ ≤ 1−b
+  (**不被 b-带蕴含**,反例 ft=0.9/b=0.99;或二阶谱精细化);③p5Trunc01_eq_self
+  转移;④组合。详见 VALIDATION_PROGRESS 置顶块。**不得宣称统计闭环**。
+- **任务 4(部分)**:零自由度端点 `…_feasible_centerBand_zeroDof` 落地
+  (β := (1−ft)(4ft−3)/2 内部实例化);expectation-centered/unknown-scale
+  变体镜像未做(留下一轮)。
+- **验收**:全量 build 9215 jobs 绿;AxiomAudit 追加 12 行(FRN 6 + CBD 5 +
+  zeroDof 1)全 ⊆ 三公理;零 sorry;检查点三件。
+- **雷区**:takeover8 批 14 条入 VALIDATION_PROGRESS 置顶块(ℂ cast 推进、
+  rpow/log 族签名、lt_of_le_of_ne 方向、sum_mono_set_of_nonneg、构建环检测等)。
+
 ## 0. 2026-10-05 快照(takeover7;标量率实例化 + 可行实例 + 数据前提定稿)
 
 任务 1/2/3 完成(commit 93c60b2 formal + docs 本轮),检查点
