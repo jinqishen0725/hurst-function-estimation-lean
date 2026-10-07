@@ -37,24 +37,47 @@ python3 verification/final_acceptance.py   # 闭环后七项机器验收(含端�
 
 全新克隆且没有 `.lake` 时先运行 `lake update` 获取固定依赖。首次安装依赖需要网络和数GB空间。工具链使用[Lean](https://github.com/leanprover/lean4)及[mathlib](https://github.com/leanprover-community/mathlib4)官方发布。
 
-## 文件
+## 重要文件 / Key files
 
-- `Hurst/*.lean`：已验证的确定性/分析/概率恒等式及主链端点;分层地图与
-  阅读顺序见 [Hurst/README.md](Hurst/README.md)。
-- `paper_revision/revised_theorems.tex`：修订后主定理的论文式陈述(含与原稿
-  及修复计划的逐条偏差表)。
-- `paper_revision/theorem_inventory.md`：**原文 27 项定理/引理的逐项验证状态
-  盘点**(已验证/已修复/仅书面/无结论四层 + 已验证的问题引理清单)。
-- `paper_revision/supplementary.tex/.pdf`：**Supplementary Material**——每项修正
-  的"原陈述→错误/反例→修正陈述→证明/证明概要→形式化状态",含诚实率漂移
-  命题的完整数学证明。
-- `verification/final_acceptance.py`：闭环后的七项机器验收脚本。
-- `results/*.md`：正文13项、补充14项，每项单独记录，不将局部证明视为原定理证明。
-- `results/catalog.json`：机器可读依赖与证据映射。
-- `source/*.txt`：从用户提供的PDF提取的文本；数学歧义按原PDF页面核对。
-- `verification/build.log`、`axioms.log`、`coverage.json`：实际编译、公理和覆盖记录。
-- `scripts/build_catalog.py`：重建逐项说明与编号清单。
-- `scripts/numerical_checks.py`：需要numpy的独立确定性数值诊断，不是Lean证明，也不是原论文模拟重现。
+**主要交付(Main deliverables)**
+
+| 文件 | 内容 |
+|---|---|
+| [paper_revision/revised_theorems.pdf](paper_revision/revised_theorems.pdf)([.tex](paper_revision/revised_theorems.tex)) | **修订后的长记忆主定理**(论文式陈述;六条件 (R1)–(R6)、加框主定理、诚实率命题、形式溯源表、27 项验证状态表、七条偏差表) |
+| [paper_revision/supplementary.pdf](paper_revision/supplementary.pdf)([.tex](paper_revision/supplementary.tex)) | **Supplementary Material**:每项修正的完整英文证明(原陈述→错误/反例→修正→证明→状态),含诚实率漂移命题全文与 References |
+| [paper_revision/theorem_inventory.md](paper_revision/theorem_inventory.md) | 原文 27 项定理/引理逐项验证状态盘点(五层分类 + 已验证问题引理清单) |
+| [Hurst/HonestRateClosure.lean](Hurst/HonestRateClosure.lean) | **主定理的 Lean 形式**:`actualQ1_knownScaleH_fullChain_honestRate`(前提:模型窗口 + b-带 + r) |
+| [Hurst/README.md](Hurst/README.md) | 代码库分层地图(L0–L8)、阅读顺序、端点索引、维护红线、验证工作流 |
+| [verification/final_acceptance.py](verification/final_acceptance.py) | 七项机器验收(编译/公理/零 sorry/**端点签名门禁**/反证文件/检查点/计划数值) |
+
+**主链关键 Lean 文件(自底向上)**:`FeatureRowNondegenerate.lean`(谱式行非退化)→
+`WeightedRieszSpectrumClosed.lean` + `CompressionGeneralK.lean`(闭谱 + 压缩恒等式)→
+`GeneralSignedPowerMatching.lean` / `SignedPowerLimit.lean`(一般符号极限)→
+`NormalizedActualEnergy.lean` / `NormalizedActualRemainder.lean`(归一化能量)→
+`ActualQ1SignedClosed.lean`(二次端点)→ `P5LogHLayers.lean` / `P5SeamClosed.lean`(log/seam 层)→
+`FeasibleRates.lean` + `IncrementLogSecondOrder.lean` + `TruncationTransfer.lean` +
+`CenterBandDischarge.lean` + `UnitVarianceRate.lean` + `HonestRateDrift.lean`(诚实率链)→
+`HonestRateClosure.lean`(端点)。审计定理在 `verification/`(Session3PremiseAudit /
+Session4Blocker3Audit / CapstonePremiseAudit)。
+
+**状态与过程文档**:[VALIDATION_PROGRESS.md](VALIDATION_PROGRESS.md)(十轮接力落地表 +
+雷区累积 + 闭环验收记录)、[TRANSITION_session4_2026-09-21.md](TRANSITION_session4_2026-09-21.md)、
+[summary.md](summary.md)(27 项逐项审计索引)、[conditional_mainline_summary.md](conditional_mainline_summary.md)、
+[backlog.md](backlog.md)、`HANDOVER_PROMPT_session4_takeover*.md`(十份任务书)。
+
+**数学源头与工具**:[direct_proofs/01–24](direct_proofs/README.md)(中文书面证明链,修正的权威来源)、
+[results/catalog.json](results/catalog.json)(逐项机器可读登记)、[scripts/](scripts)(check_coverage /
+verify_axioms / numerical_checks 等)、`verification/checkpoints/`(每轮落地的四件套检查点)。
+
+## 源稿(不随仓库分发)
+
+被审计的原论文与补充材料**有意不入库**(版权原因)。官方获取渠道:
+
+- 正文:**Shen & Hsing, *Hurst Function Estimation*, Ann. Statist. 2020, Vol. 48, No. 2, 838–862**,
+  DOI: [10.1214/19-AOS1825](https://doi.org/10.1214/19-AOS1825)(Project Euclid 全文)。
+- 补充材料:同一 DOI 页面的 Supplementary materials 标签(`suppdf_1.pdf`)。
+
+`source/*.txt` 为本地工作用的提取文本;`results/*.md` 逐项记录原结论与修正。
 
 在本次桌面环境中，可用下面的Python运行数值诊断：
 
