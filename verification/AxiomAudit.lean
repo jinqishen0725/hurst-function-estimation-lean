@@ -159,6 +159,7 @@ import Hurst
 #print axioms Hurst.hurstHolder_q2Pilot_evenMoment_about_extension
 #print axioms Hurst.hurstHolder_stride_first_correlation_decay
 #print axioms Hurst.hurstHolder_stride_second_correlation_decay
+#print axioms Hurst.actualQ1LongStatistic_tendsto_secondChaos_generalSigned
 #print axioms Hurst.actualQ1_featureCorrelation_eq
 #print axioms Hurst.actualQ1_diagonalCorrelation_apply
 #print axioms Hurst.actualQ1_diagonalCorrelation_eq
@@ -367,6 +368,12 @@ import Hurst
 #print axioms Hurst.actualQ1LongStatistic_tendsto_secondChaos_v2
 #print axioms Hurst.actualQ1LongStatistic_tendsto_secondChaos_v3
 #print axioms Hurst.actualQ1LongStatistic_tendsto_secondChaos_v3_degreeOne
+#print axioms Hurst.centerBand_expectation_decomp
+#print axioms Hurst.centerBand_increment_log_bound
+#print axioms Hurst.centerBand_ratio_tendsto
+#print axioms Hurst.centerBand_hband_discharged
+#print axioms Hurst.actualQ1_knownScaleH_fullChain_generalSigned_feasible_centerBand
+#print axioms Hurst.actualQ1_knownScaleH_fullChain_generalSigned_feasible_centerBand_zeroDof
 #print axioms Hurst.clippedInverse_calibration_excess
 #print axioms Hurst.clippedInverse_linearization
 #print axioms Hurst.boundedInverse_linearization
@@ -530,6 +537,23 @@ import Hurst
 #print axioms Hurst.e5_calibratedBias_of_logBias
 #print axioms Hurst.e5_bias_envelope
 #print axioms Hurst.e5_drift_of_bias_envelope
+#print axioms Hurst.abs_log_one_add_le_two_mul
+#print axioms Hurst.truncExpectation_le_fluctuation
+#print axioms Hurst.varyingIncrement_norm_sq_error
+#print axioms Hurst.varyingIncrement_logNormSq_error
+#print axioms Hurst.gridStrideFirstActual_logNormSq_error
+#print axioms Hurst.holderWeightContraction
+#print axioms Hurst.localPolynomialWeights_abs_sum_active
+#print axioms Hurst.holderWeightContraction_localPolynomialWeights_of_stable
+#print axioms Hurst.exists_holderWeightContraction_localPolynomialWeights
+#print axioms Hurst.unitStatWeight_eq_localPolynomialWeight
+#print axioms Hurst.chainLogStatistic_eq_rpow_smul
+#print axioms Hurst.chainCalibratedStatistic_eq
+#print axioms Hurst.p5KnownScaleHtilde_expectation_eq
+#print axioms Hurst.abs_add_le
+#print axioms Hurst.p5KnownScaleHtilde_drift_bound
+#print axioms Hurst.knownScaleEstimator_bias_envelope
+#print axioms Hurst.knownScaleEstimator_bias_envelope_grid
 #print axioms Hurst.chainLogStatistic_memLp_two
 #print axioms Hurst.chainCalibratedStatistic_memLp_two
 #print axioms Hurst.e5c_calibration_centered_integral
@@ -639,6 +663,12 @@ import Hurst
 #print axioms Hurst.frobenius_le_of_entry_envelope
 #print axioms Hurst.farWord_of_frobeniusSmall
 #print axioms Hurst.frozenQuad_hFquad_of_frobeniusSmall
+#print axioms Hurst.feasibleR_nat_tendsto
+#print axioms Hurst.feasibleR_tendsto_atTop
+#print axioms Hurst.feasibleR_cut_tendsto
+#print axioms Hurst.feasibleR_env_tendsto
+#print axioms Hurst.actualQ1_knownScaleH_fullChain_generalSigned_scalarRates
+#print axioms Hurst.actualQ1_knownScaleH_fullChain_generalSigned_feasible
 #print axioms Hurst.featureGaussian_colorClass_evenMoment_bound
 #print axioms Hurst.gaussianLogStatistic_centered_evenMoment_of_smallCorrelationColoring
 #print axioms Hurst.gaussian_variance_distribution_tendsto
@@ -674,6 +704,16 @@ import Hurst
 #print axioms Hurst.gaussianLogQuadraticStatistic_tendsto_secondChaos_of_spectral_data
 #print axioms Hurst.euclideanCoordinateRestriction_apply
 #print axioms Hurst.featureGaussian_map_coordinateRestriction
+#print axioms Hurst.harmonizableFeature_sub_ae
+#print axioms Hurst.harmonizableFeature_sub_norm_sq
+#print axioms Hurst.continuousOn_Ioi_ae_zero
+#print axioms Hurst.continuousOn_rawHarmonizable
+#print axioms Hurst.continuousOn_normalizedHarmonizable
+#print axioms Hurst.norm_exp_I_mul_sub_one
+#print axioms Hurst.normalizedVaryingIncrement_ne_zero
+#print axioms Hurst.gridStrideFirstActual_ne_zero
+#print axioms Hurst.actualQ1_hane_discharged
+#print axioms Hurst.actualQ1_hane_all
 #print axioms Hurst.product_quadratic_remainder
 #print axioms Hurst.harmonizableFeature_uniform_quadratic_remainder
 #print axioms Hurst.harmonizableNormalizerSlope_uniform_bound
@@ -971,6 +1011,10 @@ import Hurst
 #print axioms Hurst.actualQ1_knownScaleH_fullChain
 #print axioms Hurst.actualQ1_knownScaleH_fullChain_expectationCentered
 #print axioms Hurst.actualQ1_knownScaleH_fullChain_feasible
+#print axioms Hurst.gs_fourthEnergy_eq
+#print axioms Hurst.gs_fourthEnergy_tendsto_zero
+#print axioms Hurst.gs_logProjection_L1_tendsto_instantiated
+#print axioms Hurst.actualQ1_knownScaleH_fullChain_generalSigned
 #print axioms Hurst.finite_double_sum_sub_distance_lt_eq_tail
 #print axioms Hurst.finite_double_sum_sub_distance_lt_succ_eq_tail
 #print axioms Hurst.weighted_truncationCovariance_uniform_tail
@@ -1155,6 +1199,33 @@ import Hurst
 #print axioms Hurst.symmetric_test_reweighting_identity
 #print axioms Hurst.symmetric_test_reweighting_bound
 #print axioms Hurst.featureGaussian_log_CLT_general_indices
+#print axioms Hurst.summable_sq_mul_of_bounded
+#print axioms Hurst.summable_sq_mul_of_continuousOn
+#print axioms Hurst.tendsto_sq_weighted_polynomial
+#print axioms Hurst.abs_sum_sq_mul_sub_le
+#print axioms Hurst.abs_tsum_sq_mul_sub_le
+#print axioms Hurst.tendsto_sq_weighted_continuousTest
+#print axioms Hurst.exists_eventual_sq_spectral_bounds
+#print axioms Hurst.tendsto_sq_weighted_continuous_of_powerSums
+#print axioms Hurst.tendsto_posPart_powerSums_of_signed_powerSums
+#print axioms Hurst.tendsto_negPart_powerSums_of_signed_powerSums
+#print axioms Hurst.padRearranged_sq_of_nonneg
+#print axioms Hurst.paddedRearranged_tendsto_of_evenPowersAboveTwo
+#print axioms Hurst.padded_posPart_tendsto_of_signed_powerSums
+#print axioms Hurst.padded_negPart_tendsto_of_signed_powerSums
+#print axioms Hurst.summable_nonneg_pow_of_sq
+#print axioms Hurst.antitoneResort_sq_profile
+#print axioms Hurst.summable_posPart_sq
+#print axioms Hurst.summable_negPart_sq
+#print axioms Hurst.signed_sorted_coefficients_tendsto_of_powerSums
+#print axioms Hurst.signed_sorted_coefficients_tendsto
+#print axioms Hurst.signedSortedSpectrum_hasSum_pow
+#print axioms Hurst.signedSortedSpectrum_hasSum_sq
+#print axioms Hurst.signedInterleavedRow_of_even
+#print axioms Hurst.signedInterleavedRow_of_odd
+#print axioms Hurst.signedInterleavedRow_coefficients_tendsto
+#print axioms Hurst.signedInterleavedRow_matching_data
+#print axioms Hurst.signedInterleavedRow_tendsto_secondChaos_of_powerSums
 #print axioms Hurst.mesh_log_ratio_tendsto
 #print axioms Hurst.gridCovarianceError_scaled_tendsto
 #print axioms Hurst.grid_separated_gap
@@ -1206,6 +1277,10 @@ import Hurst
 #print axioms Hurst.featureGaussian_klDiv_differenceWhitening
 #print axioms Hurst.grouped_evenMoment_integral_bound
 #print axioms Hurst.grouped_evenMoment_integral_uniform
+#print axioms Hurst.gridStrideFirstActual_logNormSq_secondOrder
+#print axioms Hurst.knownScaleEstimator_bias_envelope_grid_secondOrder
+#print axioms Hurst.bias_window_firstOrder_infeasible
+#print axioms Hurst.bias_window_secondOrder_infeasible
 #print axioms Hurst.rawHarmonizable_measurable
 #print axioms Hurst.rawHarmonizable_norm_sq
 #print axioms Hurst.rawHarmonizable_norm_sq_even
@@ -1326,6 +1401,8 @@ import Hurst
 #print axioms Hurst.taylorJet_succ
 #print axioms Hurst.interval_distance_le
 #print axioms Hurst.holder_taylor_remainder
+#print axioms Hurst.actualQ1_knownScaleH_fullChain_honestRate
+#print axioms Hurst.honestRate_drift_tendsto_zero
 #print axioms Hurst.hurstParameter_continuousOn
 #print axioms Hurst.hurstTarget_bump
 #print axioms Hurst.hurst_minimax_finite_code
@@ -1352,6 +1429,22 @@ import Hurst
 #print axioms Hurst.measure_pi_hyperplane_inter_cube_eq_zero
 #print axioms Hurst.measurableSet_hyperplane_inter_cube
 #print axioms Hurst.nullMeasurableSet_hyperplane_inter_cube
+#print axioms Hurst.mul_exp_neg_le
+#print axioms Hurst.exp_sub_one_le
+#print axioms Hurst.rpow_mul_abs_log_le
+#print axioms Hurst.one_sub_rpow_le
+#print axioms Hurst.rpow_neg_sub_one_le
+#print axioms Hurst.rpow_mismatch_le
+#print axioms Hurst.abs_sub_le_of_hasDerivAt_le
+#print axioms Hurst.abs_rpow_pow_sub_le
+#print axioms Hurst.abs_add_le'
+#print axioms Hurst.abs_rpow_mixed_sub_le
+#print axioms Hurst.phi_difference_le
+#print axioms Hurst.phi_self_le
+#print axioms Hurst.harmonizableFeature_cross_sub_norm_sq
+#print axioms Hurst.secondOrder_assembly
+#print axioms Hurst.varyingIncrement_norm_sq_secondOrder
+#print axioms Hurst.gridStrideFirstActual_norm_sq_secondOrder
 #print axioms Hurst.localDesignGram_tendsto
 #print axioms Hurst.localDesignGram_inverse_tendsto
 #print axioms Hurst.localPolynomialWeights_arbitrary_moment
@@ -1750,8 +1843,29 @@ import Hurst
 #print axioms Hurst.centeredMatrixQuadratic_tendsto_secondChaos_of_signedMatching_of_nonnegEigenvalues
 #print axioms Hurst.centeredMatrixQuadratic_tendsto_secondChaos_of_nonnegWeights
 #print axioms Hurst.localLinearWeights_nonnegWeights
+#print axioms Hurst.q1RieszActiveKernel_eventually_energy_le
+#print axioms Hurst.hurstHolder_q1_actual_normalized_energy_eventually_bounded
+#print axioms Hurst.localPolynomialWeights_scaled_eventually_bounded
+#print axioms Hurst.hurstHolder_q1_actual_weighted_fourth_tendsto_zero
+#print axioms Hurst.realScaleMeshEnergy_scaled_eq
+#print axioms Hurst.weighted_fourth_le_band_add_energy
+#print axioms Hurst.normalized_weighted_fourth_le
+#print axioms Hurst.normalized_weighted_fourth_tendsto_zero
+#print axioms Hurst.realScaleMeshEnergy_le_error_add_reference
+#print axioms Hurst.gaussian_array_rank_second_moment_double_sum
+#print axioms Hurst.featureGaussian_log_quadratic_error_double_sum
+#print axioms Hurst.featureGaussian_log_limit_of_quadratic_limit_double_sum
+#print axioms Hurst.normalized_weighted_fourth_eq_original
+#print axioms Hurst.realScaleMeshEnergy_eventually_bounded_of_approximation
+#print axioms Hurst.correlation_le_of_scaled_tail
+#print axioms Hurst.scaled_tail_envelope_tendsto_zero
 #print axioms Hurst.normalized_q1_inverse_measurable
 #print axioms Hurst.normalized_q2_inverse_measurable
+#print axioms Hurst.normalized_logProjection_L1_tendsto_zero
+#print axioms Hurst.gaussianLogStatistic_variance_uniformWeight_bound
+#print axioms Hurst.gaussianLogStatistic_scaled_variance_of_normalizedEnergy
+#print axioms Hurst.gaussianLogStatistic_variance_of_normalizedEnergy
+#print axioms Hurst.normalized_variance_clipping_window
 #print axioms Hurst.oneBlock_weighted_pattern_bound_explicit
 #print axioms Hurst.centeredGaussianLog_evenMoment_nonneg
 #print axioms Hurst.standardGaussian_weightedLog_evenMoment_bound
@@ -1895,11 +2009,13 @@ import Hurst
 #print axioms Hurst.p5Trunc01_eq_self
 #print axioms Hurst.p5Trunc01_mono
 #print axioms Hurst.actualQ1_logStatistic_tendsto_secondChaos_of_quadratic
+#print axioms Hurst.actualQ1_logStatistic_tendsto_secondChaos_doubleSum
 #print axioms Hurst.p5_transport_expectationCentered
 #print axioms Hurst.p5_transport_truthCentered_of_drift
 #print axioms Hurst.gaussianLogStatistic_const_weight_mul
 #print axioms Hurst.p5Seam_unitWeight_eq
 #print axioms Hurst.p5Seam_joinBridge
+#print axioms Hurst.logStatistic_knownScaleH_seam_of_logLimit
 #print axioms Hurst.logStatistic_knownScaleH_seam
 #print axioms Hurst.logStatistic_knownScaleH_seam_truthCentered
 #print axioms Hurst.truthScaleC_feasible_eq
@@ -2217,6 +2333,10 @@ import Hurst
 #print axioms Hurst.centeredSpectralSquares_tendsto_secondChaos_of_signedMatching
 #print axioms Hurst.centeredMatrixQuadratic_tendsto_secondChaos_of_signedMatching
 #print axioms Hurst.gaussianLogQuadraticStatistic_tendsto_secondChaos_of_signedMatching
+#print axioms Hurst.signedInterleavedRow_eq_zeroPadded_permute
+#print axioms Hurst.signedInterleavedRow_identDistrib
+#print axioms Hurst.centeredSpectralSquares_tendsto_of_signed_powerSums
+#print axioms Hurst.exists_centeredSpectralSquares_limit_of_signed_powerSums
 #print axioms Hurst.hurstHolder_smooth_composite_quadratic
 #print axioms Hurst.continuous_extension_fixed_range
 #print axioms Hurst.hurstHolder_smooth_composite_linear_bias
@@ -2419,6 +2539,10 @@ import Hurst
 #print axioms Hurst.featureCorrelation_abs_le_one_unconditional
 #print axioms Hurst.weighted_truncatedCovariance_tail_bound
 #print axioms Hurst.tendsto_of_finiteCutoff_and_uniformTail
+#print axioms Hurst.meas_ge_le_of_lintegral_pow
+#print axioms Hurst.indicator_values01
+#print axioms Hurst.abs_indicator_le_half_sq
+#print axioms Hurst.truncationCorrection_le
 #print axioms Hurst.q1TwoBandwidth_scale_integral
 #print axioms Hurst.hurstHolder_q1_twoBandwidth_scale_distribution_transfer
 #print axioms Hurst.intervalIntegrable_comp_sub_rpow
@@ -2447,6 +2571,7 @@ import Hurst
 #print axioms Hurst.unitLpRisk_le_integrated_mse
 #print axioms Hurst.hurstHolder_q2_logScale_mse_unit
 #print axioms Hurst.hurstHolder_q2_unknown_unit_mse_rate
+#print axioms Hurst.hurstHolder_q1_unitVariance_eventually_bounded
 #print axioms Hurst.q2UnknownSpatialEstimator_decision_measurable
 #print axioms Hurst.q2UnknownSpatialEstimator_agrees
 #print axioms Hurst.q2UnknownSpatialEstimator_mem
@@ -2522,118 +2647,3 @@ import Hurst
 #print axioms Hurst.weighted_fourth_energy_le
 #print axioms Hurst.weighted_fourth_energy_tendsto_zero
 #print axioms Hurst.symmetric_row_quadratic_bound
-
--- Session-4 takeover6 (2026-10-05): blocker 2/3/4 repairs + endpoint assembly
-#print axioms Hurst.actualQ1_knownScaleH_fullChain
-#print axioms Hurst.logStatistic_knownScaleH_seam
-#print axioms HS.exists_weightedRieszSpectrum_equiv_closed
-#print axioms HS.nonempty_hilbertBasis_nat_L2
-#print axioms Hurst.actualQ1LongStatistic_tendsto_secondChaos_generalSigned
-#print axioms Hurst.signedInterleavedRow_tendsto_secondChaos_of_powerSums
-#print axioms Hurst.signedInterleavedRow_identDistrib
-#print axioms Hurst.signedSortedSpectrum_hasSum_pow
-#print axioms Hurst.signed_sorted_coefficients_tendsto
-#print axioms Hurst.tendsto_sq_weighted_continuousTest
-#print axioms Hurst.hurstHolder_q1_actual_normalized_energy_eventually_bounded
-#print axioms Hurst.hurstHolder_q1_actual_weighted_fourth_tendsto_zero
-#print axioms Hurst.normalized_logProjection_L1_tendsto_zero
-#print axioms Hurst.gaussianLogStatistic_scaled_variance_of_normalizedEnergy
-#print axioms Hurst.normalized_variance_clipping_window
-#print axioms Hurst.actualQ1_logStatistic_tendsto_secondChaos_doubleSum
-#print axioms Hurst.logStatistic_knownScaleH_seam_of_logLimit
-#print axioms Hurst.gs_fourthEnergy_eq
-#print axioms Hurst.gs_fourthEnergy_tendsto_zero
-#print axioms Hurst.gs_logProjection_L1_tendsto_instantiated
-#print axioms Hurst.actualQ1_knownScaleH_fullChain_generalSigned
-
--- takeover7 (2026-10-05): the explicit scalar-rate instantiation and the
--- feasible gamma = f t variants.
-#print axioms Hurst.feasibleR_nat_tendsto
-#print axioms Hurst.feasibleR_tendsto_atTop
-#print axioms Hurst.feasibleR_cut_tendsto
-#print axioms Hurst.feasibleR_env_tendsto
-#print axioms Hurst.actualQ1_knownScaleH_fullChain_generalSigned_scalarRates
-#print axioms Hurst.actualQ1_knownScaleH_fullChain_generalSigned_feasible
-
--- takeover8 (2026-10-06): feature-row nondegeneracy (hane spectral resolution).
-#print axioms Hurst.harmonizableFeature_sub_norm_sq
-#print axioms Hurst.continuousOn_Ioi_ae_zero
-#print axioms Hurst.normalizedVaryingIncrement_ne_zero
-#print axioms Hurst.gridStrideFirstActual_ne_zero
-#print axioms Hurst.actualQ1_hane_discharged
-#print axioms Hurst.actualQ1_hane_all
-
--- takeover8 task 2 (2026-10-06): center-band discharge (hband resolved).
-#print axioms Hurst.centerBand_expectation_decomp
-#print axioms Hurst.centerBand_increment_log_bound
-#print axioms Hurst.centerBand_ratio_tendsto
-#print axioms Hurst.centerBand_hband_discharged
-#print axioms Hurst.actualQ1_knownScaleH_fullChain_generalSigned_feasible_centerBand
-
--- takeover8 task 4 (2026-10-06): zero-degree-of-freedom feasible endpoint.
-#print axioms Hurst.actualQ1_knownScaleH_fullChain_generalSigned_feasible_centerBand_zeroDof
-
--- takeover9 task 1 (2026-10-06): E5 bias expansion (parallel-agent block,
--- provenance auditor-verified; hane premise discharged at integration time).
-#print axioms Hurst.abs_log_one_add_le_two_mul
-#print axioms Hurst.truncExpectation_le_fluctuation
-#print axioms Hurst.varyingIncrement_norm_sq_error
-#print axioms Hurst.varyingIncrement_logNormSq_error
-#print axioms Hurst.gridStrideFirstActual_logNormSq_error
-#print axioms Hurst.holderWeightContraction
-#print axioms Hurst.localPolynomialWeights_abs_sum_active
-#print axioms Hurst.holderWeightContraction_localPolynomialWeights_of_stable
-#print axioms Hurst.exists_holderWeightContraction_localPolynomialWeights
-#print axioms Hurst.unitStatWeight_eq_localPolynomialWeight
-#print axioms Hurst.chainLogStatistic_eq_rpow_smul
-#print axioms Hurst.chainCalibratedStatistic_eq
-#print axioms Hurst.p5KnownScaleHtilde_expectation_eq
-#print axioms Hurst.abs_add_le
-#print axioms Hurst.p5KnownScaleHtilde_drift_bound
-#print axioms Hurst.knownScaleEstimator_bias_envelope
-#print axioms Hurst.knownScaleEstimator_bias_envelope_grid
-
--- takeover9 task 2 (2026-10-06): second-order increment-norm refinement
--- (honest rate ℓ^(2-2b); exact cross kernel identity + quadratic Λ-mismatch).
-#print axioms Hurst.mul_exp_neg_le
-#print axioms Hurst.exp_sub_one_le
-#print axioms Hurst.rpow_mul_abs_log_le
-#print axioms Hurst.one_sub_rpow_le
-#print axioms Hurst.rpow_neg_sub_one_le
-#print axioms Hurst.rpow_mismatch_le
-#print axioms Hurst.abs_sub_le_of_hasDerivAt_le
-#print axioms Hurst.abs_rpow_pow_sub_le
-#print axioms Hurst.abs_add_le'
-#print axioms Hurst.abs_rpow_mixed_sub_le
-#print axioms Hurst.phi_difference_le
-#print axioms Hurst.phi_self_le
-#print axioms Hurst.harmonizableFeature_cross_sub_norm_sq
-#print axioms Hurst.secondOrder_assembly
-#print axioms Hurst.varyingIncrement_norm_sq_secondOrder
-#print axioms Hurst.gridStrideFirstActual_norm_sq_secondOrder
-
--- takeover9 task 3 (2026-10-06): concentration-to-truncation transfer
--- (abstract Markov tail + Young-inequality truncation correction).
-#print axioms Hurst.meas_ge_le_of_lintegral_pow
-#print axioms Hurst.indicator_values01
-#print axioms Hurst.abs_indicator_le_half_sq
-#print axioms Hurst.truncationCorrection_le
-
--- takeover9 task 4 (2026-10-06): hBias honest closure (second-order
--- envelope + window infeasibility audits; endpoint gamma = f t REFUTED).
-#print axioms Hurst.gridStrideFirstActual_logNormSq_secondOrder
-#print axioms Hurst.knownScaleEstimator_bias_envelope_grid_secondOrder
-#print axioms Hurst.bias_window_firstOrder_infeasible
-#print axioms Hurst.bias_window_secondOrder_infeasible
-
--- takeover10 task 1 (2026-10-07): unit variance rate of the known-scale
--- log statistic (second central moment at the honest scale S^(-2psi)).
-#print axioms Hurst.hurstHolder_q1_unitVariance_eventually_bounded
-
--- takeover10 task 2 (2026-10-07): the honest-rate drift lemma (deterministic
--- side E5B drift bound at the pinned center + tail-based truncation transfer).
-#print axioms Hurst.honestRate_drift_tendsto_zero
-
--- takeover10 task 3 (2026-10-07): the statistical-closure endpoint via the
--- honest-rate drift (premises = model window + b-band + r; hBias REPLACED).
-#print axioms Hurst.actualQ1_knownScaleH_fullChain_honestRate
