@@ -40,7 +40,11 @@ drift proposition underlying the revised main theorem. Full written chains are
 in \texttt{direct\_proofs}/01--24; per-item machine status is in
 \texttt{paper\_revision/theorem\_inventory.md}.
 Status tags: \Wlean{} = completely formalized;
-\Wwritten{} = written mathematical proof.
+\Wwritten{} = written mathematical proof. Proofs marked ``English rendering''
+are faithful translations of the corresponding Chinese sources in
+\texttt{direct\_proofs}/; every item also carries a pointer
+\emph{Full written chain} to the exact source files, which remain authoritative
+for any detail not reproduced here.
 
 \section{Corrections to the main theorems}\label{sec:main-corr}
 
@@ -57,11 +61,51 @@ $g$ was mishandled.
 \[
 \operatorname{Var} \;\longrightarrow\; \frac{9}{16}\int \omega_r(x)^2\,dx .
 \]
-\textbf{Proof sketch.} The rank-$2$ diagonal term of the weighted double sum
-carries the factor $2$; the diagonal sums $\sum_i K_i^2 f^2(i/N)^2$ converge
-to $\int \omega_r^2 f^2$-type integrals which, at the critical exponent, pin
-the constant at $9/16$. Full chain: files 03/13.
+\textbf{Proof (English rendering of \texttt{direct\_proofs}/03, \S5--6).}
+For unit-stride first increments of fractional Brownian motion with constant
+$H$,
+\[
+r_H(k)=\tfrac12\bigl(|k+1|^{2H}+|k-1|^{2H}-2|k|^{2H}\bigr),\qquad r_H(0)=1 .
+\]
+At $H=\tfrac34$ a Taylor expansion gives
+$r_{3/4}(k)=\tfrac38|k|^{-1/2}+O(|k|^{-5/2})$, so both long-memory spectral
+coefficients equal $a(\pm1)=\tfrac38$ and $c_a=2(\tfrac38)^2=\tfrac9{32}$.
+The log-square statistic is a weighted quadratic form in the standardized
+increments; diagonalizing it as $Q_N=\sum_j\lambda_{N,j}(Z_j^2-1)$ with
+$s_N^2=\sum_j\lambda_{N,j}^2$, the operator bound
+$\max_j|\lambda_{N,j}|\le\|B_N\|_{\mathrm{op}}=O(N^{1/2})$ gives
+$\max_j|\lambda_{N,j}|/s_N=O((\log N)^{-1/2})\to0$, and the
+independent-$\chi^2$ log-characteristic function
+\[
+\log \mathbb E e^{itQ_N/s_N}
+=\sum_j\Bigl\{-itu_{N,j}-\tfrac12\log(1-2itu_{N,j})\Bigr\}
+=-\tfrac{t^2}{2}+o(1)
+\]
+(with remainder $\le C_t\max_j|u_{N,j}|\sum_ju_{N,j}^2\to0$) yields the
+Gaussian limit by L\'evy continuity --- notably \emph{without} invoking the
+short-memory Breuer--Major theorem, whose summability hypothesis fails at
+criticality. The limiting variance is $2c_a\int f^2=\frac9{16}\int\omega^2$.
+
+\smallskip
+\emph{Counterexample to the printed formula.} Take $d=q=p=1$, $H\equiv
+\frac34$, and the smooth nonnegative bump
+$K_0(z)=z^2e^{-1/(1-z^2)}$ on $|z|<1$ (zero otherwise), normalized to
+$K=K_0/\int K_0$, with $t$ interior and $b=n^{-1/2}$. The equivalent kernel
+$\omega=K/\int K$ then satisfies $\omega(0)=0$ but $\int\omega^2>0$. By fBm
+stationarity and self-similarity the standardized local increment vectors
+carry exactly the covariance $r_{3/4}$; the actual weights differ from
+$N^{-1}\omega(z_i)$ by $N^{-1}e_{N,i}$ with $\sup|e_{N,i}|=O(N^{-1})$, and
+the covariance bound $|\operatorname{Cov}(g(Y_i),g(Y_j))|\le Cr(i-j)^2$ makes
+the weight-perturbation variance $O(N^{-2})$ after critical normalization.
+Hence the centered $\widehat G$ converges under the paper's
+$\sqrt{N/\log N}$ normalization to a normal law with variance
+$\frac9{16}\int\omega^2>0$, while the paper's kernel-center-value formula
+returns $0$: a counterexample to the \emph{universal critical variance
+formula itself}, not merely to a step of its derivation.
 \statustag{\Wwritten}
+
+\smallskip\noindent{\footnotesize Full written chain:
+\texttt{direct\_proofs/03}, \texttt{direct\_proofs/13} (Chinese sources).}
 
 \subsection{Long-memory sign (Theorem 3.3(iii)--3.4)}\label{sec:sign}
 
@@ -73,10 +117,38 @@ opposite sign, so the two laws differ.
 \textbf{Corrected.}
 $2S_n^{\psi}\log n\,(\widehat H_n-h)\Rightarrow -Q$
 (Theorem~1 of the companion note).
-\textbf{Proof.} Expectation-centered limit for $\widehat G$ with the
-reflection through the decreasing calibration; the sign is retained
-throughout the transport. The full statement is machine-checked.
+\textbf{Proof (direct\_proofs/14, \S7; the full statement is machine-checked).}
+The calibration $x\mapsto(c_\sigma-x)/(2\log n)$ is decreasing, so the
+expectation-centered limit of $\widehat G$ transports to the \emph{reflected}
+limit $-Q$; the affine inversion argument at $a_n=N^{\psi}$ carries the
+deterministic center to the true expectation center using
+$V_n=O(N^{-2\psi})$.
+
+The sign is substantive. Take $p=2$ and a nonnegative, symmetric, nonzero
+kernel $K$; the local-linear equivalent kernel $\omega=K/\int K$ is then
+nonnegative, and for any admissible $H$ with $H(t)>\frac34$ (constant $H$
+suffices) the limiting quadratic-form operator $\mathcal A$ is nonnegative
+and nonzero: using the representation
+$\tfrac12e^{-a|x-y|}=a\int_{-\infty}^{\min(x,y)}e^{-a(x-u)}e^{-a(y-u)}du$,
+the $\omega$-weighted quadratic integral is an integral of nonnegative
+squares, and if it vanished then
+$F(u)=\int_u^\infty\omega(x)e^{-a(x-u)}dx\equiv0$ together with
+$F'=aF-\omega$ would force $\omega=0$, contradicting $\int\omega=1$
+(all exchanges are justified by the integrability of the kernel family).
+Hence $\operatorname{tr}(\mathcal A^3)>0$ and
+\[
+\mathbb EQ^3=8\operatorname{tr}(\mathcal A^3)>0
+\qquad\text{while}\qquad
+\mathbb E(-Q)^3<0,
+\]
+so $Q$ and $-Q$ are not identically distributed --- on a submodel allowed by
+the paper's assumptions, at the level of the actual statistic's limit. The
+fourth cumulant $48\sum_j\lambda_j^4>0$ ($\mathcal A\neq0$) also shows $Q$ is
+not Gaussian.
 \statustag{\Wlean}
+
+\smallskip\noindent{\footnotesize Full written chain:
+\texttt{direct\_proofs/14}, \texttt{direct\_proofs/13} (Chinese sources).}
 
 \subsection{Optimal-bandwidth biased means (Corollary 3.5)}
 
@@ -95,8 +167,11 @@ $R$ may take either sign; $R=0$ requires the $o$-term from the bias
 expansion, not an equivalence with $0$.
 \textbf{Proof sketch.} The smoothing bias enters $\mathbb E\widehat G$ with
 the sign fixed by the second-order expansion; the inversion flips it.
-Files 13/21.
 \statustag{\Wwritten; conditional Lean chain connected}
+
+\smallskip\noindent{\footnotesize Full written chain:
+\texttt{direct\_proofs/13}, \texttt{direct\_proofs/11},
+\texttt{direct\_proofs/01} (Chinese sources).}
 
 \subsection{Growing-lag remainder (Theorem 8.2(iv))}
 
@@ -111,7 +186,10 @@ O\!\left(k^{-2} + \frac{k\log n}{n}\right)
 and the finite-lag error must be retained.
 \textbf{Reason.} Cross terms between lag growth, mesh resolution and the
 H\"older exponent cannot be dropped.
-Files 12/18. \statustag{\Wwritten; interior pieces Lean}
+\statustag{\Wwritten; interior pieces Lean}
+
+\smallskip\noindent{\footnotesize Full written chain:
+\texttt{direct\_proofs/12}, \texttt{direct\_proofs/18} (Chinese sources).}
 
 \subsection{Local-polynomial bias (Lemma 8.4)}\label{sec:84}
 
@@ -129,6 +207,9 @@ of $K$,
 using the uniform $L^1$ weight bound. No $(nb)^{-\min(2,p)}$ term is needed.
 \statustag{\Wlean (designs, weights, equivalent kernel, bias leading term)}
 
+\smallskip\noindent{\footnotesize Full written chain:
+\texttt{direct\_proofs/02}, \texttt{direct\_proofs/18} (Chinese sources).}
+
 \subsection{Vector $Z$ limits (Lemma 8.5)}
 
 \noindent\textbf{Original.} Limits stated for $Z$ itself; dimension $a$ taken
@@ -137,6 +218,10 @@ requires separately proving $\mathbb EZ\to0$ after normalization --- the bound
 $\mathbb EZ=O((nb)^{d/2}\rho)$ alone does not suffice. The dimension is the
 polynomial basis dimension $S$, not $d$; kernel conditions added.
 \statustag{expectation-bias leading terms \Wlean; three $Z$-limits \Wwritten}
+
+\smallskip\noindent{\footnotesize Full written chain:
+\texttt{direct\_proofs/03}, \texttt{direct\_proofs/13},
+\texttt{direct\_proofs/14} (Chinese sources).}
 
 \section{Corrections to the supplementary lemmas}\label{sec:supp-corr}
 
@@ -148,12 +233,28 @@ define the principal value explicitly; the scaling and mean-value steps then
 give the adjacent-difference bounds. \statustag{\Wwritten (repair); not
 formalized}
 
+\smallskip\noindent{\footnotesize Full written chain:
+\texttt{direct\_proofs/06} (Chinese source).}
+
+\subsection{S.1.2 (filtered Fourier integral)}
+\textbf{Status.} No counterexample found; a more direct route exists but is
+not formalized. \textbf{Route.} Use the cosine form and the second difference
+$(k+1)^{1+\delta}-2k^{1+\delta}+(k-1)^{1+\delta}$ in place of the contour
+argument; $k=1$ is handled separately and $\delta=0$ returns $0$; the real
+part must be retained in the contour derivation.
+
+\smallskip\noindent{\footnotesize Full written chain:
+\texttt{direct\_proofs/06} (Chinese source).}
+
 \subsection{S.2.1 ($g$ bounded away from zero)}
 \textbf{Error.} Insufficient hypotheses: at $h=0$ the quantity vanishes, and
 for $q=2$, $H\to1$ no uniform positive lower bound exists.
 \textbf{Correction.} Require $h\neq0$ and $H\in[\gamma,1-\gamma]$, the latter
 following from [A1] rather than [A3]; positivity, continuity and compactness
 then give the uniform lower bound. \statustag{repaired 1-d version \Wlean}
+
+\smallskip\noindent{\footnotesize Full written chain:
+\texttt{direct\_proofs/05} (Chinese source).}
 
 \subsection{S.2.2 / S.3.1 (leading singular coefficient)}
 \textbf{Error.} The printed $c_h$ misses a factor $\tfrac12$.
@@ -164,6 +265,10 @@ $H$-derivatives in the remainder). The $o(1)$ must not be strengthened to
 $O(b\log b)$. \statustag{instantiated and machine-verified inside the closure
 chain \Wlean}
 
+\smallskip\noindent{\footnotesize Full written chain:
+\texttt{direct\_proofs/12}, \texttt{direct\_proofs/10},
+\texttt{direct\_proofs/04} (Chinese sources).}
+
 \subsection{S.2.3 (mixed derivatives, near-diagonal)}
 \textbf{Error.} The $q=1$ near-diagonal remainder $O(r\log r)$ admits a
 lawful linear-$H$ counterexample. \textbf{Correction.} Add the smooth
@@ -171,11 +276,20 @@ background term of relative size $r^{\psi}$: the corrected bound retains the
 $x^{H(x)+H(y)-q}$-times-log-power background near $0$ and normalizes on the
 actual grid. \statustag{\Wwritten; grid normalization pieces \Wlean}
 
+\smallskip\noindent{\footnotesize Full written chain:
+\texttt{direct\_proofs/18}, \texttt{direct\_proofs/12},
+\texttt{direct\_proofs/04} (Chinese sources).}
+
 \subsection{S.3.2 (weighted power sums / cycle products)}
 Corrected jointly with \S1.1 above (center value $\int f^2$; $2!$;
 denominator). The long-memory side --- identification of the cycle products
 with the spectrum of $B=K^{1/2}M_\omega K^{1/2}$ for all orders $k\ge2$ ---
 is machine-checked. \statustag{long-memory identification \Wlean}
+
+\smallskip\noindent{\footnotesize Full written chain:
+\texttt{direct\_proofs/03}, \texttt{direct\_proofs/13},
+\texttt{direct\_proofs/14} (Chinese sources); the critical side is proved in
+\S1.1 above.}
 
 \subsection{S.5.1 (spatial average variance of $I_1'$)}
 \textbf{Error.} The far-distance count misses a factor $m$: with
@@ -189,6 +303,17 @@ condition still absorbs into the target term --- the main scale rates are
 preserved. \statustag{\Wwritten; the $q=1$ scale input it feeds is
 discharged in Lean}
 
+\subsection{S.5.2 (truncated component $I_2'$)}
+\textbf{Repair.} On the original truncation interval, use first- and
+second-derivative bounds for $\log v$ together with the projection error;
+control the bias through the pilot bias and MSE, and the squared error of the
+centered spatial average through Jensen --- no independence between the
+channels is assumed, so no fictitious independence gain is claimed. For $q=1$
+this nonlinear term vanishes identically.
+
+\smallskip\noindent{\footnotesize Full written chain:
+\texttt{direct\_proofs/16}, \texttt{direct\_proofs/08} (Chinese sources).}
+
 \subsection{S.6.1 (irregular-grid covariance)}
 \textbf{Error.} As printed (unnormalized covariance) the claim fails already
 for Brownian motion. \textbf{Correction.} Either estimate
@@ -196,11 +321,17 @@ $\operatorname{Cov}(W_n(t),W_n(s))$ with $W_n(t)=\sigma^{-1}n^{H(t)}\Delta^qX(t)
 or restore $\sigma^2n^{-H(t)-H(s)}$ on both sides of the original.
 \statustag{scalar counterexample \Wlean; full instantiation open}
 
+\smallskip\noindent{\footnotesize Full written chain:
+\texttt{direct\_proofs/05} (Chinese source).}
+
 \subsection{S.7.2 (dimension scope)}
 No counterexample; scope remark: the $d=2,3$ ``minimax optimality'' assertion
 has no corresponding lower bound in the manuscript itself, so it cannot be
 certified even after repairing the upper-bound route.
 \statustag{\Wwritten (route only)}
+
+\smallskip\noindent{\footnotesize Full written chain:
+\texttt{direct\_proofs/02} (Chinese source).}
 
 \section{Proof of the honest-rate drift proposition}\label{sec:drift}
 
