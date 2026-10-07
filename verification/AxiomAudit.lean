@@ -2625,3 +2625,7 @@ import Hurst
 #print axioms Hurst.knownScaleEstimator_bias_envelope_grid_secondOrder
 #print axioms Hurst.bias_window_firstOrder_infeasible
 #print axioms Hurst.bias_window_secondOrder_infeasible
+
+-- takeover10 task 1 (2026-10-07): unit variance rate of the known-scale
+-- log statistic (second central moment at the honest scale S^(-2psi)).
+#print axioms Hurst.hurstHolder_q1_unitVariance_eventually_bounded
