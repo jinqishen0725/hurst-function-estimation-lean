@@ -89,10 +89,20 @@
 >   需要的不是 n^{−γ} 率的 hBias,而是漂移 `2 S^ψ log n · (E Ĝ_n − f t) → 0`。
 >   用二阶包络在窗口顶点 γ′ := 2−2b(合法性 γ′ ≤ 2−2b 取等),漂移指数为
 >   ψ(1−γ) − (2−2b);在 γ = f t 处即 `2(1−f t)² < 2−2b ⟺ (1−f t)² < 1−b`,
->   **恰为端点既有的 b-带前提**。hfluct 可经方差路线消解(Var[Ĝ_unit] 有界 ⟹
->   E|H̃−EH̃| ≤ F/(2 log n) ≤ F·n^{−γ});hw1 经 Gram 稳定窗口 N₀(r) ≤ S =
+>   **恰为端点既有的 b-带前提**。hw1 经 Gram 稳定窗口 N₀(r) ≤ S =
 >   n^{1−γ} → ∞ eventual 消解。若此组装走通,最终端点前提收敛到 模型窗口 +
 >   b-带(zeroDof 已内部化 β)。
+> - **⚠️ 组装陷阱(2026-10-07 二次勘误,纠正上条 hfluct 手推错误):方差路线
+>   消解不了包络的 hfluct 前提**——Var[Ĝ_unit] ≤ 4·gLSV·U²C·S^{−2ψ} 只给
+>   sd(H̃) ~ n^{−2(1−ft)²}/(2 log n),在 hbband(2(1−ft)² < 2−2b)下它**慢于**
+>   n^{−(2−2b)},故 crude 界 truncExpectation_le_fluctuation(修正 ≤ sd)喂进漂移
+>   得 O(1) 不收敛。**正确路线**:漂移组装不走包络定理的 hfluct 前提,而是直接
+>   分解 drift = 2S^ψ log n·|E H̃−ft| + 2S^ψ log n·|E trunc−E H̃|,第一项用
+>   p5KnownScaleHtilde_drift_bound(E5BiasExpansion:745),第二项用**尾部型**
+>   `truncationCorrection_le`(TruncationTransfer,修正 ≤ V+ε,V = Var(H̃),
+>   ε = Chebyshev 尾 ≤ V/d²,d = min(m,1−m) ≈ 1−ft):第二项漂移 ≤
+>   C·n^{2(1−ft)²}·log n·n^{−4(1−ft)²}/log²n = n^{−2(1−ft)²}·O(1/log n) → 0
+>   **无条件成立**;第一项漂移在 hbband 下 → 0。
 > - 诚实可达:hBias 在窗口 γ ≤ 2−2b 下的包络
 >   (knownScaleEstimator_bias_envelope_grid_secondOrder,条件形,前提 hw1/hfluct
 >   仍显式)。全率组装(∀ᶠ n 形 + hband/hw1 内部化)留待窗口可满足的变体立项。
