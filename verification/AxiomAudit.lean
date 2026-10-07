@@ -2618,3 +2618,10 @@ import Hurst
 #print axioms Hurst.indicator_values01
 #print axioms Hurst.abs_indicator_le_half_sq
 #print axioms Hurst.truncationCorrection_le
+
+-- takeover9 task 4 (2026-10-06): hBias honest closure (second-order
+-- envelope + window infeasibility audits; endpoint gamma = f t REFUTED).
+#print axioms Hurst.gridStrideFirstActual_logNormSq_secondOrder
+#print axioms Hurst.knownScaleEstimator_bias_envelope_grid_secondOrder
+#print axioms Hurst.bias_window_firstOrder_infeasible
+#print axioms Hurst.bias_window_secondOrder_infeasible

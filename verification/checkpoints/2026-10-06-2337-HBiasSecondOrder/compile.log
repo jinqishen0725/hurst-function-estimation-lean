@@ -1,0 +1,11 @@
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+'Hurst.gridStrideFirstActual_logNormSq_secondOrder' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.knownScaleEstimator_bias_envelope_grid_secondOrder' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.bias_window_firstOrder_infeasible' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.bias_window_secondOrder_infeasible' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit=0
