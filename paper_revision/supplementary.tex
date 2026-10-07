@@ -1,0 +1,327 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage[pdftitle={Supplementary Material: Corrected Statements and Proofs
+for the Revised Long-Memory Limit Theorems}, pdfauthor={hurst_function_
+estimation Lean audit}]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{condition}[theorem]{Condition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\statustag}[1]{%
+  \par\nobreak\begingroup\footnotesize\itshape\raggedleft #1\par\endgroup}
+\newcommand{\Wlean}{[Lean]}
+\newcommand{\Wwritten}{[written]}
+
+\title{Supplementary Material\\
+\large Corrected Statements and Proofs for the Revised Long-Memory
+Limit Theorems\\
+\footnotesize Companion to \texttt{revised\_theorems.tex}; machine-checked
+items verified in the Lean~4 repository at closure commit \texttt{16715db}}
+\author{}
+\date{October 7, 2026}
+
+\begin{document}
+\maketitle
+
+\noindent This supplement gives, for each substantive correction identified in
+the audit of \texttt{19-AOS1825.pdf}: the original claim, the error (with the
+counterexample where one exists), the corrected statement, and a proof or
+proof sketch. Section~\ref{sec:drift} then proves in full the honest-rate
+drift proposition underlying the revised main theorem. Full written chains are
+in \texttt{direct\_proofs}/01--24; per-item machine status is in
+\texttt{paper\_revision/theorem\_inventory.md}.
+Status tags: \Wlean{} = completely formalized;
+\Wwritten{} = written mathematical proof.
+
+\section{Corrections to the main theorems}\label{sec:main-corr}
+
+\subsection{Critical-regime variance (Theorem 3.3(ii), via S.3.2)}
+
+\noindent\textbf{Original.} In the critical regime $H(t)=\tfrac34$ the limiting
+variance is expressed through the kernel center value.
+\textbf{Error.} The derivation of the diagonal contribution $\varepsilon_4$
+in S.3.2 replaces $f^2(i/N)f^2(j/N)$ by $f^4(0)$ for $|i-j|$ small, which is
+not summable to $f^4(0)$; the correct diagonal sum tends to $\int f^2$, and
+the Hermite rank-$2$ factor $2!$ together with the squared denominator of
+$g$ was mishandled.
+\textbf{Corrected.}
+\[
+\operatorname{Var} \;\longrightarrow\; \frac{9}{16}\int \omega_r(x)^2\,dx .
+\]
+\textbf{Proof sketch.} The rank-$2$ diagonal term of the weighted double sum
+carries the factor $2$; the diagonal sums $\sum_i K_i^2 f^2(i/N)^2$ converge
+to $\int \omega_r^2 f^2$-type integrals which, at the critical exponent, pin
+the constant at $9/16$. Full chain: files 03/13.
+\statustag{\Wwritten}
+
+\subsection{Long-memory sign (Theorem 3.3(iii)--3.4)}\label{sec:sign}
+
+\noindent\textbf{Original.} The inverted estimator converges to $+Q$.
+\textbf{Error.} The inversion $x\mapsto(c_\sigma-x)/(2\log n)$ carries a
+negative slope, so the limit reflects: $\,-Q$. This is substantive: a legal
+nonnegative equivalent-kernel instance has third moments of $Q$ and $-Q$ of
+opposite sign, so the two laws differ.
+\textbf{Corrected.}
+$2S_n^{\psi}\log n\,(\widehat H_n-h)\Rightarrow -Q$
+(Theorem~1 of the companion note).
+\textbf{Proof.} Expectation-centered limit for $\widehat G$ with the
+reflection through the decreasing calibration; the sign is retained
+throughout the transport. The full statement is machine-checked.
+\statustag{\Wlean}
+
+\subsection{Optimal-bandwidth biased means (Corollary 3.5)}
+
+\noindent\textbf{Original.} Both $\widehat G$ and $\widehat H$ limits carry
+mean $R(t)$.
+\textbf{Error.} The two means have opposite signs.
+\textbf{Corrected.} With $b/b_0\to1$,
+$b_0=(n^d\log^2n)^{-1/(2p+d)}$:
+\[
+\text{mean}(\widehat G)= -2R(t),\qquad
+\text{mean}(\widehat H)= 2R(t),\qquad
+\text{variance}=\xi^2(t)\ \text{in both};
+\]
+if $b/b_0\to c$, multiply the means by $c^p$ and the variances by $c^{-d}$.
+$R$ may take either sign; $R=0$ requires the $o$-term from the bias
+expansion, not an equivalence with $0$.
+\textbf{Proof sketch.} The smoothing bias enters $\mathbb E\widehat G$ with
+the sign fixed by the second-order expansion; the inversion flips it.
+Files 13/21.
+\statustag{\Wwritten; conditional Lean chain connected}
+
+\subsection{Growing-lag remainder (Theorem 8.2(iv))}
+
+\noindent\textbf{Original.} A stronger remainder is claimed.
+\textbf{Corrected.} For effective interior differences with $b\log n\to0$,
+\[
+\text{error} \;=\; O\!\left(k^{-2} + \frac{k\log n}{n} + \Bigl(\frac{k}{n}\Bigr)^{\psi}\right)
+\quad (q=1),\qquad
+O\!\left(k^{-2} + \frac{k\log n}{n}\right)
+\quad (q=2),
+\]
+and the finite-lag error must be retained.
+\textbf{Reason.} Cross terms between lag growth, mesh resolution and the
+H\"older exponent cannot be dropped.
+Files 12/18. \statustag{\Wwritten; interior pieces Lean}
+
+\subsection{Local-polynomial bias (Lemma 8.4)}\label{sec:84}
+
+\noindent\textbf{Original.} An integral-region/quadrature argument.
+\textbf{Error.} The quadrature over the integration region is invalid.
+\textbf{Corrected.} Define $M_{kl}=\sum_i K_i A_{ik}A_{il}$ and
+$w_i = K_i\sum_l (M^{-1})_{0l}A_{il}$.
+\textbf{Proof.} Invertibility of $M$ gives
+$\sum_i w_i A_{ik}=\delta_{k0}$ exactly; hence for
+$F_i=\beta_0+\sum_{k\ge1}\beta_k A_{ik}+r_i$ with $|r_i|\le B$ on the support
+of $K$,
+\[
+\Bigl|\sum_i w_iF_i-\beta_0\Bigr|\le \sum_i|w_i|\,B = O(b^p),
+\]
+using the uniform $L^1$ weight bound. No $(nb)^{-\min(2,p)}$ term is needed.
+\statustag{\Wlean (designs, weights, equivalent kernel, bias leading term)}
+
+\subsection{Vector $Z$ limits (Lemma 8.5)}
+
+\noindent\textbf{Original.} Limits stated for $Z$ itself; dimension $a$ taken
+as $d$. \textbf{Corrections.} State the limits for $Z-\mathbb EZ$; keeping $Z$
+requires separately proving $\mathbb EZ\to0$ after normalization --- the bound
+$\mathbb EZ=O((nb)^{d/2}\rho)$ alone does not suffice. The dimension is the
+polynomial basis dimension $S$, not $d$; kernel conditions added.
+\statustag{expectation-bias leading terms \Wlean; three $Z$-limits \Wwritten}
+
+\section{Corrections to the supplementary lemmas}\label{sec:supp-corr}
+
+\subsection{S.1.1 (Fourier adjacent differences)}
+\textbf{Error.} As a complex Lebesgue integral the claim fails: near $0$ the
+imaginary part behaves like $-ikx/|x|^{2+\delta}$, which is not absolutely
+integrable. \textbf{Correction.} Replace $1-e^{ikx}$ by $1-\cos(kx)$, or
+define the principal value explicitly; the scaling and mean-value steps then
+give the adjacent-difference bounds. \statustag{\Wwritten (repair); not
+formalized}
+
+\subsection{S.2.1 ($g$ bounded away from zero)}
+\textbf{Error.} Insufficient hypotheses: at $h=0$ the quantity vanishes, and
+for $q=2$, $H\to1$ no uniform positive lower bound exists.
+\textbf{Correction.} Require $h\neq0$ and $H\in[\gamma,1-\gamma]$, the latter
+following from [A1] rather than [A3]; positivity, continuity and compactness
+then give the uniform lower bound. \statustag{repaired 1-d version \Wlean}
+
+\subsection{S.2.2 / S.3.1 (leading singular coefficient)}
+\textbf{Error.} The printed $c_h$ misses a factor $\tfrac12$.
+\textbf{Correction.}
+$c_h=h(2h-1)$, i.e.\ $g(H,u,h)=(c_h+o(1))|u|^{-\psi}$ with $\psi=2-2H$
+(frozen $H$; all derivatives acting on the distance in the principal term,
+$H$-derivatives in the remainder). The $o(1)$ must not be strengthened to
+$O(b\log b)$. \statustag{instantiated and machine-verified inside the closure
+chain \Wlean}
+
+\subsection{S.2.3 (mixed derivatives, near-diagonal)}
+\textbf{Error.} The $q=1$ near-diagonal remainder $O(r\log r)$ admits a
+lawful linear-$H$ counterexample. \textbf{Correction.} Add the smooth
+background term of relative size $r^{\psi}$: the corrected bound retains the
+$x^{H(x)+H(y)-q}$-times-log-power background near $0$ and normalizes on the
+actual grid. \statustag{\Wwritten; grid normalization pieces \Wlean}
+
+\subsection{S.3.2 (weighted power sums / cycle products)}
+Corrected jointly with \S1.1 above (center value $\int f^2$; $2!$;
+denominator). The long-memory side --- identification of the cycle products
+with the spectrum of $B=K^{1/2}M_\omega K^{1/2}$ for all orders $k\ge2$ ---
+is machine-checked. \statustag{long-memory identification \Wlean}
+
+\subsection{S.5.1 (spatial average variance of $I_1'$)}
+\textbf{Error.} The far-distance count misses a factor $m$: with
+$H\equiv7/8$, $q=p=1$, $b=n^{-1/2}$ one has
+$\operatorname{Var}(I_1)\approx\log^2n\cdot n^{-1/2}$ against the claimed
+$O(\log^2n\cdot n^{-3/4})$.
+\textbf{Correction.} The count is $m^{2\psi-1}n^{-2\psi}$ times the lag sum;
+merging weights at $m\approx1/b$ gives
+$\operatorname{Var}(I_1)\le C\log^2n\cdot T(n)$, which the original bandwidth
+condition still absorbs into the target term --- the main scale rates are
+preserved. \statustag{\Wwritten; the $q=1$ scale input it feeds is
+discharged in Lean}
+
+\subsection{S.6.1 (irregular-grid covariance)}
+\textbf{Error.} As printed (unnormalized covariance) the claim fails already
+for Brownian motion. \textbf{Correction.} Either estimate
+$\operatorname{Cov}(W_n(t),W_n(s))$ with $W_n(t)=\sigma^{-1}n^{H(t)}\Delta^qX(t)$,
+or restore $\sigma^2n^{-H(t)-H(s)}$ on both sides of the original.
+\statustag{scalar counterexample \Wlean; full instantiation open}
+
+\subsection{S.7.2 (dimension scope)}
+No counterexample; scope remark: the $d=2,3$ ``minimax optimality'' assertion
+has no corresponding lower bound in the manuscript itself, so it cannot be
+certified even after repairing the upper-bound route.
+\statustag{\Wwritten (route only)}
+
+\section{Proof of the honest-rate drift proposition}\label{sec:drift}
+
+This section proves Proposition~2 of the companion note in full. Work under
+(R1)--(R6) of the companion note: $\delta_n=n^{-h}$, $S_n=n^{1-h}$,
+$\psi=2-2h\in(0,\tfrac12)$, $c_\sigma=\mathbb E\log Z^2$, $\widehat G_n$ the
+unit-weight log-square statistic, $\widetilde H_n=(c_\sigma-\widehat
+G_n)/(2\log n)$, $\widehat H_n=T(\widetilde H_n)$ clipped to $[0,1]$.
+
+\begin{proposition}\label{prop:drift-full}
+$2S_n^{\psi}\log n\,\bigl|\mathbb E\widehat H_n-h\bigr|\to0$, with the
+three-term bound of the companion note; the second term vanishes exactly
+under the $b$-band $(1-h)^2<1-b$, the other two unconditionally.
+\end{proposition}
+
+\begin{proof}
+\textbf{Step 1 (exact expectation identity).} For each active row $j$ the
+coefficient-feature combination satisfies, by the stride identity, the
+norm decomposition
+\[
+\log\|\text{combo}_j\|^2=-2H_j\log n+\log\|V_j\|^2,
+\]
+where $H_j=f(s_j)$ is the left-endpoint H\"older value and $V_j$ the
+normalized varying increment. The Gaussian expectation formula gives
+\[
+\mathbb E\widehat G_n=\sum_j w_j\bigl(-2H_j\log n+\log\|V_j\|^2\bigr)+c_\sigma,
+\qquad \sum_j w_j=1,
+\]
+whence, with $c_\sigma$ pinned,
+\begin{equation}
+\mathbb E\widetilde H_n-h
+= -\Bigl(\sum_j w_jH_j-h\Bigr)-\frac{1}{2\log n}\sum_j w_j\log\|V_j\|^2 .
+\label{eq:decomp}
+\end{equation}
+
+\textbf{Step 2 (deterministic side).}
+(i) \emph{Weight contraction.} On the active window $|s_j-t|<\delta_n$, so
+H\"older regularity gives $|H_j-h|\le D(1+M)\delta_n$, and
+$\bigl|\sum_jw_jH_j-h\bigr|\le\sum_j|w_j||H_j-h|\le C_{\mathrm{st}}\delta_n^{p}$
+with $p\ge1$ (the sharper exponent uses the class regularity; $p=1$ suffices).
+(ii) \emph{Second-order increment log rate.} Write $V_j=F_{k}(s_j+\ell)
+$-type normalized varying increment with $|k-h|\le K\ell$, $\ell=1/n$,
+$K=D(1+M)$. The exact kernel identity
+\[
+2\langle \text{frozen},\,\text{mismatch}\rangle
+=\Lambda\,\Phi(m)-\Phi(h),\qquad
+\Phi(q)=(s+\ell)^{2q}-s^{2q}+\ell^{2q},\quad m=\tfrac{h+k}{2},
+\]
+with $\Lambda-1=-\tfrac12\|F_k(1)-F_h(1)\|^2=O((k-h)^2)$ (uniform parameter
+Lipschitz; no smoothness of the normalizing constant needed) and the
+mixed-power Lipschitz bound $|\Phi(m)-\Phi(h)|\le C|k-h|\,\ell$ (valid since
+$2a>1$ absorbs the logarithmic sensitivity) yields
+\[
+\bigl|\|V_j\|^2-1\bigr|\le C(1+K+K^2+K^3)\,\ell^{\,2-2b}
+=C\,n^{-(2-2b)},
+\]
+hence $|\log\|V_j\|^2|\le 2C\,n^{-(2-2b)}=:C_{\log}n^{-(2-2b)}$ once small,
+and $|\sum_jw_j\log\|V_j\|^2|\le C_wC_{\log}n^{-(2-2b)}$
+with $C_w=\sum_j|w_j|$ uniformly bounded.
+
+\textbf{Step 3 (random side; tail-based transfer).} Let
+$m=\mathbb E\widetilde H_n$. Since $\mathbb E\widetilde H_n\to h\in(3/4,1)$
+(companion note, center-band discharge), eventually
+$m\in[d',1-d']$ with $d'=(1-h)/2$. On $\{\widetilde H_n\notin[0,1]\}$ we have
+$|\widetilde H_n-m|\ge d'$. The unit-weight variance bound and the normalized
+energy give
+\[
+V_n:=\operatorname{Var}(\widetilde H_n)
+=\frac{\operatorname{Var}(\widehat G_n)}{4\log^2n}
+\le\frac{4\,g_{\mathrm{LSV}}\,U^2C_2}{4\log^2n}\,S_n^{-2\psi}
+=O\!\left(\frac{n^{-4(1-h)^2}}{\log^2n}\right),
+\]
+and Chebyshev gives $\varepsilon_n:=\mathbb P(|\widetilde H_n-m|\ge d')\le
+V_n/d'^2$. Since $|T(x)-x|\le|x-m|$ off $[0,1]$ and $T(x)=x$ on $[0,1]$,
+\[
+\bigl|\mathbb E\widehat H_n-\mathbb E\widetilde H_n\bigr|
+\le\mathbb E\bigl[|\widetilde H_n-m|\mathbf 1_{\widetilde H_n\notin[0,1]}\bigr]
+\le V_n+\varepsilon_n \le V_n\bigl(1+d'^{-2}\bigr).
+\]
+
+\textbf{Step 4 (exponents).} Combining
+$\mathbb E\widehat H_n-h=[\mathbb E\widetilde H_n-h]+[\mathbb E\widehat
+H_n-\mathbb E\widetilde H_n]$ with Steps 2--3,
+\[
+2S_n^{\psi}\log n\,\bigl|\mathbb E\widehat H_n-h\bigr|
+\le
+\underbrace{C_1\,\frac{\log n}{n^{\,h-2(1-h)^2}}}_{\text{smoothing}}
++\underbrace{C_2\,n^{-(2-2b)-2(1-h)^2}}_{\text{mismatch}}
++\underbrace{C_3\,\frac{1}{n^{2(1-h)^2}\log n}}_{\text{clipping}} .
+\]
+Indeed: the smoothing term is
+$2S_n^{\psi}\log n\,C_{\mathrm{st}}\delta_n^{p}$ with
+$S_n^{\psi}=n^{2(1-h)^2}$ and $\delta_n^p=n^{-hp}$, and
+$2(1-h)^2-hp\le2(1-h)^2-h<0$ since $2(1-h)^2<\tfrac18<\tfrac34<h$; the
+mismatch term is $S_n^{\psi}C_wC_{\log}n^{-(2-2b)}$ with exponent
+$2(1-h)^2-(2-2b)$, negative exactly when $(1-h)^2<1-b$, i.e.\ (R4); the
+clipping term is $2S_n^{\psi}\log n\,V_n(1+d'^{-2})
+=O(n^{2(1-h)^2}\log n\cdot n^{-4(1-h)^2}/\log^2n)$, unconditionally
+vanishing.
+\end{proof}
+
+\begin{remark}[Sharpness]
+The mismatch rate is attained: the expansion of
+$\log\|V_j\|^2$ has leading coefficient
+$f'(s)s^{2h-1}\bigl[2hD'/D+2h\log s+1\bigr]$ evaluated at the window,
+generically nonzero, so no per-row expansion order reaches the rate
+$n^{-h}$ and the manuscript's original bias envelope at that rate fails for
+non-constant profiles. The window refutations are machine-checked; the
+lower-bound statement is derived by hand and registered.
+\end{remark}
+
+\section{Formalization cross-reference}
+
+{\sloppy
+Every \Wlean{} tag above is a theorem in the repository, axiom-checked within
+\{\texttt{propext}, \texttt{Classical.\allowbreak{}choice}, \texttt{Quot.\allowbreak{}sound}\}, zero
+\texttt{sorry}; the entry points are
+\texttt{actualQ1\_\allowbreak\hspace{0pt}knownScaleH\_\allowbreak\hspace{0pt}fullChain\_\allowbreak\hspace{0pt}honestRate} (main theorem),
+\texttt{honestRate\_\allowbreak{}drift\_\allowbreak{}tendsto\_\allowbreak{}zero} (Proposition~\ref{prop:drift-full}),
+and the audit theorems listed in the companion note's provenance table.
+Automated re-verification: \texttt{verification/\allowbreak{}final\_\allowbreak{}acceptance.\allowbreak{}py}.
+\par}
+
+\end{document}

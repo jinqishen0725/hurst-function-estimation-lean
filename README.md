@@ -45,6 +45,9 @@ python3 verification/final_acceptance.py   # 闭环后七项机器验收(含端�
   及修复计划的逐条偏差表)。
 - `paper_revision/theorem_inventory.md`：**原文 27 项定理/引理的逐项验证状态
   盘点**(已验证/已修复/仅书面/无结论四层 + 已验证的问题引理清单)。
+- `paper_revision/supplementary.tex/.pdf`：**Supplementary Material**——每项修正
+  的"原陈述→错误/反例→修正陈述→证明/证明概要→形式化状态",含诚实率漂移
+  命题的完整数学证明。
 - `verification/final_acceptance.py`：闭环后的七项机器验收脚本。
 - `results/*.md`：正文13项、补充14项，每项单独记录，不将局部证明视为原定理证明。
 - `results/catalog.json`：机器可读依赖与证据映射。
