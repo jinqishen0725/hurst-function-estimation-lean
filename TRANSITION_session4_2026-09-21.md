@@ -5,6 +5,39 @@
 本文件供接管 agent 使用;权威过程记录见 [VALIDATION_PROGRESS.md](VALIDATION_PROGRESS.md)
 (逐检查点、逐契约修正、含日志路径与退出码)。
 
+## 0. 2026-10-06 快照(takeover9;E5 集成 + 二阶精化 + 截断转移 + hBias 诚实收尾:γ = f t 被证伪)
+
+任务 1–4 完成(commits 378cc2e / 0cb476c / ecebb7b / 896a55f),检查点
+2206 / 2313 / 2331 / 2337 四件,聚合 9220 jobs 绿 + AxiomAudit exit=0(零
+sorryAx)。最强端点不变(`…_feasible_centerBand_zeroDof`,CBD:717)——
+**hBias 仍是端点唯一数据前提,且本轮被形式化证伪其 γ = f t 可达性**。
+
+- **任务 1(E5 集成)**:E5BiasExpansion 入聚合树(17 定理审计);
+  hane 于 `:885` 内部消解,hw1 保留(需设计格拉姆稳定窗,登记)。
+- **任务 2(二阶精化,核心)**:`Hurst/IncrementLogSecondOrder.lean` 16 定理。
+  **诚实率 ℓ^{2−2b}**(非任务书瞄准的 2−b:归一化 ℓ^{−2h} 吃两幂)。路线:
+  精确核恒等式 2⟨inc, mismatch⟩ = ΛΦ(m) − Φ(h);Λ−1 = −‖F_k(1)−F_h(1)‖²/2
+  是 (k−h)² 阶(参数 Lipschitz,免 D 光滑性);Φ-差 = 混合幂 Lipschitz
+  (2a > 1 吸收对数)O(|k−h|ℓ)。装配拆小上下文引理(单块 set-密集证明
+  1M heartbeats 超时 → 拆分通过,雷区证实)。无对数损失。
+- **任务 3(截断转移,抽象件)**:`Hurst/TruncationTransfer.lean` 4 定理:
+  Markov(ℝ≥0∞ 乘法形)、指示值二分 + Young、
+  **truncationCorrection_le**(尾集覆盖 + 二阶中心矩 ⟹ 剪裁动均值 ≤ V+ε)。
+  实例化缺口登记:步进行 ε-相关在相邻行失败(相关 ≈ 0.52),色类机器未接线。
+- **任务 4(hBias 诚实收尾)**:`Hurst/HBiasSecondOrder.lean` 4 定理:
+  对数级二阶行界;**包络窗口改进 γ ≤ 1−b → γ ≤ 2−2b**;
+  **bias_window_first/secondOrder_infeasible**(3/4 < f t ∧ f t ≤ b ⟹
+  ¬(f t ≤ 1−b) ∧ ¬(f t ≤ 2−2b))——逐行路线任何阶到不了 γ = f t。
+- **诚实结论(不得宣称统计闭环)**:偏差 Θ(|k−h|ℓ^{1−2h}),系数
+  f'(s)s^{2h−1}[2hD'/D + 2h ln s + 1] 一般非零 ⟹ 端点 hBias(γ = f t)
+  在常规模型类不可满足(仅退化如常值 profile 成立);真实偏差率
+  n^{−(2−2f t)}/log n。诚实可达 = 窗口 γ ≤ 2−2b 的条件包络(全率
+  ∀ᶠ n 组装 + hband/hw1 内部化留待立项)。任务 5 余量(变体镜像)未启动。
+
+下一轮候选:(a) 诚实率端点变体立项(γ' < 2−2b 的 seamScale 重整);
+(b) 色类偶矩接线 → truncationCorrection 实例化;(c) expectation-centered/
+unknown-scale 镜像;(d) cσ 钉定的退化类(常值/平坦 profile)hBias 可满足实例。
+
 ## 0. 2026-10-06 快照(takeover8;hane 谱式消解 + hband 中心带消解 + hBias 立项)
 
 任务 1/2/3/4(β 实例)完成(commits cb61f12 / 997a3c5 / e1445ac + docs 本轮),

@@ -1,4 +1,116 @@
-# VALIDATION_PROGRESS（供协调 agent 检查；持续更新）
+# VALIDATION_PROGRESS（供协调 agent 检查;持续更新）
+
+更新:2026-10-06(Session-4 takeover9;**E5BiasExpansion 集成 + 二阶增量精化(诚实率)
++ 集中-截断转移抽象件 + hBias 诚实收尾:端点率 γ = f t 的逐行对数路线被形式化证伪**)。
+
+> 交接状态(2026-10-06 更新):任务书 = takeover9(HEAD ea83165,任务书 addaaac)。
+> 全部形式化由主 agent 亲自完成(无 subagent,纪律 §5)。
+
+> **本轮核心发现(诚实条款触发:任务书 §4 任务 2 的"若被证伪,停手登记")**
+>
+> 任务书瞄准的二阶率 n^{−(2−b)}(指数 > 1)**数学上不可达**:归一化 ℓ^{−2h} 吃掉两个
+> 步长幂,诚实率为 **ℓ^{2−2b} = n^{−(2−2b)},2−2b < 1/2(b > 1/2 时)**。精确推导:
+> `2⟨inc, mismatch⟩ = ΛΦ(m) − Φ(h)`(精确核恒等式),Λ−1 = −‖F_k(1)−F_h(1)‖²/2
+> 是 **(k−h)² 阶**(参数 Lipschitz 即得,无需 D 的光滑性),Φ-差经混合幂 Lipschitz
+> (2a > 1 吸收对数)为 O(|k−h|ℓ)——净余项 Θ(|k−h|·ℓ^{1−2h}),在 |k−h| = O(ℓ) 下
+> 为 Θ(ℓ^{2−2h}),系数 f'(s)·s^{2h−1}·[2hD'/D + 2h ln s + 1] 一般非零。
+> 由于 2−2b < 1/2 < 3/4 < f t:**任何阶的失配展开都到不了 γ = f t**;端点前提
+> hBias(|E Ĥ − f t| ≤ C·n^{−f t})在常规模型类下**不可满足**(仅在退化如常值
+> profile 下成立)。**统计闭环不宣称**;诚实交付 = 改进窗口 γ ≤ 2−2b + 两条
+> 窗口不可行性审计定理。
+
+> **任务 1 落地(E5BiasExpansion 集成)**(commit 378cc2e,检查点
+> `2026-10-06-2206-E5BiasExpansion-integration/`):根 Hurst.lean 追加 import
+> (9217 jobs 绿);AxiomAudit 追加 17 行,整体重编译 exit=0 零 sorryAx;
+> 集成编辑:`:885` 的 hane 前提经 actualQ1_hane_discharged 内部消解;
+> hw1 保留为显式前提(消解需设计格拉姆稳定窗 N₀(r) ≤ nδ,真新前提,已登记);
+> 原 0829 未跟踪检查点随同一提交入库以存证。
+
+> **任务 2 落地(二阶增量对数精化)**(`Hurst/IncrementLogSecondOrder.lean`,16 定理;
+> commit 0cb476c,检查点 `2026-10-06-2313-IncrementLogSecondOrder/`):
+>
+> | 层 | 定理 | 内容 |
+> |---|---|---|
+> | 初等 | mul_exp_neg_le / exp_sub_one_le / rpow_mul_abs_log_le / one_sub_rpow_le / rpow_neg_sub_one_le | 指数压多项式、幂压对数、1−z^δ ≤ δ|ln z|、z^{−δ}−1 ≤ δ|ln z|z^{−δ}(全部无 e 的整洁常数) |
+> | 敏感度 | rpow_mismatch_le | z^{2h−1}·\|z^{k−h}−1\| ≤ \|k−h\|/(2a−1)——2a > 1 吸收对数的核心 |
+> | Lipschitz | abs_rpow_pow_sub_le / abs_rpow_mixed_sub_le | 幂 Lipschitz(指数 ≥ 1)与混合幂 g = z^{h+k}−z^{2h} 的 C\|k−h\|-Lipschitz(FTC + 0 端点直算) |
+> | Φ 界 | phi_difference_le / phi_self_le | \|Φ(m)−Φ(h)\| ≤ 2C\|k−h\|ℓ、\|Φ(h)\| ≤ 3ℓ |
+> | 谱恒等式 | harmonizableFeature_cross_sub_norm_sq | Λ−1 = −\|F_k(1)−F_h(1)\|²/2(交叉参数范数恒等式) |
+> | 装配 | secondOrder_assembly | 小上下文抽象装配引理(大上下文单块证明 1M heartbeats 超时,拆分后通过——雷区证实) |
+> | 主定理 | **varyingIncrement_norm_sq_secondOrder** | \|‖变增量‖²−1\| ≤ C(1+K+K²+K³)ℓ^{2−2b}(带 1/2 < a ≤ b < 1) |
+> | 网格 | gridStrideFirstActual_norm_sq_secondOrder | 行级 n^{−(2−2b)},K = D(1+M) |
+>
+> 诚实率登记(文件头):n^{−(2−b)} 不可达(上述);无对数损失(g(ℓ)−g(0) 同一
+> Lipschitz 论证吸收 ℓ\|ln ℓ\| 形)。9218 jobs 绿;审计 +16 行全三类公理。
+
+> **任务 3 落地(集中-截断转移,抽象件)**(`Hurst/TruncationTransfer.lean`,4 定理;
+> commit ecebb7b,检查点 `2026-10-06-2331-TruncationTransfer/`):
+>
+> | 定理 | 内容 |
+> |---|---|
+> | meas_ge_le_of_lintegral_pow | Markov(k 次幂,ℝ≥0∞ 乘法形 = mul_meas_ge_le_lintegral₀ 包装;Bochner 桥 documented) |
+> | indicator_values01 / abs_indicator_le_half_sq | 指示值二分 + 逐点 Young 界 \|Y\|u ≤ (Y²+u²)/2 |
+> | **truncationCorrection_le** | 截断转移:均值在剪值域 + 截断变化集被尾集覆盖 + 二阶中心矩 ≤ V + 尾测度 ≤ ε ⟹ 剪裁移动均值 ≤ V + ε(剪值几何逐点界 + 指示覆盖 + Young + 积分) |
+>
+> **诚实范围登记(文件头)**:对实际步进行喂偶矩前提需 bardetSurgailis 的 ε-相关
+> 前提,相邻步进行相关 2^{2H−1}−1 ≈ 0.52 不满足;色类分解
+> (FeatureColorMoment 保持 ε 为前提)是仓库既有路线且未接线到对数统计行——
+> 实例化缺口已登记。9219 jobs 绿;审计 +4 行全三类公理。
+
+> **任务 4 落地(hBias 诚实收尾)**(`Hurst/HBiasSecondOrder.lean`,4 定理;
+> commit 896a55f,检查点 `2026-10-06-2337-HBiasSecondOrder/`):
+>
+> | 定理 | 内容 |
+> |---|---|
+> | gridStrideFirstActual_logNormSq_secondOrder | 对数级二阶行界(任务 2 + \|log(1+x)\| ≤ 2\|x\| 放大) |
+> | **knownScaleEstimator_bias_envelope_grid_secondOrder** | E5 包络喂二阶率,**窗口 γ ≤ 1−b → γ ≤ 2−2b(严格改进)**;hane 内部消解;hw1 显式保留 |
+> | bias_window_firstOrder_infeasible | §3 审计:3/4 < f t ∧ f t ≤ b ⟹ ¬(f t ≤ 1−b)(迫使 f t ≤ 1/2) |
+> | bias_window_secondOrder_infeasible | §3 审计:**¬(f t ≤ 2−2b)**(迫使 f t ≤ 2/3)——逐行路线到不了 γ = f t 的一/二阶形式化登记 |
+>
+> 截断侧接线点登记:truncationCorrection_le 可在方差率 + 尾界可用后替换包络的
+> 粗波动率前提。9220 jobs 绿;审计 +4 行全三类公理。
+
+> **聚合验收(2026-10-06 执行)**:
+> 1. ✅ 全量 `lake build Hurst` **9220 jobs** 绿(verification/build.log exit=0)。
+> 2. ✅ AxiomAudit 累计追加 41 行(17 + 16 + 4 + 4),整体重编译 exit=0,
+>    零 sorryAx、零未知常数,全部 ⊆ {propext, Classical.choice, Quot.sound}。
+> 3. ✅ 零 sorry(四新文件 grep 0)。
+> 4. ✅ 检查点四件套 ×4(2206 / 2313 / 2331 / 2337)。
+
+> **已知缺口(诚实登记)**:
+> - **端点 hBias(γ = f t)被形式化证伪**(bias_window_secondOrder_infeasible);
+>   端点 `…_feasible_centerBand(_zeroDof)` 的 hBias 前提在常规模型类下不可满足,
+>   仅退化(常值 profile)下成立。**不得宣称统计闭环/无条件化**。
+> - 诚实可达:hBias 在窗口 γ ≤ 2−2b 下的包络
+>   (knownScaleEstimator_bias_envelope_grid_secondOrder,条件形,前提 hw1/hfluct
+>   仍显式)。全率组装(∀ᶠ n 形 + hband/hw1 内部化)留待窗口可满足的变体立项。
+> - 截断转移实例化:方差率 + 步进行尾界(色类偶矩接线)缺,已登记。
+> - expectation-centered/unknown-scale 变体镜像未做(任务 5 余量,未启动)。
+
+> **v4.31 雷区本轮新增(累积,takeover9 批)**:
+> - `hλ` 绑定名非法(λ 是关键字):用 `t`/`hℓ`;
+> - `div_le_iff₀` 族是**unicode ₀**非 ascii 0;`div_mul_cancel₀` 在 rw 中会生成
+>   `≠ 0` 副目标,`field_simp [hD.ne']` 收;
+> - `Set.indicator_of_mem` 点记法参数序 **(h 先, f 后)**;`Set.indicator_of_not_mem`
+>   **不存在**,用 `Set.indicator_apply` + `if_neg`;指示值二分建议自建 helper
+>   (indicator_values01);
+> - `AEStronglyMeasurable.abs` 点投影不可用:`fun_prop` 直接证 abs/pow 可测;
+>   setOf 的 MeasurableSet 非 fun_prop 目标,作前提传入或 measurableSet_le;
+> - `integral_indicator_one` 的模式是 `s.indicator (1 : Ω → ℝ)`,与
+>   `fun _ => 1` 之间用 `rfl`-转换桥接;`Integrable.div` 点记法失败,`.div_const` 可用;
+> - `mul_le_mul_of_nonneg_left/right` 的隐式乘子必须钉死
+>   (`(by positivity : (0:ℝ) ≤ X)`),否则统一到错误因子;
+> - `mul_self_le_mul_self` 结论是乘积形,`^2`-形目标先 `rw [pow_two, pow_two]`;
+> - rw 不能用 ≤-证明改写:E5B 教训再确认,用 calc + mul_le_mul 链;
+> - `Real.add_one_le_exp` 无假设;`exp X * exp (−X) = 1` 用
+>   `rw [← Real.exp_add]; norm_num`;`1 ^ x`(rpow)化简用
+>   `simp only [abs_one, Real.one_rpow]`(\|1\| 可能已被 rfl 约简);
+> - `Real.rpow_le_rpow_of_exponent_ge'` 参数序:(基非负, 基 ≤ 1, 0 ≤ z 指数, z 指数 ≤ y 指数);
+> - **大上下文 set-密集单块证明 1M heartbeats 超时**(任务书雷区证实):
+>   拆小上下文抽象装配引理(secondOrder_assembly)后通过;
+> - ℓ^{−2h}·ℓ^{2h} = 1 型缩放恒等式用 `linear_combination hc1` 最稳;
+> - `rw [e1]` 若把目标变成 rfl 可合,后续 exact 会"no goals"——分支体逐个验证。
+
 
 更新:2026-10-06(Session-4 takeover8;**hane 谱式消解 + hband 中心带消解落地;
 hBias 立项定界;零自由度实例**)。
