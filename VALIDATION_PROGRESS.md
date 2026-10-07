@@ -1,5 +1,35 @@
 # VALIDATION_PROGRESS（供协调 agent 检查;持续更新）
 
+## ✅ 统计闭环验收记录(协调者独立复审,2026-10-07;闭环声明自此生效)
+
+按 takeover10 任务书 §6 门禁,协调者对本轮全部产物执行了独立复审(非采信汇报):
+
+1. **编译与公理(独立重跑)**:三新件(UnitVarianceRate/HonestRateDrift/
+   HonestRateClosure)`lake env lean` 各自 exit=0、零 sorry;聚合
+   `lake build Hurst` 9223 jobs exit=0;`verification/AxiomAudit.lean` 整文件
+   重编译 exit=0、2603 条全部 ⊆ {propext, Classical.choice, Quot.sound}、
+   零 unknown-constant;三检查点 sha256 全过;Hurst.lean 挂线 :699/:704/:710。
+2. **数学复审(逐行读证明)**:`honestRate_drift_tendsto_zero` 的两项分解与
+   登记路线完全一致——确定性侧 E5B 漂移界(cσ = gaussianLogSquareMean 钉死,
+   收缩项指数 ca = ft − 2(1−ft)² > 0,二阶项指数 cb = (2−2b) − 2(1−ft)²,
+   其正性 ⟺ b-带);随机侧**尾部型** `truncationCorrection_le`
+   (HonestRateDrift:528,V = Var(H̃) ≤ 4·gLSV·U²·C₂·S^{−2ψ}/(2 log n)²,
+   Chebyshev 经 ℝ≥0∞ Markov k=2,ε ≤ V/d′²,d′ = (1−ft)/2),方差项
+   n^{−2(1−ft)²}/log n 无条件 → 0;**全程无 crude sd 界**(两轮勘误的陷阱
+   未被第三次踩中)。
+3. **端点签名(直接核验)**:`actualQ1_knownScaleH_fullChain_honestRate`
+   前提 = 模型窗口(p,a,b,M,hp,ha:1/2<a,hb,hab,hM,f,hf,hF,t,ht,hlong)+
+   b-带 hbband + r,**NOTHING ELSE**(hane/中心带/标量率/β/cσ/hBias/hE5
+   全部内部消解);结论 = ∃Q,IsWeightedRieszSecondChaosLaw + TendstoInDistribution
+   (与 zeroDof 同形)。前提可满足性:ha 收紧(继承二阶机器的混合幂带,
+   已诚实登记)与 b-带 [ft, 1−(ft)²) 联立非空(如 f ≡ 0.8,a = 0.6,b = 0.9)。
+4. **裁决**:**统计闭环验收通过**。主线定理 = 条件于 模型窗口 + b-带 + r
+   (真实可满足的数据假设);历史上带 hBias 的三端点保留为 legacy(其在
+   γ = f t 处对变剖面模型空真,hand-derived,已标注)。
+5. **遗留(不阻塞闭环,已登记)**:expectation-centered / unknown-scale 变体
+   镜像;旧 hBias 形状不可满足性的形式化下界定理;色类偶矩接线(更锐包络);
+   backlog B01–B10 数学扩展。
+
 更新:2026-10-07(Session-4 takeover10;**最终组装:单位方差率 + 诚实率漂移引理
 + 统计闭环端点:hBias 前提被漂移路线替换,端点前提收敛到 模型窗口 + b-带**)。
 
