@@ -151,22 +151,41 @@ not Gaussian.
 \texttt{direct\_proofs/14}, \texttt{direct\_proofs/13} (Chinese sources).}
 
 \subsection{Optimal-bandwidth biased means (Corollary 3.5)}
-
-\noindent\textbf{Original.} Both $\widehat G$ and $\widehat H$ limits carry
-mean $R(t)$.
-\textbf{Error.} The two means have opposite signs.
-\textbf{Corrected.} With $b/b_0\to1$,
-$b_0=(n^d\log^2n)^{-1/(2p+d)}$:
+\textbf{Proof (English rendering of \texttt{direct\_proofs}/13, \S5--6).}
+Write $\mu_n=\mathbb E\widehat G(t)$, $\theta_n=(c_\sigma-\mu_n)/(2L)$ with
+$L=\log n$. The file-12 variance bound gives the true variance
+$V_n=O(a_n^{-2})$ and $\theta_n\to h$. On the event that the truncation does
+not act, the \emph{exact} identity
 \[
-\text{mean}(\widehat G)= -2R(t),\qquad
-\text{mean}(\widehat H)= 2R(t),\qquad
-\text{variance}=\xi^2(t)\ \text{in both};
+2a_nL(\widehat H-\theta_n)=-a_n(\widehat G-\mu_n)
 \]
-if $b/b_0\to c$, multiply the means by $c^p$ and the variances by $c^{-d}$.
-$R$ may take either sign; $R=0$ requires the $o$-term from the bias
-expansion, not an equivalence with $0$.
-\textbf{Proof sketch.} The smoothing bias enters $\mathbb E\widehat G$ with
-the sign fixed by the second-order expansion; the inversion flips it.
+holds; the truncation event is contained in
+$\{|\widehat G-\mu_n|\ge cL\}$, of probability at most $CV_n/L^2\to0$, and
+$a_nL\,|\mathbb E\widehat H-\theta_n|\le Ca_nV_n/L=O((a_nL)^{-1})\to0$,
+which carries the deterministic center to the true expectation center and
+keeps the sign.
+
+For the biased means, let $p$ be an integer and let $H$ have a $p$-th order
+Peano expansion at $t$, and set
+$R_H(t)=\frac{H^{(p)}(t)}{p!}\int z^p\omega(z)\,dz$. Weight reproduction
+together with file 12 gives
+\[
+B_n:=\mathbb E\widehat G-G_n(h)=-2Lb^{p}R_H(t)+o(Lb^{p})+O(\rho_n(t)) .
+\]
+In the short-memory regime $h<\tfrac34$ take $b_0=(nL^2)^{-1/(2p+1)}$
+with $b/b_0\to c_0\in(0,\infty)$, and set $A_n=(n^{p}/L)^{1/(2p+1)}$; then
+$A_nLb_0^{p}=1$ and $A_n\rho_n(t)\to0$ because
+$\psi>\tfrac12>p/(2p+1)$. Consequently
+\[
+A_n(\widehat G-G_n(h))\Rightarrow
+N\bigl(-2c_0^{p}R_H(t),\,c_0^{-1}V_h\bigr),
+\qquad
+2(nL^2)^{p/(2p+1)}(\widehat H-h)\Rightarrow
+N\bigl(2c_0^{p}R_H(t),\,c_0^{-1}V_h\bigr),
+\]
+the sign flip coming from the decreasing calibration. When $R=0$ the
+additive $o$-term from the bias expansion is used; no equivalence with $0$
+is claimed.
 \statustag{\Wwritten; conditional Lean chain connected}
 
 \smallskip\noindent{\footnotesize Full written chain:
@@ -174,22 +193,51 @@ the sign fixed by the second-order expansion; the inversion flips it.
 \texttt{direct\_proofs/01} (Chinese sources).}
 
 \subsection{Growing-lag remainder (Theorem 8.2(iv))}
-
-\noindent\textbf{Original.} A stronger remainder is claimed.
-\textbf{Corrected.} For effective interior differences with $b\log n\to0$,
+\textbf{Counterexample (English rendering of \texttt{direct\_proofs}/04,
+\S2).} Take constant $H=\tfrac34$, $q=1$, $\sigma=1$. By stationarity and
+self-similarity of fBm increments, the paper's standardized difference
+covariance is exactly $g_1(\tfrac34,u)$, with no $n$-dependent freezing
+error. A sixth-order Taylor expansion of $(u\pm1)^{3/2}$ (odd terms
+cancelling; coefficients $\binom{3/2}{2}=\tfrac38$,
+$\binom{3/2}{4}=\tfrac3{128}$; remainder controlled by derivative bounds for
+$u\ge2$) gives
 \[
-\text{error} \;=\; O\!\left(k^{-2} + \frac{k\log n}{n} + \Bigl(\frac{k}{n}\Bigr)^{\psi}\right)
-\quad (q=1),\qquad
-O\!\left(k^{-2} + \frac{k\log n}{n}\right)
-\quad (q=2),
+g_1(\tfrac34,u)\,|u|^{1/2}=\frac38+\frac3{128u^{2}}+O(u^{-4}),
 \]
-and the finite-lag error must be retained.
-\textbf{Reason.} Cross terms between lag growth, mesh resolution and the
-H\"older exponent cannot be dropped.
+so for all $u\ge u_0$ the left side exceeds $\tfrac38$ by at least
+$\tfrac3{256u^2}$. Now set $b_n=n^{-1/2}$ and $u_n=\lfloor\log n\rfloor$ at a
+fixed interior $t$: then $nb_n\to\infty$, $b_n\log^{k}n\to0$ for every fixed
+$k$, $u_n\to\infty$, $u_n<2nb_n$, and $t+u_n/n$ stays interior --- all the
+hypotheses of the original 8.2(iv) hold. But
+\[
+\frac{u_n^{-2}}{b_n|\log b_n|}\asymp\frac{\sqrt n}{(\log n)^{3}}\to\infty
+\qquad(n=e^{x}\text{ swamps the cubic}),
+\]
+so the remainder cannot be $O(b\log b)$: the original 8.2(iv) fails already
+on the constant-$H$ submodel allowed by the paper.
+
+\textbf{Corrected versions.} (i) Constant $H$:
+$C_n(t,t+u/n)=\{c_q(H)+O(|u|^{-2})\}|u|^{-\psi}$, $\psi=2q-2H$.
+(ii) Nonconstant $H$ (English rendering of \texttt{direct\_proofs}/12,
+\S3.3): for $2<|k|\le2nb$, from the integral representation, the H\"older
+increment $H(s+v)-H(s)=O(1/n)$, and the normalization factor
+$n^{H(u)-H(s)}=1+O(|k|L/n)$,
+\[
+C_n(s,s+k/n)=\Bigl\{c_1(H(s))+O\Bigl(k^{-2}+\tfrac{|k|L}{n}
++(|k|/n)^{\psi(s)}\Bigr)\Bigr\}|k|^{-\psi(s)} .
+\]
+The mechanism: the power error from the shifted exponent is $O(L/n)$, the
+derivative distance-logarithm remainder at most $C|k|L/n$, the smooth
+background contributes $(|k|/n)^{\psi(s)}$, and the frozen integral, written
+with $V=n(w-v)$ satisfying $\mathbb EV=0$, $|V|\le1$, obeys the second-order
+Taylor bound
+$\mathbb E|k+V|^{-\psi(s)}=|k|^{-\psi(s)}(1+O(k^{-2}))$. All remainders are
+absolute coefficient errors, never divided by the possibly-vanishing $c_1$.
 \statustag{\Wwritten; interior pieces Lean}
 
 \smallskip\noindent{\footnotesize Full written chain:
-\texttt{direct\_proofs/12}, \texttt{direct\_proofs/18} (Chinese sources).}
+\texttt{direct\_proofs/04}, \texttt{direct\_proofs/12},
+\texttt{direct\_proofs/18} (Chinese sources).}
 
 \subsection{Local-polynomial bias (Lemma 8.4)}\label{sec:84}
 
@@ -211,12 +259,20 @@ using the uniform $L^1$ weight bound. No $(nb)^{-\min(2,p)}$ term is needed.
 \texttt{direct\_proofs/02}, \texttt{direct\_proofs/18} (Chinese sources).}
 
 \subsection{Vector $Z$ limits (Lemma 8.5)}
-
-\noindent\textbf{Original.} Limits stated for $Z$ itself; dimension $a$ taken
-as $d$. \textbf{Corrections.} State the limits for $Z-\mathbb EZ$; keeping $Z$
-requires separately proving $\mathbb EZ\to0$ after normalization --- the bound
-$\mathbb EZ=O((nb)^{d/2}\rho)$ alone does not suffice. The dimension is the
-polynomial basis dimension $S$, not $d$; kernel conditions added.
+\textbf{Corrections.} (i) The three limit statements must be made for
+$Z-\mathbb EZ$: the normalization of the estimator chain transports centered
+vectors, and the bound $\mathbb EZ=O((nb)^{d/2}\rho)$ alone does not prove
+that the normalized $\mathbb EZ$ vanishes --- if the original uncentered $Z$
+is kept, this vanishing must be established separately.
+(ii) The dimension of the local-polynomial coefficient vector $a$ is the
+basis dimension $S=\binom{p+d}{d}$-type count, not the ambient $d$; the
+covariance structure and the limits are stated in $\mathbb R^{S}$.
+(iii) Kernel conditions ensuring the nondegeneracy used by the limits are
+added explicitly (they are exactly the ones repaired in S.2.1 below).
+The three limit statements themselves are at the written level (the
+finite-Hermite CLT for non-absolutely-summable correlation arrays of file 13
+\S2 supplies the mechanism); the expectation-bias leading terms derived from
+them are machine-checked.
 \statustag{expectation-bias leading terms \Wlean; three $Z$-limits \Wwritten}
 
 \smallskip\noindent{\footnotesize Full written chain:
@@ -226,12 +282,45 @@ polynomial basis dimension $S$, not $d$; kernel conditions added.
 \section{Corrections to the supplementary lemmas}\label{sec:supp-corr}
 
 \subsection{S.1.1 (Fourier adjacent differences)}
-\textbf{Error.} As a complex Lebesgue integral the claim fails: near $0$ the
-imaginary part behaves like $-ikx/|x|^{2+\delta}$, which is not absolutely
-integrable. \textbf{Correction.} Replace $1-e^{ikx}$ by $1-\cos(kx)$, or
-define the principal value explicitly; the scaling and mean-value steps then
-give the adjacent-difference bounds. \statustag{\Wwritten (repair); not
-formalized}
+\textbf{Diagnosis.} As a complex Lebesgue integral the claim fails: near
+$0$ the imaginary part of the integrand behaves like $-ikx/|x|^{2+\delta}$,
+which is not absolutely integrable.
+
+\textbf{Corrected statement and proof (English rendering of
+\texttt{direct\_proofs}/06, \S2).} For $0\le\delta\le\tfrac12$ define
+\[
+A_\delta=\int_{\mathbb R}\frac{1-\cos x}{|x|^{2+\delta}}dx,
+\qquad
+B_\delta=\int_{\mathbb R}\frac{(1-\cos x)\log|x|}{|x|^{2+\delta}}dx .
+\]
+$A_\delta$, and the absolute integral defining $B_\delta$, are uniformly
+bounded on this $\delta$-range: near $0$ they are dominated by
+$C|x|^{-1/2}$ and $C|x|^{-1/2}|\log|x||$, in the tail by $C|x|^{-2}$ and
+$C|x|^{-2}\log|x|$. For $k\ge1$ the substitution $y=kx$ gives the exact
+scalings
+\[
+I_\delta(k)=\int\frac{1-\cos(kx)}{|x|^{2+\delta}}dx=A_\delta\,k^{1+\delta},
+\qquad
+J_\delta(k)=\int\frac{(1-\cos(kx))\log|x|}{|x|^{2+\delta}}dx
+=k^{1+\delta}\bigl(B_\delta-A_\delta\log k\bigr),
+\]
+with $I_\delta(0)=J_\delta(0)=0$. Assume $\delta_n\ge0$ and
+$n^{\delta_n}\to1$; then eventually $\delta_n\le\tfrac12$ and
+$n^{\delta_n}\le2$. For $2\le k\le n$ the mean-value theorem gives
+$k^{1+\delta_n}-(k-1)^{1+\delta_n}\le(1+\delta_n)n^{\delta_n}\le3$, and the
+derivative of $x^{1+\delta}\log x$ is
+$x^{\delta}[(1+\delta)\log x+1]=O(\log n)$ on $[1,n]$. With the uniform
+bounds on $A,B$,
+\[
+\sup_{1\le k\le n}|I_{\delta_n}(k)-I_{\delta_n}(k-1)|=O(1),
+\qquad
+\sup_{1\le k\le n}|J_{\delta_n}(k)-J_{\delta_n}(k-1)|=O(\log n),
+\]
+the case $k=1$ being handled separately from the boundedness of $A_\delta$,
+$B_\delta$. This proves the real-part (cosine) repaired version of S.1.1;
+under symmetric truncation the imaginary part vanishes identically, so the
+same proof covers the explicitly defined principal-value version.
+\statustag{\Wwritten (repair); not formalized}
 
 \smallskip\noindent{\footnotesize Full written chain:
 \texttt{direct\_proofs/06} (Chinese source).}
@@ -247,37 +336,119 @@ part must be retained in the contour derivation.
 \texttt{direct\_proofs/06} (Chinese source).}
 
 \subsection{S.2.1 ($g$ bounded away from zero)}
-\textbf{Error.} Insufficient hypotheses: at $h=0$ the quantity vanishes, and
-for $q=2$, $H\to1$ no uniform positive lower bound exists.
-\textbf{Correction.} Require $h\neq0$ and $H\in[\gamma,1-\gamma]$, the latter
-following from [A1] rather than [A3]; positivity, continuity and compactness
-then give the uniform lower bound. \statustag{repaired 1-d version \Wlean}
+\textbf{Error.} The hypotheses are insufficient: at $h=0$ the difference
+vanishes identically, and without compactness away from $1$ there is no
+uniform positive lower bound --- for $q=2$,
+$g_2(H,0,1)=4-2^{2H}\to0$ as $H\uparrow1$.
+
+\textbf{Corrected statement and proof (English rendering of
+\texttt{direct\_proofs}/05, \S2).} Fix $q\ge1$ and $h\neq0$. For the
+constant-$H$ model, applying $q$-th order differences on both sides of the
+corrected spectral representation (5.2) of \S S.2.2 below gives
+\[
+g_q(H,0,h)=\frac{1}{2D(H)^{2}}
+\int_{\mathbb R^{d}}\frac{|1-e^{i\langle h,\xi\rangle}|^{2q}}{|\xi|^{2H+d}}
+\,d\xi\;>\;0 :
+\]
+near $0$ the numerator is $O(|\xi|^{2q})$ and the integral converges because
+$q>H$; the tail converges because $H>0$; and $h\neq0$ makes the numerator
+strictly positive on an open set. If $H\in[\eta,1-\eta]$, the same
+integrable majorant controls the whole family (radially
+$r^{2q-2(1-\eta)-1}$ near $0$ and $r^{-2\eta-1}$ at infinity), and similarly
+for $D(H)$; dominated convergence makes $H\mapsto g_q(H,0,h)$ continuous,
+whence by compactness
+$\inf_{H\in[\eta,1-\eta]}g_q(H,0,h)>0$. This is a direct repair that does
+not rely on the conditionally-negative-definite kernel theorem quoted in the
+original; the two added conditions ($h\neq0$; compactness away from $0$ and
+$1$, available from [A1] rather than [A3]) are both indispensable, as the
+two counterexamples show.
+\statustag{repaired 1-d version \Wlean}
 
 \smallskip\noindent{\footnotesize Full written chain:
 \texttt{direct\_proofs/05} (Chinese source).}
 
 \subsection{S.2.2 / S.3.1 (leading singular coefficient)}
-\textbf{Error.} The printed $c_h$ misses a factor $\tfrac12$.
-\textbf{Correction.}
-$c_h=h(2h-1)$, i.e.\ $g(H,u,h)=(c_h+o(1))|u|^{-\psi}$ with $\psi=2-2H$
-(frozen $H$; all derivatives acting on the distance in the principal term,
-$H$-derivatives in the remainder). The $o(1)$ must not be strengthened to
-$O(b\log b)$. \statustag{instantiated and machine-verified inside the closure
-chain \Wlean}
+\textbf{Proof of the corrected constants} (English rendering of
+\texttt{direct\_\allowbreak{}proofs}/\allowbreak{}04, \S1, and of
+\texttt{direct\_\allowbreak{}proofs}/\allowbreak{}05, \S1).
+(i) \emph{Difference expansion.} Let $q\ge1$ and $F_H(u)=|u|^{2H}$, and
+\[
+g_q(H,u)=-\tfrac12\sum_{i,j}(-1)^{i+j}\binom qi\binom qj
+F_H(u+i-j).
+\]
+By the binomial expansion (Vandermonde),
+$g_q(H,u)=\tfrac{(-1)^{q+1}}2\,\delta^{2q}F_H(u)$ with
+$\delta F(u)=F(u+\tfrac12)-F(u-\tfrac12)$. For $u>2q$, repeated integration
+of the fundamental theorem gives
+$\delta^{2q}F_H(u)=\int_{[-1/2,1/2]^{2q}}F_H^{(2q)}(u+\textstyle\sum s_i)\,ds$;
+the mean of $S=\sum s_i$ is $0$ with $|S|\le q$, and a first-order Taylor
+expansion of $F_H^{(2q)}$ has second-order remainder bounded by
+$Cu^{2H-2q-2}$ uniformly for $H$ in a fixed compact subinterval. Hence
+\[
+g_q(H,u)=c_q(H)|u|^{2H-2q}+O(|u|^{2H-2q-2}),
+\qquad
+c_q(H)=\frac{(-1)^{q+1}}{2}\prod_{l=0}^{2q-1}(2H-l),
+\]
+and in particular $c_1(H)=H(2H-1)$: the paper's printed $c_h$ is missing
+the factor $\tfrac12$. When the product vanishes, (the display) remains an
+absolute remainder bound --- nothing is divided by $c_q(H)$. The far-field
+form $g=(c_h+o(1))|u|^{-\psi}$ of S.3.1 follows with the same $c_h$, and
+its $o(1)$ must not be strengthened to $O(b\log b)$.
+(ii) \emph{Spectral normalization.} With
+$D(H)^2=\int(1-\cos\xi_1)/|\xi|^{2H+d}\,d\xi$ (finite and positive for
+$0<H<1$), rotation and scaling give
+$\int(1-\cos\langle t,\xi\rangle)/|\xi|^{2H+d}d\xi=D(H)^2|t|^{2H}$. For
+$a=\frac{H_t+H_s}{2}$ the absolutely convergent integral
+$I(t,s)=\int(e^{i\langle t,\xi\rangle}-1)(e^{-i\langle s,\xi\rangle}-1)
+/|\xi|^{H_t+H_s+d}\,d\xi$ has vanishing imaginary part (odd symmetry) and
+real part $D(a)^2\{|t|^{2a}+|s|^{2a}-|t-s|^{2a}\}$, so the correct
+covariance normalization is
+$C(t,s)=\frac{\sigma^2}{2D(H_t)D(H_s)}I(t,s)$: omitting the $\tfrac12$
+would double the variance to $2\sigma^2|t|^{2H}$ at $t=s$.
+\statustag{instantiated and machine-verified inside the closure chain \Wlean}
 
 \smallskip\noindent{\footnotesize Full written chain:
-\texttt{direct\_proofs/12}, \texttt{direct\_proofs/10},
-\texttt{direct\_proofs/04} (Chinese sources).}
+\texttt{direct\_proofs/04}, \texttt{direct\_proofs/05},
+\texttt{direct\_proofs/12} (Chinese sources).}
 
 \subsection{S.2.3 (mixed derivatives, near-diagonal)}
-\textbf{Error.} The $q=1$ near-diagonal remainder $O(r\log r)$ admits a
-lawful linear-$H$ counterexample. \textbf{Correction.} Add the smooth
-background term of relative size $r^{\psi}$: the corrected bound retains the
-$x^{H(x)+H(y)-q}$-times-log-power background near $0$ and normalizes on the
-actual grid. \statustag{\Wwritten; grid normalization pieces \Wlean}
+\textbf{Counterexample (English rendering of \texttt{direct\_proofs}/12,
+\S2).} Fix an admissible base point $(h_0,t_0)$ with $t_0$ interior and
+$h_0\in(0,1)$, and take the lawful smooth Hurst function
+$H_\varepsilon(x)=h_0+\varepsilon(x-t_0)$ with $\varepsilon>0$ small (it is
+smooth and stays away from $0$ and $1$). Let the smooth background be
+$P(s,u)=B(H_\varepsilon(s),H_\varepsilon(u))(s^{a}+u^{a})$, where $B$ is the
+normalizing factor of the representation. $B$ is symmetric with
+$B(h,h)=\tfrac12$, hence $B_h(h,h)=B_k(h,h)=0$, and direct differentiation
+gives
+\[
+\partial_s\partial_uP(t_0,t_0)
+=\varepsilon t_0^{2h_0-1}\bigl(2h_0\log t_0+1\bigr)
++\varepsilon^{2}t_0^{2h_0}\bigl\{2B_{hk}(h_0,h_0)+(\log t_0)^{2}\bigr\}
+=\tfrac12\varepsilon t_0^{2h_0-1}+O(\varepsilon^{2})\;>\;0 .
+\]
+Fix such an $\varepsilon$. The remainder of the singular part alone,
+computed in \S2 of the file, is $O(r^{1-\psi_0}(1+|\log r|))=o(1)$ with
+$\psi_0=\tfrac12$, so
+\[
+\lim_{r\downarrow0}\Bigl\{\partial_s\partial_uC(t_0,t_0+r)
+-c_1(h_0)\,r^{-\psi_0}\Bigr\}=\partial_s\partial_uP(t_0,t_0)>0 ,
+\]
+whereas the original S.2.3 remainder, a \emph{relative} $O(r\log r)$, would
+force the bracketed difference to tend to $0$ --- a contradiction. The
+principal-term expansion as printed therefore fails.
+
+\textbf{Repair.} Add the smooth background of relative size $r^{\psi}$: the
+corrected expansion retains, near the diagonal, the
+$x^{H(x)+H(y)-q}$-times-log-power background derivative, and the normalized
+finite differences on the actual grid are then controlled by it; when
+$H(s)>\tfrac12$ one has $\psi(s)<1$ and the term cannot be absorbed into
+$O(r|\log r|)$. Files 12/13/14 verify that this repair does not change the
+one-dimensional variance rates or limit types.
+\statustag{\Wwritten; grid normalization pieces \Wlean}
 
 \smallskip\noindent{\footnotesize Full written chain:
-\texttt{direct\_proofs/18}, \texttt{direct\_proofs/12},
+\texttt{direct\_proofs/12}, \texttt{direct\_proofs/18},
 \texttt{direct\_proofs/04} (Chinese sources).}
 
 \subsection{S.3.2 (weighted power sums / cycle products)}
@@ -304,21 +475,68 @@ preserved. \statustag{\Wwritten; the $q=1$ scale input it feeds is
 discharged in Lean}
 
 \subsection{S.5.2 (truncated component $I_2'$)}
-\textbf{Repair.} On the original truncation interval, use first- and
-second-derivative bounds for $\log v$ together with the projection error;
-control the bias through the pilot bias and MSE, and the squared error of the
-centered spatial average through Jensen --- no independence between the
-channels is assumed, so no fictitious independence gain is claimed. For $q=1$
-this nonlinear term vanishes identically.
+\textbf{Proof of the repaired bounds (English rendering of
+\texttt{direct\_proofs}/16, \S4).} The pilot supplies, uniformly in $j$,
+\[
+|\mathbb EP(s_j)-H(s_j)|\le Ca_n,
+\qquad
+\mathbb E|P(s_j)-H(s_j)|^{2}\le C\{a_n^{2}+T_{\bar\psi}(N)\}.
+\]
+For $q=1$ the truncation functional $\ell$ vanishes identically, so
+$I_2=0$. For $q=2$, $\ell,\ell',\ell''$ are bounded on
+$[0,1-\gamma/2]$ and the true $H$ keeps a fixed positive distance from both
+truncation endpoints. Put $v=\mathbb E(P-H)^{2}$. Projection does not
+increase the error relative to $H$, so
+$\mathbb E|\ell(P^{\gamma})-\ell(H)|^{2}\le Cv$; moreover
+$|P^{\gamma}-P|\le|P-H|\mathbf 1_{\{|P-H|\ge d_0\}}$ gives
+$\mathbb E|P^{\gamma}-P|\le v/d_0$; and Taylor's formula gives
+$|\mathbb E\{\ell(P^{\gamma})-\ell(H)\}|\le C\{|\mathbb E(P-H)|+v\}$.
+Applying Jensen to the spatial average --- with \emph{no} independence
+assumed across $j$, hence no fictitious $1/M$ variance gain --- yields
+\[
+\mathbb EI_2^{2}\le C\{a_n^{2}+T_{\bar\psi}(N)\},
+\qquad
+|\mathbb EI_2|\le C\{a_n+T_{\bar\psi}(N)\},
+\]
+and $a_n^{2}$ is absorbed by $a_n$ since $a_n\to0$. Combined with the
+repaired S.5.1 bound and the square-sum inequality this recovers Theorem
+4.2's MSE decomposition; the role of the bandwidth condition
+$L^{2}T(n)=o(T(nb_1))$ is checked separately in each memory regime
+(short: $bL^{2}\to0$; long: $L^{2}b^{2\bar\psi}\to0$ by choosing the fixed
+$k$ of (16.1) large; critical: at most $2bL^{2}$ if $N\ge\sqrt n$, at most
+$n^{-1/2}L^{3}/\log N$ otherwise).
+\statustag{\Wwritten + Full pieces}
 
 \smallskip\noindent{\footnotesize Full written chain:
 \texttt{direct\_proofs/16}, \texttt{direct\_proofs/08} (Chinese sources).}
 
 \subsection{S.6.1 (irregular-grid covariance)}
-\textbf{Error.} As printed (unnormalized covariance) the claim fails already
-for Brownian motion. \textbf{Correction.} Either estimate
-$\operatorname{Cov}(W_n(t),W_n(s))$ with $W_n(t)=\sigma^{-1}n^{H(t)}\Delta^qX(t)$,
-or restore $\sigma^2n^{-H(t)-H(s)}$ on both sides of the original.
+\textbf{Counterexample (English rendering of \texttt{direct\_proofs}/05,
+\S4).} Take one-dimensional standard Brownian motion $B$, $q=1$,
+$H=\tfrac12$; regular grids are admissible special cases of the irregular
+grids allowed. By the Brownian covariance $\min(s,t)$,
+$\operatorname{Var}\{B(t+1/n)-B(t)\}=1/n$, while
+$g_1(\tfrac12,0,1)=1$; the difference of the two sides tends to $-1$ and
+cannot be $O(\log n/n+1/n)$. This refutes the unnormalized claim S.6.1(i)
+as printed. (The scalar asymptotic underlying this counterexample is
+machine-checked in the repository.)
+
+\textbf{Correct transformation.} For arbitrary grid differences
+$D_n(t)$ define $W_n(t)=\sigma^{-1}n^{H(t)}D_n(t)$. Bilinearity of the
+covariance gives the \emph{exact} identity
+\[
+\operatorname{Cov}\bigl(D_n(t),D_n(s)\bigr)
+=\sigma^{2}n^{-H(t)-H(s)}
+\operatorname{Cov}\bigl(W_n(t),W_n(s)\bigr),
+\]
+so if the normalized version states
+$\operatorname{Cov}(W_n(t),W_n(s))=g(H(t),u,\varpi(t))+O(\rho_n)$, the
+original-difference version must be
+$\sigma^{2}n^{-H(t)-H(s)}\{g(H(t),u,\varpi(t))+O(\rho_n)\}$ --- the error
+term carries the same prefactor. On the Brownian regular grid with $u=0$
+the corrected form is an exact equality; for general irregular grids the
+local covariance approximation still requires separate proof --- the
+identity alone does not provide it.
 \statustag{scalar counterexample \Wlean; full instantiation open}
 
 \smallskip\noindent{\footnotesize Full written chain:
@@ -454,5 +672,29 @@ Every \Wlean{} tag above is a theorem in the repository, axiom-checked within
 and the audit theorems listed in the companion note's provenance table.
 Automated re-verification: \texttt{verification/\allowbreak{}final\_\allowbreak{}acceptance.\allowbreak{}py}.
 \par}
+
+\section*{References}\label{sec:refs}
+\begin{enumerate}
+\itemsep2pt
+\item Source manuscript under audit: \texttt{19-AOS1825.pdf} (provided with
+the project; not modified). Numbered results 3.1--3.5, 4.1--4.3, 8.1--8.5
+and S.1.1--S.7.2 refer to it.
+\item Companion notes: \texttt{paper\_revision/revised\_theorems.\{tex,pdf\}}
+(the revised main theorem and the validation-status tables) and
+\texttt{paper\_revision/theorem\_inventory.md} (per-item machine status with
+Lean theorem names).
+\item Full written chains (Chinese, authoritative for details not rendered
+here): \texttt{direct\_proofs}/01--24. The per-item mapping is recorded in
+\texttt{results/catalog.json}.
+\item J.\ Bardet, M.\ Surgailis, \emph{Moment bounds and central limit
+theorems for Gaussian subordinated arrays}, arXiv:1104.4732 --- Lemma 1 is
+the only external lemma consumed by the Lean chain (as the hypothesis class
+of \texttt{bardetSurgailis\_weighted\_evenMoment\_bound}); its scalar
+rank-2 special case is used, as declared in \texttt{direct\_proofs}/19.
+\item \emph{The functional Breuer--Major theorem}, arXiv:1808.02378 ---
+cited for contrast only (\S1.1): the critical-regime proof here deliberately
+avoids the Breuer--Major summability hypothesis, which fails at
+criticality.
+\end{enumerate}
 
 \end{document}

@@ -25,7 +25,10 @@ closure commit \texttt{16715db}, acceptance \texttt{e76475a})}
 \noindent\textbf{Scope.} This note states the \emph{revised} form of the long-memory
 branch of Theorem~3.3(iii) and Theorem~3.4 of the source manuscript
 (\texttt{19-AOS1825.pdf}), as it is now fully formalized in the accompanying Lean~4
-project. Every condition and every clause of Theorem~\ref{thm:main} below is
+project. Its companions are \texttt{supplementary.\{tex,pdf\}} (corrected
+statements with full English renderings of the repaired proofs, and the
+complete proof of Proposition~\ref{prop:rates}) and
+\texttt{theorem\_inventory.md} (per-item machine status). Every condition and every clause of Theorem~\ref{thm:main} below is
 machine-checked; \S\ref{sec:prov} maps each element to its Lean theorem, and
 \S\ref{sec:dev} lists, without softening, every deviation from the manuscript's
 original assumptions and from the intermediate repair plan
@@ -325,5 +328,21 @@ Dimension $d\ge2$ throughout; boundary uniformity ($\Omega_\delta$); $s=\infty$
 and the $s>2$ moment bridge (INT-MOM-RISK); the unknown-scale fine limits
 (file 21, written only); the INT-CLT/INT-VAR inputs of the short/critical
 branches; and the eight supplement items marked [Open] above.
+
+\section*{References}
+\begin{enumerate}
+\itemsep2pt
+\item Source manuscript under audit: \texttt{19-AOS1825.pdf} (provided with
+the project; not modified).
+\item Companion notes in this directory: \texttt{supplementary.\{tex,pdf\}}
+(corrected statements, proofs as English renderings of the Chinese sources
+in \texttt{direct\_proofs}/01--24) and \texttt{theorem\_inventory.md}.
+\item J.\ Bardet, M.\ Surgailis, \emph{Moment bounds and central limit
+theorems for Gaussian subordinated arrays}, arXiv:1104.4732 --- Lemma 1 is
+the only external lemma consumed by the Lean chain.
+\item \emph{The functional Breuer--Major theorem}, arXiv:1808.02378 ---
+cited for contrast only; the critical-regime repair avoids its summability
+hypothesis.
+\end{enumerate}
 
 \end{document}
