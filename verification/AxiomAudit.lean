@@ -2633,3 +2633,7 @@ import Hurst
 -- takeover10 task 2 (2026-10-07): the honest-rate drift lemma (deterministic
 -- side E5B drift bound at the pinned center + tail-based truncation transfer).
 #print axioms Hurst.honestRate_drift_tendsto_zero
+
+-- takeover10 task 3 (2026-10-07): the statistical-closure endpoint via the
+-- honest-rate drift (premises = model window + b-band + r; hBias REPLACED).
+#print axioms Hurst.actualQ1_knownScaleH_fullChain_honestRate
