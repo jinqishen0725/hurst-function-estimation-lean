@@ -1,0 +1,20 @@
+'Hurst.abs_log_one_add_le_two_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.abs_add_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.truncExpectation_le_fluctuation' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.varyingIncrement_norm_sq_error' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.varyingIncrement_logNormSq_error' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.gridStrideFirstActual_logNormSq_error' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.holderWeightContraction' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.localPolynomialWeights_abs_sum_active' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.holderWeightContraction_localPolynomialWeights_of_stable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Hurst.exists_holderWeightContraction_localPolynomialWeights' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.unitStatWeight_eq_localPolynomialWeight' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.chainLogStatistic_eq_rpow_smul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.chainCalibratedStatistic_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.p5KnownScaleHtilde_expectation_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.p5KnownScaleHtilde_drift_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.knownScaleEstimator_bias_envelope' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.knownScaleEstimator_bias_envelope_grid' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit=0

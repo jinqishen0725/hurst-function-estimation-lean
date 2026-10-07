@@ -2572,3 +2572,23 @@ import Hurst
 
 -- takeover8 task 4 (2026-10-06): zero-degree-of-freedom feasible endpoint.
 #print axioms Hurst.actualQ1_knownScaleH_fullChain_generalSigned_feasible_centerBand_zeroDof
+
+-- takeover9 task 1 (2026-10-06): E5 bias expansion (parallel-agent block,
+-- provenance auditor-verified; hane premise discharged at integration time).
+#print axioms Hurst.abs_log_one_add_le_two_mul
+#print axioms Hurst.truncExpectation_le_fluctuation
+#print axioms Hurst.varyingIncrement_norm_sq_error
+#print axioms Hurst.varyingIncrement_logNormSq_error
+#print axioms Hurst.gridStrideFirstActual_logNormSq_error
+#print axioms Hurst.holderWeightContraction
+#print axioms Hurst.localPolynomialWeights_abs_sum_active
+#print axioms Hurst.holderWeightContraction_localPolynomialWeights_of_stable
+#print axioms Hurst.exists_holderWeightContraction_localPolynomialWeights
+#print axioms Hurst.unitStatWeight_eq_localPolynomialWeight
+#print axioms Hurst.chainLogStatistic_eq_rpow_smul
+#print axioms Hurst.chainCalibratedStatistic_eq
+#print axioms Hurst.p5KnownScaleHtilde_expectation_eq
+#print axioms Hurst.abs_add_le
+#print axioms Hurst.p5KnownScaleHtilde_drift_bound
+#print axioms Hurst.knownScaleEstimator_bias_envelope
+#print axioms Hurst.knownScaleEstimator_bias_envelope_grid
