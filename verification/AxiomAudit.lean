@@ -2592,3 +2592,22 @@ import Hurst
 #print axioms Hurst.p5KnownScaleHtilde_drift_bound
 #print axioms Hurst.knownScaleEstimator_bias_envelope
 #print axioms Hurst.knownScaleEstimator_bias_envelope_grid
+
+-- takeover9 task 2 (2026-10-06): second-order increment-norm refinement
+-- (honest rate ℓ^(2-2b); exact cross kernel identity + quadratic Λ-mismatch).
+#print axioms Hurst.mul_exp_neg_le
+#print axioms Hurst.exp_sub_one_le
+#print axioms Hurst.rpow_mul_abs_log_le
+#print axioms Hurst.one_sub_rpow_le
+#print axioms Hurst.rpow_neg_sub_one_le
+#print axioms Hurst.rpow_mismatch_le
+#print axioms Hurst.abs_sub_le_of_hasDerivAt_le
+#print axioms Hurst.abs_rpow_pow_sub_le
+#print axioms Hurst.abs_add_le'
+#print axioms Hurst.abs_rpow_mixed_sub_le
+#print axioms Hurst.phi_difference_le
+#print axioms Hurst.phi_self_le
+#print axioms Hurst.harmonizableFeature_cross_sub_norm_sq
+#print axioms Hurst.secondOrder_assembly
+#print axioms Hurst.varyingIncrement_norm_sq_secondOrder
+#print axioms Hurst.gridStrideFirstActual_norm_sq_secondOrder

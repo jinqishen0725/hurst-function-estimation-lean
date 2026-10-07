@@ -1,0 +1,54 @@
+Hurst/IncrementLogSecondOrder.lean:71:47: warning: Variable name `ht` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Hurst/IncrementLogSecondOrder.lean:111:35: warning: Variable name `hδ` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Hurst/IncrementLogSecondOrder.lean:124:39: warning: Variable name `hδ` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Hurst/IncrementLogSecondOrder.lean:211:5: warning: Variable name `hx` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Hurst/IncrementLogSecondOrder.lean:444:5: warning: Variable name `hClip0` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+'Hurst.mul_exp_neg_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.exp_sub_one_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.rpow_mul_abs_log_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.one_sub_rpow_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.rpow_neg_sub_one_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.rpow_mismatch_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.abs_sub_le_of_hasDerivAt_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.abs_rpow_pow_sub_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.abs_add_le'' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.abs_rpow_mixed_sub_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.phi_difference_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.phi_self_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.harmonizableFeature_cross_sub_norm_sq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.secondOrder_assembly' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.varyingIncrement_norm_sq_secondOrder' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.gridStrideFirstActual_norm_sq_secondOrder' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit=0
