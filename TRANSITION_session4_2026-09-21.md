@@ -5,6 +5,51 @@
 本文件供接管 agent 使用;权威过程记录见 [VALIDATION_PROGRESS.md](VALIDATION_PROGRESS.md)
 (逐检查点、逐契约修正、含日志路径与退出码)。
 
+## 0. 2026-10-07 快照(takeover10;最终组装:诚实率漂移引理 ⇒ 统计闭环端点)
+
+任务 1–3 完成(commits 0073dae / b0d2d20 / 4359759),检查点 0040 / 0828 /
+0834 三件,聚合 9223 jobs 绿 + AxiomAudit 整文件 exit=0(2603 条,零 sorryAx,
+全 ⊆ {propext, Classical.choice, Quot.sound})。**新最强端点 =**
+`Hurst/HonestRateClosure.lean` 的 `actualQ1_knownScaleH_fullChain_honestRate`
+——前提 = 模型窗口(含二阶带 `1/2 < a`)+ b-带 `(1−ft)² < 1−b` + 多项式阶 r,
+**无任何率/带宽/校准参数**;结论同 zeroDof(∃Q 构造符号加权 Riesz 第二混沌律
++ seam 尺度真值中心 Ĥ_n ⇒ −Q)。hBias 前提被任务 2 的漂移引理替换。
+
+- **任务 1(单位方差率)**:`Hurst/UnitVarianceRate.lean`。
+  `hurstHolder_q1_unitVariance_eventually_bounded`:二阶中心矩 ≤
+  (4·gLSV·U²·C)·S^{−2ψ}(S = n^{1−γ},ψ = 2−2ft);U 来自缩放权界,
+  C 来自归一化相关能量(hR/hcut/hEnv 内部实例化于窗口中点 β)。
+  **诚实前提登记(偏差)**:hEnv 窗口 (1−γ)(2−2ft) < 2−2b 在 γ = ft
+  恰为 b-带,不能从模型窗口单独消解——以显式 hgrid 前提陈述。
+- **任务 2(诚实率漂移引理,核心)**:`Hurst/HonestRateDrift.lean`。
+  `honestRate_drift_tendsto_zero`:seam 尺度漂移 |2S^ψ log n·(E Ĥ_n − ft)| → 0
+  于钉死中心 cσ = gLSM。两项指数簿记(逐项对表任务书 §2):
+  确定性侧 = 2(Cw·D(1+M))·log n/n^{ft − 2(1−ft)²}(指数正因
+  ft > 3/4 > 1/8 ≥ 2(1−ft)²;k=0 Lipschitz 收缩 δ¹,δ^p 路线不需要)
+  + Cw·Clog₂/n^{(2−2b) − 2(1−ft)²}(指数恰为 b-带);随机侧(尾部型
+  truncationCorrection_le + Chebyshev,头号雷区未第三次踩)=
+  (1 + 4/(1−ft)²)·(2·gLSV·U²·C₂)/(n^{(1−ft)ψ}·log n) → 0 无条件。
+  **诚实前提登记(偏差)**:`ha` 升级为 `1/2 < a`(二阶增量代数需 2a > 1;
+  与 b-带联立可满足,如 ft=0.8, a=0.9, b=0.95)。
+- **任务 3(统计闭环端点)**:`Hurst/HonestRateClosure.lean`。镜像
+  generalSigned 装配(二次侧、四阶能量、L1 join、seam 于 cσ = gLSM 钉死,
+  标量率内部实例化),hBias/hE5 前提不消费,真值中心经
+  p5_transport_truthCentered_of_drift 的 L1 口径(差为常数,L1 范数 = 缩放
+  漂移)接任务 2。**legacy-空真标注**:旧 hBias 形端点
+  (feasible / feasible_centerBand / zeroDof)原样保留于树中,其 hBias 前提
+  在常规模型类 γ = ft 处空真(手推;形式化证伪覆盖逐行对数路线窗口
+  bias_window_first/secondOrder_infeasible)。
+- **闭环声明门控**:协调者独立复审前不得宣称"统计闭环已验收"。
+
+编译证据:`/tmp/unitvariance.log`、`/tmp/drift.log`、`/tmp/closure.log`
+(各自 exit=0);聚合 `verification/build.log`(9223 jobs exit=0);
+公理审计 `verification/AxiomAudit.lean` 整文件重编译 exit=0(输出末三行:
+gLSV 率 / 漂移引理 / 端点定理各自 depends on axioms:
+[propext, Classical.choice, Quot.sound])。
+
+任务 4(余量,未启动):expectation-centered / unknown-scale 变体镜像;
+hBias 不可满足性的形式化下界定理;色类偶矩接线(更锐包络)。
+
 ## 0. 2026-10-06 快照(takeover9;E5 集成 + 二阶精化 + 截断转移 + hBias 诚实收尾:γ = f t 被证伪)
 
 任务 1–4 完成(commits 378cc2e / 0cb476c / ecebb7b / 896a55f),检查点

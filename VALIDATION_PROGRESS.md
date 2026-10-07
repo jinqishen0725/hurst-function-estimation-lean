@@ -1,5 +1,77 @@
 # VALIDATION_PROGRESS（供协调 agent 检查;持续更新）
 
+更新:2026-10-07(Session-4 takeover10;**最终组装:单位方差率 + 诚实率漂移引理
++ 统计闭环端点:hBias 前提被漂移路线替换,端点前提收敛到 模型窗口 + b-带**)。
+
+> 交接状态(2026-10-07 更新):任务书 = takeover10(HEAD 8912022)。
+> 全部形式化由主 agent 亲自完成(无 subagent,纪律 §4)。
+> **闭环声明门控:协调者独立复审前不得宣称"统计闭环已验收"。**
+
+> **任务 1 落地(单位方差率)**(`Hurst/UnitVarianceRate.lean`,1 定理;
+> commit 0073dae,检查点 `2026-10-07-0040-UnitVarianceRate/`):
+> `hurstHolder_q1_unitVariance_eventually_bounded`:模型窗口 + 网格窗口
+> `(1−γ)(2−2ft) < 2−2b`(在 γ = ft 恰为 b-带数据)下,单位权对数统计的二阶
+> 中心矩 ≤ `(4·gLSV·U²·C)·S^{−2ψ}`;U/C 为缩放权界与归一化能量定理的存在
+> 证据,hR/hcut/hEnv 内部实例化于 `R n = ⌊n^β⌋₊`(β = (1−γ)(4ft−3)/2 窗口中点)。
+> **诚实前提登记(任务书偏差)**:hEnv 的窗口在端点率即 b-带,不能从模型窗口
+> + hlong 单独消解——按一般 γ + 显式 hgrid 陈述,消费方在 γ = ft 处喂 hbband。
+
+> **任务 2 落地(诚实率漂移引理,核心)**(`Hurst/HonestRateDrift.lean`,1 定理;
+> commit b0d2d20,检查点 `2026-10-07-0828-HonestRateDrift/`):
+> `honestRate_drift_tendsto_zero`:模型窗口 + b-带 + r ⟹
+> `|seamScaleC·(E Ĥ_n − ft)| → 0`(钉死中心 cσ = gaussianLogSquareMean)。
+> 两项指数(逐项对表任务书 §2 簿记):
+> - **确定性侧**(E5B:755 漂移界 @ cσ = c₀ 消常数项;k=0 Hölder-Lipschitz
+>   收缩 Cw·D(1+M)·δ 于率 δ¹(δ^p 路线不需要,p ≥ 1 已收敛);二阶行对数界
+>   Clog₂·n^{−(2−2b)}):缩放后 =
+>   `2(Cw·D(1+M))·log n / n^{ft − 2(1−ft)²}`(指数正:ft > 3/4 > 1/8 ≥ 2(1−ft)²)
+>   + `Cw·Clog₂ / n^{(2−2b) − 2(1−ft)²}`(指数**恰为 b-带**)。
+> - **随机侧**(尾部型 truncationCorrection_le + Chebyshev;**粗 sd 雷区未第三次踩**):
+>   m = E H̃ ∈ 带 d′ = (1−ft)/2(CBD:641),V_n ≤ (4·gLSV·U²·C₂)·S^{−2ψ}/(2log n)²
+>   (任务 1 + 精确 2log n 缩放),尾 μ{d′ ≤ |Z|} ≤ V/d′² ⟹ 修正 ≤ V(1+1/d′²),
+>   缩放后 = `(1 + 4/(1−ft)²)·(2·gLSV·U²·C₂)/(n^{(1−ft)ψ}·log n)` → 0 **无条件**。
+> **诚实前提登记(任务书偏差)**:`ha` 升级 `1/2 < a`(二阶增量代数需 2a > 1,
+> 与 b-带联立可满足,如 ft = 0.8 / a = 0.9 / b = 0.95);k=0 收缩替代 δ^p 簿记
+> (免 ⌊p⌋ ≤ r 矩窗前提)。
+
+> **任务 3 落地(统计闭环端点)**(`Hurst/HonestRateClosure.lean`,1 公开定理 +
+> 5 私有辅助;commit 4359759,检查点 `2026-10-07-0834-HonestRateClosure/`):
+> `actualQ1_knownScaleH_fullChain_honestRate`:**最终前提清单逐条**——
+> (p, a, b, M, hp, ha[1/2 < a], hb, hab, hM)(模型窗口,二阶带增强)、
+> (f, hf, hF, t, ht, hlong)(模型函数与长记忆带)、hbband(b-带数据)、r(多项式阶)。
+> 与"模型窗口 + b-带"核对:一致(仅 ha 从 0 < a 收紧为 1/2 < a,r 是设计参数非
+> 数据前提;**无任何率/带宽/β/校准自由参数**)。结论同 zeroDof(∃Q 构造符号
+> 加权 Riesz 第二混沌律 @ (2−2ft, ft(2ft−1), equivalentKernel r) + seam 尺度
+> 真值中心 Ĥ_n ⇒ −Q)。装配:二次侧(hane 内部 actualQ1_hane_all;grid 窗口 =
+> b-带)、标量率内部实例化(zeroDof 模式)、四阶能量、L1 join、seam 于
+> cσ = gLSM 钉死;**hBias/hE5 不消费**,真值中心经 p5_transport_truthCentered_of_drift
+> 的 L1 口径(被积差为常数 c n(E Ĥ − ft),L1 = 缩放漂移;FullChainGeneralSigned
+> 步 7 先例)接任务 2。
+> **legacy-空真标注(不删历史)**:旧 hBias 形端点(feasible / feasible_centerBand /
+> zeroDof)原样保留;其 hBias 前提在常规模型类 γ = ft 处空真(手推结论,形式化
+> 证伪覆盖逐行对数路线窗口 bias_window_first/secondOrder_infeasible)。
+
+> **聚合验收(2026-10-07 执行)**:
+> 1. ✅ 全量 `lake build Hurst` **9223 jobs** 绿(verification/build.log exit=0)。
+> 2. ✅ AxiomAudit 累计 2603 条(2602 + 3 − 0:任务 1/2/3 各 +1),整文件重编译
+>    exit=0,零 sorryAx、零未知常数,全部 ⊆ {propext, Classical.choice, Quot.sound}。
+>    尾三行原文:`'Hurst.hurstHolder_q1_unitVariance_eventually_bounded' depends on
+>    axioms: [propext, Classical.choice, Quot.sound]` /
+>    `'Hurst.honestRate_drift_tendsto_zero' depends on axioms: [propext,
+>    Classical.choice, Quot.sound]` / `'Hurst.actualQ1_knownScaleH_fullChain_honestRate'
+>    depends on axioms: [propext, Classical.choice, Quot.sound]`。
+> 3. ✅ 零 sorry(三新文件 grep 0)。
+> 4. ✅ 检查点四件套 ×3(0040 / 0828 / 0834,sha256 齐全)。
+
+> **已知缺口(诚实登记)**:
+> - **统计闭环声明待协调者独立复审生效**(任务书 §6 门控)。
+> - 端点带 `ha : 1/2 < a`(二阶增量代数要求;任务书 §2 的隐含收紧,已如实陈述;
+>   与 b-带联立窗口非空)。
+> - expectation-centered / unknown-scale 变体镜像未做(任务 4 余量)。
+> - hBias 形状不可满足性的**形式化下界定理**未做(现有形式化证伪仅覆盖
+>   逐行对数路线窗口;不可满足性本身仍是手推 + 文档登记)。
+> - 色类偶矩接线未做(可给更锐包络陈述;闭环不需要)。
+
 更新:2026-10-06(Session-4 takeover9;**E5BiasExpansion 集成 + 二阶增量精化(诚实率)
 + 集中-截断转移抽象件 + hBias 诚实收尾:端点率 γ = f t 的逐行对数路线被形式化证伪**)。
 
