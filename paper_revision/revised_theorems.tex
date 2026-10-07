@@ -222,4 +222,108 @@ $\{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}$; zero
       remain as separately registered work.
 \end{enumerate}
 
+
+\section{Validation status of the remaining results}\label{sec:status}
+
+Theorem~\ref{thm:main} closes the long-memory branch. The repository audit
+(\texttt{results/catalog.json}; 27 numbered results; 2{,}644 machine-checked
+mathematical declarations) grades every numbered result of the manuscript;
+the full per-item detail with Lean theorem names is maintained in
+\texttt{paper\_\allowbreak{}revision/\allowbreak{}theorem\_\allowbreak{}inventory.\allowbreak{}md}. We summarize.
+
+\smallskip\noindent\textbf{Status tags.} \textbf{[Full]}: original result
+completely proved in Lean (repaired form). \textbf{[Revised-Full]}: revised
+statement completely proved in Lean. \textbf{[Cond.]}: conditional Lean theorem
+under named premises (INT-CLT, INT-VAR, INT-LONG, INT-SCALE, INT-MOM-RISK).
+\textbf{[Written]}: ordinary mathematical proof only (files 1--24).
+\textbf{[Open]}: no conclusion yet. ``[Full pieces]'' marks substantial
+unconditional Lean fragments inside a partially open item.
+
+\begin{table}[h]\centering\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{0.06\textwidth}p{0.56\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Result & Claim (one line) & Status \\
+\midrule
+3.1 & minimax $L^s$ probability-risk lower bound, $d=1$ & [Full], incl.\ $p=1$ extension \\
+3.2 & local-poly bias $O(T_1)$/variance $O(T_2)$ on $\Omega_\delta$ & short-memory global bounds [Full pieces]; uniformity [Written] \\
+3.3 & short/critical/long-memory limits of $\widehat G_n$ & short, critical [Cond.]; \textbf{long-memory [Revised-Full]} (Thm.~\ref{thm:main}) \\
+3.4 & inverted $\widehat H_n$: bias, MSE, limit law & long-memory inversion [Revised-Full]; rest [Cond.]/[Written] \\
+3.5 & optimal-bandwidth biased normal limits & means corrected to $-2R/2R$; [Cond.] \\
+4.1 & two-scale pilot $\widehat H_1$ & [Cond.] \\
+4.2 & $\log\sigma^2$ estimator MSE & [Written]; $q=1$ scale input discharged in Lean \\
+4.3 & plugged-in $\widehat H_2$ MSE & fixed-class minimax match [Full pieces, $1{\le}s{\le}2$]; rest [Written] \\
+8.1 & KL bound for $H=\tfrac12+\varphi$ & [Full] \\
+8.2 & four difference-covariance regimes & growing-lag remainder corrected; interior [Written + Full pieces] \\
+8.3 & log-mean chain $E[2\log|W_n|]$ & actual full-grid means [Full pieces] \\
+8.4 & local-poly bias $O(b^p)$ & design-matrix repair; designs/weights/equiv.\ kernel [Full pieces] \\
+8.5 & vector $Z$ limits and bounds & centering fixed; expectation-bias leading terms [Full pieces] \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[h]\centering\footnotesize
+\begin{tabularx}{\textwidth}{@{}p{0.07\textwidth}p{0.56\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Result & Claim (one line) & Status \\
+\midrule
+S.1.1 & Fourier adjacent-difference bounds & false as complex integral; repaired version [Open] \\
+S.1.2 & filtered Fourier integral bound & route only; [Open] \\
+S.2.1 & $g(H,0,h)$ bounded away from $0$ & hypotheses strengthened ($h\neq0$, $H\in[\gamma,1-\gamma]$); 1-d [Full pieces] \\
+S.2.2 & leading singular coefficient & missing $\tfrac12$ in $c_h$; general orders [Open] \\
+S.2.3 & mixed-derivative bounds & linear-$H$ counterexample; repaired with $r^\psi$ background [Written + Full pieces] \\
+S.3.1 & far-field asymptotics of $g$ & route only; [Open] \\
+S.3.2 & weighted power double sums, cycle products & critical center value fixed ($\int f^2$); \textbf{long-memory cycle integrals [Revised-Full]} \\
+S.3.3 & three-regime unified bounds & actual row sums/variance [Full pieces]; $s>2$ [Cond.] \\
+S.3.4 & Hermite orthogonality identity & correct as stated; general $(k,l)$ [Open] \\
+S.5.1 & spatial-average variance of $I_1'$ & missing $m$ factor ($H=7/8$ counterexample); repaired [Written] \\
+S.5.2 & truncated component $I_2'$ MSE & [Written + Full pieces] \\
+S.6.1 & irregular-grid covariance & false unnormalized; Brownian counterexample Lean-verified; full instantiation [Open] \\
+S.7.1 & known $\sigma(t)$ covariances & [Open] \\
+S.7.2 & $d\le3$ bias/variance, optimality & [Open]; the $d=2,3$ optimality claim lacks its own lower bound \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Confirmed errors in the original proofs}
+
+(1) Critical variance constant: $(9/16)\int\omega^2$, not the kernel center value
+(S.3.2). (2) Long-memory sign: the inverted limit is $-Q$; a legal nonnegative
+equivalent-kernel instance has third moments of opposite sign (\S1--2 here;
+machine-checked). (3) Theorem 3.5 means are $-2R$ ($\widehat G$) and $2R$
+($\widehat H$), not $R$. (4) The growing-lag remainder of 8.2(iv) is too strong;
+$O(k^{-2}+k\log n/n+(k/n)^{\psi})$ must be retained. (5) The quadrature argument
+of 8.4 is invalid; replaced by direct design-matrix reproduction (Lean-complete).
+(6) 8.5 mixes $Z$ and $Z-EZ$ centerings; the dimension is $S$, not $d$. (7) S.1.1
+fails as a complex Lebesgue integral near $0$. (8) S.2.1 lacks hypotheses
+($h=0$; $q=2$, $H\to1$). (9) S.2.3's $q=1$ near-diagonal remainder has a
+linear-$H$ counterexample. (10) The $c_h$ formulas of S.2.2/S.3.1 miss a factor
+$\tfrac12$. (11) S.3.2's critical center-value derivation and the $2!$ Hermite
+factor. (12) S.5.1's spatial-average bound misses an $m$ factor (power-order
+counterexample at $H=7/8$; the repaired bound preserves the main rates). (13)
+S.6.1's unnormalized covariance claim fails already for Brownian motion
+(counterexample machine-checked at the scalar level). (14) S.7.2's $d=2,3$
+optimality assertion has no corresponding lower bound in the manuscript itself.
+
+\subsection{Refutations formalized during verification}
+
+The verification chain itself formalized six impossibility results about the
+proof infrastructure: the all-rows-nonempty premise (\texttt{hm}), the spectral
+constant (\texttt{hconst}) and the unnormalized correlation-energy premise
+(\texttt{hE2}) are each refuted by Lean contradiction theorems; the first- and
+second-order bias windows are empty at $\gamma=f(t)$ on the long-memory band;
+the second-order increment rate $n^{-(2-b)}$ is unattainable (honest rate
+$n^{-(2-2b)}$, Proposition~\ref{prop:rates}); and feeding the crude fluctuation
+bound into the drift yields a non-vanishing $O(1)$ term (the tail-based
+transfer is the only correct route). Four lemmas that looked problematic were
+positively validated, most notably the spectral row-nondegeneracy
+(\texttt{normalizedVaryingIncrement\_ne\_zero}), which is stronger than the
+plan anticipated.
+
+\subsection{Open scopes}
+
+Dimension $d\ge2$ throughout; boundary uniformity ($\Omega_\delta$); $s=\infty$
+and the $s>2$ moment bridge (INT-MOM-RISK); the unknown-scale fine limits
+(file 21, written only); the INT-CLT/INT-VAR inputs of the short/critical
+branches; and the eight supplement items marked [Open] above.
+
 \end{document}
