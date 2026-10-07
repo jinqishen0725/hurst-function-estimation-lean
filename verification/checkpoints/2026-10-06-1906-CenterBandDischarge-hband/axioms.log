@@ -1,0 +1,8 @@
+'Hurst.centerBand_expectation_decomp' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.centerBand_increment_log_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.centerBand_ratio_tendsto' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.centerBand_hband_discharged' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Hurst.actualQ1_knownScaleH_fullChain_generalSigned_feasible_centerBand' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+exit=0

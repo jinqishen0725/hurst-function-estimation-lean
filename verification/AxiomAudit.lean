@@ -2562,3 +2562,10 @@ import Hurst
 #print axioms Hurst.gridStrideFirstActual_ne_zero
 #print axioms Hurst.actualQ1_hane_discharged
 #print axioms Hurst.actualQ1_hane_all
+
+-- takeover8 task 2 (2026-10-06): center-band discharge (hband resolved).
+#print axioms Hurst.centerBand_expectation_decomp
+#print axioms Hurst.centerBand_increment_log_bound
+#print axioms Hurst.centerBand_ratio_tendsto
+#print axioms Hurst.centerBand_hband_discharged
+#print axioms Hurst.actualQ1_knownScaleH_fullChain_generalSigned_feasible_centerBand
