@@ -1,0 +1,20 @@
+========================================================================
+FINAL ACCEPTANCE REPORT (closed mainline)
+========================================================================
+[PASS] A aggregate build: exit=0 (9221/9223 jobs)
+[PASS] B axiom audit: exit=0 theorems=2603/2603 printed outside_three=0 sorryAx=0 unknown=0
+[PASS] C sorry scan: 0 occurrences
+[PASS] D endpoint signature: premises=['M', 'a', 'b', 'f', 'hF', 'hM', 'ha', 'hab', 'hb', 'hbband', 'hf', 'hlong', 'hp', 'ht', 'p', 'r', 't'] extra=[] missing=[] forbidden=[]
+[PASS] E counter-audit files: Session3PremiseAudit.lean: exit=0; Session4Blocker3Audit.lean: exit=0; CapstonePremiseAudit.lean: exit=0
+[PASS] F checkpoints (closure era >= 2026-10-05): 13 verified, 34 legacy (pre-closure; 3 with missing files, non-gating historical preservation gaps)
+[PASS] G plan numbers: E8 example h=0.9 b=0.95 a=0.8: hbband=True plan-window@γ=h=True a>1/2=True; h far from b: h=0.8 b=0.955: hbband=True plan-window@γ=h=True a>1/2=True; band [h, 1-(1-h)^2) = [0.8, 0.960) nonempty=True
+
+OVERALL: ALL CHECKS PASSED
+
+Plan-scope deviations (informational, from the independent audit
+against direct_proofs/22+24; these do not gate the closure):
+  - Lean requires 1/2 < a (second-order mixed-power machinery); file 22/24 only assume a <= f <= b — mild strengthening, satisfiable, registered (takeover10).
+  - The honest-rate endpoint pins gamma = f t; the file-22 window allows other gamma (the general-gamma chain exists only with the legacy hBias premise).
+  - Unknown-scale extension (file 24 sections 5/E6-E10) not formalized.
+  - Known scale is pinned at sigma = 1 (c_sigma = gaussianLogSquareMean); the sigma-rescaled known-scale variant is not assembled.
+  - A Lean-level model-instance theorem (file 24 section 6 '每层的验证': beyond numeric checks) is not landed; this script's G checks are numeric.
