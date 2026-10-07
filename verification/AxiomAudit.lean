@@ -2629,3 +2629,7 @@ import Hurst
 -- takeover10 task 1 (2026-10-07): unit variance rate of the known-scale
 -- log statistic (second central moment at the honest scale S^(-2psi)).
 #print axioms Hurst.hurstHolder_q1_unitVariance_eventually_bounded
+
+-- takeover10 task 2 (2026-10-07): the honest-rate drift lemma (deterministic
+-- side E5B drift bound at the pinned center + tail-based truncation transfer).
+#print axioms Hurst.honestRate_drift_tendsto_zero
