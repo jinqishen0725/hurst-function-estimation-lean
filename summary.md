@@ -1,5 +1,13 @@
 # Hurst function estimation：核验汇总
 
+> **状态更新(2026-10-07,置顶)**:长记忆主线已闭环验收(上/下文见
+> [README](README.md) 与 [Hurst/README](Hurst/README.md))。修订后的定理陈述在
+> [paper_revision/revised_theorems.tex](paper_revision/revised_theorems.tex);
+> 下文第 9/11 行等"尚未完成/尚待 Lean 验证"的历史表述以本注为准已被取代
+> (留档不删)。主端点 = `Hurst/HonestRateClosure.lean` 的
+> `actualQ1_knownScaleH_fullChain_honestRate`(前提:模型窗口+b-带+r),
+> 机器验收 `verification/final_acceptance.py` 七项全过。
+
 另一个 agent 接手请从[当前 TRANSITION](TRANSITION.md)开始：其中集中列出最新审计、文件22–24、Lean 源码 reference、实施顺序及验证命令。
 
 **验收口径更正（用户明确要求）：所有内部引理都必须完成 Lean。仅允许明确标识的外部文献引理保留为假设。因此当前主线仍未完成；第二十八阶段只是接通下游条件推导，不能计为主线验收通过。**

@@ -1,6 +1,18 @@
 # Hurst function estimation — Lean audit
 
-主要交付：[summary.md](summary.md)。这是数学审计和**部分形式化**；尚未完成整篇论文的Lean证明。27个编号结果都有对应说明，当前Theorem 3.1和Proposition 8.1已登记为“完整原定理已证明”（2/27）。
+主要交付：[summary.md](summary.md)（逐项审计索引）与
+[paper_revision/revised_theorems.tex](paper_revision/revised_theorems.tex)
+（**修订后的长记忆主定理**，按正文 19-AOS1825 的 Theorem 3.3(iii)+3.4 长记忆
+分支陈述，全部条件与结论机器验证）。
+
+**状态（2026-10-07）：长记忆主线已闭环验收**——`Hurst/HonestRateClosure.lean`
+的 `actualQ1_knownScaleH_fullChain_honestRate`：在模型窗口 + b-带 + r 下
+`2 S^ψ log n (Ĥ_n − f t) ⇒ −Q`，Q 为构造的 signed 加权 Riesz 二阶混沌律；
+聚合 build 9223 jobs 绿、2603 条定理公理 ⊆ 三标准公理、零 sorry，机器验收
+`python3 verification/final_acceptance.py` 七项全过（commit 16715db / e76475a）。
+未覆盖范围（短记忆/临界分支、minimax 程序的其余部分、未知尺度扩展、高维）
+仍按 [backlog.md](backlog.md) 与 summary 逐项登记;代码地图见
+[Hurst/README.md](Hurst/README.md)。
 
 本轮修复定理与主要结论影响见 [repair_progress.md](repair_progress.md)。
 
@@ -20,13 +32,18 @@ lake build > verification/build.log 2>&1
 python3 scripts/check_coverage.py
 lake env lean verification/AxiomAudit.lean > verification/axioms.log
 python3 scripts/verify_axioms.py
+python3 verification/final_acceptance.py   # 闭环后七项机器验收(含端点签名门禁)
 ```
 
 全新克隆且没有 `.lake` 时先运行 `lake update` 获取固定依赖。首次安装依赖需要网络和数GB空间。工具链使用[Lean](https://github.com/leanprover/lean4)及[mathlib](https://github.com/leanprover-community/mathlib4)官方发布。
 
 ## 文件
 
-- `Hurst/*.lean`：已验证的确定性/分析/概率恒等式及部分修正。
+- `Hurst/*.lean`：已验证的确定性/分析/概率恒等式及主链端点;分层地图与
+  阅读顺序见 [Hurst/README.md](Hurst/README.md)。
+- `paper_revision/revised_theorems.tex`：修订后主定理的论文式陈述(含与原稿
+  及修复计划的逐条偏差表)。
+- `verification/final_acceptance.py`：闭环后的七项机器验收脚本。
 - `results/*.md`：正文13项、补充14项，每项单独记录，不将局部证明视为原定理证明。
 - `results/catalog.json`：机器可读依赖与证据映射。
 - `source/*.txt`：从用户提供的PDF提取的文本；数学歧义按原PDF页面核对。

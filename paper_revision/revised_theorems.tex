@@ -1,0 +1,224 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{condition}[theorem]{Condition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Revised Long-Memory Limit Theorems for the Hurst Function Estimator\\
+\large Machine-checked against the Lean 4 formalization (repo \texttt{hurst\_function\_estimation},
+closure commit \texttt{16715db}, acceptance \texttt{e76475a})}
+\author{}
+\date{October 7, 2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Scope.} This note states the \emph{revised} form of the long-memory
+branch of Theorem~3.3(iii) and Theorem~3.4 of the source manuscript
+(\texttt{19-AOS1825.pdf}), as it is now fully formalized in the accompanying Lean~4
+project. Every condition and every clause of Theorem~\ref{thm:main} below is
+machine-checked; \S\ref{sec:prov} maps each element to its Lean theorem, and
+\S\ref{sec:dev} lists, without softening, every deviation from the manuscript's
+original assumptions and from the intermediate repair plan
+(\texttt{direct\_proofs} files 22/24).
+
+\section{Setup}
+
+Let $f \in \Sigma(p,M)$ be a H\"older-regular Hurst profile on $(0,1)$ in the sense
+of the source paper, let $t \in (0,1)$ be a fixed interior point, and write
+\[
+h = f(t), \qquad \psi = 2 - 2h \in (0,\tfrac12), \qquad c = h(2h-1) > 0 .
+\]
+The data are the centered Gaussian grid features of the harmonizable-type model
+with profile $f$; the estimator is the local-polynomial log-square statistic with
+weights $w_{n,i}$ of order $r$ (degree $r-1$ design, $\sum_i w_{n,i}=1$), bandwidth
+$\delta_n = n^{-\gamma}$, active scale $S_n = n\delta_n$, and the clipped
+calibration
+\[
+\widehat G_n = \sum_{i} w_{n,i}\,\log\bigl(Y_{n,i}^{\,2}\bigr),
+\qquad
+\widehat H_n = T_n\!\left(\frac{c_\sigma - \widehat G_n}{2\log n}\right),
+\]
+where $Y_{n,i}$ are the standardized first-stride increment features (unit
+known scale $\sigma=1$) and $T_n$ clips its argument to $[0,1]$;
+where $T_n$ clips to $[0,1]$ and $c_\sigma = \mathbb{E}\log Z^2$ with
+$Z \sim N(0,1)$ (the pinned center; in the formalization this constant is
+\texttt{gaussianLogSquareMean}).
+
+Let $\omega_r$ be the equivalent kernel of the local polynomial fit and let
+$K$ be the Hilbert--Schmidt operator of the (unweighted, exponent-$\psi$,
+coefficient-$c$) Riesz kernel on $L^2$. Define the compact self-adjoint operator
+\[
+B \;=\; K^{1/2} M_{\omega_r} K^{1/2},
+\]
+and let $\lambda = (\lambda_j)_{j\ge0}$ be its eigenvalue sequence retaining every
+nonzero eigenvalue with multiplicity, ordered with positive and negative parts
+separately non-increasing and interleaved.
+
+\begin{condition}[Revised assumptions]\label{cond:main}\ \\
+\begin{enumerate}
+\item[(R1)] $p \ge 1$; $f \in \Sigma(p,M)$ with constant $M$.
+\item[(R2)] $\tfrac12 < a \le f(x) \le b < 1$ for all $x \in (0,1)$.
+\item[(R3)] Long memory at the estimation point: $h = f(t) > \tfrac34$.
+\item[(R4)] Bandwidth compatibility (the \emph{$b$-band}):
+      $(1-h)^2 < 1 - b$; equivalently, at $\gamma = h$,
+      $(1-\gamma)\psi < 2-2b$.
+\item[(R5)] Bandwidth pinned at the feasible point $\gamma = h$,
+      i.e.\ $\delta_n = n^{-h}$ (so $S_n = n^{1-h}$).
+\item[(R6)] Fixed local-polynomial order $r \ge 0$.
+\end{enumerate}
+\end{condition}
+
+\noindent The band (R4) is nonempty jointly with (R2)--(R3): one needs
+$h \le b < 1-(1-h)^2$, and $h < 1-(1-h)^2$ holds for every $h\in(0,1)$.
+
+\section{Main theorem}
+
+\begin{theorem}[Revised Theorem 3.3(iii) $+$ 3.4, long-memory branch]\label{thm:main}
+Under \textup{(R1)}--\textup{(R6)}, with $Q$ the centered second Gaussian chaos
+\[
+Q \;=\; \sum_{j\ge0} \lambda_j\,(Z_j^2 - 1), \qquad (Z_j)_{j\ge0}
+\;\overset{\text{iid}}{\sim}\; N(0,1),
+\]
+(the series converging in $L^2$; $\operatorname{Var} Q = 2\sum_j \lambda_j^2$),
+the truth-centered estimator satisfies
+\[
+\boxed{\;\; 2\,S_n^{\psi}\,\log n\,\bigl(\widehat H_n - h\bigr)
+\;\Longrightarrow\; -\,Q . \;\;}
+\]
+The sign is $-Q$: the reflection relative to the naive inversion is a
+substantive part of the repair (it changes the law whenever $Q$ is asymmetric),
+and it is retained here exactly as in the corrected mathematics
+(\texttt{direct\_proofs}/14).
+\end{theorem}
+
+\begin{corollary}[No tuning constants]\label{cor:zero}
+Under (R1)--(R4), (R6) alone — with the near/far cut radius and every scalar
+rate parameter instantiated internally at the midpoint of the admissible window
+— the conclusion of Theorem~\ref{thm:main} holds. The center constant
+$c_\sigma$ and the projection band $d = (1-h)/2$ are likewise internal.
+\end{corollary}
+
+\section{The honest rates behind the theorem}
+
+\begin{proposition}[Drift decomposition; revised E5]\label{prop:rates}
+Under \textup{(R1)}--\textup{(R6)} the deterministic drift splits as
+\[
+2 S_n^{\psi}\log n\,\bigl|\mathbb{E}\widehat H_n - h\bigr|
+\;\le\;
+\underbrace{C_1\,\frac{\log n}{n^{\,h - 2(1-h)^2}}}_{\text{local-smoothing term}}
+\;+\;
+\underbrace{C_2\, n^{-(2-2b) - 2(1-h)^2}}_{\text{increment-mismatch term}}
+\;+\;
+\underbrace{C_3\,\frac{1}{n^{2(1-h)^2}\log n}}_{\text{clipping term}},
+\]
+where the first exponent is positive since $h>3/4 > 2(1-h)^2$, the second is
+positive exactly under the $b$-band \textup{(R4)}, and the third vanishes
+unconditionally. Moreover the increment-mismatch rate
+$n^{-(2-2b)}$ is attained exactly: no per-row expansion order reaches the rate
+$n^{-h}$, and consequently the manuscript's original bias envelope
+$|\mathbb{E}\widehat H_n - h| \le C n^{-h}$ fails for every non-constant
+profile with $f'(t)\neq 0$ (the window refutations are machine-checked; the
+lower-bound statement is derived by hand and registered).
+\end{proposition}
+
+\begin{remark}
+Theorem~\ref{thm:main} is therefore proved \emph{through} the honest rates: the
+truth-centered limit needs only the drift to vanish, not an $n^{-h}$-rate bias
+envelope, and the drift condition reduces exactly to the $b$-band (R4).
+\end{remark}
+
+\section{Formal provenance}\label{sec:prov}
+
+Every element of Theorem~\ref{thm:main} is machine-checked; the chain, from
+bottom to top:
+
+\begin{table}[h]\centering\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Element & Lean theorem & File \\
+\midrule
+Internal Hilbert basis, closed spectrum
+ & \texttt{exists\_weightedRieszSpectrum\_equiv\_closed} & \texttt{WeightedRieszSpectrumClosed}\\
+Cycle-integral identification ($k\ge2$)
+ & \texttt{diagSum\_Bop\_eq\_weightedCycle} & \texttt{CompressionGeneralK}\\
+Signed sorted spectrum keeps moments
+ & \texttt{signedSortedSpectrum\_hasSum\_pow} & \texttt{GeneralSignedPowerMatching}\\
+Row nondegeneracy (all $n$; spectral)
+ & \texttt{normalizedVaryingIncrement\_ne\_zero} & \texttt{FeatureRowNondegenerate}\\
+Normalized energy $S^{2\psi-2}\sum\rho^2 = O(1)$
+ & \texttt{hurstHolder\_q1\_actual\_normalized\_energy\_*} & \texttt{NormalizedActualEnergy}\\
+Fourth-order remainder $\to 0$
+ & \texttt{hurstHolder\_q1\_actual\_weighted\_fourth\_tendsto\_zero} & \texttt{NormalizedActualRemainder}\\
+Quadratic endpoint (constructed law)
+ & \texttt{actualQ1LongStatistic\_tendsto\_secondChaos\_generalSigned} & \texttt{ActualQ1SignedClosed}\\
+Log layer (double-sum remainder)
+ & \texttt{actualQ1\_logStatistic\_tendsto\_secondChaos\_doubleSum} & \texttt{P5LogHLayers}\\
+Seam (Layer 1 $\to$ Layer 2)
+ & \texttt{logStatistic\_knownScaleH\_seam\_of\_logLimit} & \texttt{P5SeamClosed}\\
+Center band discharged ($d=(1-h)/2$)
+ & \texttt{centerBand\_hband\_discharged} & \texttt{CenterBandDischarge}\\
+Scalar rates ($R=\lfloor n^\beta\rfloor$)
+ & \texttt{feasibleR\_*} & \texttt{FeasibleRates}\\
+Second-order increment rate $n^{-(2-2b)}$
+ & \texttt{varyingIncrement\_norm\_sq\_secondOrder} & \texttt{IncrementLogSecondOrder}\\
+Tail-based clipping transfer
+ & \texttt{truncationCorrection\_le} & \texttt{TruncationTransfer}\\
+Unit variance rate $S^{-2\psi}$
+ & \texttt{hurstHolder\_q1\_unitVariance\_eventually\_bounded} & \texttt{UnitVarianceRate}\\
+Honest-rate drift lemma
+ & \texttt{honestRate\_drift\_tendsto\_zero} & \texttt{HonestRateDrift}\\
+\textbf{Main theorem}
+ & \texttt{actualQ1\_knownScaleH\_fullChain\_honestRate} & \texttt{HonestRateClosure}\\
+Refuted historical premises (audit)
+ & \texttt{session3\_fullChain\_all\_rows\_impossible},
+   \texttt{session4\_unnormalized\_hE2\_impossible},
+   \texttt{bias\_window\_*\_infeasible} & \texttt{verification/}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Machine status.} Lean 4.31.0 / mathlib v4.31.0; aggregate build
+9223 jobs, exit 0; axiom audit of 2603 theorems, all within
+$\{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}$; zero
+\texttt{sorry}; automated re-verification via
+\texttt{verification/final\_acceptance.py} (seven checks, all passed).
+
+\section{Deviations from the manuscript and the repair plan}\label{sec:dev}
+
+\begin{enumerate}
+\item \textbf{Sign.} The limit is $-Q$, not $Q$ (substantive; matches the
+      corrected mathematics of file 14, confirmed in Lean).
+\item \textbf{Bandwidth system.} The manuscript's original bandwidth/all-rows
+      combination is unsatisfiable; both refutations are machine-checked. The
+      revised window is (R4)--(R5), exactly the file-22 grid condition
+      $(1-\gamma)\psi < 2-2b$ instantiated at $\gamma=h$.
+\item \textbf{Lower bound on $a$.} (R2) requires $a > \tfrac12$, absent from the
+      manuscript; it is needed by the second-order mixed-power machinery. Mild
+      strengthening, satisfiable.
+\item \textbf{$\gamma$ pinned.} The honest-rate closure is assembled at the
+      single feasible point $\gamma = h$; the manuscript's window allows other
+      $\gamma$ (the general-$\gamma$ chain exists in the repo with a legacy
+      bias premise). Coverage regions overlap but neither contains the other.
+\item \textbf{Scale.} Known scale pinned at $\sigma = 1$
+      ($c_\sigma=\mathbb{E}\log Z^2$); the $\sigma$-rescaled known-scale
+      variant and the unknown-scale extension (file 24, E6--E10) are not
+      formalized.
+\item \textbf{Honest bias rates.} The drift uses the attained rate
+      $n^{-(2-2b)}$ (Proposition~\ref{prop:rates}); the plan's presumed
+      faster decay ($n^{-(2-b)}$, then $n^{-\gamma}$ envelopes) was refuted
+      during formalization and is registered, not papered over.
+\item \textbf{Short-memory and critical branches} of Theorem 3.3, the minimax
+      program, and all two-dimensional extensions are outside this closure and
+      remain as separately registered work.
+\end{enumerate}
+
+\end{document}
