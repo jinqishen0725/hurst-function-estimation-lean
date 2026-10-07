@@ -675,3 +675,4 @@ import Hurst.FeasibleRates
 
 -- takeover8: feature-row nondegeneracy (hane discharged at the spectral level).
 import Hurst.FeatureRowNondegenerate
+import Hurst.CenterBandDischarge
