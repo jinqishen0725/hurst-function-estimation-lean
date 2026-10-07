@@ -78,9 +78,21 @@
 > 4. ✅ 检查点四件套 ×4(2206 / 2313 / 2331 / 2337)。
 
 > **已知缺口(诚实登记)**:
-> - **端点 hBias(γ = f t)被形式化证伪**(bias_window_secondOrder_infeasible);
->   端点 `…_feasible_centerBand(_zeroDof)` 的 hBias 前提在常规模型类下不可满足,
->   仅退化(常值 profile)下成立。**不得宣称统计闭环/无条件化**。
+> - **端点 hBias(γ = f t)路线证伪(精度勘误,审计者 2026-10-07)**:两个审计定理
+>   (bias_window_first/secondOrder_infeasible)形式化证明的是**逐行对数路线的
+>   有效窗口在 γ = f t 处为空**(γ ≤ 1−b 与 γ ≤ 2−2b 均与 3/4 < f t ∧ f t ≤ b
+>   矛盾);"hBias 前提在常规模型类下不可满足、仅常值 profile 可满足"是**手推
+>   而非形式化**的结论(依据:偏差展开 Θ(|k−h|·ℓ^{1−2h})、系数一般非零——
+>   见 IncrementLogSecondOrder 模块文档),二者须区分陈述。**不得宣称统计闭环/
+>   无条件化**。
+> - **下一步(诚实率漂移组装,审计者手推、待形式化)**:truth-centered 端点真正
+>   需要的不是 n^{−γ} 率的 hBias,而是漂移 `2 S^ψ log n · (E Ĝ_n − f t) → 0`。
+>   用二阶包络在窗口顶点 γ′ := 2−2b(合法性 γ′ ≤ 2−2b 取等),漂移指数为
+>   ψ(1−γ) − (2−2b);在 γ = f t 处即 `2(1−f t)² < 2−2b ⟺ (1−f t)² < 1−b`,
+>   **恰为端点既有的 b-带前提**。hfluct 可经方差路线消解(Var[Ĝ_unit] 有界 ⟹
+>   E|H̃−EH̃| ≤ F/(2 log n) ≤ F·n^{−γ});hw1 经 Gram 稳定窗口 N₀(r) ≤ S =
+>   n^{1−γ} → ∞ eventual 消解。若此组装走通,最终端点前提收敛到 模型窗口 +
+>   b-带(zeroDof 已内部化 β)。
 > - 诚实可达:hBias 在窗口 γ ≤ 2−2b 下的包络
 >   (knownScaleEstimator_bias_envelope_grid_secondOrder,条件形,前提 hw1/hfluct
 >   仍显式)。全率组装(∀ᶠ n 形 + hband/hw1 内部化)留待窗口可满足的变体立项。
