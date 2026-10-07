@@ -2611,3 +2611,10 @@ import Hurst
 #print axioms Hurst.secondOrder_assembly
 #print axioms Hurst.varyingIncrement_norm_sq_secondOrder
 #print axioms Hurst.gridStrideFirstActual_norm_sq_secondOrder
+
+-- takeover9 task 3 (2026-10-06): concentration-to-truncation transfer
+-- (abstract Markov tail + Young-inequality truncation correction).
+#print axioms Hurst.meas_ge_le_of_lintegral_pow
+#print axioms Hurst.indicator_values01
+#print axioms Hurst.abs_indicator_le_half_sq
+#print axioms Hurst.truncationCorrection_le
