@@ -25,7 +25,7 @@
 需要 `elan`。工程固定 Lean/mathlib v4.31.0，mathlib提交与依赖记录在 `lake-manifest.json`。
 
 ```sh
-cd /Users/jinqishen/repo/lean_verification/hurst_function_estimation
+cd <repo checkout>
 export PATH="$HOME/.elan/bin:$PATH"
 lake exe cache get
 lake build > verification/build.log 2>&1
